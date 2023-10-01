@@ -4,6 +4,19 @@ const jwt = require("jsonwebtoken");
 const jwtSecret =
   "0ea83a262f8efb25346b0cd612af54572067b23c4942bd11d57b1a9f7c97912a7fd432";
 
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find(); // Récupérer tous les utilisateurs
+    res.status(200).json(users); // Envoyer les utilisateurs en réponse
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
+
+////////////////////////////////////////////////////////////
+
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
 
