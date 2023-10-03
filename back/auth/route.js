@@ -7,6 +7,6 @@ router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/update").put(adminAuth, update);
 router.route("/delete").delete(adminAuth, deleteUser);
-router.route("/users").get(getAllUsers); // Nouvelle route pour obtenir tous les utilisateurs
+router.route("/users").get(getAllUsers); 
 
 module.exports = router;
