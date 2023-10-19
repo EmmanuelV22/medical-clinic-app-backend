@@ -9,7 +9,7 @@ exports.adminAuth = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Not authorized" });
       } else {
-        if (decodedToken.role !== "admin") {
+        if (!decodedToken.isAdmin) {
           return res.status(401).json({ message: "Not authorized" });
         } else {
           next();
@@ -32,7 +32,7 @@ exports.userAuth = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Not authorized" });
       } else {
-        if (decodedToken.role !== "Basic") {
+        if (!decodedToken.isPatient) {
           return res.status(401).json({ message: "Not authorized" });
         } else {
           next();
@@ -55,7 +55,7 @@ exports.staffAuth = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Not authorized" });
       } else {
-        if (decodedToken.role !== "staff") {
+        if (!decodedToken.isDoctor) {
           return res.status(401).json({ message: "Not authorized" });
         } else {
           next();

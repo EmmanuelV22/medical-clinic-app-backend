@@ -33,7 +33,9 @@ exports.register = async (req, res, next) => {
             id: user._id,
             username,
             email,
-            role: user.role,
+            isAdmin: user.isAdmin,
+            isPatient: user.isPatient,
+            isDoctor: user.isDoctor,
           },
           jwtSecret,
           {
@@ -44,9 +46,10 @@ exports.register = async (req, res, next) => {
           httpOnly: true,
           maxAge: maxAge * 1000,
         });
-        res
-          .status(201)
-          .json({ message: "User successfully created", user: user._id });
+        res.status(201).json({
+          message: "User successfully created",
+          user: user._id,
+        });
       })
       .catch((error) =>
         res.status(400).json({
@@ -81,7 +84,9 @@ exports.login = async (req, res, next) => {
             {
               id: user._id,
               email,
-              role: user.role,
+              isAdmin: user.isAdmin,
+              isPatient: user.isPatient,
+              isDoctor: user.isDoctor,
             },
             jwtSecret,
             {
@@ -92,9 +97,11 @@ exports.login = async (req, res, next) => {
             httpOnly: true,
             maxAge: maxAge * 1000,
           });
-          res
-            .status(201)
-            .json({ message: "User successfully Logged in", user: user._id });
+          res.status(201).json({
+            message: "User successfully Logged in",
+            user: user._id,
+            token: token,
+          });
         } else {
           res.status(400).json({ message: "Login not successful" });
         }
@@ -108,15 +115,15 @@ exports.login = async (req, res, next) => {
 /////////////////////////////////////////////////////////////////////////////////////
 
 exports.update = async (req, res, next) => {
-  const { role, id } = req.body;
+  const { isAdmin, id } = req.body;
 
   // Verifying if role and id are present
-  if (!role || !id) {
+  if (!isAdmin || !id) {
     return res.status(400).json({ message: "Role or Id not present" });
   }
 
   // Verifying if the value of role is admin
-  if (role !== "admin") {
+  if (!isAdmin) {
     return res.status(400).json({ message: "Role is not admin" });
   }
 
@@ -125,8 +132,8 @@ exports.update = async (req, res, next) => {
     const user = await User.findById(id);
 
     // Check if the user is not already an admin
-    if (user.role !== "admin") {
-      user.role = role;
+    if (!user.isAdmin) {
+      user.isAdmin = isAdmin;
       await user.save();
       return res.status(201).json({ message: "Update successful", user });
     } else {

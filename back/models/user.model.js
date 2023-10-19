@@ -2,7 +2,15 @@ const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema(
   {
-    username: {
+    firstname: {
+      type: String,
+      required: true,
+    },
+    lastname: {
+      type: String,
+      required: true,
+    },
+    dni: {
       type: String,
       required: true,
       unique: true,
@@ -16,9 +24,25 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    role: {
-      type: String,
-      default: "Basic",
+    isAdmin: {
+      type: Boolean,
+      required: true,
+    },
+    isPatient: {
+      type: Boolean,
+      required: true,
+    },
+    isDoctor: {
+      type: Boolean,
+      required: true,
+    },
+    isNurse: {
+      type: Boolean,
+      required: true,
+    },
+    isEmployee: {
+      type: Boolean,
+      required: true,
     },
   },
   {
