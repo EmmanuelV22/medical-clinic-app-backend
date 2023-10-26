@@ -5,7 +5,9 @@ const port = 5000;
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth, staffAuth } = require("./middleware/auth");
+const { private } = require("./middleware/auth");
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
 
 // Connexion à la base de données
 const connectDB = mysql.createConnection({
@@ -23,16 +25,17 @@ connectDB.connect((err) => {
   console.log("Connected to MySQL database");
 });
 
+module.exports = connectDB;
+
 // Configuration de l'application
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
+app.use("/api", require("./routes/routes"));
 
 // Routes
-app.get("/admin", adminAuth, (req, res) => res.send("Admin Route"));
-app.get("/patient", userAuth, (req, res) => res.send("Patient Route"));
-app.get("/staff", staffAuth, (req, res) => res.send("Staff Route"));
+app.get("/private", private, (req, res) => res.send("Private Route"));
 
 // Lancement du serveur
 app.listen(port, () => {
