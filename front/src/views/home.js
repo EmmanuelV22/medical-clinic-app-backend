@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import Login from "../components/Login";
+import Register from "../components/Register";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -13,12 +13,15 @@ const Home = () => {
     <>
       {store.patients.length > 1 &&
         store.patients.map((patient) => (
-          <ul key={patient._id}>
-            <li>{patient.username}</li>
-            <li>{patient.email}</li>
+          <ul key={patient.id}>
+            <li>{patient.firstname}</li>
+            <li>{patient.lastname}</li>
+            <li>{patient.dni}</li>
+            <li>{patient.address}</li>
+            <li>{patient.birthday}</li>
           </ul>
         ))}
-      <Login />
+      <Register />
     </>
   );
 };

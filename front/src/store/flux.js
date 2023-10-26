@@ -16,11 +16,11 @@ const getState = ({ getStore, getActions, setStore }) => {
     actions: {
       getPatients: async () => {
         try {
-          const response = await axios.get(`${API_AUTH}/users`);
+          const response = await axios.get(`${API_AUTH}/patients`);
           if (response.status === 200) {
             const responseData = response.data;
-            console.log("GET ALL USERS", responseData);
-            setStore({ patients: responseData });
+            console.log("GET ALL Patients", responseData);
+            setStore({ patients: responseData.results });
             return true;
           } else {
             return [];
@@ -30,12 +30,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           return [];
         }
       },
-      login: async (email, password) => {
+      login: async (dni, password) => {
         try {
           console.log("Start login");
 
           const response = await axios.post(`${API_AUTH}/login`, {
-            email: email,
+            dni: dni,
             password: password,
           });
           console.log(response.data);
@@ -46,7 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             const store = getStore();
             Cookies.set("jwt", data.token);
             console.log(data);
-            setStore({ ...store, isAuth: true, patients: data.user });
+            setStore({ ...store, isAuth: true, patients: data.patient });
 
             return data;
           }
@@ -69,51 +69,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ isAuth: false });
         return token != null ? true : false;
       },
-      // adminAuth: async () => {
-      //   try {
-      //     const response = await axios.get(`${API_AUTH}/admin`);
-      //     if (response.status === 200) {
-      //       const data = response.data;
-      //       const store = getStore();
-      //       setStore({ ...store, isAdminAuth: true, admin: data.user });
-      //     }
-      //   } catch (error) {
-      //     console.error(
-      //       "Erreur lors de la vérification de l'authentification du staff medical: ",
-      //       error
-      //     );
-      //   }
-      // },
-      // staffAuth: async () => {
-      //   try {
-      //     const response = await axios.get(`${API_AUTH}/admin`);
-      //     if (response.status === 200) {
-      //       const data = response.data;
-      //       const store = getStore();
-      //       setStore({ ...store, isDoctorAuth: true, staff: data.user });
-      //     }
-      //   } catch (error) {
-      //     console.error(
-      //       "Erreur lors de la vérification de l'authentification du patient: ",
-      //       error
-      //     );
-      //   }
-      // },
-      // userAuth: async () => {
-      //   try {
-      //     const response = await axios.get(`${API_AUTH}/admin`);
-      //     if (response.status === 200) {
-      //       const data = response.data;
-      //       const store = getStore();
-      //       setStore({ ...store, isPatientAuth: true, patients: data.user });
-      //     }
-      //   } catch (error) {
-      //     console.error(
-      //       "Erreur lors de la vérification de l'authentification de l'admin: ",
-      //       error
-      //     );
-      //   }
-      // },
     },
   };
 };
