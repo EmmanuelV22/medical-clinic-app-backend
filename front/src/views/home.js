@@ -2,6 +2,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import Register from "../components/Register";
+import Login from "../components/Login";
 
 const Home = () => {
   const { store, actions } = useContext(Context);
@@ -13,14 +14,12 @@ const Home = () => {
     <>
       {store.patients.length > 1 &&
         store.patients.map((patient) => (
-          <ul key={patient.id}>
+          <ul key={patient.id} className="bg-danger">
             <li>{patient.firstname}</li>
             <li>{patient.lastname}</li>
-            <li>{patient.dni}</li>
-            <li>{patient.address}</li>
-            <li>{patient.birthday}</li>
           </ul>
         ))}
+      <Login />
       <Register />
     </>
   );

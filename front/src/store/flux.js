@@ -8,9 +8,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       patients: [],
       admin: [],
       staff: [],
-      isAdminAuth: false,
-      isDoctorAuth: false,
-      isPatientAuth: false,
       isAuth: false,
     },
     actions: {
@@ -28,6 +25,33 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log(error);
           return [];
+        }
+      },
+      registerPatient: async (
+        firstname,
+        lastname,
+        email,
+        dni,
+        address,
+        birthday
+      ) => {
+        try {
+          const res = await axios.post(`${API_AUTH}/register`, {
+            firstname,
+            lastname,
+            email,
+            dni,
+            address,
+            birthday,
+          });
+
+          if (res.status === 201) {
+            console.log("Register OK", res);
+            return true;
+          }
+        } catch (error) {
+          console.error(error);
+          return false;
         }
       },
       login: async (dni, password) => {
