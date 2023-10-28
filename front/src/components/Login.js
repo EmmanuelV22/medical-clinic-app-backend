@@ -6,16 +6,16 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const { store, actions } = useContext(Context);
-  const [email, setEmail] = useState("");
+  const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("Email:", email); // Ajout de cette console log
+    console.log("dni:", dni); // Ajout de cette console log
     console.log("Password:", password); // Ajout de cette console log
-    actions.login(email, password);
-    setEmail("");
+    actions.login(dni, password);
+    setDni("");
     setPassword("");
     navigate("/register");
   }
@@ -23,16 +23,16 @@ const Login = () => {
   return (
     <form className="input-group mb-3 w-75 mx-auto" onSubmit={handleSubmit}>
       <span className="input-group-text" id="patient-addon1">
-        @
+        dni
       </span>
       <input
-        type="email"
+        type="dni"
         className="form-control"
         aria-label="Username"
         aria-describedby="patient-addon1"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        placeholder="dni"
+        value={dni}
+        onChange={(e) => setDni(e.target.value)}
         required
       />
       <span className="input-group-text" id="patient-addon1">
