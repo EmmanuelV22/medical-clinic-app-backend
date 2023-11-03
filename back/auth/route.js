@@ -11,6 +11,7 @@ const {
   deletePatient,
   getPatientById,
   getEmployeeById,
+  registerPatient,
 } = require("./auth");
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.route("/employees").get(getAllEmployees);
 router.route("/employees/:id").get(getEmployeeById);
 
 //////////////PATIENS ROUTES///////////
+router.route("/register-patient").post(registerPatient);
 router.route("/login-patient").post(loginPatient);
 router.route("/update-patient").put(updatePatient);
 router.route("/delete-patient").delete(deletePatient);

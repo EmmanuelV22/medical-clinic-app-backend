@@ -7,7 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       patients: [],
       admin: [],
-      staff: [],
+      employees: [],
       isAuth: false,
     },
     actions: {
@@ -54,15 +54,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
-      login: async (dni, password) => {
+      login: async (personalID, password) => {
         try {
-          console.log("Start login");
-
           const response = await axios.post(`${API_AUTH}/login`, {
+            personalID: personalID,
+            password: password,
+          });
+          if (response.status === 201) {
+            const data = response.data;
+            // console.log(data);
+
+            const store = getStore();
+            Cookies.set("jwt", data.token);
+            setStore({ ...store, isAuth: true, employees: data.employee });
+            console.log(data);
+
+            return data;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      loginPatient: async (dni, password) => {
+        try {
+          const response = await axios.post(`${API_AUTH}/login-patient`, {
             dni: dni,
             password: password,
           });
-          console.log(response.data);
           if (response.status === 201) {
             const data = response.data;
             console.log(data);
@@ -70,7 +88,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             const store = getStore();
             Cookies.set("jwt", data.token);
             console.log(data);
-            setStore({ ...store, isAuth: true, patients: data.patient });
+
+            setStore({ ...store, isAuth: true, patients: data });
 
             return data;
           }
