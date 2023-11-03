@@ -1,27 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Context } from "../store/appContext";
 
-const Login = () => {
+const LoginPatient = () => {
   const { store, actions } = useContext(Context);
-  const [personalID, setPersonalID] = useState("");
+  const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    const success = await actions.login(personalID, password);
+
+    const success = actions.loginPatient(dni, password);
+
     if (success) {
-      setPersonalID("");
+      setDni("");
       setPassword("");
+      navigate("/dashboard-patient");
     } else {
-      alert("erreur, verifiez vos infos");
-    }
-    console.log(store.employees.specialist);
-    if (store.employees.length > 0 && store.employees.specialist !== "admin") {
-      navigate("/dashboard-doctor");
-    } else {
-      navigate("/dashboard-admin");
+      alert("Error, log impossible");
     }
   }
 
@@ -31,32 +29,32 @@ const Login = () => {
         <span className="input-group-text" id="basic-addon1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icon-tabler-id-badge-2"
+            className="icon icon-tabler icon-tabler-id"
             width="20"
             height="20"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="#000000"
+            stroke="#000"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M7 12h3v4h-3z" />
-            <path d="M10 6h-6a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h16a1 1 0 0 0 1 -1v-12a1 1 0 0 0 -1 -1h-6" />
-            <path d="M10 3m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v3a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-            <path d="M14 16h2" />
-            <path d="M14 12h4" />
+            <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+            <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M15 8l2 0" />
+            <path d="M15 12l2 0" />
+            <path d="M7 16l10 0" />
           </svg>
         </span>
         <input
-          type="personalID"
+          type="dni"
           className="form-control border-l-0"
           aria-label="Username"
           aria-describedby="patient-addon1"
-          placeholder="personalID"
-          value={personalID}
-          onChange={(e) => setPersonalID(e.target.value)}
+          placeholder="dni"
+          value={dni}
+          onChange={(e) => setDni(e.target.value)}
           required
         />
       </div>
@@ -99,4 +97,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPatient;

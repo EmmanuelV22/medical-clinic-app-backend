@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const connectDB = require("../server");
 const jwtSecret =
   "0ea83a262f8efb25346b0cd612af54572067b23c4942bd11d57b1a9f7c97912a7fd432";
-
+const { v4: uuidv4 } = require("uuid");
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************
  **********************************************************/
@@ -50,125 +50,75 @@ exports.getAllEmployees = (req, res, next) => {
 ////////////////////////////////////////////////////////////
 
 exports.register = async (req, res, next) => {
-  if (req.body.specialist === undefined) {
-    const { firstname, lastname, email, address, dni, birthday, password } =
-      req.body;
-    const createdAt = new Date().toISOString().split("T")[0]; // Obtiene la fecha actual en formato 'YYYY-MM-DD'
+  const { firstname, lastname, email, address, dni, specialist, password } =
+    req.body;
+  const createdAt = new Date().toISOString().split("T")[0];
+  const personalID = uuidv4().substr(0, 10);
 
-    bcrypt.hash(password, 10, async (err, hash) => {
-      if (err) {
-        return res.status(500).json({ message: "Error hashing password" });
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) {
+      return res.status(500).json({ message: "Error hashing password" });
+    }
+
+    const query =
+      "INSERT INTO employees (firstname, lastname, email, address, dni, specialist, personalID, createdAt, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+      firstname,
+      lastname,
+      email,
+      address,
+      dni,
+      specialist,
+      personalID,
+      createdAt,
+      hash,
+    ];
+
+    connectDB.query(query, values, (error, results, fields) => {
+      if (error) {
+        return res
+          .status(400)
+          .json({ message: "Error creating user", error: error.message });
       }
 
-      const query =
-        "INSERT INTO patients (firstname,lastname,email,address,dni,birthday,password, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      const values = [
-        firstname,
-        lastname,
-        email,
-        address,
-        dni,
-        birthday,
-        hash,
-        createdAt,
-      ];
-      connectDB.query(query, values, (error, results, fields) => {
-        if (error) {
-          return res
-            .status(400)
-            .json({ message: "Error creating patient", error: error.message });
+      const maxAge = 3 * 60 * 60;
+      const token = jwt.sign(
+        {
+          firstname,
+          lastname,
+          email,
+          address,
+          dni,
+          specialist,
+          personalID,
+          createdAt,
+        },
+        jwtSecret,
+        {
+          expiresIn: maxAge,
         }
-        const maxAge = 3 * 60 * 60;
-        const token = jwt.sign(
-          {
-            firstname,
-            lastname,
-            email,
-            address,
-            dni,
-            birthday,
-            createdAt,
-          },
-          jwtSecret,
-          {
-            expiresIn: maxAge,
-          }
-        );
-        res.cookie("jwt", token, {
-          httpOnly: true,
-          maxAge: maxAge * 1000,
-        });
-        res.status(201).json({
-          message: "Patient successfully created",
-          patient: results.insertId,
-        });
+      );
+
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: maxAge * 1000,
+      });
+
+      res.status(201).json({
+        message: "Employee successfully created",
+        employee: results.insertId,
       });
     });
-  } else {
-    const { firstname, lastname, email, address, dni, specialist, password } =
-      req.body;
-    const createdAt = new Date().toISOString().split("T")[0]; // Obtiene la fecha actual en formato 'YYYY-MM-DD'
-
-    bcrypt.hash(password, 10, async (err, hash) => {
-      if (err) {
-        return res.status(500).json({ message: "Error hashing password" });
-      }
-
-      const query =
-        "INSERT INTO employees (firstname, lastname, email, address, dni, specialist, createdAt, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      const values = [
-        firstname,
-        lastname,
-        email,
-        address,
-        dni,
-        specialist,
-        createdAt,
-        hash,
-      ];
-
-      connectDB.query(query, values, (error, results, fields) => {
-        if (error) {
-          return res
-            .status(400)
-            .json({ message: "Error creating user", error: error.message });
-        }
-
-        const maxAge = 3 * 60 * 60;
-        const token = jwt.sign(
-          {
-            firstname,
-            lastname,
-            email,
-            address,
-            dni,
-            specialist,
-            createdAt,
-            // Asegúrate de incluir otros campos necesarios en el token
-          },
-          jwtSecret,
-          {
-            expiresIn: maxAge,
-          }
-        );
-        res.cookie("jwt", token, {
-          httpOnly: true,
-          maxAge: maxAge * 1000,
-        });
-        res.status(201).json({
-          message: "Employee successfully created",
-          employee: results.insertId, // Asumiendo que el ID del usuario se genera automáticamente
-        });
-      });
-    });
-  }
+  });
 };
 
+///////////////////////////////////////////////////
+
 exports.login = async (req, res, next) => {
-  const { dni, password } = req.body;
+  const { personalID, password } = req.body;
   console.log(req.body);
-  const query = "SELECT * FROM employees WHERE dni = ?";
-  const values = [dni];
+  const query = "SELECT * FROM employees WHERE personalID = ?";
+  const values = [personalID];
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
@@ -178,7 +128,7 @@ exports.login = async (req, res, next) => {
     }
 
     if (results.length === 0) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(401).json({ message: "Employee not found" });
     }
 
     const employee = results[0];
@@ -190,23 +140,26 @@ exports.login = async (req, res, next) => {
 
       if (result) {
         const maxAge = 3 * 60 * 60;
-        const token = jwt.sign(
-          {
-            dni: employee.dni,
-            email: employee.email,
-          },
-          jwtSecret,
-          {
-            expiresIn: maxAge,
-          }
-        );
+        const token = jwt.sign({}, jwtSecret, {
+          expiresIn: maxAge,
+        });
         res.cookie("jwt", token, {
           httpOnly: true,
           maxAge: maxAge * 1000,
         });
         return res.status(201).json({
-          message: "User successfully Logged in",
-          employee: employee.id, // Asumiendo que el ID del usuario es 'id'
+          message: "Employee successfully Logged in",
+          employee: {
+            id: employee.id,
+            dni: employee.dni,
+            email: employee.email,
+            firstname: employee.firstname,
+            lastname: employee.lastname,
+            specialist: employee.specialist,
+            address: employee.address,
+            personalID: employee.personalID,
+            createdAt: employee.createdAt,
+          },
           token: token,
         });
       } else {
@@ -220,10 +173,19 @@ exports.login = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   const { firstname, lastname, email, address, dni, specialist, id } = req.body;
-
+  const updatedAt = new Date();
   const query =
-    "UPDATE employees SET firstname = ?, lastname = ?, email = ?, dni = ?, specialist = ?, address = ? WHERE id = ?";
-  const values = [firstname, lastname, email, dni, specialist, address, id];
+    "UPDATE employees SET firstname = ?, lastname = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ? WHERE id = ?";
+  const values = [
+    firstname,
+    lastname,
+    email,
+    dni,
+    specialist,
+    address,
+    updatedAt,
+    id,
+  ];
 
   connectDB.query(query, values, (error, result, fields) => {
     if (error) {
@@ -296,6 +258,68 @@ exports.getAllPatients = async (req, res, next) => {
 };
 //////////////////////////////////////////////////////////
 
+exports.registerPatient = async (req, res, next) => {
+  const { firstname, lastname, email, address, dni, birthday, password } =
+    req.body;
+  const createdAt = new Date().toISOString().split("T")[0];
+
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) {
+      return res.status(500).json({ message: "Error hashing password" });
+    }
+
+    const query =
+      "INSERT INTO patients (firstname, lastname, email, address, dni, birthday, password, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+      firstname,
+      lastname,
+      email,
+      address,
+      dni,
+      birthday,
+      hash,
+      createdAt,
+    ];
+
+    connectDB.query(query, values, (error, results, fields) => {
+      if (error) {
+        return res
+          .status(400)
+          .json({ message: "Error creating patient", error: error.message });
+      }
+
+      const maxAge = 3 * 60 * 60;
+      const token = jwt.sign(
+        {
+          firstname,
+          lastname,
+          email,
+          address,
+          dni,
+          birthday,
+          createdAt,
+        },
+        jwtSecret,
+        {
+          expiresIn: maxAge,
+        }
+      );
+
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: maxAge * 1000,
+      });
+
+      res.status(201).json({
+        message: "Patient successfully created",
+        patient: results.insertId,
+      });
+    });
+  });
+};
+
+///////////////////////////////////////////////
+
 exports.loginPatient = async (req, res, next) => {
   const { dni, password } = req.body;
 
@@ -337,7 +361,14 @@ exports.loginPatient = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Patient successfully logged",
-          patient: patient.id,
+          id: patient.id,
+          firstname: patient.firstname,
+          lastname: patient.lastname,
+          dni: patient.dni,
+          email: patient.email,
+          address: patient.address,
+          birthday: patient.birthday,
+          createdAt: patient.createdAt,
           token: token,
         });
       } else {
@@ -352,8 +383,9 @@ exports.loginPatient = async (req, res, next) => {
 exports.updatePatient = async (req, res, next) => {
   const { firstname, lastname, email, dni, address, password, id, birthday } =
     req.body;
+  const updatedAt = new Date();
   const query =
-    "UPDATE patients SET firstname = ?, lastname = ?, email = ?, dni = ?, address = ?, password = ?, birthday = ? WHERE id = ?";
+    "UPDATE patients SET firstname = ?, lastname = ?, email = ?, dni = ?, address = ?, password = ?, birthday = ?, updatedAt = ? WHERE id = ?";
   const values = [
     firstname,
     lastname,
@@ -362,6 +394,7 @@ exports.updatePatient = async (req, res, next) => {
     address,
     password,
     birthday,
+    updatedAt,
     id,
   ];
   connectDB.query(query, values, (error, results, fields) => {
