@@ -4,6 +4,7 @@ const connectDB = require("../server");
 const jwtSecret =
   "0ea83a262f8efb25346b0cd612af54572067b23c4942bd11d57b1a9f7c97912a7fd432";
 const { v4: uuidv4 } = require("uuid");
+
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************
  **********************************************************/
@@ -140,9 +141,22 @@ exports.login = async (req, res, next) => {
 
       if (result) {
         const maxAge = 3 * 60 * 60;
-        const token = jwt.sign({}, jwtSecret, {
-          expiresIn: maxAge,
-        });
+        const token = jwt.sign(
+          {
+            id: employee.id,
+            dni: employee.dni,
+            email: employee.email,
+            firstname: employee.firstname,
+            lastname: employee.lastname,
+            specialist: employee.specialist,
+            address: employee.address,
+            personalID: employee.personalID,
+          },
+          jwtSecret,
+          {
+            expiresIn: maxAge,
+          }
+        );
         res.cookie("jwt", token, {
           httpOnly: true,
           maxAge: maxAge * 1000,

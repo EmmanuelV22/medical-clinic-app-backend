@@ -31,11 +31,11 @@ module.exports = connectDB;
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use("/api/auth", require("./auth/route"));
-app.use("/api", require("./routes/routes"));
+app.use("/api/auth", require("./auth/route")); // Ruta para la autenticación
+app.use("/api/routes", require("./routes/routes")); // Rutas personalizadas
 
-// Routes
-app.get("/private", private, (req, res) => res.send("Private Route"));
+// Ruta privada con /api
+app.get("/api/private", private, (req, res) => res.send("Private Route"));
 
 // Lancement du serveur
 app.listen(port, () => {

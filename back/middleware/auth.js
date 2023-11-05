@@ -3,62 +3,22 @@ const jwtSecret =
   "0ea83a262f8efb25346b0cd612af54572067b23c4942bd11d57b1a9f7c97912a7fd432";
 
 exports.private = (req, res, next) => {
-  const token = req.cookies.jwt;
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Not authorized, token not available" });
-  }
+  try {
+    const token = req.cookies.jwt;
+    console.log(token);
+    if (!token)
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
 
-  jwt.verify(token, jwtSecret, (err, decodedToken) => {
-    if (err || !decodedToken) {
-      return res.status(401).json({ message: "Not authorized" });
-    } else {
+    jwt.verify(token, jwtSecret, (error, user) => {
+      if (error) {
+        return res.status(401).json({ message: "Token is not valid" });
+      }
+      req.user = user;
       next();
-    }
-  });
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
-
-///////////////////////////////////////////
-
-// exports.userAuth = (req, res, next) => {
-//   const token = req.cookies.jwt;
-//   if (token) {
-//     jwt.verify(token, jwtSecret, (err, decodedToken) => {
-//       if (err) {
-//         return res.status(401).json({ message: "Not authorized" });
-//       } else {
-//         if (!decodedToken.isPatient) {
-//           return res.status(401).json({ message: "Not authorized" });
-//         } else {
-//           next();
-//         }
-//       }
-//     });
-//   } else {
-//     return res
-//       .status(401)
-//       .json({ message: "Not authorized, token not available" });
-//   }
-// };
-
-// //////////////////////////////////////////////////////////
-
-// exports.staffAuth = (req, res, next) => {
-//   const token = req.cookies.jwt;
-//   if (token) {
-//     jwt.verify(token, jwtSecret, (err, decodedToken) => {
-//       if (err) {
-//         return res.status(401).json({ message: "Not authorized" });
-//       } else {
-//         if (!decodedToken.isDoctor) {
-//           return res.status(401).json({ message: "Not authorized" });
-//         } else {
-//           next();
-//         }
-//       }
-//     });
-//   } else {
-//     res.status(401).json({ message: "Not authorized, token not available" });
-//   }
-// };

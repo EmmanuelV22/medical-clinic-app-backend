@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 const getState = ({ getStore, getActions, setStore }) => {
   const API_AUTH = "http://localhost:5000/api/auth";
+  const API = "http://localhost:5000/api";
   return {
     store: {
       patients: [],
@@ -67,7 +68,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             const store = getStore();
             Cookies.set("jwt", data.token);
             setStore({ ...store, isAuth: true, employees: data.employee });
-            console.log(data);
+            console.log(data.employee);
 
             return data;
           }
@@ -97,16 +98,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-      // isAuth: async () => {
-      //   let token = Cookies.get("jwt");
-      //   if (token) {
-      //     try {
-      //       const response = axios.get()
-      //     } catch (error) {
-      //       console.log(error);
-      //     }
-      //   }
-      // },
+      isAuth: async () => {
+        let token = Cookies.get("jwt");
+        console.log(token);
+        if (token) {
+          try {
+            const response = await axios.get(`${API}/private`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response);
+            if (response.status === 200) {
+              const data = await response.data;
+              const store = getStore();
+              if (data.employee) {
+                setStore({ ...store, employees: data.employee });
+              }
+              if (data.patient) {
+                setStore({ ...store, patients: data.patient });
+              }
+              setStore({ isAuth: true });
+            }
+          } catch (error) {
+            // Gérer l'erreur ici
+            console.log(error);
+          }
+        }
+      },
+
       logout: () => {
         let token = Cookies.remove("jwt");
         setStore({ isAuth: false });
