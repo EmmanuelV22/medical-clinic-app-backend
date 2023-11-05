@@ -11,18 +11,23 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     const success = await actions.login(personalID, password);
+
     if (success) {
       setPersonalID("");
       setPassword("");
+
+      if (
+        store.employees.length > 0 &&
+        store.employees.specialist !== "admin"
+      ) {
+        navigate("/dashboard-doctor");
+      } else {
+        navigate("/dashboard-admin");
+      }
     } else {
-      alert("erreur, verifiez vos infos");
+      alert("Erreur, vérifiez vos infos");
     }
     console.log(store.employees.specialist);
-    if (store.employees.length > 0 && store.employees.specialist !== "admin") {
-      navigate("/dashboard-doctor");
-    } else {
-      navigate("/dashboard-admin");
-    }
   }
 
   return (
