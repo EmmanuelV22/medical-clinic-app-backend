@@ -4,8 +4,8 @@ const jwtSecret =
 
 exports.private = (req, res, next) => {
   try {
-    const token = req.cookies.jwt;
-    console.log(token);
+    const token = req.headers.authorization;
+    console.log(req.headers.authorization);
     if (!token)
       return res
         .status(401)
