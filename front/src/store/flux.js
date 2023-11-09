@@ -90,7 +90,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             Cookies.set("jwt", data.token);
             console.log(data);
 
-            setStore({ ...store, isAuth: true, patients: data });
+            setStore({ ...store, isAuth: true, patients: data.patient });
 
             return data;
           }
@@ -100,23 +100,21 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       isAuth: async () => {
         let token = Cookies.get("jwt");
-        console.log(token);
         if (token) {
           try {
             const response = await axios.get(`${API}/private`, {
               headers: { Authorization: `${token}` },
             });
-            console.log(response);
             if (response.status === 200) {
               const data = await response.data;
               const store = getStore();
-              if (data.employee) {
-                setStore({ ...store, employees: data.employee });
+              if (data.user.specialist) {
+                setStore({ ...store, isAuth: true, employees: data.user });
+                console.log(store.employees);
+              } else {
+                setStore({ ...store, isAuth: true, patients: data.user });
+                console.log(store.patients);
               }
-              if (data.patient) {
-                setStore({ ...store, patients: data.patient });
-              }
-              setStore({ isAuth: true });
             }
           } catch (error) {
             // Gérer l'erreur ici

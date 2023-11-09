@@ -35,7 +35,11 @@ app.use("/api/auth", require("./auth/route")); // Ruta para la autenticación
 app.use("/api/routes", require("./routes/routes")); // Rutas personalizadas
 
 // Ruta privada con /api
-app.get("/api/private", private, (req, res) => res.send("Private Route"));
+app.get("/api/private", private, (req, res) =>
+  res.json({
+    user: req.user,
+  })
+);
 
 // Lancement du serveur
 app.listen(port, () => {

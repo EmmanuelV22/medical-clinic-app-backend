@@ -18,11 +18,11 @@ const Login = () => {
 
       if (
         store.employees.length > 0 &&
-        store.employees.specialist !== "admin"
+        store.employees.specialist === "admin"
       ) {
-        navigate("/dashboard-doctor");
-      } else {
         navigate("/dashboard-admin");
+      } else {
+        navigate("/dashboard-doctor");
       }
     } else {
       alert("Erreur, vérifiez vos infos");
