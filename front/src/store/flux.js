@@ -104,7 +104,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         if (token) {
           try {
             const response = await axios.get(`${API}/private`, {
-              headers: { Authorization: `Bearer ${token}` },
+              headers: { Authorization: `${token}` },
             });
             console.log(response);
             if (response.status === 200) {
