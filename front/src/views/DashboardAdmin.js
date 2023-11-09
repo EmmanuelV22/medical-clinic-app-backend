@@ -2,10 +2,13 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 
 const DashboardAdmin = () => {
-  const { store, actions } = useContext(Context);
+  const { store } = useContext(Context);
+
   return (
     <div>
-      <h1>admin</h1>
+      {store.employees.length > 0 &&
+        store.employees?.specialist &&
+        store.employees.specialist === "admin" && <h1>Hola Admin</h1>}
     </div>
   );
 };

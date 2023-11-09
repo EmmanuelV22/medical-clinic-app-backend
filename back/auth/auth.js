@@ -361,8 +361,14 @@ exports.loginPatient = async (req, res, next) => {
         const maxAge = 3 * 60 * 60;
         const token = jwt.sign(
           {
+            id: patient.id,
+            firstname: patient.firstname,
+            lastname: patient.lastname,
             dni: patient.dni,
-            email: patient.firstname,
+            email: patient.email,
+            address: patient.address,
+            birthday: patient.birthday,
+            createdAt: patient.createdAt,
           },
           jwtSecret,
           {
