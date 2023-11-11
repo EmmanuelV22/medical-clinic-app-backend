@@ -1,8 +1,7 @@
+const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const connectDB = require("../server");
-const jwtSecret =
-  "0ea83a262f8efb25346b0cd612af54572067b23c4942bd11d57b1a9f7c97912a7fd432";
 const { v4: uuidv4 } = require("uuid");
 
 /*************************************************************
@@ -94,7 +93,7 @@ exports.register = async (req, res, next) => {
           personalID,
           createdAt,
         },
-        jwtSecret,
+        process.env.jwtSecret,
         {
           expiresIn: maxAge,
         }
@@ -133,7 +132,7 @@ exports.login = async (req, res, next) => {
     }
 
     const employee = results[0];
-
+    console.log(employee);
     bcrypt.compare(password, employee.password, (err, result) => {
       if (err) {
         return res.status(500).json({ message: "Error comparing passwords" });
@@ -152,7 +151,7 @@ exports.login = async (req, res, next) => {
             address: employee.address,
             personalID: employee.personalID,
           },
-          jwtSecret,
+          process.env.jwtSecret,
           {
             expiresIn: maxAge,
           }
@@ -163,17 +162,7 @@ exports.login = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Employee successfully Logged in",
-          employee: {
-            id: employee.id,
-            dni: employee.dni,
-            email: employee.email,
-            firstname: employee.firstname,
-            lastname: employee.lastname,
-            specialist: employee.specialist,
-            address: employee.address,
-            personalID: employee.personalID,
-            createdAt: employee.createdAt,
-          },
+          employees: results,
           token: token,
         });
       } else {
@@ -227,7 +216,7 @@ exports.deleteUser = async (req, res, next) => {
         .status(400)
         .json({ message: "Error delete", error: message.error });
     }
-    return res.status(200).json({ message: "User successfully deleted" });
+    return res.status(200).json({ message: "Employee successfully deleted" });
   });
 };
 
@@ -313,7 +302,7 @@ exports.registerPatient = async (req, res, next) => {
           birthday,
           createdAt,
         },
-        jwtSecret,
+        process.env.jwtSecret,
         {
           expiresIn: maxAge,
         }
@@ -370,7 +359,7 @@ exports.loginPatient = async (req, res, next) => {
             birthday: patient.birthday,
             createdAt: patient.createdAt,
           },
-          jwtSecret,
+          process.env.jwtSecret,
           {
             expiresIn: maxAge,
           }
@@ -381,14 +370,7 @@ exports.loginPatient = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Patient successfully logged",
-          id: patient.id,
-          firstname: patient.firstname,
-          lastname: patient.lastname,
-          dni: patient.dni,
-          email: patient.email,
-          address: patient.address,
-          birthday: patient.birthday,
-          createdAt: patient.createdAt,
+          patients: results,
           token: token,
         });
       } else {
