@@ -1,9 +1,9 @@
 const express = require("express");
+const dotenv = require("dotenv").config();
 const mysql = require("mysql");
 const app = express();
 const port = 5000;
 const cors = require("cors");
-const dotenv = require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const { private } = require("./middleware/auth");
 const bodyParser = require("body-parser");
