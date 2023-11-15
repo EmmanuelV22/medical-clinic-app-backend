@@ -16,6 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       patient: [],
       employees: [],
       employee: [],
+      employeeById: [],
       isAuth: false,
     },
     actions: {
@@ -40,7 +41,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(`${API_AUTH}/employees`, config);
           if (response.status === 200) {
             const data = response.data;
-            console.log("all employees", data);
             const store = getStore();
             setStore({ ...store, employees: data });
             return true;
@@ -54,19 +54,18 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getEmployeeById: async (id) => {
         try {
-          const response = await axios.get(`${API_AUTH}/employee/${id}`);
+          const response = await axios.get(
+            `${API_AUTH}/employees/${id}`,
+            config
+          );
+          console.log(response);
           if (response.status === 200) {
             const data = response.data;
             console.log("Employee by ID", data);
-            const store = getStore();
-            setStore({ ...store, employee: data });
-            return true;
-          } else {
-            return [];
+            return data.employee;
           }
         } catch (error) {
           console.log(error);
-          return [];
         }
       },
       getPatientById: async (id) => {
@@ -167,7 +166,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               const store = getStore();
               if (data.user.specialist) {
                 setStore({ ...store, isAuth: true, employee: data.user });
-                console.log("log from isAuth", store.employee);
               } else {
                 setStore({ ...store, isAuth: true, patient: data.user });
                 console.log("log from isAuth", store.patient);
@@ -186,11 +184,19 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       deleteEmployee: async (employeeId) => {
         try {
-          const response = await axios.delete(`${API_AUTH}/delete`, config, {
+          const response = await axios.delete(`${API_AUTH}/delete`, {
             data: { id: employeeId }, // Pasar el id del empleado que deseas eliminar
           });
-
+          console.log(response, employeeId);
           if (response.status === 200) {
+            setStore((prevStore) => {
+              const updatedEmployees = prevStore.employees.filter(
+                (employee) => employee.id !== employeeId
+              );
+              console.log("Updated Employees:", updatedEmployees);
+
+              return { ...prevStore, employees: updatedEmployees };
+            });
             console.log("¡Empleado eliminado con éxito!");
             // window.location.reload();
             // Realizar cualquier otra acción necesaria después de eliminar

@@ -7,6 +7,7 @@ import DashboardAdmin from "./views/admin/DashboardAdmin";
 import DashboardPatient from "./views/patients/DashboardPatient";
 import DashboardDoctor from "./views/employees/DashboardDoctor";
 import AdminView from "./views/admin/AdminView";
+import EmployeeDetail from "./components/admin/EmployeeDetail";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -19,6 +20,7 @@ const Layout = () => {
         <Route path="/dashboard-patient" element={<DashboardPatient />}></Route>
         <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
         <Route path="/admin-view" element={<AdminView />}></Route>
+        <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -21,7 +21,7 @@ const router = express.Router();
 router.route("/register").post(private, register);
 router.route("/login").post(login);
 router.route("/update").put(private, update);
-router.route("/delete").delete(private, deleteUser);
+router.route("/delete").delete(deleteUser);
 router.route("/employees").get(private, getAllEmployees);
 router.route("/employees/:id").get(private, getEmployeeById);
 

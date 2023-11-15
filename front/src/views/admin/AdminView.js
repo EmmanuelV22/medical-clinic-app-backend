@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import AdminAllPatients from "../../components/admin/AdminAllPatients";
 import AdminAllEmployees from "../../components/admin/AdminAllEmployees";
+import Navbar from "../../components/Navbar";
 
 const AdminView = () => {
   const { store, actions } = useContext(Context);
@@ -13,6 +14,7 @@ const AdminView = () => {
   }, []);
   return (
     <div>
+      <Navbar />
       {store.employee && store.employee.specialist === "admin" ? (
         <div className="container my-5">
           <ul
