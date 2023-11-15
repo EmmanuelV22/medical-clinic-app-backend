@@ -9,7 +9,8 @@ const { v4: uuidv4 } = require("uuid");
  **********************************************************/
 
 exports.getEmployeeById = async (req, res, next) => {
-  const { id } = req.params; // Je suppose que l'ID est dans les paramètres de l'URL
+  const id = req.params.id; // Je suppose que l'ID est dans les paramètres de l'URL
+  console.log("id from employee by id:", id);
 
   const query = "SELECT * FROM employees WHERE id = ?";
   const values = [id];
@@ -116,7 +117,6 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { personalID, password } = req.body;
-  console.log(req.body);
   const query = "SELECT * FROM employees WHERE personalID = ?";
   const values = [personalID];
 
@@ -208,13 +208,14 @@ exports.update = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   const { id } = req.body;
+  console.log("Received DELETE request for ID:", id);
   const query = "DELETE FROM employees WHERE id = ?";
   const values = [id];
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error delete", error: message.error });
+        .json({ message: "Error delete", error: error.message });
     }
     return res.status(200).json({ message: "Employee successfully deleted" });
   });
