@@ -17,13 +17,15 @@ const Login = () => {
       setPassword("");
 
       if (
-        store.employees.length > 0 &&
+        
         store.employees.specialist === "admin"
       ) {
         navigate("/dashboard-admin");
-      } else {
+      } if ( store.employees.specialist !== "admin") {
         navigate("/dashboard-doctor");
+
       }
+      
     } else {
       alert("Erreur, vérifiez vos infos");
     }

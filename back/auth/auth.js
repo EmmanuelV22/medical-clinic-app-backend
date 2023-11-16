@@ -51,10 +51,10 @@ exports.getAllEmployees = (req, res, next) => {
 ////////////////////////////////////////////////////////////
 
 exports.register = async (req, res, next) => {
-  const { firstname, lastname, email, address, dni, specialist, password } =
+  const { firstname, lastname, email, address, dni, specialist, password , personalID } =
     req.body;
   const createdAt = new Date().toISOString().split("T")[0];
-  const personalID = uuidv4().substr(0, 10);
+  // const personalID = uuidv4().substr(0, 10);
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
@@ -273,7 +273,7 @@ exports.getAllPatients = async (req, res, next) => {
 //////////////////////////////////////////////////////////
 
 exports.registerPatient = async (req, res, next) => {
-  const { firstname, lastname, email, address, dni, birthday, password } =
+  const { firstname, lastname, email, address, dni, birthday, password , blood_group } =
     req.body;
   const createdAt = new Date().toISOString().split("T")[0];
 
@@ -283,7 +283,7 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO patients (firstname, lastname, email, address, dni, birthday, password, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO patients (firstname, lastname, email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
@@ -292,6 +292,7 @@ exports.registerPatient = async (req, res, next) => {
       dni,
       birthday,
       hash,
+      blood_group,
       createdAt,
     ];
 

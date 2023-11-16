@@ -34,7 +34,42 @@ const getState = ({ getStore, getActions, setStore }) => {
         email,
         dni,
         address,
-        birthday
+        birthday,
+        password,
+        bloodGroup
+      ) => {
+        const blood_group = bloodGroup
+        try {
+          const res = await axios.post(`${API_AUTH}/register-patient`, {
+            firstname,
+            lastname,
+            email,
+            dni,
+            address,
+            birthday,
+            password,
+            blood_group
+          });
+
+          if (res.status === 201) {
+            console.log("Register patient OK", res);
+            return true;
+          }
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
+      },
+      registerEmployee: async (
+        firstname,
+        lastname,
+        email,
+        dni,
+        address,
+        password,
+        // birthday,
+        personalID,
+        specialist
       ) => {
         try {
           const res = await axios.post(`${API_AUTH}/register`, {
@@ -43,11 +78,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             email,
             dni,
             address,
-            birthday,
+            password,
+            // birthday,
+            personalID,
+            specialist
           });
-
+          console.log(res)
           if (res.status === 201) {
-            console.log("Register OK", res);
+            console.log("Register employee OK", res);
             return true;
           }
         } catch (error) {
