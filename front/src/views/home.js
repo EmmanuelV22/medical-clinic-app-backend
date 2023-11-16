@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import Login from "../components/Login";
 import LoginPatient from "../components/LoginPatient";
@@ -6,12 +6,7 @@ import { useNavigate } from "react-router";
 
 const Home = () => {
   const { actions } = useContext(Context);
-  const [loginType, setLoginType] = useState("Medical");
   const navigate = useNavigate();
-
-  const handleLoginTypeChange = (e) => {
-    setLoginType(e.target.value);
-  };
 
   function logout() {
     actions.logout();
@@ -25,29 +20,58 @@ const Home = () => {
       <div className="logo d-flex justify-center">
         <img src="../clinic-logo-removebg.png" alt="logo app clinic" />
       </div>
-      <div className="mx-auto">
-        <div className="d-flex flex-col">
-          <div className="mx-auto my-5">
-            <label>
-              <input
-                type="radio"
-                value="Medical"
-                checked={loginType === "Medical"}
-                onChange={handleLoginTypeChange}
-              />
-              Medical
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="Patient"
-                checked={loginType === "Patient"}
-                onChange={handleLoginTypeChange}
-              />
-              Patient
-            </label>
+      <div className="container my-5 text-center">
+        <ul
+          className="nav nav-tabs menu-review mx-auto text-center w-75"
+          id="myTab"
+          role="tablist"
+        >
+          <li className="nav-item nav-review w-50" role="presentation">
+            <button
+              className="nav-link active w-100"
+              id="home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#home"
+              type="button"
+              role="tab"
+              aria-controls="home"
+              aria-selected="true"
+            >
+              PACIENTE
+            </button>
+          </li>
+          <li className="nav-item nav-review w-50" role="presentation">
+            <button
+              className="nav-link w-100"
+              id="profile-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+            >
+              EMPLEADO
+            </button>
+          </li>
+        </ul>
+        <div className="tab-content" id="myTabContent">
+          <div
+            className="tab-pane fade show active"
+            id="home"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+            <LoginPatient />
           </div>
-          {loginType === "Medical" ? <Login /> : <LoginPatient />}
+          <div
+            className="tab-pane fade"
+            id="profile"
+            role="tabpanel"
+            aria-labelledby="profile-tab"
+          >
+            <Login />
+          </div>
         </div>
       </div>
 

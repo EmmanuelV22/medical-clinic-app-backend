@@ -1,5 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+const token = Cookies.get("jwt"); // O de donde sea que obtengas tu token
+const config = {
+  headers: {
+    Authorization: `${token}`,
+  },
+};
 
 const getState = ({ getStore, getActions, setStore }) => {
   const API_AUTH = "http://localhost:5000/api/auth";
@@ -7,18 +13,69 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       patients: [],
-      admin: [],
+      patient: [],
       employees: [],
+      employee: [],
+      employeeById: [],
       isAuth: false,
     },
     actions: {
-      getPatients: async () => {
+      getAllPatients: async () => {
         try {
-          const response = await axios.get(`${API_AUTH}/patients`);
+          const response = await axios.get(`${API_AUTH}/patients`, config);
           if (response.status === 200) {
             const responseData = response.data;
-            console.log("GET ALL Patients", responseData);
+            // console.log("GET ALL Patients", responseData);
             setStore({ patients: responseData.results });
+            return true;
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.log(error);
+          return [];
+        }
+      },
+      getAllEmployees: async () => {
+        try {
+          const response = await axios.get(`${API_AUTH}/employees`, config);
+          if (response.status === 200) {
+            const data = response.data;
+            const store = getStore();
+            setStore({ ...store, employees: data });
+            return true;
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.log(error);
+          return [];
+        }
+      },
+      getEmployeeById: async (id) => {
+        try {
+          const response = await axios.get(
+            `${API_AUTH}/employees/${id}`,
+            config
+          );
+          console.log(response);
+          if (response.status === 200) {
+            const data = response.data;
+            console.log("Employee by ID", data);
+            return data.employee;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getPatientById: async (id) => {
+        try {
+          const response = await axios.get(`${API_AUTH}/patient/${id}`);
+          if (response.status === 200) {
+            const data = response.data;
+            console.log("Patient by ID", data);
+            const store = getStore();
+            setStore({ ...store, patient: data });
             return true;
           } else {
             return [];
@@ -105,9 +162,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             const store = getStore();
             Cookies.set("jwt", data.token);
-            setStore({ ...store, isAuth: true, employees: data.employee });
-            console.log(data.employee);
-
+            console.log(data);
+            setStore({ ...store, isAuth: true, employee: data.employees });
             return data;
           }
         } catch (error) {
@@ -128,7 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             Cookies.set("jwt", data.token);
             console.log(data);
 
-            setStore({ ...store, isAuth: true, patients: data.patient });
+            setStore({ ...store, isAuth: true, patients: data.patients });
 
             return data;
           }
@@ -147,11 +203,10 @@ const getState = ({ getStore, getActions, setStore }) => {
               const data = await response.data;
               const store = getStore();
               if (data.user.specialist) {
-                setStore({ ...store, isAuth: true, employees: data.user });
-                console.log(store.employees);
+                setStore({ ...store, isAuth: true, employee: data.user });
               } else {
-                setStore({ ...store, isAuth: true, patients: data.user });
-                console.log(store.patients);
+                setStore({ ...store, isAuth: true, patient: data.user });
+                console.log("log from isAuth", store.patient);
               }
             }
           } catch (error) {
@@ -160,11 +215,34 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         }
       },
-
       logout: () => {
         let token = Cookies.remove("jwt");
         setStore({ isAuth: false });
         return token != null ? true : false;
+      },
+      deleteEmployee: async (employeeId) => {
+        try {
+          const response = await axios.delete(`${API_AUTH}/delete`, {
+            data: { id: employeeId }, // Pasar el id del empleado que deseas eliminar
+          });
+          console.log(response, employeeId);
+          if (response.status === 200) {
+            setStore((prevStore) => {
+              const updatedEmployees = prevStore.employees.filter(
+                (employee) => employee.id !== employeeId
+              );
+              console.log("Updated Employees:", updatedEmployees);
+
+              return { ...prevStore, employees: updatedEmployees };
+            });
+            console.log("¡Empleado eliminado con éxito!");
+            // window.location.reload();
+            // Realizar cualquier otra acción necesaria después de eliminar
+          }
+        } catch (error) {
+          console.error("Error al eliminar empleado", error);
+          throw error;
+        }
       },
     },
   };

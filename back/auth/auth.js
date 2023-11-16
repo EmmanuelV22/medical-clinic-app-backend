@@ -1,8 +1,7 @@
+const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const connectDB = require("../server");
-const jwtSecret =
-  "0ea83a262f8efb25346b0cd612af54572067b23c4942bd11d57b1a9f7c97912a7fd432";
 const { v4: uuidv4 } = require("uuid");
 
 /*************************************************************
@@ -10,7 +9,8 @@ const { v4: uuidv4 } = require("uuid");
  **********************************************************/
 
 exports.getEmployeeById = async (req, res, next) => {
-  const { id } = req.params; // Je suppose que l'ID est dans les paramètres de l'URL
+  const id = req.params.id; // Je suppose que l'ID est dans les paramètres de l'URL
+  console.log("id from employee by id:", id);
 
   const query = "SELECT * FROM employees WHERE id = ?";
   const values = [id];
@@ -94,7 +94,7 @@ exports.register = async (req, res, next) => {
           personalID,
           createdAt,
         },
-        jwtSecret,
+        process.env.jwtSecret,
         {
           expiresIn: maxAge,
         }
@@ -117,7 +117,6 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { personalID, password } = req.body;
-  console.log(req.body);
   const query = "SELECT * FROM employees WHERE personalID = ?";
   const values = [personalID];
 
@@ -133,7 +132,7 @@ exports.login = async (req, res, next) => {
     }
 
     const employee = results[0];
-
+    console.log(employee);
     bcrypt.compare(password, employee.password, (err, result) => {
       if (err) {
         return res.status(500).json({ message: "Error comparing passwords" });
@@ -152,7 +151,7 @@ exports.login = async (req, res, next) => {
             address: employee.address,
             personalID: employee.personalID,
           },
-          jwtSecret,
+          process.env.jwtSecret,
           {
             expiresIn: maxAge,
           }
@@ -163,17 +162,7 @@ exports.login = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Employee successfully Logged in",
-          employee: {
-            id: employee.id,
-            dni: employee.dni,
-            email: employee.email,
-            firstname: employee.firstname,
-            lastname: employee.lastname,
-            specialist: employee.specialist,
-            address: employee.address,
-            personalID: employee.personalID,
-            createdAt: employee.createdAt,
-          },
+          employees: results,
           token: token,
         });
       } else {
@@ -219,15 +208,16 @@ exports.update = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   const { id } = req.body;
+  console.log("Received DELETE request for ID:", id);
   const query = "DELETE FROM employees WHERE id = ?";
   const values = [id];
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error delete", error: message.error });
+        .json({ message: "Error delete", error: error.message });
     }
-    return res.status(200).json({ message: "User successfully deleted" });
+    return res.status(200).json({ message: "Employee successfully deleted" });
   });
 };
 
@@ -314,7 +304,7 @@ exports.registerPatient = async (req, res, next) => {
           birthday,
           createdAt,
         },
-        jwtSecret,
+        process.env.jwtSecret,
         {
           expiresIn: maxAge,
         }
@@ -371,7 +361,7 @@ exports.loginPatient = async (req, res, next) => {
             birthday: patient.birthday,
             createdAt: patient.createdAt,
           },
-          jwtSecret,
+          process.env.jwtSecret,
           {
             expiresIn: maxAge,
           }
@@ -382,14 +372,7 @@ exports.loginPatient = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Patient successfully logged",
-          id: patient.id,
-          firstname: patient.firstname,
-          lastname: patient.lastname,
-          dni: patient.dni,
-          email: patient.email,
-          address: patient.address,
-          birthday: patient.birthday,
-          createdAt: patient.createdAt,
+          patients: results,
           token: token,
         });
       } else {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import { Context } from "../store/appContext";
@@ -10,16 +11,11 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const success = await actions.login(personalID, password);
+    const data = await actions.login(personalID, password);
 
-    if (success) {
-      setPersonalID("");
-      setPassword("");
-
-      if (
-        
-        store.employees.specialist === "admin"
-      ) {
+    if (data) {
+      const loggedInEmployee = data.employees[0];
+      if (loggedInEmployee.specialist === "admin") {
         navigate("/dashboard-admin");
       } if ( store.employees.specialist !== "admin") {
         navigate("/dashboard-doctor");
@@ -29,7 +25,6 @@ const Login = () => {
     } else {
       alert("Erreur, vérifiez vos infos");
     }
-    console.log(store.employees.specialist);
   }
 
   return (
