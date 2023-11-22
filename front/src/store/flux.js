@@ -16,7 +16,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       patient: [],
       employees: [],
       employee: [],
-      employeeById: {},
       isAuth: false,
     },
     actions: {
@@ -253,6 +252,55 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.error("Error al eliminar empleado", error);
           throw error;
+        }
+      },
+      deletePatient: async (patientID) => {
+        try {
+          const response = await axios.delete(
+            `${API_AUTH}/delete-patient/${patientID}`, config 
+            
+          );
+          if (response.status === 200) {
+            setStore((prevStore) => {
+              const updatedPatient = prevStore.patients.filter(
+                (patient) => patient.id !== patientID
+              );
+              console.log("Deleted patients:", updatedPatient);
+
+              return { ...prevStore, patients: updatedPatient };
+            });
+            console.log("Paciente eliminado con éxito!");
+          }
+        } catch (error) {
+          console.error("Error al eliminar paciente, error");
+          throw error;
+        }
+      },
+      updateEmployee: async (
+        firstname,
+        lastname,
+        id,
+        email,
+        address,
+        dni,
+        specialist,
+        password
+      ) => {
+        try {
+          const response = await axios.put(`${API_AUTH}/update`, config, {
+            id,
+            firstname,
+            lastname,
+            email,
+            address,
+            dni,
+            specialist,
+            password,
+          });
+
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
         }
       },
     },
