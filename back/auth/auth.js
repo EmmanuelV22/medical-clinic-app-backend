@@ -415,7 +415,7 @@ exports.updatePatient = async (req, res, next) => {
 };
 
 exports.deletePatient = async (req, res, next) => {
-  const { id } = req.body;
+  const  id  = req.params.id;
   const query = "DELETE FROM patients WHERE id = ?";
   const values = [id];
   connectDB.query(query, values, (error, results, fields) => {

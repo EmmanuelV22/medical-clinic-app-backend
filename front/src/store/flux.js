@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-const token = Cookies.get("jwt"); // O de donde sea que obtengas tu token
+const token = Cookies.get("jwt"); //  de donde sea que obtengas tu token
 const config = {
   headers: {
     Authorization: `${token}`,
@@ -70,19 +70,21 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getPatientById: async (id) => {
         try {
-          const response = await axios.get(`${API_AUTH}/patient/${id}`);
+          const response = await axios.get(
+            `${API_AUTH}/patients/${id}`,
+            config
+          );
           if (response.status === 200) {
             const data = response.data;
             console.log("Patient by ID", data);
-            const store = getStore();
-            setStore({ ...store, patient: data });
-            return true;
-          } else {
-            return [];
+            // const store = getStore();
+            // setStore({ ...store, patient: data });
+            // return true;
+            return data.patient;
           }
         } catch (error) {
           console.log(error);
-          return [];
+          // return [];
         }
       },
       registerPatient: async (
@@ -95,18 +97,22 @@ const getState = ({ getStore, getActions, setStore }) => {
         password,
         bloodGroup
       ) => {
-        const blood_group = bloodGroup
+        const blood_group = bloodGroup;
         try {
-          const res = await axios.post(`${API_AUTH}/register-patient`, {
-            firstname,
-            lastname,
-            email,
-            dni,
-            address,
-            birthday,
-            password,
-            blood_group
-          });
+          const res = await axios.post(
+            `${API_AUTH}/register-patient`,
+            {
+              firstname,
+              lastname,
+              email,
+              dni,
+              address,
+              birthday,
+              password,
+              blood_group,
+            },
+            config
+          );
 
           if (res.status === 201) {
             console.log("Register patient OK", res);
@@ -129,18 +135,22 @@ const getState = ({ getStore, getActions, setStore }) => {
         specialist
       ) => {
         try {
-          const res = await axios.post(`${API_AUTH}/register`, {
-            firstname,
-            lastname,
-            email,
-            dni,
-            address,
-            password,
-            // birthday,
-            personalID,
-            specialist
-          });
-          console.log(res)
+          const res = await axios.post(
+            `${API_AUTH}/register`,
+            {
+              firstname,
+              lastname,
+              email,
+              dni,
+              address,
+              password,
+              // birthday,
+              personalID,
+              specialist,
+            },
+            config
+          );
+          console.log(res);
           if (res.status === 201) {
             console.log("Register employee OK", res);
             return true;
@@ -222,9 +232,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       deleteEmployee: async (employeeId) => {
         try {
-          const response = await axios.delete(`${API_AUTH}/delete`, {
-            data: { id: employeeId }, // Pasar el id del empleado que deseas eliminar
-          });
+          const response = await axios.delete(
+            `${API_AUTH}/delete`,
+            {
+              data: { id: employeeId }, // Pasar el id del empleado que deseas eliminar
+            },
+            config
+          );
           console.log(response, employeeId);
           if (response.status === 200) {
             setStore((prevStore) => {
@@ -241,6 +255,28 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           console.error("Error al eliminar empleado", error);
+          throw error;
+        }
+      },
+      deletePatient: async (patientID) => {
+        try {
+          const response = await axios.delete(
+            `${API_AUTH}/delete-patient/${patientID}`, config 
+            
+          );
+          if (response.status === 200) {
+            setStore((prevStore) => {
+              const updatedPatient = prevStore.patients.filter(
+                (patient) => patient.id !== patientID
+              );
+              console.log("Deleted patients:", updatedPatient);
+
+              return { ...prevStore, patients: updatedPatient };
+            });
+            console.log("Paciente eliminado con éxito!");
+          }
+        } catch (error) {
+          console.error("Error al eliminar paciente, error");
           throw error;
         }
       },

@@ -17,11 +17,9 @@ const Login = () => {
       const loggedInEmployee = data.employees[0];
       if (loggedInEmployee.specialist === "admin") {
         navigate("/dashboard-admin");
-      } if ( store.employees.specialist !== "admin") {
+      } else {
         navigate("/dashboard-doctor");
-
       }
-      
     } else {
       alert("Erreur, vérifiez vos infos");
     }

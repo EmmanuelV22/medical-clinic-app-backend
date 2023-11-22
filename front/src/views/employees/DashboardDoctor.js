@@ -1,5 +1,5 @@
 import React , { useContext } from "react";
-import { Context } from "../store/appContext";
+import { Context } from "../../store/appContext";
 
 const DashboardDoctor = () => {
   const { store } = useContext(Context);

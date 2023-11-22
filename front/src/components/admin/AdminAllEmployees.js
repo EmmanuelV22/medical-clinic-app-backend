@@ -24,9 +24,9 @@ const AdminAllEmployees = () => {
       console.log(employeeData);
       openModal();
     } catch (error) {
-      // Gérez les erreurs lors de la récupération des données
+      
       console.error(
-        "Erreur lors de la récupération des données de l'employé",
+        "Error modificando empleado",
         error
       );
     }
