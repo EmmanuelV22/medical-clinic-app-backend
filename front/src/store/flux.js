@@ -16,7 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       patient: [],
       employees: [],
       employee: [],
-      employeeById: [],
+      employeeById: {},
       isAuth: false,
     },
     actions: {
@@ -74,11 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (response.status === 200) {
             const data = response.data;
             console.log("Patient by ID", data);
-            const store = getStore();
-            setStore({ ...store, patient: data });
             return true;
-          } else {
-            return [];
           }
         } catch (error) {
           console.log(error);
@@ -184,9 +180,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       deleteEmployee: async (employeeId) => {
         try {
-          const response = await axios.delete(`${API_AUTH}/delete`, {
-            data: { id: employeeId }, // Pasar el id del empleado que deseas eliminar
-          });
+          const response = await axios.delete(
+            `${API_AUTH}/delete/${employeeId}`,
+            config
+          );
           console.log(response, employeeId);
           if (response.status === 200) {
             setStore((prevStore) => {
@@ -204,6 +201,33 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.error("Error al eliminar empleado", error);
           throw error;
+        }
+      },
+      updateEmployee: async (
+        firstname,
+        lastname,
+        id,
+        email,
+        address,
+        dni,
+        specialist,
+        password
+      ) => {
+        try {
+          const response = await axios.put(`${API_AUTH}/update`, config, {
+            id,
+            firstname,
+            lastname,
+            email,
+            address,
+            dni,
+            specialist,
+            password,
+          });
+
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
         }
       },
     },

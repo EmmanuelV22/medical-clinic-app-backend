@@ -18,10 +18,10 @@ const { private } = require("../middleware/auth");
 const router = express.Router();
 
 //////////////EMPLOYEES ROUTES///////////
-router.route("/register").post(private, register);
+router.route("/register").post(register);
 router.route("/login").post(login);
-router.route("/update").put(private, update);
-router.route("/delete").delete(deleteUser);
+router.route("/update").put(update);
+router.route("/delete/:id").delete(private, deleteUser);
 router.route("/employees").get(private, getAllEmployees);
 router.route("/employees/:id").get(private, getEmployeeById);
 

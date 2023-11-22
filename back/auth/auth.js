@@ -175,10 +175,11 @@ exports.login = async (req, res, next) => {
 /////////////////////////////////////////////////////////////////////////////////////
 
 exports.update = async (req, res, next) => {
-  const { firstname, lastname, email, address, dni, specialist, id } = req.body;
+  const { firstname, lastname, email, address, dni, specialist, password, id } =
+    req.body;
   const updatedAt = new Date();
   const query =
-    "UPDATE employees SET firstname = ?, lastname = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ? WHERE id = ?";
+    "UPDATE employees SET firstname = ?, lastname = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ?, password = ? WHERE id = ?";
   const values = [
     firstname,
     lastname,
@@ -187,10 +188,11 @@ exports.update = async (req, res, next) => {
     specialist,
     address,
     updatedAt,
+    password,
     id,
   ];
 
-  connectDB.query(query, values, (error, result, fields) => {
+  connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -207,7 +209,7 @@ exports.update = async (req, res, next) => {
 //////////////////////////////////////////////////////////////////////
 
 exports.deleteUser = async (req, res, next) => {
-  const { id } = req.body;
+  const id = req.params.id;
   console.log("Received DELETE request for ID:", id);
   const query = "DELETE FROM employees WHERE id = ?";
   const values = [id];
@@ -217,7 +219,9 @@ exports.deleteUser = async (req, res, next) => {
         .status(400)
         .json({ message: "Error delete", error: error.message });
     }
-    return res.status(200).json({ message: "Employee successfully deleted" });
+    return res
+      .status(200)
+      .json({ message: "Employee successfully deleted", id: results.insertId });
   });
 };
 
