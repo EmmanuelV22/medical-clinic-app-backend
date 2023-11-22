@@ -16,7 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       patient: [],
       employees: [],
       employee: [],
-      employeeById: [],
+      employeeById: {},
       isAuth: false,
     },
     actions: {
@@ -233,10 +233,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       deleteEmployee: async (employeeId) => {
         try {
           const response = await axios.delete(
-            `${API_AUTH}/delete`,
-            {
-              data: { id: employeeId }, // Pasar el id del empleado que deseas eliminar
-            },
+            `${API_AUTH}/delete/${employeeId}`,
             config
           );
           console.log(response, employeeId);
@@ -255,28 +252,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           console.error("Error al eliminar empleado", error);
-          throw error;
-        }
-      },
-      deletePatient: async (patientID) => {
-        try {
-          const response = await axios.delete(
-            `${API_AUTH}/delete-patient/${patientID}`, config 
-            
-          );
-          if (response.status === 200) {
-            setStore((prevStore) => {
-              const updatedPatient = prevStore.patients.filter(
-                (patient) => patient.id !== patientID
-              );
-              console.log("Deleted patients:", updatedPatient);
-
-              return { ...prevStore, patients: updatedPatient };
-            });
-            console.log("Paciente eliminado con éxito!");
-          }
-        } catch (error) {
-          console.error("Error al eliminar paciente, error");
           throw error;
         }
       },

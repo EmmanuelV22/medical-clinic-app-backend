@@ -5,37 +5,12 @@ import EmployeeDetail from "./EmployeeDetail";
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [employeeData, setEmployeeData] = useState({});
-
-  const openModal = () => {
-    setIsOpenModal(true);
-  };
-
-  const closeModal = () => {
-    setIsOpenModal(false);
-    setEmployeeData({});
-  };
-
-  const editEmployee = async (employee) => {
-    try {
-      const data = await actions.getEmployeeById(employee.id);
-      setEmployeeData(data);
-      console.log(employeeData);
-      openModal();
-    } catch (error) {
-      
-      console.error(
-        "Error modificando empleado",
-        error
-      );
-    }
-  };
 
   const handleDeleteEmployee = async (id) => {
     console.log("Deleting employee with ID:", id);
     try {
       await actions.deleteEmployee(id);
+      console.log("id del try handleDelete", id);
     } catch (error) {
       console.error("Error al eliminar empleado", error);
     }
@@ -73,57 +48,51 @@ const AdminAllEmployees = () => {
               {store.employees &&
                 store.employees.length >= 1 &&
                 store.employees.map((employee) => (
-                  <tr className="infos-contain" key={employee.id}>
-                    <td>{employee.id}</td>
-                    <td>{employee.firstname}</td>
-                    <td>{employee.lastname}</td>
-                    <td>{employee.dni}</td>
-                    <td>{employee.address}</td>
-                    <td>{employee.personalID}</td>
-                    <td>{employee.email}</td>
-                    <td>{employee.createdAt}</td>
-                    <td>{employee.updatedAt}</td>
-                    <td className="text-center">
-                      <button
-                        style={{
-                          background: "blue",
-                          color: "white",
-                          border: " 2px solid white",
-                          padding: "2px 3px",
-                          borderRadius: "6px",
-                        }}
-                        onClick={() => editEmployee(employee)}
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                      >
-                        &#9998;
-                      </button>
-                      <button
-                        style={{
-                          background: "red",
-                          color: "white",
-                          border: " 2px solid white",
-                          padding: "2px 3px",
-                          borderRadius: "6px",
-                        }}
-                        onClick={() => handleDeleteEmployee(employee.id)}
-                      >
-                        &#10008;
-                      </button>
-                    </td>
-                  </tr>
+                  <>
+                    <tr className="infos-contain" key={employee.id}>
+                      <td>{employee.id}</td>
+                      <td>{employee.firstname}</td>
+                      <td>{employee.lastname}</td>
+                      <td>{employee.dni}</td>
+                      <td>{employee.address}</td>
+                      <td>{employee.personalID}</td>
+                      <td>{employee.email}</td>
+                      <td>{employee.createdAt}</td>
+                      <td>{employee.updatedAt}</td>
+                      <td className="text-center">
+                        <button
+                          style={{
+                            background: "blue",
+                            color: "white",
+                            border: " 2px solid white",
+                            padding: "2px 3px",
+                            borderRadius: "6px",
+                          }}
+                          data-bs-toggle="modal"
+                          data-bs-target={"#employeeModal-" + employee.id}
+                        >
+                          &#9998;
+                        </button>
+                        <button
+                          style={{
+                            background: "red",
+                            color: "white",
+                            border: " 2px solid white",
+                            padding: "2px 3px",
+                            borderRadius: "6px",
+                          }}
+                          onClick={() => handleDeleteEmployee(employee.id)}
+                        >
+                          &#10008;
+                        </button>
+                      </td>
+                    </tr>
+                    <EmployeeDetail employeeData={employee} />
+                  </>
                 ))}
             </tbody>
           </table>
         </div>
-        {isOpenModal ? (
-          <EmployeeDetail
-            employeeData={employeeData}
-            setEmployeeData={setEmployeeData}
-            closeModal={closeModal}
-            isOpenModal={isOpenModal}
-          />
-        ) : null}
       </div>
     </>
   );

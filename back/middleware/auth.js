@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 exports.private = (req, res, next) => {
   try {
     const token = req.headers.authorization;
+    console.log(token);
     if (!token)
       return res
         .status(401)
