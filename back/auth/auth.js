@@ -51,8 +51,16 @@ exports.getAllEmployees = (req, res, next) => {
 ////////////////////////////////////////////////////////////
 
 exports.register = async (req, res, next) => {
-  const { firstname, lastname, email, address, dni, specialist, password , personalID } =
-    req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    address,
+    dni,
+    specialist,
+    password,
+    personalID,
+  } = req.body;
   const createdAt = new Date().toISOString().split("T")[0];
   // const personalID = uuidv4().substr(0, 10);
 
@@ -175,14 +183,24 @@ exports.login = async (req, res, next) => {
 /////////////////////////////////////////////////////////////////////////////////////
 
 exports.update = async (req, res, next) => {
-  const { firstname, lastname, email, address, dni, specialist, password, id } =
-    req.body;
+  const {
+    firstname,
+    lastname,
+    personalID,
+    email,
+    address,
+    dni,
+    specialist,
+    password,
+    id,
+  } = req.body;
   const updatedAt = new Date();
   const query =
-    "UPDATE employees SET firstname = ?, lastname = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ?, password = ? WHERE id = ?";
+    "UPDATE employees SET firstname = ?, lastname = ?, personalID = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ?, password = ? WHERE id = ?";
   const values = [
     firstname,
     lastname,
+    personalID,
     email,
     dni,
     specialist,
@@ -194,14 +212,26 @@ exports.update = async (req, res, next) => {
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
+      console.error("Error executing query:", error);
       return res
         .status(400)
         .json({ message: "Error updating user", error: error.message });
     }
 
-    return res.status(201).json({
-      message: "Employee successfully updated",
-      employee: id, // Cambiado a 'id' en lugar de 'user.id'
+    // Asegúrate de realizar un commit aquí si es necesario
+    connectDB.commit((commitError) => {
+      if (commitError) {
+        console.error("Error committing transaction:", commitError);
+        return res.status(400).json({
+          message: "Error committing transaction",
+          error: commitError.message,
+        });
+      }
+
+      return res.status(201).json({
+        message: "Employee successfully updated",
+        employee: id,
+      });
     });
   });
 };
@@ -267,8 +297,16 @@ exports.getAllPatients = async (req, res, next) => {
 //////////////////////////////////////////////////////////
 
 exports.registerPatient = async (req, res, next) => {
-  const { firstname, lastname, email, address, dni, birthday, password , blood_group } =
-    req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    address,
+    dni,
+    birthday,
+    password,
+    blood_group,
+  } = req.body;
   const createdAt = new Date().toISOString().split("T")[0];
 
   bcrypt.hash(password, 10, async (err, hash) => {
@@ -419,7 +457,7 @@ exports.updatePatient = async (req, res, next) => {
 };
 
 exports.deletePatient = async (req, res, next) => {
-  const  id  = req.params.id;
+  const id = req.params.id;
   const query = "DELETE FROM patients WHERE id = ?";
   const values = [id];
   connectDB.query(query, values, (error, results, fields) => {

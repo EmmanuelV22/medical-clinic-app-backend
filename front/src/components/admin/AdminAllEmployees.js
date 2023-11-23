@@ -11,6 +11,7 @@ const AdminAllEmployees = () => {
     try {
       await actions.deleteEmployee(id);
       console.log("id del try handleDelete", id);
+      window.location.reload();
     } catch (error) {
       console.error("Error al eliminar empleado", error);
     }
@@ -48,8 +49,8 @@ const AdminAllEmployees = () => {
               {store.employees &&
                 store.employees.length >= 1 &&
                 store.employees.map((employee) => (
-                  <>
-                    <tr className="infos-contain" key={employee.id}>
+                  <React.Fragment key={employee.id}>
+                    <tr className="infos-contain">
                       <td>{employee.id}</td>
                       <td>{employee.firstname}</td>
                       <td>{employee.lastname}</td>
@@ -88,7 +89,7 @@ const AdminAllEmployees = () => {
                       </td>
                     </tr>
                     <EmployeeDetail employeeData={employee} />
-                  </>
+                  </React.Fragment>
                 ))}
             </tbody>
           </table>

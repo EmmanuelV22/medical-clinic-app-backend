@@ -1,9 +1,40 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-unused-vars */
+
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../../store/appContext";
 
 const EmployeeDetail = ({ employeeData }) => {
-  useEffect(() => {
-    console.log(employeeData);
-  }, [employeeData]);
+  const { actions } = useContext(Context);
+  const [firstname, setFirstname] = useState(employeeData.firstname);
+  const [lastname, setLastname] = useState(employeeData.lastname);
+  const [personalID, setPersonalID] = useState(employeeData.personalID);
+  const [email, setEmail] = useState(employeeData.email);
+  const [specialist, setSpecialist] = useState(employeeData.specialist);
+  const [dni, setDni] = useState(employeeData.dni);
+  const [address, setAddress] = useState(employeeData.address);
+  const [password, setPassword] = useState(employeeData.password);
+  const [id, setId] = useState(employeeData.id);
+  useEffect(() => {}, [employeeData]);
+
+  const editEmployeeData = async () => {
+    try {
+      const updatedData = await actions.updateEmployee(
+        id,
+        firstname,
+        lastname,
+        personalID,
+        email,
+        address,
+        dni,
+        specialist,
+        password
+      );
+      window.location.reload();
+      console.log("Updated data:", updatedData);
+    } catch (error) {
+      console.error("Error updating employee:", error);
+    }
+  };
 
   return (
     <div
@@ -19,8 +50,8 @@ const EmployeeDetail = ({ employeeData }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="staticBackdropLabel">
-              Ficha de {employeeData && employeeData.firstname}
-              {employeeData && employeeData.lastname}
+              Ficha de {employeeData && firstname}
+              {employeeData && lastname}
             </h1>
             <button
               type="button"
@@ -39,8 +70,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="firstname"
                     aria-describedby="employee-firstname"
                     placeholder="firstname"
-                    defaultValue={employeeData.firstname}
-                    // onChange={(e) => setFirstname(e.target.value)}
+                    value={firstname}
+                    onChange={(e) => setFirstname(e.target.value)}
                     required
                   />
                 </div>
@@ -51,8 +82,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="lastname"
                     aria-describedby="employee-lastname"
                     placeholder="lastname"
-                    defaultValue={employeeData.lastname}
-                    // onChange={(e) => setLastname(e.target.value)}
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
                     required
                   />
                 </div>
@@ -63,8 +94,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="Username"
                     aria-describedby="employee-personalID"
                     placeholder="personalID"
-                    defaultValue={employeeData.personalID}
-                    // onChange={(e) => setPersonalID(e.target.value)}
+                    value={personalID}
+                    onChange={(e) => setPersonalID(e.target.value)}
                     required
                   />
                 </div>
@@ -75,8 +106,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="email"
                     aria-describedby="employee-email"
                     placeholder="email"
-                    defaultValue={employeeData.email}
-                    // onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -87,8 +118,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="specialist"
                     aria-describedby="employee-specialist"
                     placeholder="specialist"
-                    defaultValue={employeeData.specialist}
-                    // onChange={(e) => setSpecialist(e.target.value)}
+                    value={specialist}
+                    onChange={(e) => setSpecialist(e.target.value)}
                     required
                   />
                 </div>
@@ -99,8 +130,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="Username"
                     aria-describedby="employee-dni"
                     placeholder="personalID"
-                    defaultValue={employeeData.dni}
-                    // onChange={(e) => setDni(e.target.value)}
+                    value={dni}
+                    onChange={(e) => setDni(e.target.value)}
                     required
                   />
                 </div>
@@ -111,8 +142,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="address"
                     aria-describedby="employee-address"
                     placeholder="address"
-                    defaultValue={employeeData.address}
-                    // onChange={(e) => setAddress(e.target.value)}
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                     required
                   />
                 </div>
@@ -124,8 +155,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="password"
                     aria-describedby="employee-password"
                     placeholder="Contraseña"
-                    defaultValue={employeeData.password}
-                    // onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
@@ -140,7 +171,11 @@ const EmployeeDetail = ({ employeeData }) => {
             >
               CERRAR
             </button>
-            <button type="button" className="btn btn-primary">
+            <button
+              type="button"
+              onClick={editEmployeeData}
+              className="btn btn-primary"
+            >
               GUARDAR CAMBIOS
             </button>
           </div>
