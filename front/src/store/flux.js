@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-const token = Cookies.get("jwt"); //  de donde sea que obtengas tu token
+const token = Cookies.get("jwt");
 const config = {
   headers: {
     Authorization: `${token}`,
@@ -257,8 +257,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       deletePatient: async (patientID) => {
         try {
           const response = await axios.delete(
-            `${API_AUTH}/delete-patient/${patientID}`, config 
-            
+            `${API_AUTH}/delete-patient/${patientID}`,
+            config
           );
           if (response.status === 200) {
             setStore((prevStore) => {
@@ -277,9 +277,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       updateEmployee: async (
+        id,
         firstname,
         lastname,
-        id,
+        personalID,
         email,
         address,
         dni,
@@ -287,16 +288,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         password
       ) => {
         try {
-          const response = await axios.put(`${API_AUTH}/update`, config, {
-            id,
-            firstname,
-            lastname,
-            email,
-            address,
-            dni,
-            specialist,
-            password,
-          });
+          const response = await axios.put(
+            `${API_AUTH}/update/${id}`,
+            {
+              id,
+              firstname,
+              lastname,
+              personalID,
+              email,
+              address,
+              dni,
+              specialist,
+              password,
+            },
+            config
+          );
 
           console.log(response.data);
         } catch (error) {
