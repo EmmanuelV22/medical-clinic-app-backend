@@ -130,8 +130,8 @@ const EmployeeDetail = ({ employeeData }) => {
                     aria-label="Username"
                     aria-describedby="employee-dni"
                     placeholder="personalID"
-                    value={dni}
-                    onChange={(e) => setDni(e.target.value)}
+                    defaultValue={dni}
+                    readOnly
                     required
                   />
                 </div>
@@ -166,17 +166,17 @@ const EmployeeDetail = ({ employeeData }) => {
           <div className="modal-footer">
             <button
               type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              CERRAR
-            </button>
-            <button
-              type="button"
               onClick={editEmployeeData}
               className="btn btn-primary"
             >
               GUARDAR CAMBIOS
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              CERRAR
             </button>
           </div>
         </div>
