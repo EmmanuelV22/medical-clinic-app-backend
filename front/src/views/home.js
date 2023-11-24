@@ -11,7 +11,7 @@ const Home = () => {
   function logout() {
     actions.logout();
     alert("logout OK");
-    // window.location.reload();
+    window.location.reload();
     navigate("/");
   }
 
