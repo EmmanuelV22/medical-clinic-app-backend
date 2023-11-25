@@ -8,8 +8,6 @@ const Navbar = () => {
   let navigate = useNavigate();
   function logout() {
     actions.logout();
-    alert("logout OK");
-    window.location.reload();
     navigate("/");
   }
 

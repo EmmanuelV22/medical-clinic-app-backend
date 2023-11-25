@@ -11,13 +11,12 @@ const Home = () => {
   function logout() {
     actions.logout();
     alert("logout OK");
-    window.location.reload();
     navigate("/");
   }
 
   return (
     <>
-      <div className="logo d-flex justify-center">
+      <div className="logo text-center mx-auto">
         <img src="../clinic-logo-removebg.png" alt="logo app clinic" />
       </div>
       <div className="container my-5 text-center">
