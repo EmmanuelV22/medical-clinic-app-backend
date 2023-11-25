@@ -1,10 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
-import EmployeeDetail from "./EmployeeDetail";
+import EmployeeDetail from "../../components/admin/EmployeeDetail";
+import ConfirmDeleteEmployee from "../../components/admin/ConfirmDeleteEmployee";
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
+  useEffect(() => {
+    actions.getAllEmployees();
+  }, []);
 
   const handleDeleteEmployee = async (id) => {
     console.log("Deleting employee with ID:", id);
@@ -58,8 +63,8 @@ const AdminAllEmployees = () => {
                       <td>{employee.address}</td>
                       <td>{employee.personalID}</td>
                       <td>{employee.email}</td>
-                      <td>{employee.createdAt}</td>
-                      <td>{employee.updatedAt}</td>
+                      <td>{actions.dateFormater(employee.createdAt)}</td>
+                      <td>{actions.dateFormater(employee.updatedAt)}</td>
                       <td className="text-center">
                         <button
                           style={{
@@ -82,13 +87,18 @@ const AdminAllEmployees = () => {
                             padding: "2px 3px",
                             borderRadius: "6px",
                           }}
-                          onClick={() => handleDeleteEmployee(employee.id)}
+                          data-bs-toggle="modal"
+                          data-bs-target={"#deleteEmployee-" + employee.id}
                         >
                           &#10008;
                         </button>
                       </td>
                     </tr>
                     <EmployeeDetail employeeData={employee} />
+                    <ConfirmDeleteEmployee
+                      employeeData={employee}
+                      handleDeleteEmployee={handleDeleteEmployee}
+                    />
                   </React.Fragment>
                 ))}
             </tbody>
