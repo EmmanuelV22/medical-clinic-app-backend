@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route")); // Ruta para la autenticación
-app.use("/api/routes", require("./routes/routes")); // Rutas personalizadas
+app.use("/api", require("./routes/routes")); // Rutas personalizadas
 
 // Ruta privada con /api
 app.get("/api/private", private, (req, res) =>

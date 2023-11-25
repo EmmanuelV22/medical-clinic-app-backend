@@ -19,6 +19,16 @@ const getState = ({ getStore, getActions, setStore }) => {
       isAuth: false,
     },
     actions: {
+      dateFormater: (date) => {
+        return new Date(date).toLocaleDateString("es-ES", {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          // hour: "numeric",
+          // minute: "numeric",
+          // second: "numeric",
+        });
+      },
       getAllPatients: async () => {
         try {
           const response = await axios.get(`${API_AUTH}/patients`, config);

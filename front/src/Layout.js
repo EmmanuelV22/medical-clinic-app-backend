@@ -6,7 +6,8 @@ import Register from "./components/Register";
 import DashboardAdmin from "./views/admin/DashboardAdmin";
 import DashboardPatient from "./views/patients/DashboardPatient";
 import DashboardDoctor from "./views/employees/DashboardDoctor";
-import AdminView from "./views/admin/AdminView";
+import AdminAllPatients from "./views/admin/AdminAllPatients";
+import AdminAllEmployees from "./views/admin/AdminAllEmployees";
 import EmployeeDetail from "./components/admin/EmployeeDetail";
 
 const Layout = () => {
@@ -19,7 +20,8 @@ const Layout = () => {
         <Route path="/dashboard-admin" element={<DashboardAdmin />}></Route>
         <Route path="/dashboard-patient" element={<DashboardPatient />}></Route>
         <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
-        <Route path="/admin-view" element={<AdminView />}></Route>
+        <Route path="/pacientes" element={<AdminAllPatients />}></Route>
+        <Route path="/empleados" element={<AdminAllEmployees />}></Route>
         <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
       </Routes>
     </BrowserRouter>

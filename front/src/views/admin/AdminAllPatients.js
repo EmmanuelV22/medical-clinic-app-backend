@@ -1,10 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 // import Cookies from "js-cookie";
-import PatientDetails from "./PatientDetails";
+import PatientDetails from "../../components/admin/PatientDetails";
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
+
+  useEffect(() => {
+    actions.getAllPatients();
+  }, []);
 
   const handleDelete = async (id) => {
     console.log("Deleting patient with ID:", id);
@@ -50,10 +54,10 @@ const AdminAllPatients = () => {
                     <td>{patient.lastname}</td>
                     <td>{patient.dni}</td>
                     <td>{patient.address}</td>
-                    <td>{patient.birthday}</td>
+                    <td>{actions.dateFormater(patient.birthday)}</td>
                     <td>{patient.email}</td>
-                    <td>{patient.createdAt}</td>
-                    <td>{patient.updatedAt}</td>
+                    <td>{actions.dateFormater(patient.createdAt)}</td>
+                    <td>{actions.dateFormater(patient.updatedAt)}</td>
                     <td className="text-center">
                       <button
                         style={{

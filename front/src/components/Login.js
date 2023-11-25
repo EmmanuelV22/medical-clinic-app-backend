@@ -17,6 +17,7 @@ const Login = () => {
       const loggedInEmployee = data.employees[0];
       if (loggedInEmployee.specialist === "admin") {
         navigate("/dashboard-admin");
+        window.location.reload();
       } else {
         navigate("/dashboard-doctor");
       }
