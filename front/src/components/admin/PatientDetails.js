@@ -1,9 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { Context } from "../../store/appContext";
 
-const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
+const PatientDetails = ({ patientData }) => {
+  const {actions} = useContext(Context)
+
   useEffect(() => {
     console.log(patientData);
   }, [patientData]);
+
+  const [firstname, setFirstname] = useState(patientData.firstname);
+  const [lastname, setLastname] = useState(patientData.lastname);
+  const [email, setEmail] = useState(patientData.email);
+  const [password, setPassword] = useState(patientData.password);
+  const [address , setAddress] = useState(patientData.address);
+  const [id, setId] = useState(patientData.id);
+  const [dni, setDni] = useState(patientData.dni);
+  const [blood_group, setBloodGroup] = useState(patientData.blood_group);
+  const [birthday, setBirthday] = useState(patientData.birthday);
+
+
+const handleUpdatePatient = async () => {
+  try{
+ const response =  await actions.updatePatient(firstname, lastname, email, address, password, id);
+ window.location.reload()
+  }catch (error){
+    console.log("Error updating patient",error)
+  }
+}
+
 
   return (
     <div
@@ -17,7 +41,7 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              Ficha de {patientData.firstname} {patientData.lastname}
+              Ficha de {firstname} {lastname}
             </h1>
             <button
               type="button"
@@ -35,8 +59,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="firstname"
                   aria-describedby="patient-firstname"
                   placeholder="firstname"
-                  value={patientData.firstname}
-                  // onChange={(e) => setFirstname(e.target.value)}
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
                   required
                 />
               </div>
@@ -47,8 +71,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="lastname"
                   aria-describedby="patient-lastname"
                   placeholder="lastname"
-                  value={patientData.lastname}
-                  // onChange={(e) => setLastname(e.target.value)}
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
                   required
                 />
               </div>
@@ -59,8 +83,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="email"
                   aria-describedby="patient-email"
                   placeholder="email"
-                  value={patientData.email}
-                  // onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -71,8 +95,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="blood_group"
                   aria-describedby="patient-blood_group"
                   placeholder="blood_group"
-                  value={patientData.blood_group}
-                  // onChange={(e) => setBlood_group(e.target.value)}
+                  defaultValue={blood_group}
+                  readOnly
                   required
                 />
               </div>
@@ -80,11 +104,11 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                 <input
                   type="text"
                   className="form-control border-l-0"
-                  aria-label="Username"
+                  aria-label="dni"
                   aria-describedby="patient-dni"
-                  placeholder="personalID"
-                  value={patientData.dni}
-                  // onChange={(e) => setDni(e.target.value)}
+                  placeholder="dni"
+                  defaultValue={dni}
+                  readOnly
                   required
                 />
               </div>
@@ -95,8 +119,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="address"
                   aria-describedby="patient-address"
                   placeholder="address"
-                  value={patientData.address}
-                  // onChange={(e) => setAddress(e.target.value)}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                   required
                 />
               </div>
@@ -108,8 +132,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="password"
                   aria-describedby="patient-password"
                   placeholder="Contraseña"
-                  value={patientData.password}
-                  // onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
@@ -120,7 +144,8 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
                   aria-label="birthday"
                   aria-describedby="patient-birthday"
                   placeholder="Fecha de Nacimiento"
-                  value={patientData.birthday}
+                  defaultValue={birthday}
+                  readOnly
                   // onChange={(e) => setPassword(e.target.value)}
                   required
                 />
@@ -137,11 +162,13 @@ const PatientDetails = ({ patientData, setPatientData, closeModal }) => {
               type="button"
               className="btn btn-secondary"
               data-bs-dismiss="modal"
-              onClick={closeModal}
+              
             >
               Close
             </button>
-            <button type="button" className="btn btn-primary">
+            <button
+            onClick={handleUpdatePatient}
+             type="button" className="btn btn-primary">
               Save changes
             </button>
           </div>

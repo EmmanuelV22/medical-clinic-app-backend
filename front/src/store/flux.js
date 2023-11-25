@@ -309,6 +309,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
+      updatePatient : async (firstname, lastname, email, address, password, id) =>{
+        try {
+          const response = await axios.put(`${API_AUTH}/update-patient/${id}` , {firstname, lastname, email, address, password, id}, config)
+          console.log(response.data)
+        }catch (error) {
+          console.log("Error al modificar paciente", error)
+        }
+      }
     },
   };
 };

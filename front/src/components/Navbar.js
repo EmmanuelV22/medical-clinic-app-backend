@@ -9,7 +9,6 @@ const Navbar = () => {
   function logout() {
     actions.logout();
     alert("logout OK");
-    window.location.reload();
     navigate("/");
   }
 

@@ -5,7 +5,6 @@ import PatientDetails from "./PatientDetails";
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
-  const [patientData, setPatientData] = useState({});
 
   const handleDelete = async (id) => {
     console.log("Deleting patient with ID:", id);
@@ -13,17 +12,6 @@ const AdminAllPatients = () => {
       await actions.deletePatient(id);
     } catch (error) {
       console.error("Error al eliminar paciente", error);
-    }
-  };
-
-  const editPatient = async (patient) => {
-    try {
-      const data = await actions.getPatientById(patient.id);
-      setPatientData(data);
-      console.log(patientData);
-      // openModal();
-    } catch (error) {
-      console.error("Error al intentar modificar paciente:", error);
     }
   };
 
@@ -55,8 +43,8 @@ const AdminAllPatients = () => {
             {store.patients &&
               store.patients.length >= 1 &&
               store.patients.map((patient) => (
-                <>
-                  <tr className="infos-contain" key={patient.id}>
+                <React.Fragment key={patient.id}>
+                  <tr className="infos-contain" >
                     <td>{patient.id}</td>
                     <td>{patient.firstname}</td>
                     <td>{patient.lastname}</td>
@@ -75,7 +63,6 @@ const AdminAllPatients = () => {
                           padding: "2px 3px",
                           borderRadius: "6px",
                         }}
-                        onClick={() => editPatient(patient)}
                         data-bs-toggle="modal"
                         data-bs-target={"#patientData-" + patient.id}
                       >
@@ -95,7 +82,7 @@ const AdminAllPatients = () => {
                     </td>
                   </tr>
                   <PatientDetails patientData={patient} />
-                </>
+                  </React.Fragment>
               ))}
           </tbody>
         </table>
