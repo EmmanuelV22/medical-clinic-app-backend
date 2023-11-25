@@ -427,19 +427,17 @@ exports.loginPatient = async (req, res, next) => {
 ///////////////////////////////////////////////////
 
 exports.updatePatient = async (req, res, next) => {
-  const { firstname, lastname, email, dni, address, password, id, birthday } =
+  const { firstname, lastname, email, address, password, id } =
     req.body;
   const updatedAt = new Date();
   const query =
-    "UPDATE patients SET firstname = ?, lastname = ?, email = ?, dni = ?, address = ?, password = ?, birthday = ?, updatedAt = ? WHERE id = ?";
+    "UPDATE patients SET firstname = ?, lastname = ?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
   const values = [
     firstname,
     lastname,
     email,
-    dni,
     address,
     password,
-    birthday,
     updatedAt,
     id,
   ];
