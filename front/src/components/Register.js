@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 // import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Register = () => {
   const [employeeForm, setEmployeeForm] = useState("block");
@@ -90,6 +91,7 @@ const Register = () => {
 
   return (
     <>
+      <Navbar />
       <button className="btn btn-success" onClick={changeEmployee}>
         {" "}
         {buttonText}

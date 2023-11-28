@@ -1,11 +1,10 @@
 const connectDB = require("../server");
 
 exports.getAgendaPatient = async (req, res, next) => {
-
-  const patient_id = req.params.patient_id
+  const patient_id = req.params.patient_id;
 
   const query = "SELECT * FROM agenda WHERE patient_id = ?";
-  
+
   const values = [patient_id];
 
   connectDB.query(query, values, (error, results, fields) => {
@@ -47,7 +46,7 @@ exports.createAgenda = async (req, res, next) => {
 ////////////////////////////////////
 
 exports.deleteAgenda = async (req, res, next) => {
-  const  id  = req.params.id;
+  const id = req.params.id;
   const query = "DELETE FROM agenda WHERE id = ?";
   const values = [id];
 
@@ -64,7 +63,7 @@ exports.deleteAgenda = async (req, res, next) => {
 /////////////////////////////////////////
 
 exports.getMedicalAgenda = async (req, res, next) => {
-  const  medical_id  = req.params.medical_id;
+  const medical_id = req.params.medical_id;
   const query = "SELECT * FROM agenda WHERE medical_id = ?";
   const values = [medical_id];
 
@@ -78,15 +77,15 @@ exports.getMedicalAgenda = async (req, res, next) => {
       return res.status(404).json({ message: "Agenda not found" });
     }
     const agenda = results[0];
-    return res.status(200).json({ message: "Get agenda success" , agenda});
+    return res.status(200).json({ message: "Get agenda success", agenda });
   });
 };
 
 //////////////////////////////////////
 
 exports.ConfirmationAgendaById = async (req, res, next) => {
-  const  id  = req.params.id;
-  const query = "UPDATE agenda SET confirmation = 1 WHERE id = ?"; 
+  const id = req.params.id;
+  const query = "UPDATE agenda SET confirmation = 1 WHERE id = ?";
   const values = [id];
 
   connectDB.query(query, values, (error, results, fields) => {
@@ -98,4 +97,3 @@ exports.ConfirmationAgendaById = async (req, res, next) => {
     return res.status(200).json({ message: "Confirm success" });
   });
 };
-

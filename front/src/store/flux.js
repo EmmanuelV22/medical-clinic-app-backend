@@ -319,14 +319,55 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-      updatePatient : async (firstname, lastname, email, address, password, id) =>{
+      updatePatient: async (
+        firstname,
+        lastname,
+        email,
+        address,
+        password,
+        id
+      ) => {
         try {
-          const response = await axios.put(`${API_AUTH}/update-patient/${id}` , {firstname, lastname, email, address, password, id}, config)
-          console.log(response.data)
-        }catch (error) {
-          console.log("Error al modificar paciente", error)
+          const response = await axios.put(
+            `${API_AUTH}/update-patient/${id}`,
+            { firstname, lastname, email, address, password, id },
+            config
+          );
+          console.log(response.data);
+        } catch (error) {
+          console.log("Error al modificar paciente", error);
         }
-      }
+      },
+      postAppointment: async (
+        date,
+        month,
+        year,
+        day,
+        time,
+        state,
+        patient_id,
+        medical_id
+      ) => {
+        try {
+          const response = await axios.post(`${API}/create-appointment`, {
+            date,
+            month,
+            year,
+            day,
+            time,
+            state,
+            patient_id,
+            medical_id,
+          });
+          console.log(response.data);
+          // Traitez la réponse comme nécessaire
+        } catch (error) {
+          console.error(
+            "Erreur lors de la création du rendez-vous",
+            error.message
+          );
+        }
+      },
     },
   };
 };

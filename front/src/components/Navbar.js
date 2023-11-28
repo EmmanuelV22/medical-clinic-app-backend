@@ -12,7 +12,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-md bg-white">
       <div className="container-fluid">
         <img
           src="../clinic-logo-removebg.png"
