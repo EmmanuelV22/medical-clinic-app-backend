@@ -1,6 +1,9 @@
 const connectDB = require("../server");
 
-exports.getAgendaPatient = async (req, res, next) => {
+/* patient_id will be used from store loged data*/
+
+
+exports.getAppointmentPatients = async (req, res, next) => {
 
   const patient_id = req.params.patient_id
 
@@ -26,11 +29,11 @@ exports.getAgendaPatient = async (req, res, next) => {
 
 /////////////////////////////
 
-exports.createAgenda = async (req, res, next) => {
-  const { date, description, patient_id, medical_id } = req.body;
+exports.createAppointment = async (req, res, next) => {
+  const { date, month, year, day, time, state, patient_id, medical_id } = req.body;
   const query =
-    "INSERT INTO agenda (date, description, patient_id, medical_id) VALUES (?, ?, ?, ?)";
-  const values = [date, description, patient_id, medical_id];
+    "INSERT INTO agenda (date, month, year, day, time, state, patient_id, medical_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  const values = [date, month, year, day, time, state, patient_id, medical_id];
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
@@ -46,7 +49,7 @@ exports.createAgenda = async (req, res, next) => {
 
 ////////////////////////////////////
 
-exports.deleteAgenda = async (req, res, next) => {
+exports.deleteAppointment = async (req, res, next) => {
   const  id  = req.params.id;
   const query = "DELETE FROM agenda WHERE id = ?";
   const values = [id];
@@ -63,7 +66,7 @@ exports.deleteAgenda = async (req, res, next) => {
 
 /////////////////////////////////////////
 
-exports.getMedicalAgenda = async (req, res, next) => {
+exports.getMedicalAppointments = async (req, res, next) => {
   const  medical_id  = req.params.medical_id;
   const query = "SELECT * FROM agenda WHERE medical_id = ?";
   const values = [medical_id];
@@ -84,18 +87,18 @@ exports.getMedicalAgenda = async (req, res, next) => {
 
 //////////////////////////////////////
 
-exports.ConfirmationAgendaById = async (req, res, next) => {
-  const  id  = req.params.id;
-  const query = "UPDATE agenda SET confirmation = 1 WHERE id = ?"; 
-  const values = [id];
+// exports.StateAgendaById = async (req, res, next) => {
+//   const  id  = req.params.id;
+//   const query = "UPDATE agenda SET state = 1 WHERE id = ?"; 
+//   const values = [id];
 
-  connectDB.query(query, values, (error, results, fields) => {
-    if (error) {
-      return res
-        .status(400)
-        .json({ message: "Error updating agenda", error: error.message });
-    }
-    return res.status(200).json({ message: "Confirm success" });
-  });
-};
+//   connectDB.query(query, values, (error, results, fields) => {
+//     if (error) {
+//       return res
+//         .status(400)
+//         .json({ message: "Error updating agenda", error: error.message });
+//     }
+//     return res.status(200).json({ message: "Confirm success" });
+//   });
+// };
 

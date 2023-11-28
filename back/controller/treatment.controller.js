@@ -3,7 +3,7 @@ const connectDB = require("../server");
 exports.createTreatment = async (req, res, next) => {
     const {patient_id, confirmation , treatment , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment} = req.body;
     
-    const query =  "INSERT INTO treatment (patient_id,confirmation , treatment , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    const query =  "INSERT INTO treatment (patient_id, confirmation , treatment , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
     const values = [patient_id, confirmation , treatment , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment];
 
