@@ -4,9 +4,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import EmployeeDetail from "../../components/admin/EmployeeDetail";
 import ConfirmDeleteEmployee from "../../components/admin/ConfirmDeleteEmployee";
+import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
+  let navigate = useNavigate();
   useEffect(() => {
     actions.getAllEmployees();
   }, []);
@@ -24,6 +27,22 @@ const AdminAllEmployees = () => {
 
   return (
     <>
+      <div className="d-flex justify-content-between align-items-center">
+        <img
+          src="../clinic-logo-removebg.png"
+          alt="logo app clinic"
+          style={{ width: "5rem" }}
+          onClick={() => navigate("/")}
+        />
+        <div>
+          <button
+            onClick={() => navigate("/dashboard-admin")}
+            className="btn btn-warning m-3"
+          >
+            Volver
+          </button>
+        </div>
+      </div>
       <div className="admin-employee-content">
         <h1
           className="text-center font-bold my-4"
