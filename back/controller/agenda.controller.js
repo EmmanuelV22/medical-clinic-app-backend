@@ -8,7 +8,7 @@ exports.getAppointmentPatients = async (req, res, next) => {
   const patient_id = req.params.patient_id
 
   const query = "SELECT * FROM agenda WHERE patient_id = ?";
-  
+
   const values = [patient_id];
 
   connectDB.query(query, values, (error, results, fields) => {
@@ -81,7 +81,7 @@ exports.getMedicalAppointments = async (req, res, next) => {
       return res.status(404).json({ message: "Agenda not found" });
     }
     const agenda = results[0];
-    return res.status(200).json({ message: "Get agenda success" , agenda});
+    return res.status(200).json({ message: "Get agenda success", agenda });
   });
 };
 

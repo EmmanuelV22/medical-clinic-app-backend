@@ -35,5 +35,4 @@ router.route("/delete-appointment/:id").delete(deleteAppointment);
 // router.route("/create-treatment").post(createTreatment)
 // router.route("/update-treatment/:id").put(updateTreatment)
 
-
 module.exports = router;
