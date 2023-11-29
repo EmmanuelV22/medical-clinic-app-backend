@@ -3,28 +3,30 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Context } from "../store/appContext";
 
-const AppointmentScheduler = () => {
-  const { actions } = useContext(Context);
+const AppointmentScheduler = ({ doctorId }) => {
+  const { actions, store } = useContext(Context);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [available, setAvailable] = useState(1); // Valor predeterminado o lógica de disponibilidad inicial
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const handleScheduleAppointment = () => {
+  const handleScheduleAppointment = async () => {
     if (selectedDate) {
-      // Ajoutez la logique pour extraire les composants de la date si nécessaire
       const date = selectedDate.getDate();
-      const month = selectedDate.getMonth() + 1; // Les mois commencent à 0
+      const month = selectedDate.getMonth() + 1;
       const year = selectedDate.getFullYear();
       const day = selectedDate.getDay();
-      const time = selectedDate.toLocaleTimeString(); // Vous pouvez ajuster le format selon vos besoins
-      const state = "reservado"; // ou une autre valeur par défaut
-      const patient_id = null; // Remplacez par l'ID du patient
-      const medical_id = null; // Remplacez par l'ID du médecin
+      const time = selectedDate.toLocaleTimeString().substring(0, 5);
+      const state = "confirmado"; // o cualquier valor por defecto
+      const patient_id = store.patient.id; // Reemplaza con la lógica para obtener el ID del paciente
+      const medical_id = doctorId;
+      console.log(month, year, day, date, time);
+      // Lógica de disponibilidad según tu aplicación
+      // ...
 
-      // Appel de la fonction postAppointment du contexte
-      actions
+      await actions
         .postAppointment(
           date,
           month,
@@ -33,43 +35,39 @@ const AppointmentScheduler = () => {
           time,
           state,
           patient_id,
-          medical_id
+          medical_id,
+          available
         )
-        .then((response) => {
-          console.log(response.data); // Traitez la réponse de l'API comme nécessaire
-        })
         .catch((error) => {
-          console.error(
-            "Erreur lors de la planification du rendez-vous",
-            error.message
-          );
+          console.error("Error al planificar el turno", error.message);
         });
     } else {
-      console.warn(
-        "Veuillez sélectionner une date et une heure pour planifier le rendez-vous."
-      );
+      console.warn("Seleccione una fecha y hora para planificar el turno.");
     }
   };
 
   return (
     <div>
-      <h1>Planificateur de rendez-vous</h1>
+      <h1>Planificador de turnos</h1>
 
       <div>
-        <label>Sélectionnez une date et une heure :</label>
+        <label>Seleccione una fecha y hora:</label>
         <DatePicker
           inline
           calendarStartDay={0}
           selected={selectedDate}
           onChange={handleDateChange}
+          minDate={new Date()}
+          maxDate={new Date(new Date().getTime() + 60 * 24 * 60 * 60 * 1000)} // Establece el máximo a hoy + 60 días
+          timeIntervals={15}
           showTimeSelect
           dateFormat="Pp"
+          minTime={new Date().setHours(8, 0, 0)} // Establece el mínimo a las 8:00 AM
+          maxTime={new Date().setHours(18, 0, 0)} // Establece el máximo a las 6:00 PM
         />
       </div>
 
-      <button onClick={handleScheduleAppointment}>
-        Planifier le rendez-vous
-      </button>
+      <button onClick={handleScheduleAppointment}>Planificar turno</button>
     </div>
   );
 };

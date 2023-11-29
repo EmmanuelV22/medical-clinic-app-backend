@@ -17,6 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       employees: [],
       employee: [],
       isAuth: false,
+      turnos: {},
     },
     actions: {
       dateFormater: (date) => {
@@ -203,7 +204,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             Cookies.set("jwt", data.token);
             console.log(data);
 
-            setStore({ ...store, isAuth: true, patients: data.patients });
+            setStore({ ...store, isAuth: true, patient: data.patients });
 
             return data;
           }
@@ -346,21 +347,25 @@ const getState = ({ getStore, getActions, setStore }) => {
         time,
         state,
         patient_id,
-        medical_id
+        medical_id,
+        available
       ) => {
         try {
-          const response = await axios.post(`${API}/create-appointment`, {
-            date,
-            month,
-            year,
-            day,
-            time,
-            state,
-            patient_id,
-            medical_id,
-          });
-          console.log(response.data);
-          // Traitez la réponse comme nécessaire
+          const response = await axios.post(
+            `${API}/create-appointment/${patient_id}`,
+            {
+              date,
+              month,
+              year,
+              day,
+              time,
+              state,
+              patient_id,
+              medical_id,
+              available,
+            }
+          );
+          console.log(response);
         } catch (error) {
           console.error(
             "Erreur lors de la création du rendez-vous",

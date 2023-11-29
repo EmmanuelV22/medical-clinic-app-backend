@@ -3,6 +3,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
+import Navbar from "../../components/Navbar";
+import CardAppointment from "../../components/patients/CardAppointment";
 
 const DashboardPatient = () => {
   const { store, actions } = useContext(Context);
@@ -13,17 +15,8 @@ const DashboardPatient = () => {
 
   return (
     <div>
-      {store.patients.length > 0 &&
-        store.patients.map((patient) => (
-          <ul key={patient.id}>
-            <li>{patient.firstname}</li>
-            <li>{patient.lastname}</li>
-            <li>{patient.dni}</li>
-            <li>{patient.birthday}</li>
-            <li>{patient.email}</li>
-            <li>{patient.createdAt}</li>
-          </ul>
-        ))}
+      <Navbar />
+      <CardAppointment />
     </div>
   );
 };

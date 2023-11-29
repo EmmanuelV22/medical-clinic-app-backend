@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
-// import Cookies from "js-cookie";
 import PatientDetails from "../../components/admin/PatientDetails";
+import SortingTable from "../../components/SortingTable";
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
@@ -9,6 +9,19 @@ const AdminAllPatients = () => {
   useEffect(() => {
     actions.getAllPatients();
   }, []);
+
+  const headers = [
+    { field: "id", label: "ID" },
+    { field: "firstname", label: "Firstname" },
+    { field: "lastname", label: "Lastname" },
+    { field: "dni", label: "DNI" },
+    { field: "address", label: "Address" },
+    { field: "birthday", label: "Birthday" },
+    { field: "email", label: "Email" },
+    { field: "createdAt", label: "Created at" },
+    { field: "updatedAt", label: "Updated at" },
+    { field: "actions", label: "Acciones" },
+  ];
 
   const handleDelete = async (id) => {
     console.log("Deleting patient with ID:", id);
@@ -19,6 +32,53 @@ const AdminAllPatients = () => {
     }
   };
 
+  const renderRow = (patient) => (
+    <React.Fragment key={patient.id}>
+      <tr className="infos-contain">
+        <td>{patient.id}</td>
+        <td>{patient.firstname}</td>
+        <td>{patient.lastname}</td>
+        <td>{patient.dni}</td>
+        <td>{patient.address}</td>
+        <td>{actions.dateFormater(patient.birthday)}</td>
+        <td>{patient.email}</td>
+        <td>{actions.dateFormater(patient.createdAt)}</td>
+        <td>
+          {patient.updatedAt !== null
+            ? actions.dateFormater(patient.updatedAt)
+            : null}
+        </td>
+        <td className="text-center">
+          <button
+            style={{
+              background: "blue",
+              color: "white",
+              border: " 2px solid white",
+              padding: "2px 3px",
+              borderRadius: "6px",
+            }}
+            data-bs-toggle="modal"
+            data-bs-target={"#patientData-" + patient.id}
+          >
+            &#9998;
+          </button>
+          <button
+            onClick={() => handleDelete(patient.id)}
+            style={{
+              background: "red",
+              color: "white",
+              border: " 2px solid white",
+              padding: "2px 3px",
+            }}
+          >
+            &#10008;
+          </button>
+        </td>
+      </tr>
+      <PatientDetails patientData={patient} />
+    </React.Fragment>
+  );
+
   return (
     <div className="admin-patient-content">
       <h1 className="text-center font-bold my-4" style={{ fontSize: "2.5rem" }}>
@@ -28,68 +88,11 @@ const AdminAllPatients = () => {
         className="table-responsive"
         style={{ width: "100%", margin: "0 auto" }}
       >
-        <table className="table">
-          <thead>
-            <tr>
-              <th className="th-id">ID</th>
-              <th className="th-patient-name th-general">Firstname</th>
-              <th className="th-patient-name th-general">Lastname</th>
-              <th className="th-patient-name th-general">DNI</th>
-              <th className="th-patient-name th-general">Address</th>
-              <th className="th-patient-name th-general">Birthday</th>
-              <th className="th-email th-general">Email</th>
-              <th className="th-patient-name th-general">Created at</th>
-              <th className="th-patient-name th-general">Updated at</th>
-              <th className="th-actions">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {store.patients &&
-              store.patients.length >= 1 &&
-              store.patients.map((patient) => (
-                <React.Fragment key={patient.id}>
-                  <tr className="infos-contain" >
-                    <td>{patient.id}</td>
-                    <td>{patient.firstname}</td>
-                    <td>{patient.lastname}</td>
-                    <td>{patient.dni}</td>
-                    <td>{patient.address}</td>
-                    <td>{actions.dateFormater(patient.birthday)}</td>
-                    <td>{patient.email}</td>
-                    <td>{actions.dateFormater(patient.createdAt)}</td>
-                    <td>{actions.dateFormater(patient.updatedAt)}</td>
-                    <td className="text-center">
-                      <button
-                        style={{
-                          background: "blue",
-                          color: "white",
-                          border: " 2px solid white",
-                          padding: "2px 3px",
-                          borderRadius: "6px",
-                        }}
-                        data-bs-toggle="modal"
-                        data-bs-target={"#patientData-" + patient.id}
-                      >
-                        &#9998;
-                      </button>
-                      <button
-                        onClick={() => handleDelete(patient.id)}
-                        style={{
-                          background: "red",
-                          color: "white",
-                          border: " 2px solid white",
-                          padding: "2px 3px",
-                        }}
-                      >
-                        &#10008;
-                      </button>
-                    </td>
-                  </tr>
-                  <PatientDetails patientData={patient} />
-                  </React.Fragment>
-              ))}
-          </tbody>
-        </table>
+        <SortingTable
+          headers={headers}
+          data={store.patients}
+          renderRow={renderRow}
+        />
       </div>
     </div>
   );
