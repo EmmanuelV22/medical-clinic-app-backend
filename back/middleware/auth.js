@@ -14,9 +14,9 @@ exports.private = (req, res, next) => {
       if (error) {
         return res.status(401).json({ message: "Token is not valid" });
       }
-      if (user.specialist !== "admin") {
-        return res.status(403).json({ message: "Unauthorized access" });
-      }
+      // if (user.specialist !== "admin") {
+      //   return res.status(403).json({ message: "Unauthorized access" });
+      // }
       req.user = user;
       next();
     });
@@ -38,7 +38,7 @@ exports.privatePatient = (req, res, next) => {
       if (error) {
         return res.status(401).json({ message: "Token is not valid" });
       }
-      if (user.specialist !== "undefined") {
+      if (!user.blood_group) {
         return res.status(403).json({ message: "Unauthorized access" });
       }
       req.user = user;

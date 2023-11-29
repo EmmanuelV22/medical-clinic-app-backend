@@ -9,7 +9,7 @@ import DashboardDoctor from "./views/employees/DashboardDoctor";
 import AdminAllPatients from "./views/admin/AdminAllPatients";
 import AdminAllEmployees from "./views/admin/AdminAllEmployees";
 import EmployeeDetail from "./components/admin/EmployeeDetail";
-import AppointmentScheduler from "./components/AppointmentScheduler";
+import SpecialistPicker from "./components/SpecialistPicker";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -24,10 +24,7 @@ const Layout = () => {
         <Route path="/pacientes" element={<AdminAllPatients />}></Route>
         <Route path="/empleados" element={<AdminAllEmployees />}></Route>
         <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
-        <Route
-          path="/appointment-post"
-          element={<AppointmentScheduler />}
-        ></Route>
+        <Route path="/appointment-post" element={<SpecialistPicker />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -1,0 +1,96 @@
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../store/appContext";
+import AppointmentScheduler from "./AppointmentScheduler";
+
+const SpecialistPicker = () => {
+  const { store, actions } = useContext(Context);
+  const [selectedSpecialist, setSelectedSpecialist] = useState("");
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+  const [choiceSpecialist, setChoiceSpecialist] = useState(false);
+  const [choiceDoc, setChoiceDoc] = useState(false);
+  const [specialistPicker, setSpecialistPicker] = useState([
+    "general",
+    "neumonólogo",
+    "cirujano",
+    "oftalmólogo",
+    "ORL",
+    "psicólogo",
+    "dentista",
+    "dermatólogo",
+    "enfermera",
+  ]);
+
+  useEffect(() => {
+    actions.getAllEmployees();
+  }, []);
+
+  const handleSpecialistChange = (event) => {
+    setSelectedSpecialist(event.target.value);
+    setChoiceSpecialist(true);
+  };
+
+  const handleDoctorChange = (event) => {
+    setSelectedDoctor(event.target.value);
+    setChoiceDoc(true);
+  };
+
+  return (
+    <>
+      <div>
+        <select
+          className="form-select"
+          aria-label="Select a specialty"
+          onChange={handleSpecialistChange}
+          value={selectedSpecialist}
+        >
+          <option value="" disabled selected>
+            Selecciona una especialidad
+          </option>
+          {specialistPicker.map((speciality) => (
+            <option key={speciality} value={speciality}>
+              {speciality}
+            </option>
+          ))}
+        </select>
+      </div>
+      {choiceSpecialist && (
+        <div>
+          <select
+            className="form-select"
+            aria-label="Select a doctor"
+            onChange={handleDoctorChange}
+            value={selectedDoctor}
+          >
+            <option value="" disabled selected>
+              Selecciona un médico
+            </option>
+            {store.employees &&
+              store.employees.length >= 1 &&
+              store.employees
+                .filter(
+                  (employee) => employee.specialist === selectedSpecialist
+                )
+                .map((employee) => (
+                  <option key={employee.id} value={employee.lastname}>
+                    Dr.{employee.lastname}
+                  </option>
+                ))}
+          </select>
+        </div>
+      )}
+      {choiceSpecialist && choiceDoc && (
+        <div className="d-flex justify-content-center mt-5">
+          <AppointmentScheduler
+            doctorId={
+              store.employees.find(
+                (employee) => employee.lastname === selectedDoctor
+              ).id
+            }
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default SpecialistPicker;
