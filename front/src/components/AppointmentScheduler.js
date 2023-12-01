@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
+import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
 import { Context } from "../store/appContext";
 
@@ -54,12 +55,14 @@ const AppointmentScheduler = ({ doctorId }) => {
         <label>Seleccione una fecha y hora:</label>
         <DatePicker
           inline
+          locale={es}
           calendarStartDay={0}
           selected={selectedDate}
           onChange={handleDateChange}
           minDate={new Date()}
           maxDate={new Date(new Date().getTime() + 60 * 24 * 60 * 60 * 1000)} // Establece el máximo a hoy + 60 días
           timeIntervals={15}
+          timeCaption="horarios"
           showTimeSelect
           dateFormat="Pp"
           minTime={new Date().setHours(8, 0, 0)} // Establece el mínimo a las 8:00 AM

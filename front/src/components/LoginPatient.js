@@ -18,6 +18,7 @@ const LoginPatient = () => {
       setDni("");
       setPassword("");
       navigate("/dashboard-patient");
+      window.location.reload();
     } else {
       alert("Error, log impossible");
     }

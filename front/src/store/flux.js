@@ -140,7 +140,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         dni,
         address,
         password,
-        // birthday,
         personalID,
         specialist
       ) => {
@@ -252,7 +251,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               const updatedEmployees = prevStore.employees.filter(
                 (employee) => employee.id !== employeeId
               );
-              console.log("Updated Employees:", updatedEmployees);
+              console.log("Deleted Employees:", updatedEmployees);
 
               return { ...prevStore, employees: updatedEmployees };
             });
@@ -271,6 +270,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/delete-patient/${patientID}`,
             config
           );
+          console.log(response, patientID);
           if (response.status === 200) {
             setStore((prevStore) => {
               const updatedPatient = prevStore.patients.filter(
@@ -366,6 +366,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           console.log(response);
+          return response;
         } catch (error) {
           console.error(
             "Erreur lors de la création du rendez-vous",
