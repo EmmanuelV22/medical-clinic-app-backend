@@ -373,6 +373,20 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
         }
       },
+      loadMedicalAppointments: async(medical_id)=>{
+        try{
+          const response = await axios.get(
+            `${API}/appointments-medical/${medical_id}`,config
+          )
+          if (response.status === 200) {
+            const data = await response.data;
+            console.log(data)
+            return data
+          }
+        }catch(error){
+          console.log("Error obteniendo citas del medico:",error)
+        }
+      }
     },
   };
 };

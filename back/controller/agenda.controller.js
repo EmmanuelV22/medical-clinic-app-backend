@@ -91,7 +91,7 @@ exports.getMedicalAppointments = async (req, res, next) => {
     if (results.length === 0) {
       return res.status(404).json({ message: "Agenda not found" });
     }
-    const agenda = results[0];
+    const agenda = results;
     return res.status(200).json({ message: "Get agenda success", agenda });
   });
 };

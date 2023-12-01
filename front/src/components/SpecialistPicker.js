@@ -86,6 +86,21 @@ const SpecialistPicker = () => {
                 (employee) => employee.lastname === selectedDoctor
               ).id
             }
+            daysOff={
+              store.employees.find(
+                (employee) => employee.lastname === selectedDoctor
+              ).days_off
+            }
+            startTime={
+              store.employees.find(
+                (employee) => employee.lastname === selectedDoctor
+              ).start_time
+            }
+            endTime={
+              store.employees.find(
+                (employee) => employee.lastname === selectedDoctor
+              ).end_time
+            }
           />
         </div>
       )}
