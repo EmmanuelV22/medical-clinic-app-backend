@@ -1,14 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // AdminAllEmployees.js
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import EmployeeDetail from "../../components/admin/EmployeeDetail";
 import ConfirmDeleteEmployee from "../../components/admin/ConfirmDeleteEmployee";
 import { useNavigate } from "react-router";
 import SortingTable from "../../components/SortingTable";
+import SearchBar from "../../components/SearchBar";
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
   let navigate = useNavigate();
+  const [searchError, setSearchError] = useState(false);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
 
   useEffect(() => {
     actions.getAllEmployees();
@@ -21,6 +25,7 @@ const AdminAllEmployees = () => {
     { field: "dni", label: "DNI" },
     { field: "address", label: "Address" },
     { field: "personalID", label: "Personal ID" },
+    { field: "especialidad", label: "Especialidad" },
     { field: "email", label: "Email" },
     { field: "createdAt", label: "Created at" },
     { field: "updatedAt", label: "Updated at" },
@@ -45,6 +50,7 @@ const AdminAllEmployees = () => {
         <td>{employee.dni}</td>
         <td>{employee.address}</td>
         <td>{employee.personalID}</td>
+        <td>{employee.specialist}</td>
         <td>{employee.email}</td>
         <td>{actions.dateFormater(employee.createdAt)}</td>
         <td>
@@ -89,6 +95,17 @@ const AdminAllEmployees = () => {
     </React.Fragment>
   );
 
+  const handleSearch = (query) => {
+    const filtered = store.employees.filter(
+      (employee) =>
+        employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
+        employee.lastname.toLowerCase().includes(query.toLowerCase())
+    );
+    // Set searchError to true if no employees found
+    setSearchError(filtered.length === 0);
+    setFilteredEmployees(filtered);
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
@@ -114,13 +131,21 @@ const AdminAllEmployees = () => {
         >
           Lista de empleados:
         </h1>
+        <SearchBar onSearch={handleSearch} />
+        {searchError && (
+          <p className="text-center text-danger">
+            No se encontraron empleados.
+          </p>
+        )}
         <div
           className="table-responsive"
           style={{ width: "100%", margin: "0 auto" }}
         >
           <SortingTable
             headers={headers}
-            data={store.employees}
+            data={
+              filteredEmployees.length > 0 ? filteredEmployees : store.employees
+            }
             renderRow={renderRow}
           />
         </div>

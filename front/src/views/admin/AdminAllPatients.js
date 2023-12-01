@@ -1,10 +1,15 @@
-import React, { useContext, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import PatientDetails from "../../components/admin/PatientDetails";
 import SortingTable from "../../components/SortingTable";
+import SearchBar from "../../components/SearchBar";
+import ConfirmDeletePatient from "../../components/patients/ConfirmDeletePatient";
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
+  const [searchError, setSearchError] = useState(false);
+  const [filteredPatients, setFilteredPatients] = useState([]);
 
   useEffect(() => {
     actions.getAllPatients();
@@ -27,6 +32,7 @@ const AdminAllPatients = () => {
     console.log("Deleting patient with ID:", id);
     try {
       await actions.deletePatient(id);
+      window.location.reload();
     } catch (error) {
       console.error("Error al eliminar paciente", error);
     }
@@ -63,34 +69,51 @@ const AdminAllPatients = () => {
             &#9998;
           </button>
           <button
-            onClick={() => handleDelete(patient.id)}
             style={{
               background: "red",
               color: "white",
               border: " 2px solid white",
               padding: "2px 3px",
             }}
+            data-bs-toggle="modal"
+            data-bs-target={"#deletePatient-" + patient.id}
           >
             &#10008;
           </button>
         </td>
       </tr>
       <PatientDetails patientData={patient} />
+      <ConfirmDeletePatient patientData={patient} handleDelete={handleDelete} />
     </React.Fragment>
   );
+
+  const handleSearch = (query) => {
+    const filtered = store.patients.filter(
+      (patient) =>
+        patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
+        patient.lastname.toLowerCase().includes(query.toLowerCase())
+    );
+    // Set searchError to true if no employees found
+    setSearchError(filtered.length === 0);
+    setFilteredPatients(filtered);
+  };
 
   return (
     <div className="admin-patient-content">
       <h1 className="text-center font-bold my-4" style={{ fontSize: "2.5rem" }}>
         Lista de pacientes:
       </h1>
+      <SearchBar onSearch={handleSearch} />
+      {searchError && (
+        <p className="text-center text-danger">No se encontraron pacientes.</p>
+      )}
       <div
         className="table-responsive"
         style={{ width: "100%", margin: "0 auto" }}
       >
         <SortingTable
           headers={headers}
-          data={store.patients}
+          data={filteredPatients.length > 0 ? filteredPatients : store.patients}
           renderRow={renderRow}
         />
       </div>

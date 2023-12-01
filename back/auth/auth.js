@@ -83,7 +83,7 @@ exports.register = async (req, res, next) => {
       hash,
     ];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
         return res
           .status(400)
@@ -447,6 +447,8 @@ exports.updatePatient = async (req, res, next) => {
 
 exports.deletePatient = async (req, res, next) => {
   const id = req.params.id;
+  console.log("Received DELETE request for ID:", id);
+
   const query = "DELETE FROM patients WHERE id = ?";
   const values = [id];
   connectDB.query(query, values, (error, results, fields) => {
@@ -455,6 +457,8 @@ exports.deletePatient = async (req, res, next) => {
         .status(400)
         .json({ message: "Error deleting patient", error: error.message });
     }
-    return res.status(201).json({ message: "Patient successfully deleted" });
+    return res
+      .status(201)
+      .json({ message: "Patient successfully deleted", id: id });
   });
 };

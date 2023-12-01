@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
+import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
 import { Context } from "../store/appContext";
 
@@ -89,12 +90,14 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
         <label>Seleccione una fecha y hora:</label>
         <DatePicker
           inline
+          locale={es}
           calendarStartDay={0}
           selected={selectedDate}
           onChange={handleDateChange}
           minDate={new Date()}
           maxDate={new Date(new Date().getTime() + 60 * 24 * 60 * 60 * 1000)}
           timeIntervals={15}
+          timeCaption="horarios"
           showTimeSelect
           dateFormat="Pp"
           minTime={new Date().setHours(startTime, 0, 0, 0)}
