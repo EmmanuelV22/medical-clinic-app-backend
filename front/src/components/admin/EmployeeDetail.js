@@ -11,7 +11,6 @@ const EmployeeDetail = ({ employeeData }) => {
   const [personalID, setPersonalID] = useState(employeeData.personalID);
   const [email, setEmail] = useState(employeeData.email);
   const [specialist, setSpecialist] = useState(employeeData.specialist);
-  const [dni, setDni] = useState(employeeData.dni);
   const [address, setAddress] = useState(employeeData.address);
   const [password, setPassword] = useState(employeeData.password);
   const [id, setId] = useState(employeeData.id);
@@ -28,7 +27,8 @@ const EmployeeDetail = ({ employeeData }) => {
         lastname,
         personalID,
         email,
-        dni,
+        address,
+
         specialist,
         address,
         days_off,
@@ -72,6 +72,7 @@ const EmployeeDetail = ({ employeeData }) => {
               {employeeData && (
                 <form className="mx-auto w-75">
                   <div className="input-group mb-3">
+                    <label>Nombre</label>
                     <input
                       type="text"
                       className="form-control border-l-0"
@@ -84,6 +85,7 @@ const EmployeeDetail = ({ employeeData }) => {
                     />
                   </div>
                   <div className="input-group mb-3">
+                    <label>Apellido</label>
                     <input
                       type="text"
                       className="form-control border-l-0"
@@ -96,6 +98,7 @@ const EmployeeDetail = ({ employeeData }) => {
                     />
                   </div>
                   <div className="input-group mb-3">
+                    <label>ID personal</label>
                     <input
                       type="text"
                       className="form-control border-l-0"
@@ -108,6 +111,7 @@ const EmployeeDetail = ({ employeeData }) => {
                     />
                   </div>
                   <div className="input-group mb-3">
+                    <label>E-mail</label>
                     <input
                       type="email"
                       className="form-control border-l-0"
@@ -120,6 +124,7 @@ const EmployeeDetail = ({ employeeData }) => {
                     />
                   </div>
                   <div className="input-group mb-3">
+                    <label>Especialidad</label>
                     <input
                       type="text"
                       className="form-control border-l-0"
@@ -132,18 +137,7 @@ const EmployeeDetail = ({ employeeData }) => {
                     />
                   </div>
                   <div className="input-group mb-3">
-                    <input
-                      type="text"
-                      className="form-control border-l-0"
-                      aria-label="Username"
-                      aria-describedby="employee-dni"
-                      placeholder="personalID"
-                      defaultValue={dni}
-                      readOnly
-                      required
-                    />
-                  </div>
-                  <div className="input-group mb-3">
+                    <label>Dirección</label>
                     <input
                       type="text"
                       className="form-control border-l-0"
@@ -193,6 +187,7 @@ const EmployeeDetail = ({ employeeData }) => {
                   </div>
 
                   <div className="input-group mb-3">
+                    <label>Contraseña</label>
                     <input
                       type="password"
                       className="form-control border-l-0"

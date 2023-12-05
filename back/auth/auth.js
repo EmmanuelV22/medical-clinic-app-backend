@@ -2,7 +2,7 @@ const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const connectDB = require("../server");
-const { v4: uuidv4 } = require("uuid");
+const nodemailer = require("nodemailer");
 
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************
@@ -65,7 +65,6 @@ exports.register = async (req, res, next) => {
     end_time,
   } = req.body;
   const createdAt = new Date().toISOString().split("T")[0];
-  // const personalID = uuidv4().substr(0, 10);
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
@@ -99,6 +98,9 @@ exports.register = async (req, res, next) => {
           });
       }
 
+      // Envoi de l'e-mail
+      sendConfirmationEmail(email, firstname, lastname);
+
       const maxAge = 3 * 60 * 60;
       const token = jwt.sign(
         {
@@ -131,6 +133,57 @@ exports.register = async (req, res, next) => {
       });
     });
   });
+};
+
+//////////////////////////////////////////////////
+
+// Fonction pour envoyer l'e-mail de confirmation
+const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
+  const EMAIL = process.env.USERMAIL; // Remplacez par votre adresse e-mail
+  const PASSWORD = process.env.PASSMAIL; // Remplacez par votre mot de passe e-mail
+
+  let config = {
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  };
+
+  let transporter = nodemailer.createTransport(config);
+
+  const htmlContent = `
+    <html>
+      <head>
+        <!-- Ajoutez des styles CSS si nécessaire -->
+      </head>
+      <body>
+        <div>
+          <h1>Bienvenido a Clínic'app</h1>
+          <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
+          <p>¡Te damos la bienvenida a nuestra clínica!</p>
+          <p>Hola ${userFirstname} ${userLastname}, ahora que tenés tu cuenta vas a poder agendar turnos con nuestros médicos, ver los tratamientos, tu historial clínica y mucho más.</p>
+          <p>Otra vez te damos la bienvenida =) </p>
+        </div>
+      </body>
+    </html>
+  `;
+
+  let message = {
+    from: EMAIL,
+    to: userEmail,
+    subject: "¡Cuenta clínic'app creada con éxito!",
+    html: htmlContent,
+  };
+
+  transporter
+    .sendMail(message)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error("Error sending email", error);
+    });
 };
 
 ///////////////////////////////////////////////////
@@ -330,6 +383,16 @@ exports.registerPatient = async (req, res, next) => {
     blood_group,
   } = req.body;
   const createdAt = new Date().toISOString().split("T")[0];
+  // Convertir cadena a instancia de fecha
+  const birthdayDate = new Date(birthday);
+
+  // Compruebe si cumpleañosDate es una instancia de fecha válida
+  if (isNaN(birthdayDate.getTime())) {
+    return res.status(400).json({ message: "Birth date is not valid" });
+  }
+
+  // Formatee la fecha para la inserción de la base de datos (AAAA-MM-DD)
+  const formattedBirthday = birthdayDate.toISOString().split("T")[0];
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
@@ -344,7 +407,7 @@ exports.registerPatient = async (req, res, next) => {
       email,
       address,
       dni,
-      birthday,
+      formattedBirthday,
       hash,
       blood_group,
       createdAt,
@@ -356,6 +419,8 @@ exports.registerPatient = async (req, res, next) => {
           .status(400)
           .json({ message: "Error creating patient", error: error.message });
       }
+
+      sendConfirmationEmail(email, firstname, lastname);
 
       const maxAge = 3 * 60 * 60;
       const token = jwt.sign(

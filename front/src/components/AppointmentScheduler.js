@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import es from "date-fns/locale/es";

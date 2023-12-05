@@ -20,18 +20,21 @@ const AdminAllEmployees = () => {
 
   const headers = [
     { field: "id", label: "ID" },
-    { field: "firstname", label: "Firstname" },
-    { field: "lastname", label: "Lastname" },
+    { field: "firstname", label: "Nombre" },
+    { field: "lastname", label: "Apellido" },
     { field: "dni", label: "DNI" },
-    { field: "address", label: "Address" },
-    { field: "personalID", label: "Personal ID" },
+    { field: "address", label: "Dirección" },
+    { field: "personalID", label: "ID personal" },
     { field: "especialidad", label: "Especialidad" },
     { field: "email", label: "Email" },
+
     { field: "days_off", label: "Dias Libres" },
     { field: "start_time", label: "Hora de inicio" },
     { field: "end_time", label: "Hora de finalizacion" },
-    { field: "createdAt", label: "Created at" },
-    { field: "updatedAt", label: "Updated at" },
+
+    { field: "createdAt", label: "Creado" },
+    { field: "updatedAt", label: "Actualizado" },
+
     { field: "actions", label: "Acciones" },
   ];
 
