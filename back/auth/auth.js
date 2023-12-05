@@ -90,12 +90,10 @@ exports.register = async (req, res, next) => {
 
     connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
-        return res
-          .status(400)
-          .json({
-            message: "Error creating user from api auth",
-            error: error.message,
-          });
+        return res.status(400).json({
+          message: "Error creating user from api auth",
+          error: error.message,
+        });
       }
 
       // Envoi de l'e-mail

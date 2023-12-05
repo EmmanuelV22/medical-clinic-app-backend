@@ -14,7 +14,7 @@ const {
   registerPatient,
 } = require("./auth");
 
-const { privateAdmin } = require("../middleware/auth");
+const { privateAdmin, private } = require("../middleware/auth");
 const router = express.Router();
 
 //////////////EMPLOYEES ROUTES///////////
@@ -22,7 +22,7 @@ router.route("/register").post(privateAdmin, register);
 router.route("/login").post(login);
 router.route("/update/:id").put(privateAdmin, update);
 router.route("/delete/:id").delete(privateAdmin, deleteUser);
-router.route("/employees").get(privateAdmin, getAllEmployees);
+router.route("/employees").get(private, getAllEmployees);
 router.route("/employees/:id").get(privateAdmin, getEmployeeById);
 
 //////////////PATIENS ROUTES///////////
