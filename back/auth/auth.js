@@ -253,7 +253,6 @@ exports.update = async (req, res, next) => {
     lastname,
     personalID,
     email,
-    dni,
     specialist,
     address,
     days_off,
@@ -268,13 +267,12 @@ exports.update = async (req, res, next) => {
       return res.status(500).json({ message: "Error hashing password" });
     }
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, personalID = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+      "UPDATE employees SET firstname = ?, lastname = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
     const values = [
       firstname,
       lastname,
       personalID,
       email,
-      dni,
       specialist,
       address,
       updatedAt,

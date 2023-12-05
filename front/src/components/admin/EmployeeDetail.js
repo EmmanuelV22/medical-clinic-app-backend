@@ -28,7 +28,6 @@ const EmployeeDetail = ({ employeeData }) => {
         personalID,
         email,
         address,
-
         specialist,
         address,
         days_off,

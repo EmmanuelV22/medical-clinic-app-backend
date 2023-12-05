@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
 import { Context } from "../store/appContext";
-import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+// import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import '../styles/datepicker.scss';
 
 const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
