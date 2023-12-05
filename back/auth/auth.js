@@ -60,6 +60,9 @@ exports.register = async (req, res, next) => {
     specialist,
     password,
     personalID,
+    days_off,
+    start_time,
+    end_time,
   } = req.body;
   const createdAt = new Date().toISOString().split("T")[0];
 
@@ -69,7 +72,7 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO employees (firstname, lastname, email, address, dni, specialist, personalID, createdAt, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO employees (firstname, lastname, email, address, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
@@ -79,6 +82,9 @@ exports.register = async (req, res, next) => {
       specialist,
       personalID,
       createdAt,
+      days_off,
+      start_time,
+      end_time,
       hash,
     ];
 
@@ -86,7 +92,10 @@ exports.register = async (req, res, next) => {
       if (error) {
         return res
           .status(400)
-          .json({ message: "Error creating user", error: error.message });
+          .json({
+            message: "Error creating user from api auth",
+            error: error.message,
+          });
       }
 
       // Envoi de l'e-mail
@@ -103,6 +112,9 @@ exports.register = async (req, res, next) => {
           specialist,
           personalID,
           createdAt,
+          days_off,
+          start_time,
+          end_time,
         },
         process.env.jwtSecret,
         {
@@ -241,36 +253,46 @@ exports.update = async (req, res, next) => {
     lastname,
     personalID,
     email,
-    address,
     dni,
     specialist,
+    address,
+    days_off,
+    start_time,
+    end_time,
     password,
     id,
   } = req.body;
   const updatedAt = new Date();
-  const query =
-    "UPDATE employees SET firstname = ?, lastname = ?, personalID = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ?, password = ? WHERE id = ?";
-  const values = [
-    firstname,
-    lastname,
-    personalID,
-    email,
-    dni,
-    specialist,
-    address,
-    updatedAt,
-    password,
-    id,
-  ];
-
-  connectDB.query(query, values, (error, results, fields) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      return res
-        .status(400)
-        .json({ message: "Error updating user", error: error.message });
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) {
+      return res.status(500).json({ message: "Error hashing password" });
     }
+    const query =
+      "UPDATE employees SET firstname = ?, lastname = ?, personalID = ?, email = ?, dni = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+    const values = [
+      firstname,
+      lastname,
+      personalID,
+      email,
+      dni,
+      specialist,
+      address,
+      updatedAt,
+      days_off,
+      start_time,
+      end_time,
+      hash,
+      id,
+    ];
 
+    connectDB.query(query, values, (error, results, fields) => {
+      if (error) {
+        console.error("Error executing query:", error);
+        return res
+          .status(400)
+          .json({ message: "Error updating user", error: error.message });
+      }
+    });
     // Asegúrate de realizar un commit aquí si es necesario
     connectDB.commit((commitError) => {
       if (commitError) {

@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import es from "date-fns/locale/es";
 import "react-datepicker/dist/react-datepicker.css";
 import { Context } from "../store/appContext";
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import '../styles/datepicker.scss';
 
 const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const { actions, store } = useContext(Context);
@@ -44,11 +46,13 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const arrayDeExcludes = [];
   useEffect(() => {
     actions.loadMedicalAppointments(doctorId).then((arrAppointments) => {
+      if (arrAppointments){
       console.log("ARREGLO DE HORARIOS ES ", arrAppointments.agenda);
       arrAppointments.agenda.forEach((e) => {
         const [hora, minutos] = e.time.split(":").map(Number);
         arrayDeExcludes.push(new Date(e.year, e.month, e.date, hora, minutos));
-      });
+      })
+      };
     });
   }, [arrayDeExcludes]);
 
@@ -106,6 +110,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           maxTime={new Date().setHours(endTime, 0, 0, 0)}
           excludeTimes={arrayDeExcludes}
           excludeDates={disabledDates}
+          
         />
       </div>
 

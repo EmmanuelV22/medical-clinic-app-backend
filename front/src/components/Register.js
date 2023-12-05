@@ -4,6 +4,7 @@ import RegisterEmployee from "./RegisterEmployee";
 import RegisterPatient from "./RegisterPatient";
 
 const Register = () => {
+
   const [changeForm, setChangeForm] = useState(false);
 
   function changeEmployee() {
@@ -17,6 +18,7 @@ const Register = () => {
         Cambia de Formulario
       </button>
       {!changeForm ? <RegisterEmployee /> : <RegisterPatient />}
+
     </>
   );
 };

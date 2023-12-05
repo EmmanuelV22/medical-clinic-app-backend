@@ -27,8 +27,14 @@ const AdminAllEmployees = () => {
     { field: "personalID", label: "ID personal" },
     { field: "especialidad", label: "Especialidad" },
     { field: "email", label: "Email" },
+
+    { field: "days_off", label: "Dias Libres" },
+    { field: "start_time", label: "Hora de inicio" },
+    { field: "end_time", label: "Hora de finalizacion" },
+
     { field: "createdAt", label: "Creado" },
     { field: "updatedAt", label: "Actualizado" },
+
     { field: "actions", label: "Acciones" },
   ];
 
@@ -52,6 +58,9 @@ const AdminAllEmployees = () => {
         <td>{employee.personalID}</td>
         <td>{employee.specialist}</td>
         <td>{employee.email}</td>
+        <td>{employee.days_off}</td>
+        <td>{employee.start_time}</td>
+        <td>{employee.end_time}</td>
         <td>{actions.dateFormater(employee.createdAt)}</td>
         <td>
           {employee.updatedAt !== null

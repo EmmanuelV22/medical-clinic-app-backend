@@ -141,7 +141,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         address,
         password,
         personalID,
-        specialist
+        specialist,
+        days_off,
+        start_time,
+        end_time
       ) => {
         try {
           const res = await axios.post(
@@ -153,9 +156,11 @@ const getState = ({ getStore, getActions, setStore }) => {
               dni,
               address,
               password,
-              // birthday,
               personalID,
               specialist,
+              days_off,
+              start_time,
+              end_time,
             },
             config
           );
@@ -288,29 +293,35 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       updateEmployee: async (
-        id,
         firstname,
         lastname,
         personalID,
         email,
-        address,
         dni,
         specialist,
-        password
+        address,
+        days_off,
+        start_time,
+        end_time,
+        password,
+        id
       ) => {
         try {
           const response = await axios.put(
             `${API_AUTH}/update/${id}`,
             {
-              id,
               firstname,
               lastname,
               personalID,
               email,
-              address,
               dni,
               specialist,
+              address,
+              days_off,
+              start_time,
+              end_time,
               password,
+              id,
             },
             config
           );
@@ -374,20 +385,21 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
         }
       },
-      loadMedicalAppointments: async(medical_id)=>{
-        try{
+      loadMedicalAppointments: async (medical_id) => {
+        try {
           const response = await axios.get(
-            `${API}/appointments-medical/${medical_id}`,config
-          )
+            `${API}/appointments-medical/${medical_id}`,
+            config
+          );
           if (response.status === 200) {
             const data = await response.data;
-            console.log(data)
-            return data
+            console.log(data);
+            return data;
           }
-        }catch(error){
-          console.log("Error obteniendo citas del medico:",error)
+        } catch (error) {
+          console.log("Error obteniendo citas del medico:", error);
         }
-      }
+      },
     },
   };
 };

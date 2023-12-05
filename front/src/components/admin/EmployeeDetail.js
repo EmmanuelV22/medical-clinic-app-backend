@@ -14,22 +14,30 @@ const EmployeeDetail = ({ employeeData }) => {
   const [address, setAddress] = useState(employeeData.address);
   const [password, setPassword] = useState(employeeData.password);
   const [id, setId] = useState(employeeData.id);
+  const [days_off, setDays_off] = useState(employeeData.days_off);
+  const [start_time, setStart_time] = useState(employeeData.start_time);
+  const [end_time, setEnd_time] = useState(employeeData.end_time);
+
   useEffect(() => {}, [employeeData]);
 
   const editEmployeeData = async () => {
     try {
       const updatedData = await actions.updateEmployee(
-        id,
         firstname,
         lastname,
         personalID,
         email,
         address,
+
         specialist,
-        password
+        address,
+        days_off,
+        start_time,
+        end_time,
+        password,
+        id
       );
       window.location.reload();
-      console.log("Updated data:", updatedData);
     } catch (error) {
       console.error("Error updating employee:", error);
     }
@@ -138,6 +146,42 @@ const EmployeeDetail = ({ employeeData }) => {
                       placeholder="address"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control border-l-0"
+                      aria-label="days_off"
+                      aria-describedby="employee-days-off"
+                      placeholder="days_off"
+                      value={days_off}
+                      onChange={(e) => setDays_off(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control border-l-0"
+                      aria-label="start_time"
+                      aria-describedby="employee-start-time"
+                      placeholder="start_time"
+                      value={start_time}
+                      onChange={(e) => setStart_time(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control border-l-0"
+                      aria-label="end-time"
+                      aria-describedby="employee-end-time"
+                      placeholder="end_time"
+                      value={end_time}
+                      onChange={(e) => setEnd_time(e.target.value)}
                       required
                     />
                   </div>

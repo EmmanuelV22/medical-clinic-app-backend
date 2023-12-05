@@ -19,7 +19,6 @@ const SpecialistPicker = () => {
     "psicólogo",
     "dentista",
     "dermatólogo",
-    "enfermera",
   ]);
 
   useEffect(() => {
