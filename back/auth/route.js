@@ -14,23 +14,23 @@ const {
   registerPatient,
 } = require("./auth");
 
-const { private } = require("../middleware/auth");
+const { privateAdmin } = require("../middleware/auth");
 const router = express.Router();
 
 //////////////EMPLOYEES ROUTES///////////
-router.route("/register").post(private, register);
+router.route("/register").post(privateAdmin, register);
 router.route("/login").post(login);
-router.route("/update/:id").put(private, update);
-router.route("/delete/:id").delete(private, deleteUser);
-router.route("/employees").get(private, getAllEmployees);
-router.route("/employees/:id").get(private, getEmployeeById);
+router.route("/update/:id").put(privateAdmin, update);
+router.route("/delete/:id").delete(privateAdmin, deleteUser);
+router.route("/employees").get(privateAdmin, getAllEmployees);
+router.route("/employees/:id").get(privateAdmin, getEmployeeById);
 
 //////////////PATIENS ROUTES///////////
-router.route("/register-patient").post(private, registerPatient);
+router.route("/register-patient").post(privateAdmin, registerPatient);
 router.route("/login-patient").post(loginPatient);
-router.route("/update-patient/:id").put(private, updatePatient);
-router.route("/delete-patient/:id").delete(private, deletePatient);
-router.route("/patients").get(private, getAllPatients);
-router.route("/patients/:id").get(private, getPatientById);
+router.route("/update-patient/:id").put(privateAdmin, updatePatient);
+router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);
+router.route("/patients").get(privateAdmin, getAllPatients);
+router.route("/patients/:id").get(privateAdmin, getPatientById);
 
 module.exports = router;

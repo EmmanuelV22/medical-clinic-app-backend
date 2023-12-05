@@ -13,22 +13,30 @@ const {
 //   getTreatmentsMedical,getTreatmentById } = require("../controller/treatment.controller");
 
 const router = express.Router();
-// const { private } = require("./middleware/auth");
+const { privateEmployees, privateDr, private } = require("../middleware/auth");
 
-router.route("/appointments-patient/:patient_id").get(getAppointmentPatients);
-router.route("/appointments-medical/:medical_id").get(getMedicalAppointments);
-router.route("/create-appointment/:id").post(createAppointment);
-router.route("/delete-appointment/:id").delete(deleteAppointment);
+router
+  .route("/appointments-patient/:patient_id")
+  .get(private, getAppointmentPatients);
+router
+  .route("/appointments-medical/:medical_id")
+  .get(privateEmployees, getMedicalAppointments);
+router.route("/create-appointment/:id").post(private, createAppointment);
+router.route("/delete-appointment/:id").delete(private, deleteAppointment);
 // router.route("/confirm-agenda/:id").put(ConfirmationAgendaById);
 
 // router.route("/history").get(getHistoryPatient);
 // router.route("/history/:id").get(getHistoryPatientById);
 // router.route("/create-history").post(createHistory);
 
-// router.route("/treatments/patient/:patient_id").get(getTreatmentsPatient);
-// router.route("/treatments/medical/:medical_id").get(getTreatmentsMedical);
-// router.route("/treatment/:id").get(getTreatmentById);
-// router.route("/create-treatment").post(createTreatment)
-// router.route("/update-treatment/:id").put(updateTreatment)
+// router
+//   .route("/treatments/patient/:patient_id")
+//   .get(private, getTreatmentsPatient);
+// router
+//   .route("/treatments/medical/:medical_id")
+//   .get(private, getTreatmentsMedical);
+// router.route("/treatment/:id").get(private, getTreatmentById);
+// router.route("/create-treatment").post(privateDr, createTreatment);
+// router.route("/update-treatment/:id").put(privateDr, updateTreatment);
 
 module.exports = router;
