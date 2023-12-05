@@ -4,7 +4,7 @@ import { Context } from "../../store/appContext";
 import PatientDetails from "../../components/admin/PatientDetails";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
-import ConfirmDeletePatient from "../../components/patients/ConfirmDeletePatient";
+import ConfirmDeletePatient from "../../components/admin/ConfirmDeletePatient";
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
@@ -17,14 +17,14 @@ const AdminAllPatients = () => {
 
   const headers = [
     { field: "id", label: "ID" },
-    { field: "firstname", label: "Firstname" },
-    { field: "lastname", label: "Lastname" },
+    { field: "firstname", label: "Nombre" },
+    { field: "lastname", label: "Apellido" },
     { field: "dni", label: "DNI" },
-    { field: "address", label: "Address" },
-    { field: "birthday", label: "Birthday" },
+    { field: "address", label: "Dirección" },
+    { field: "birthday", label: "Fecha de nacimiento" },
     { field: "email", label: "Email" },
-    { field: "createdAt", label: "Created at" },
-    { field: "updatedAt", label: "Updated at" },
+    { field: "createdAt", label: "Creado" },
+    { field: "updatedAt", label: "Actualizado" },
     { field: "actions", label: "Acciones" },
   ];
 

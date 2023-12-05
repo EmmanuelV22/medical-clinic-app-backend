@@ -19,3 +19,17 @@ exports.createHistory = async (req, res, next) => {
       .json({ message: "History success created", history: results.insertId });
   });
 };
+
+exports.getHistories = (req, res, next) => {
+  const query = "SELECT * from history";
+
+  connectDB.query(query, (error, results, fields) => {
+    if (error) {
+      res
+        .status(400)
+        .json({ message: "Error histories not found", error: error.message });
+    }
+
+    res.status(200).json(results);
+  });
+};
