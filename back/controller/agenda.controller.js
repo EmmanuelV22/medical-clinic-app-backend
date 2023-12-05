@@ -98,17 +98,3 @@ exports.getMedicalAppointments = async (req, res, next) => {
 
 //////////////////////////////////////
 
-// exports.StateAgendaById = async (req, res, next) => {
-//   const  id  = req.params.id;
-//   const query = "UPDATE agenda SET state = 1 WHERE id = ?";
-//   const values = [id];
-
-//   connectDB.query(query, values, (error, results, fields) => {
-//     if (error) {
-//       return res
-//         .status(400)
-//         .json({ message: "Error updating agenda", error: error.message });
-//     }
-//     return res.status(200).json({ message: "Confirm success" });
-//   });
-// };

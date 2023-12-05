@@ -18,6 +18,9 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [personalID, setPersonalID] = useState("");
   const [bloodGroup, setBloodGroop] = useState("");
+  const [days_off, setDaysOff] = useState(0);
+  const [start_time, setStartTime] = useState(0);
+  const [end_time, setEndTime] = useState(0);
 
   const { actions } = useContext(Context);
   // let navigate = useNavigate();
@@ -41,9 +44,11 @@ const Register = () => {
       DNI,
       address,
       password,
-      // birthday,
       personalID,
-      specialist
+      specialist,
+      days_off,
+      start_time,
+      end_time
     );
     console.log(request);
     if (request) {
@@ -53,9 +58,11 @@ const Register = () => {
       setDNI("");
       setAddress("");
       setPassword("");
-      // setBirthDay("")
       setPersonalID("");
       setSpecialist("");
+      setDaysOff("");
+      setStartTime("");
+      setEndTime("")
     } else {
       console.log("Error creating employee");
     }
@@ -213,6 +220,54 @@ const Register = () => {
               placeholder="Adress"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="days_off"
+            >
+              Days Off
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="days_off"
+              type="text"
+              placeholder="Days_off"
+              value={days_off}
+              onChange={(e) => setDaysOff(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="start_time"
+            >
+              Start Time
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="start_time"
+              type="text"
+              placeholder="Start Time"
+              value={start_time}
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="end_time"
+            >
+              End Time
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="end_time"
+              type="text"
+              placeholder="End Time"
+              value={end_time}
+              onChange={(e) => setEndTime(e.target.value)}
             />
           </div>
           <div className="mb-6">
