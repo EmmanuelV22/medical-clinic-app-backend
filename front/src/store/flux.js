@@ -374,7 +374,8 @@ const getState = ({ getStore, getActions, setStore }) => {
               patient_id,
               medical_id,
               available,
-            }
+            },
+            config
           );
           console.log(response);
           return response;
