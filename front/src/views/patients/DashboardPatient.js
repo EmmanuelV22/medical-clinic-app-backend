@@ -7,11 +7,11 @@ import Navbar from "../../components/Navbar";
 import CardAppointment from "../../components/patients/CardAppointment";
 
 const DashboardPatient = () => {
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
 
   useEffect(() => {
     actions.getAllPatients();
-  }, []); // Assurez-vous que votre useEffect dépend de ce qui est nécessaire, sinon supprimez le tableau de dépendances []
+  }, []);
 
   return (
     <div>

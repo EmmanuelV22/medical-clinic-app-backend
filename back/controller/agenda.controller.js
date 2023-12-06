@@ -98,3 +98,24 @@ exports.getMedicalAppointments = async (req, res, next) => {
 
 //////////////////////////////////////
 
+exports.ConfirmationAgendaById = async (req, res, next) => {
+  const appointmentId = req.params.appointmentId;
+  const newState = req.body.state; // Assurez-vous que votre requête inclut le nouvel état
+
+  // Votre requête SQL pour mettre à jour l'état du rendez-vous
+  const query = "UPDATE agenda SET state = ? WHERE id = ?";
+  const values = [newState, appointmentId];
+
+  connectDB.query(query, values, (error, results) => {
+    if (error) {
+      return res.status(400).json({
+        message: "Error updating appointment state",
+        error: error.message,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Update appointment state success", results });
+  });
+};

@@ -20,6 +20,7 @@ const Login = () => {
         window.location.reload();
       } else {
         navigate("/dashboard-doctor");
+        window.location.reload();
       }
     } else {
       alert("Erreur, vérifiez vos infos");

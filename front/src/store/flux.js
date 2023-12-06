@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       employee: [],
       isAuth: false,
       turnos: {},
+      myAppointments: [],
     },
     actions: {
       dateFormater: (date) => {
@@ -394,11 +395,24 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
-            console.log(data);
+            const store = getStore();
+            setStore({ ...store, myAppointments: data.agenda });
             return data;
           }
         } catch (error) {
           console.log("Error obteniendo citas del medico:", error);
+        }
+      },
+      updateAppointmentState: async (appointmentId, newState) => {
+        try {
+          const response = await axios.put(
+            `${API}/confirm-agenda/${appointmentId}`,
+            { state: newState },
+            config
+          );
+          console.log(response);
+        } catch (error) {
+          console.log("Error no se pudo actualizar el estado:", error);
         }
       },
     },

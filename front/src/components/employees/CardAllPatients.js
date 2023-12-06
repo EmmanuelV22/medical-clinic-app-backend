@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 
 const CardAllPatients = () => {
   const { store } = useContext(Context);
-
   return (
     <div>
-      {store.employee && store.employee.specialist === "admin" ? (
+      {store.employee &&
+      store.employee.specialist !== "admin" &&
+      store.employee.specialist !== "enfermero" &&
+      store.employee.specialist !== "enfermera" ? (
         <div className="card" style={{ width: "18rem" }}>
           <div className="card-body">
             <h5 className="card-title">Lista de pacientes</h5>
@@ -18,7 +20,7 @@ const CardAllPatients = () => {
           </div>
         </div>
       ) : (
-        <h1>Espacio resevado a los administradores!</h1>
+        <h1>Espacio resevado al personal medical!</h1>
       )}
     </div>
   );
