@@ -7,13 +7,29 @@ import SearchBar from "../../components/SearchBar";
 
 const MyPatients = () => {
   const { store, actions } = useContext(Context);
-  const doctorID = store.employee.id;
+  const doctorID = store.employee ? store.employee.id : null;
   const [searchError, setSearchError] = useState(false);
-  const [filteredPatients, setFilteredPatients] = useState([]);
+  const [filteredPatientsList, setFilteredPatientsList] = useState([]);
+
+  const getMyPatients = async () => {
+    if (doctorID) {
+      await actions.getAllPatients();
+      await actions.loadMedicalAppointmentsForDr(doctorID);
+    }
+  };
 
   useEffect(() => {
-    actions.loadMedicalAppointmentsForDr(doctorID);
-  }, []);
+    if (doctorID !== null) {
+      getMyPatients();
+    }
+  }, [doctorID]);
+
+  // Filtrer les patients en fonction des rendez-vous médicaux
+  const filteredPatients = store.patients.filter((patient) =>
+    store.myAppointments.some(
+      (appointment) => appointment.patient_id === patient.id
+    )
+  );
 
   const headers = [
     { field: "id", label: "ID" },
@@ -49,40 +65,28 @@ const MyPatients = () => {
             title="historial clínica"
             style={{ border: "none", background: "transparent" }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-report-medical"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#36a2a3"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ border: "none" }}
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-              <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-              <path d="M10 14l4 0" />
-              <path d="M12 12l0 4" />
-            </svg>
+            {/* Votre icône SVG */}
           </button>
         </td>
       </tr>
     </React.Fragment>
   );
-
   const handleSearch = (query) => {
-    const filtered = store.patients.filter(
-      (patient) =>
-        patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        patient.lastname.toLowerCase().includes(query.toLowerCase())
-    );
-    // Set searchError to true if no employees found
+    const filtered = store.patients
+      .filter((patient) =>
+        store.myAppointments.some(
+          (appointment) => appointment.patient_id === patient.id
+        )
+      )
+      .filter(
+        (patient) =>
+          patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
+          patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
+          patient.dni.toString().includes(query)
+      );
+
     setSearchError(filtered.length === 0);
-    setFilteredPatients(filtered);
+    setFilteredPatientsList(filtered);
   };
 
   return (
@@ -92,7 +96,7 @@ const MyPatients = () => {
           className="text-center font-bold my-4"
           style={{ fontSize: "2.5rem" }}
         >
-          Lista de pacientes:
+          Mis pacientes:
         </h1>
         <SearchBar onSearch={handleSearch} />
         {searchError && (
@@ -107,7 +111,9 @@ const MyPatients = () => {
           <SortingTable
             headers={headers}
             data={
-              filteredPatients.length > 0 ? filteredPatients : store.myPatients
+              filteredPatientsList.length > 0
+                ? filteredPatientsList
+                : filteredPatients
             }
             renderRow={renderRow}
           />
