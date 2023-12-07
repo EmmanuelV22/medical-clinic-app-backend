@@ -4,6 +4,7 @@ const {
   getMedicalAppointments,
   createAppointment,
   deleteAppointment,
+  ConfirmationAgendaById,
 } = require("../controller/agenda.controller");
 
 // const { createHistory } = require("../controller/history.controller");
@@ -18,7 +19,13 @@ const {
 
 const router = express.Router();
 const { privateEmployees, privateDr, private } = require("../middleware/auth");
+const {
+  getHistoryByPatient,
+  getHistories,
+  createHistory,
+} = require("../controller/history.controller");
 
+/////////////////turnos rutas////////////////////
 router
   .route("/appointments-patient/:patient_id")
   .get(private, getAppointmentPatients);
@@ -27,12 +34,16 @@ router
   .get(private, getMedicalAppointments);
 router.route("/create-appointment/:id").post(private, createAppointment);
 router.route("/delete-appointment/:id").delete(private, deleteAppointment);
-// router.route("/confirm-agenda/:id").put(ConfirmationAgendaById);
+router
+  .route("/confirm-agenda/:appointmentId")
+  .put(privateEmployees, ConfirmationAgendaById);
 
-// router.route("/history").get(getHistoryPatient);
-// router.route("/history/:id").get(getHistoryPatientById);
-// router.route("/create-history").post(createHistory);
+/////////////////historial clinica rutas////////////////////
+router.route("/history").get(private, getHistories);
+router.route("/history/:id").get(private, getHistoryByPatient);
+router.route("/create-history").post(private, createHistory);
 
+/////////////////tratamientos rutas////////////////////
 router
   .route("/treatments/patient/:patient_id")
   .get(private, getTreatmentsPatient);
