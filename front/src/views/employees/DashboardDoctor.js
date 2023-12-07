@@ -1,5 +1,6 @@
 import React , { useContext } from "react";
 import { Context } from "../../store/appContext";
+import CreateTreatment from "./CreateTreatment";
 
 const DashboardDoctor = () => {
   const { store } = useContext(Context);
@@ -7,8 +8,8 @@ const DashboardDoctor = () => {
   return (
     <div>
       {
-        store.employees?.specialist &&
-        store.employees.specialist !== "admin" ? <h1>doc dash</h1> : <div>
+        store.employee?.specialist &&
+        store.employee.specialist !== "admin" ? <CreateTreatment /> : <div>
         <h1>Acceso Denegado</h1>
       </div> }
         

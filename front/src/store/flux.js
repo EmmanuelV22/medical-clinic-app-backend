@@ -401,6 +401,37 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error obteniendo citas del medico:", error);
         }
       },
+      createTreatment: async (
+        patient_id,
+        resume,
+        medicine,
+        quantity,
+        initial_date,
+        exp_date,
+        medical_id,
+        patologies,
+        surgey,
+        finish_treatment
+      ) => {
+        try {
+          const response = await axios.post(`${API}/create-treatment`, {
+            patient_id,
+            resume,
+            medicine,
+            quantity,
+            initial_date,
+            exp_date,
+            medical_id,
+            patologies,
+            surgey,
+            finish_treatment,
+          });
+          console.log(response);
+          return response;
+        } catch (error) {
+          console.log("Error creando tratamiento", error);
+        }
+      },
     },
   };
 };

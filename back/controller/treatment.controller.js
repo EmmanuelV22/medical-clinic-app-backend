@@ -3,7 +3,6 @@ const connectDB = require("../server");
 exports.createTreatment = async (req, res, next) => {
   const {
     patient_id,
-    confirmation,
     resume,
     medicine,
     quantity,
@@ -16,11 +15,10 @@ exports.createTreatment = async (req, res, next) => {
   } = req.body;
 
   const query =
-    "INSERT INTO treatment (patient_id, confirmation , resume , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    "INSERT INTO treatment (patient_id, resume , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
   const values = [
     patient_id,
-    confirmation,
     resume,
     medicine,
     quantity,
@@ -38,21 +36,18 @@ exports.createTreatment = async (req, res, next) => {
         .status(400)
         .json({ message: "Error creating treatment", error: error.message });
     }
-    return res
-      .status(201)
-      .json({
-        message: "Treatment successful created",
-        treatment: results.insterId,
-      });
+    return res.status(201).json({
+      message: "Treatment successful created",
+      treatment: results.insertId,
+    });
   });
 };
 
 exports.updateTreatment = async (req, res, next) => {
-const id = req.params.id;
+  const id = req.params.id;
 
   const {
     patient_id,
-    confirmation,
     resume,
     medicine,
     quantity,
@@ -64,14 +59,13 @@ const id = req.params.id;
     finish_treatment,
   } = req.body;
 
-const updatedAt = new Date()
+  const updatedAt = new Date();
 
   const query =
-    "UPDATE treatment SET patient_id=?, confirmation=? , resume=? , medicine=? , quantity=? , initial_date=? , exp_date=?, medical_id=? , patologies=?, surgey=? , finish_treatment=?, updatedAt=? WHERE id=?";
+    "UPDATE treatment SET patient_id=?, resume=? , medicine=? , quantity=? , initial_date=? , exp_date=?, medical_id=? , patologies=?, surgey=? , finish_treatment=?, updatedAt=? WHERE id=?";
 
   const values = [
     patient_id,
-    confirmation,
     resume,
     medicine,
     quantity,
@@ -104,12 +98,10 @@ exports.getTreatmentsMedical = async (req, res, next) => {
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error loading medical treatments",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error loading medical treatments",
+        error: error.message,
+      });
     }
     if (results.length === 0) {
       return res.status(404).json({ message: "Treatments not found" });
@@ -128,12 +120,10 @@ exports.getTreatmentsPatient = async (req, res, next) => {
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error loading patient treatments",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error loading patient treatments",
+        error: error.message,
+      });
     }
     if (results.length === 0) {
       return res.status(404).json({ message: "Treatments not found" });

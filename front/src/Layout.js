@@ -10,6 +10,7 @@ import AdminAllPatients from "./views/admin/AdminAllPatients";
 import AdminAllEmployees from "./views/admin/AdminAllEmployees";
 import EmployeeDetail from "./components/admin/EmployeeDetail";
 import SpecialistPicker from "./components/SpecialistPicker";
+import CreateTreatment from "./views/employees/CreateTreatment";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -25,6 +26,7 @@ const Layout = () => {
         <Route path="/empleados" element={<AdminAllEmployees />}></Route>
         <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
         <Route path="/appointment-post" element={<SpecialistPicker />}></Route>
+        <Route path="/new-treatment" element={<CreateTreatment />}></Route>
       </Routes>
     </BrowserRouter>
   );
