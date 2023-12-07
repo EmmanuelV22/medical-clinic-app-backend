@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import es from "date-fns/locale/es";
@@ -33,19 +35,23 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  const arrayDeExcludes = [];
+  const [arrayDeExcludes, setArrayDeExcludes] = useState([]);
+
   useEffect(() => {
-    actions.loadMedicalAppointments(doctorId).then((arrAppointments) => {
+    const fetchAppointments = async () => {
+      const arrAppointments = await actions.loadMedicalAppointments(doctorId);
       if (arrAppointments) {
-        arrAppointments.agenda.forEach((e) => {
+        const updatedExcludes = arrAppointments.agenda.map((e) => {
           const [hora, minutos] = e.time.split(":").map(Number);
-          arrayDeExcludes.push(
-            new Date(e.year, e.month, e.date, hora, minutos)
-          );
+          return new Date(e.year, e.month, e.date, hora, minutos);
         });
+        // Actualizar el estado con las nuevas fechas ocupadas
+        setArrayDeExcludes(updatedExcludes);
       }
-    });
-  }, [arrayDeExcludes]);
+    };
+
+    fetchAppointments();
+  }, [doctorId]);
 
   const handleScheduleAppointment = async () => {
     if (selectedDate) {
@@ -70,7 +76,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           medical_id,
           available
         )
-        .then(window.location.reload())
+        // .then(window.location.reload())
 
         .catch((error) => {
           console.error("Error al planificar el turno", error.message);

@@ -20,7 +20,7 @@ const MyAppointments = () => {
 
   const getMyAppointments = async () => {
     if (doctorID) {
-      await actions.loadMedicalAppointments(doctorID);
+      await actions.loadMedicalAppointmentsForDr(doctorID);
       actions.getAllPatients();
     }
   };
@@ -45,7 +45,7 @@ const MyAppointments = () => {
     try {
       await actions.updateAppointmentState(appointmentId, newState);
       // Rechargez les rendez-vous après la mise à jour de l'état
-      actions.loadMedicalAppointments(doctorID);
+      actions.loadMedicalAppointmentsForDr(doctorID);
     } catch (error) {
       console.log("Error updating appointment state:", error);
     }

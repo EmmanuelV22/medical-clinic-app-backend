@@ -395,6 +395,22 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
+            console.log(data);
+            return data;
+          }
+        } catch (error) {
+          console.log("Error obteniendo citas del medico:", error);
+        }
+      },
+      loadMedicalAppointmentsForDr: async (medical_id) => {
+        try {
+          const response = await axios.get(
+            `${API}/appointments-medical/${medical_id}`,
+            config
+          );
+          if (response.status === 200) {
+            const data = await response.data;
+            console.log(data);
             const store = getStore();
             setStore({ ...store, myAppointments: data.agenda });
             return data;
@@ -403,7 +419,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error obteniendo citas del medico:", error);
         }
       },
-
       createTreatment: async (
         patient_id,
         resume,
@@ -445,7 +460,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(response);
         } catch (error) {
           console.log("Error no se pudo actualizar el estado:", error);
-
         }
       },
     },
