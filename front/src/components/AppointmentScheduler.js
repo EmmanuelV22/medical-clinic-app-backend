@@ -45,7 +45,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
         });
       }
     });
-  }, []);
+  }, [arrayDeExcludes]);
 
   const handleScheduleAppointment = async () => {
     if (selectedDate) {
@@ -71,6 +71,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           available
         )
         .then(window.location.reload())
+
         .catch((error) => {
           console.error("Error al planificar el turno", error.message);
         });

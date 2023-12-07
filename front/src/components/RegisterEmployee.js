@@ -22,7 +22,6 @@ const RegisterEmployee = () => {
       DNI,
       address,
       password,
-      // birthday,
       personalID,
       specialist
     );
@@ -34,7 +33,6 @@ const RegisterEmployee = () => {
       setDNI("");
       setAddress("");
       setPassword("");
-      // setBirthDay("")
       setPersonalID("");
       setSpecialist("");
     } else {
@@ -50,7 +48,6 @@ const RegisterEmployee = () => {
     setDNI("");
     setAddress("");
     setPassword("");
-    // setBirthDay("")
     setPersonalID("");
     setSpecialist("");
   };
