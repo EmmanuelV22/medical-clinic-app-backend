@@ -51,7 +51,7 @@ router
   .route("/treatments/medical/:medical_id")
   .get(private, getTreatmentsMedical);
 router.route("/treatment/:id").get(private, getTreatmentById);
-router.route("/create-treatment").post(privateDr, createTreatment);
+router.route("/create-treatment").post(createTreatment);
 router.route("/update-treatment/:id").put(privateDr, updateTreatment);
 
 module.exports = router;
