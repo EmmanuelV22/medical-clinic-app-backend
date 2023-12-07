@@ -33,19 +33,24 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  const arrayDeExcludes = [];
-  useEffect(() => {
-    actions.loadMedicalAppointments(doctorId).then((arrAppointments) => {
-      if (arrAppointments) {
-        arrAppointments.agenda.forEach((e) => {
-          const [hora, minutos] = e.time.split(":").map(Number);
-          arrayDeExcludes.push(
-            new Date(e.year, e.month, e.date, hora, minutos)
-          );
-        });
-      }
-    });
-  }, [arrayDeExcludes]);
+  const [arrayDeExcludes, setArrayDeExcludes] = useState([]);
+
+useEffect(() => {
+  const fetchAppointments = async () => {
+    const arrAppointments = await actions.loadMedicalAppointments(doctorId);
+    if (arrAppointments) {
+      const updatedExcludes = arrAppointments.agenda.map((e) => {
+        const [hora, minutos] = e.time.split(":").map(Number);
+        return new Date(e.year, e.month, e.date, hora, minutos);
+      });
+      // Actualizar el estado con las nuevas fechas ocupadas
+      setArrayDeExcludes(updatedExcludes);
+    }
+  };
+
+  fetchAppointments();
+}, [doctorId]); // Dependencia doctorId, no arrayDeExcludes
+
 
   const handleScheduleAppointment = async () => {
     if (selectedDate) {

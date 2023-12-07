@@ -395,8 +395,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
-            const store = getStore();
-            setStore({ ...store, myAppointments: data.agenda });
+            console.log(data);
+            // const store = getStore();
+            // setStore({ ...store, myAppointments: data.agenda });
             return data;
           }
         } catch (error) {
