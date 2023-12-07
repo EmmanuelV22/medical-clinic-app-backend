@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import es from "date-fns/locale/es";
@@ -35,22 +37,21 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   };
   const [arrayDeExcludes, setArrayDeExcludes] = useState([]);
 
-useEffect(() => {
-  const fetchAppointments = async () => {
-    const arrAppointments = await actions.loadMedicalAppointments(doctorId);
-    if (arrAppointments) {
-      const updatedExcludes = arrAppointments.agenda.map((e) => {
-        const [hora, minutos] = e.time.split(":").map(Number);
-        return new Date(e.year, e.month, e.date, hora, minutos);
-      });
-      // Actualizar el estado con las nuevas fechas ocupadas
-      setArrayDeExcludes(updatedExcludes);
-    }
-  };
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const arrAppointments = await actions.loadMedicalAppointments(doctorId);
+      if (arrAppointments) {
+        const updatedExcludes = arrAppointments.agenda.map((e) => {
+          const [hora, minutos] = e.time.split(":").map(Number);
+          return new Date(e.year, e.month, e.date, hora, minutos);
+        });
+        // Actualizar el estado con las nuevas fechas ocupadas
+        setArrayDeExcludes(updatedExcludes);
+      }
+    };
 
-  fetchAppointments();
-}, [doctorId]); // Dependencia doctorId, no arrayDeExcludes
-
+    fetchAppointments();
+  }, [doctorId]);
 
   const handleScheduleAppointment = async () => {
     if (selectedDate) {

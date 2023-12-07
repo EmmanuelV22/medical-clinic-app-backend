@@ -1,19 +1,21 @@
 /* eslint-disable no-lone-blocks */
 /* eslint-disable no-unreachable */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from "react";
-import { Context } from "../../store/appContext";
+import React, { useContext } from "react";
 import Navbar from "../../components/Navbar";
 import CardAppointment from "../../components/patients/CardAppointment";
+import { Context } from "../../store/appContext";
 
 const DashboardPatient = () => {
-  const { actions } = useContext(Context);
-
-
+  const { store } = useContext(Context);
   return (
     <div>
-      <Navbar />
-      <CardAppointment />
+      {store.patient && (
+        <>
+          <Navbar />
+          <CardAppointment />
+        </>
+      )}
     </div>
   );
 };

@@ -12,7 +12,7 @@ const MyPatients = () => {
   const [filteredPatients, setFilteredPatients] = useState([]);
 
   useEffect(() => {
-    actions.loadMedicalAppointments(doctorID);
+    actions.loadMedicalAppointmentsForDr(doctorID);
   }, []);
 
   const headers = [
