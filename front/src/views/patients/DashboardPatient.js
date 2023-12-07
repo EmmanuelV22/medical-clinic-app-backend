@@ -7,12 +7,6 @@ import Navbar from "../../components/Navbar";
 import CardAppointment from "../../components/patients/CardAppointment";
 
 const DashboardPatient = () => {
-  const { actions } = useContext(Context);
-
-  useEffect(() => {
-    actions.getAllPatients();
-  }, []);
-
   return (
     <div>
       <Navbar />

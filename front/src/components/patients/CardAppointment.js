@@ -20,7 +20,7 @@ const CardAppointment = () => {
           </div>
         </div>
       ) : (
-        <h1>Espacio resevado a los administradores!</h1>
+        <h1>Espacio resevado a los pacientes!</h1>
       )}
     </div>
   );
