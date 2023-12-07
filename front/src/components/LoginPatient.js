@@ -9,15 +9,14 @@ const LoginPatient = () => {
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    const success = actions.loginPatient(dni, password);
+    const data = await actions.loginPatient(dni, password);
 
-    if (success) {
-      setDni("");
-      setPassword("");
-      navigate("/dashboard-patient");
+    if (data) {
+      const loggedInPatients = data.patients[0];
+      if (loggedInPatients) navigate("/dashboard-patient");
       window.location.reload();
     } else {
       alert("Error, log impossible");

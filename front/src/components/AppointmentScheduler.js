@@ -76,7 +76,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           medical_id,
           available
         )
-        // .then(window.location.reload())
+        .then(window.location.reload())
 
         .catch((error) => {
           console.error("Error al planificar el turno", error.message);
