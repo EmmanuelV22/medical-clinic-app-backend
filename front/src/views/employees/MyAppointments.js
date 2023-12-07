@@ -10,6 +10,7 @@ const MyAppointments = () => {
   const doctorID = store.employee ? store.employee.id : null;
   const [searchError, setSearchError] = useState(false);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [appointmentStatus, setAppointmentStatus] = useState({});
 
   const filteredPatients = store.patients.filter((patient) =>
     store.myAppointments.some(
@@ -17,11 +18,17 @@ const MyAppointments = () => {
     )
   );
 
+  const getMyAppointments = async () => {
+    if (doctorID) {
+      await actions.loadMedicalAppointments(doctorID);
+      actions.getAllPatients();
+    }
+  };
+
   useEffect(() => {
     if (doctorID !== null) {
-      actions.loadMedicalAppointments(doctorID);
+      getMyAppointments();
     }
-    actions.getAllPatients();
   }, [doctorID]);
 
   const headers = [
@@ -46,12 +53,20 @@ const MyAppointments = () => {
 
   const handleConfirmation = async (appointmentId) => {
     // Mettez à jour l'état pour la confirmation
-    await updateAppointmentState(appointmentId, "confirmado");
+    await updateAppointmentState(appointmentId, "asistido");
+    setAppointmentStatus((prevStatus) => ({
+      ...prevStatus,
+      [appointmentId]: "asistido",
+    }));
   };
 
   const handleCancellation = async (appointmentId) => {
     // Mettez à jour l'état pour l'annulation
     await updateAppointmentState(appointmentId, "no asistido");
+    setAppointmentStatus((prevStatus) => ({
+      ...prevStatus,
+      [appointmentId]: "no asistido",
+    }));
   };
 
   const renderRow = (appointment) => (
@@ -69,32 +84,36 @@ const MyAppointments = () => {
               <td>{patient.lastname}</td>
               <td>{patient.dni}</td>
               <td>{patient.email}</td>
-              <td>
-                <button
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    color: "green",
-                  }}
-                  title="confirmar"
-                  onClick={() => handleConfirmation(appointment.id)}
-                >
-                  &#10003;
-                </button>
-              </td>
-              <td>
-                <button
-                  style={{
-                    border: "none",
-                    background: "transparent",
-                    color: "red",
-                  }}
-                  title="cancelar (no asistido)"
-                  onClick={() => handleCancellation(appointment.id)}
-                >
-                  &#10005;
-                </button>
-              </td>
+              {appointment.state === "asistido" && <td>Asistido</td>}
+              {appointment.state === "no asistido" && <td>No asistido</td>}
+              {appointment.state !== "asistido" &&
+                appointment.state !== "no asistido" && (
+                  <td style={{ margin: "auto" }}>
+                    <button
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        color: "green",
+                      }}
+                      title="confirmar"
+                      onClick={() => handleConfirmation(appointment.id)}
+                    >
+                      &#10003;
+                    </button>
+                    <button
+                      style={{
+                        border: "none",
+                        background: "transparent",
+                        color: "red",
+                        marginLeft: "15px",
+                      }}
+                      title="cancelar (no asistido)"
+                      onClick={() => handleCancellation(appointment.id)}
+                    >
+                      &#10005;
+                    </button>
+                  </td>
+                )}
             </React.Fragment>
           ))}
       </tr>
