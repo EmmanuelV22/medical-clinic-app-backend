@@ -16,15 +16,15 @@ const AdminAllPatients = () => {
   }, []);
 
   const headers = [
-    { field: "id", label: "ID" },
-    { field: "firstname", label: "Nombre" },
-    { field: "lastname", label: "Apellido" },
-    { field: "dni", label: "DNI" },
-    { field: "address", label: "Dirección" },
-    { field: "birthday", label: "Fecha de nacimiento" },
-    { field: "email", label: "Email" },
-    { field: "createdAt", label: "Creado" },
-    { field: "updatedAt", label: "Actualizado" },
+    { field: "id", label: "ID", sortable: true },
+    { field: "firstname", label: "Nombre", sortable: true },
+    { field: "lastname", label: "Apellido", sortable: true },
+    { field: "dni", label: "DNI", sortable: true },
+    { field: "address", label: "Dirección", sortable: true },
+    { field: "birthday", label: "Fecha de nacimiento", sortable: true },
+    { field: "email", label: "Email", sortable: true },
+    { field: "createdAt", label: "Creado", sortable: true },
+    { field: "updatedAt", label: "Actualizado", sortable: true },
     { field: "actions", label: "Acciones" },
   ];
 
@@ -120,7 +120,8 @@ const AdminAllPatients = () => {
     const filtered = store.patients.filter(
       (patient) =>
         patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        patient.lastname.toLowerCase().includes(query.toLowerCase())
+        patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
+        patient.dni.toString().includes(query)
     );
     // Set searchError to true if no employees found
     setSearchError(filtered.length === 0);

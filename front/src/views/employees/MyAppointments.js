@@ -11,6 +11,7 @@ const MyAppointments = () => {
   const [searchError, setSearchError] = useState(false);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [appointmentStatus, setAppointmentStatus] = useState({});
+  const [sortedAppointments, setSortedAppointments] = useState([]);
 
   const filteredPatients = store.patients.filter((patient) =>
     store.myAppointments.some(
@@ -22,6 +23,17 @@ const MyAppointments = () => {
     if (doctorID) {
       await actions.loadMedicalAppointmentsForDr(doctorID);
       actions.getAllPatients();
+
+      // Tri des rendez-vous par ordre chronologique
+      const sortedAppointments = [...store.myAppointments].sort((a, b) => {
+        // Convertir les dates en objets Date pour la comparaison
+        const dateA = new Date(`${a.year}-${a.month}-${a.date} ${a.time}`);
+        const dateB = new Date(`${b.year}-${b.month}-${b.date} ${b.time}`);
+
+        return dateA - dateB;
+      });
+
+      setSortedAppointments(sortedAppointments);
     }
   };
 
@@ -32,13 +44,21 @@ const MyAppointments = () => {
   }, [doctorID]);
 
   const headers = [
-    { field: "date", label: "Fecha" },
-    { field: "time", label: "Hora" },
-    { field: "patient.firstname", label: "Nombre del Paciente" },
-    { field: "patient.lastname", label: "Apellido del Paciente" },
-    { field: "patient.dni", label: "DNI del Paciente" },
-    { field: "patient.email", label: "Email del Paciente" },
-    { field: "actions", label: "Estado" },
+    { field: "date", label: "Fecha", sortable: false },
+    { field: "time", label: "Hora", sortable: false },
+    {
+      field: "patient.firstname",
+      label: "Nombre del Paciente",
+      sortable: false,
+    },
+    {
+      field: "patient.lastname",
+      label: "Apellido del Paciente",
+      sortable: false,
+    },
+    { field: "patient.dni", label: "DNI del Paciente", sortable: false },
+    { field: "patient.email", label: "Email del Paciente", sortable: false },
+    { field: "actions", label: "Estado", sortable: false },
   ];
 
   const updateAppointmentState = async (appointmentId, newState) => {
@@ -69,56 +89,61 @@ const MyAppointments = () => {
     }));
   };
 
-  const renderRow = (appointment) => (
-    <React.Fragment key={appointment.id}>
-      <tr className="infos-contain">
-        <td>
-          {appointment.date}/{appointment.month}/{appointment.year}
-        </td>
-        <td>{appointment.time}</td>
-        {filteredPatients
-          .filter((patient) => appointment.patient_id === patient.id)
-          .map((patient) => (
-            <React.Fragment key={patient.id}>
-              <td>{patient.firstname}</td>
-              <td>{patient.lastname}</td>
-              <td>{patient.dni}</td>
-              <td>{patient.email}</td>
-              {appointment.state === "asistido" && <td>Asistido</td>}
-              {appointment.state === "no asistido" && <td>No asistido</td>}
-              {appointment.state !== "asistido" &&
-                appointment.state !== "no asistido" && (
-                  <td style={{ margin: "auto" }}>
-                    <button
-                      style={{
-                        border: "none",
-                        background: "transparent",
-                        color: "green",
-                      }}
-                      title="confirmar"
-                      onClick={() => handleConfirmation(appointment.id)}
-                    >
-                      &#10003;
-                    </button>
-                    <button
-                      style={{
-                        border: "none",
-                        background: "transparent",
-                        color: "red",
-                        marginLeft: "15px",
-                      }}
-                      title="cancelar (no asistido)"
-                      onClick={() => handleCancellation(appointment.id)}
-                    >
-                      &#10005;
-                    </button>
-                  </td>
-                )}
-            </React.Fragment>
-          ))}
-      </tr>
-    </React.Fragment>
-  );
+  const renderRow = (appointment) => {
+    // Formater le jour avec deux chiffres
+    const formattedDay = String(appointment.date).padStart(2, "0");
+
+    return (
+      <React.Fragment key={appointment.id}>
+        <tr className="infos-contain">
+          <td>
+            {formattedDay}/{appointment.month}/{appointment.year}
+          </td>
+          <td>{appointment.time}</td>
+          {filteredPatients
+            .filter((patient) => appointment.patient_id === patient.id)
+            .map((patient) => (
+              <React.Fragment key={patient.id}>
+                <td>{patient.firstname}</td>
+                <td>{patient.lastname}</td>
+                <td>{patient.dni}</td>
+                <td>{patient.email}</td>
+                {appointment.state === "asistido" && <td>Asistido</td>}
+                {appointment.state === "no asistido" && <td>No asistido</td>}
+                {appointment.state !== "asistido" &&
+                  appointment.state !== "no asistido" && (
+                    <td style={{ margin: "auto" }}>
+                      <button
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          color: "green",
+                        }}
+                        title="confirmar"
+                        onClick={() => handleConfirmation(appointment.id)}
+                      >
+                        &#10003;
+                      </button>
+                      <button
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          color: "red",
+                          marginLeft: "15px",
+                        }}
+                        title="cancelar (no asistido)"
+                        onClick={() => handleCancellation(appointment.id)}
+                      >
+                        &#10005;
+                      </button>
+                    </td>
+                  )}
+              </React.Fragment>
+            ))}
+        </tr>
+      </React.Fragment>
+    );
+  };
 
   const handleSearch = (query) => {
     const filteredAppointments = store.myAppointments.filter((appointment) => {
@@ -164,7 +189,7 @@ const MyAppointments = () => {
             data={
               filteredAppointments.length > 0
                 ? filteredAppointments
-                : store.myAppointments
+                : sortedAppointments
             }
             renderRow={renderRow}
           />
