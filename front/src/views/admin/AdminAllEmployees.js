@@ -19,21 +19,21 @@ const AdminAllEmployees = () => {
   }, []);
 
   const headers = [
-    { field: "id", label: "ID" },
-    { field: "firstname", label: "Nombre" },
-    { field: "lastname", label: "Apellido" },
-    { field: "dni", label: "DNI" },
-    { field: "address", label: "Dirección" },
-    { field: "personalID", label: "ID personal" },
-    { field: "especialidad", label: "Especialidad" },
-    { field: "email", label: "Email" },
+    { field: "id", label: "ID", sortable: true },
+    { field: "firstname", label: "Nombre", sortable: true },
+    { field: "lastname", label: "Apellido", sortable: true },
+    { field: "dni", label: "DNI", sortable: true },
+    { field: "address", label: "Dirección", sortable: true },
+    { field: "personalID", label: "ID personal", sortable: true },
+    { field: "especialidad", label: "Especialidad", sortable: true },
+    { field: "email", label: "Email", sortable: true },
 
     { field: "days_off", label: "Dias Libres" },
-    { field: "start_time", label: "Hora de inicio" },
-    { field: "end_time", label: "Hora de finalizacion" },
+    { field: "start_time", label: "Hora de inicio", sortable: true },
+    { field: "end_time", label: "Hora de finalizacion", sortable: true },
 
-    { field: "createdAt", label: "Creado" },
-    { field: "updatedAt", label: "Actualizado" },
+    { field: "createdAt", label: "Creado", sortable: true },
+    { field: "updatedAt", label: "Actualizado", sortable: true },
 
     { field: "actions", label: "Acciones" },
   ];

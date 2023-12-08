@@ -15,7 +15,7 @@ import CreateTreatment from "./views/employees/CreateTreatment";
 
 import MyPatients from "./views/employees/MyPatients";
 import MyAppointments from "./views/employees/MyAppointments";
-
+import PatientData from "./views/employees/PatientData";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -28,6 +28,7 @@ const Layout = () => {
         <Route path="/dashboard-patient" element={<DashboardPatient />}></Route>
         <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
         <Route path="/pacientes" element={<AdminAllPatients />}></Route>
+        <Route path="/patients/:id" element={<PatientData />}></Route>
         <Route path="/mis-pacientes" element={<MyPatients />}></Route>
         <Route path="/mis-turnos" element={<MyAppointments />}></Route>
         <Route path="/empleados" element={<AdminAllEmployees />}></Route>

@@ -35,6 +35,6 @@ router.route("/login-patient").post(loginPatient);
 router.route("/update-patient/:id").put(privateAdmin, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);
 router.route("/patients").get(privateEmployees, getAllPatients);
-router.route("/patients/:id").get(privateEmployees, getPatientById);
+router.route("/patients/:id").get(private, getPatientById);
 
 module.exports = router;
