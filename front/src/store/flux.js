@@ -20,7 +20,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       isAuth: false,
       turnos: {},
       myAppointments: [],
-      patientData: {},
     },
     actions: {
       dateFormater: (date) => {
