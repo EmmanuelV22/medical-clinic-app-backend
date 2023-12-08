@@ -12,6 +12,8 @@ import EmployeeDetail from "./components/admin/EmployeeDetail";
 import SpecialistPicker from "./components/SpecialistPicker";
 
 import CreateTreatment from "./views/employees/CreateTreatment";
+import PatientTreatements from "./components/PatientTreatments";
+
 
 import MyPatients from "./views/employees/MyPatients";
 import MyAppointments from "./views/employees/MyAppointments";
@@ -34,6 +36,7 @@ const Layout = () => {
         <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
         <Route path="/appointment-post" element={<SpecialistPicker />}></Route>
         <Route path="/new-treatment" element={<CreateTreatment />}></Route>
+        <Route path="/patient-treatments/:patient_id" element={<PatientTreatements />}></Route>
       </Routes>
     </BrowserRouter>
   );
