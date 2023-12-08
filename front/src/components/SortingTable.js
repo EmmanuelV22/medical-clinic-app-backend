@@ -40,17 +40,16 @@ const SortingTable = ({ headers, data, renderRow }) => {
         <thead>
           <tr>
             {headers.map((header) => (
-              // Cada encabezado de columna es clickeable para activar el ordenamiento
-              <th
-                style={{ cursor: "pointer" }}
-                key={header.field}
-                className="sortable-header"
-                onClick={() => handleSort(header.field)}
-              >
-                {header.label}
-                {/* Muestra una flecha indicando el orden actual en el encabezado clickeado */}
-                {sortField === header.field && (
-                  <span>{sortOrder === "asc" ? " ▲" : " ▼"}</span>
+              <th key={header.field}>
+                {header.sortable ? (
+                  <span onClick={() => handleSort(header.field)}>
+                    {header.label}
+                    {sortField === header.field && (
+                      <span>{sortOrder === "asc" ? " ▲" : " ▼"}</span>
+                    )}
+                  </span>
+                ) : (
+                  <span>{header.label}</span>
                 )}
               </th>
             ))}

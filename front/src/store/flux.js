@@ -14,6 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
     store: {
       patients: [],
       patient: [],
+      patientData: {},
       employees: [],
       employee: [],
       isAuth: false,
@@ -89,9 +90,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (response.status === 200) {
             const data = response.data;
             console.log("Patient by ID", data);
-            // const store = getStore();
-            // setStore({ ...store, patient: data });
-            // return true;
+            const store = getStore();
+            setStore({ ...store, patientData: { patientData: data.patient } });
+            console.log(data.patient);
             return data.patient;
           }
         } catch (error) {
@@ -411,7 +412,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
-            console.log(data);
             const store = getStore();
             setStore({ ...store, myAppointments: data.agenda });
             return data;
