@@ -20,6 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       isAuth: false,
       turnos: {},
       myAppointments: [],
+      patientData: {},
     },
     actions: {
       dateFormater: (date) => {
@@ -460,6 +461,23 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(response);
         } catch (error) {
           console.log("Error no se pudo actualizar el estado:", error);
+        }
+      },
+      getTreatmentsPatient: async (patient_id) => {
+        try {
+          const response = await axios.get(
+            `${API}/treatments/patient/${patient_id}`,
+            config
+          );
+          // if (response.status === "200"){
+          const data = await response.data;
+          const store = getStore();
+          setStore({ ...store, patientData: { treatments: data.treatments } });
+          console.log(store.patientData);
+          return data;
+          // }
+        } catch (error) {
+          console.log("Error obteniendo tratamientos del paciente", error);
         }
       },
     },
