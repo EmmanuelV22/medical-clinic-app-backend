@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { Context } from "../../store/appContext";
 // { patient_id, medical_id }
