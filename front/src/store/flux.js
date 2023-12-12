@@ -15,6 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       patients: [],
       patient: [],
       patientData: {},
+      docData: {},
       employees: [],
       employee: [],
       isAuth: false,
@@ -73,6 +74,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(response);
           if (response.status === 200) {
             const data = response.data;
+            const store = getStore();
+            setStore({ ...store, docData: { docData: data.employee } });
             console.log("Employee by ID", data);
             return data.employee;
           }
@@ -90,8 +93,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             const data = response.data;
             console.log("Patient by ID", data);
             const store = getStore();
-            setStore({ ...store, patientData: { patientData: data.patient } });
-            console.log(data.patient);
+            setStore({
+              ...store,
+              patientData: {
+                ...store.patientData,
+                patientData: data.patient,
+              },
+            });
             return data.patient;
           }
         } catch (error) {
@@ -471,13 +479,24 @@ const getState = ({ getStore, getActions, setStore }) => {
           // if (response.status === "200"){
           const data = await response.data;
           const store = getStore();
-          setStore({ ...store, patientData: { treatments: data.treatments } });
-          console.log(store.patientData);
+          setStore({
+            ...store,
+            patientData: {
+              ...store.patientData,
+              treatments: data.treatments,
+            },
+          });
           return data;
           // }
         } catch (error) {
           console.log("Error obteniendo tratamientos del paciente", error);
         }
+      },
+      getHistoryPatientById: async (id) => {
+        try {
+          const response = await axios.get(`${API}/history/${id}`, config);
+          const data = response.data;
+        } catch (error) {}
       },
     },
   };

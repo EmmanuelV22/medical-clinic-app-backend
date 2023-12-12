@@ -7,7 +7,7 @@ const CreateTreatment = () => {
   const { actions, store } = useContext(Context);
 
   const patient_id = 8;
-  const medical_id = 5;
+  const medical_id = store.employee.id;
   //   const [patient_id, setPatientId] = useState(patient_id);
   const [resume, setResume] = useState("");
   const [medicine, setMedicine] = useState("");
