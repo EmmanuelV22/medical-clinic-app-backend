@@ -1,12 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import SortingTable from "./SortingTable";
 
 const PatientTreatement = () => {
   const { actions, store } = useContext(Context);
-  let navigate = useNavigate();
 
   const { patient_id } = useParams();
 

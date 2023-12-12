@@ -14,10 +14,10 @@ import SpecialistPicker from "./components/SpecialistPicker";
 import CreateTreatment from "./views/employees/CreateTreatment";
 import PatientTreatements from "./components/PatientTreatments";
 
-
 import MyPatients from "./views/employees/MyPatients";
 import MyAppointments from "./views/employees/MyAppointments";
 import PatientData from "./views/employees/PatientData";
+import HistoryByPatient from "./components/patients/HistoryByPatient";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -37,7 +37,11 @@ const Layout = () => {
         <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
         <Route path="/appointment-post" element={<SpecialistPicker />}></Route>
         <Route path="/new-treatment" element={<CreateTreatment />}></Route>
-        <Route path="/patient-treatments/:patient_id" element={<PatientTreatements />}></Route>
+        <Route path="/history/:id" element={<HistoryByPatient />}></Route>
+        <Route
+          path="/patient-treatments/:patient_id"
+          element={<PatientTreatements />}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );
