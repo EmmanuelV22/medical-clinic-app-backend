@@ -27,7 +27,7 @@ router.route("/login").post(login);
 router.route("/update/:id").put(privateAdmin, update);
 router.route("/delete/:id").delete(privateAdmin, deleteUser);
 router.route("/employees").get(private, getAllEmployees);
-router.route("/employees/:id").get(privateAdmin, getEmployeeById);
+router.route("/employees/:id").get(private, getEmployeeById);
 
 //////////////PATIENS ROUTES///////////
 router.route("/register-patient").post(privateAdmin, registerPatient);
