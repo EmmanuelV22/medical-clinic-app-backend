@@ -41,7 +41,9 @@ router
 /////////////////historial clinica rutas////////////////////
 router.route("/history").get(private, getHistories);
 router.route("/history/:id").get(private, getHistoryByPatient);
-router.route("/create-history").post(privateDr, createHistory);
+
+router.route("/create-history/:id").post(privateDr, createHistory);
+
 
 /////////////////tratamientos rutas////////////////////
 router

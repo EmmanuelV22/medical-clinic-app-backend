@@ -561,6 +561,32 @@ const getState = ({ getStore, getActions, setStore }) => {
           return response;
         } catch (error) {
           console.log("Error no se pudo actualizar el tratamiento:", error);
+           }
+      },
+      createHistoric: async (
+        patient_id,
+        medical_id,
+        agenda_id,
+        treatment_id,
+        description,
+        date
+      ) => {
+        try {
+          const response = await axios.post(
+            `${API}/create-history/${patient_id}`,
+            {
+              patient_id,
+              medical_id,
+              agenda_id,
+              treatment_id,
+              description,
+              date,
+            },
+            config
+          );
+          console.log(response);
+        } catch (error) {
+          console.log("No se pudo crear la hisoria:", error);
         }
       },
     },

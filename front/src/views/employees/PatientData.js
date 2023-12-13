@@ -1,13 +1,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import HistoryByPatient from "../../components/HistoryByPatient";
+import CreateHistoric from "../../components/employees/CreateHistoric";
 const PatientData = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
+  const [createHistoric, setCreateHistoric] = useState(false);
   const navigate = useNavigate();
+
+  const isCreating = () => {
+    setCreateHistoric(true);
+  };
+
+  const isNotCreating = () => {
+    setCreateHistoric(false);
+  };
 
   const handlePatientTreatments = async () => {
     try {
@@ -71,6 +81,14 @@ const PatientData = () => {
           <div>
             <HistoryByPatient />
           </div>
+          <div>
+            {!createHistoric ? (
+              <button onClick={isCreating}>Crear nuevo historia</button>
+            ) : (
+              <button onClick={isNotCreating}>Cancelar</button>
+            )}
+          </div>
+          <div>{createHistoric && <CreateHistoric id={id} />}</div>
           <button
             className="btn btn-success"
             onClick={() => handlePatientTreatments(id)}
