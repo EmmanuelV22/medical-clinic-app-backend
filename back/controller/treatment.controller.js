@@ -149,7 +149,7 @@ exports.getTreatmentById = async (req, res, next) => {
     if (results.length === 0) {
       return res.status(404).json({ message: "Treatment not found" });
     }
-    const treatment = results;
+    const treatment = results[0];
     return res
       .status(200)
       .json({ message: "Get treatment success", treatment });

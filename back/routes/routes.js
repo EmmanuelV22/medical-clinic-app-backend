@@ -41,7 +41,7 @@ router
 /////////////////historial clinica rutas////////////////////
 router.route("/history").get(private, getHistories);
 router.route("/history/:id").get(private, getHistoryByPatient);
-router.route("/create-history").post(private, createHistory);
+router.route("/create-history").post(privateDr, createHistory);
 
 /////////////////tratamientos rutas////////////////////
 router
@@ -51,7 +51,7 @@ router
   .route("/treatments/medical/:medical_id")
   .get(private, getTreatmentsMedical);
 router.route("/treatment/:id").get(private, getTreatmentById);
-router.route("/create-treatment").post(createTreatment);
+router.route("/create-treatment").post(privateDr, createTreatment);
 router.route("/update-treatment/:id").put(privateDr, updateTreatment);
 
 module.exports = router;
