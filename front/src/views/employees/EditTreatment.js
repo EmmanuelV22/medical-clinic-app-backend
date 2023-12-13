@@ -1,46 +1,89 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState , useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Context } from "../../store/appContext";
 // { patient_id, medical_id }
 
-const CreateTreatment = () => {
+const EditTreatment = () => {
   const { actions, store } = useContext(Context);
 
-  const { patient_id } = useParams();
+  const { treatment_id } = useParams();
 
   useEffect(() => {
-    getPatientData();
-  }, [patient_id]);
+    getTreatmentData();
+  }, [treatment_id]);
+
+  useEffect(() => {
+    // Actualizar los estados locales cuando treatment en el store cambie
+    const initialDate = new Date(store.treatment.initial_date);
+    const formattedDate = `${initialDate.getFullYear()}-${(
+      initialDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${initialDate.getDate().toString().padStart(2, "0")}`;
+
+    const expDate = new Date(store.treatment.exp_date);
+    const formattedExpDate = `${expDate.getFullYear()}-${(
+      expDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${expDate.getDate().toString().padStart(2, "0")}`;
+
+    setPatientId(store.treatment.patient_id);
+    setResume(store.treatment.resume);
+    setMedicine(store.treatment.medicine);
+    setQuantity(store.treatment.quantity);
+    setInitialDate(formattedDate);
+    setExpDate(formattedExpDate);
+    setPatologies(store.treatment.patologies);
+    setSurgey(store.treatment.surgey);
+    setFinishTreatment(store.treatment.finish_treatment);
+  }, [store.treatment]);
 
   const getPatientData = async () => {
     try {
-      const patientDetails = await actions.getPatientById(patient_id);
+      const patientDetails = await actions.getPatientById(
+        store.treatment.patient_id
+      );
+      // Si vous avez besoin de faire quelque chose avec les détails du patient, vous pouvez le faire ici
     } catch (error) {
       console.error(
-        "Error recuperando info del paciente",
+        "Erreur lors de la récupération des détails du patient",
         error
       );
+      // Gérer l'erreur ici, peut-être rediriger vers une page d'erreur
+    }
+  };
+
+  const getTreatmentData = async () => {
+    try {
+      const TreatmentDetails = await actions.getTreatmentById(treatment_id);
+      await getPatientData();
+    } catch (error) {
+      console.error("Error recuperando info del tratamiento", error);
     }
   };
 
   const medical_id = store.employee.id;
-  //   const [patient_id, setPatientId] = useState(patient_id);
-  const [resume, setResume] = useState("");
-  const [medicine, setMedicine] = useState("");
-  const [quantity, setQuantity] = useState(0);
-  const [initial_date, setInitialDate] = useState("");
-  const [exp_date, setExpDate] = useState("");
+  const [patient_id, setPatientId] = useState(store.treatment.patient_id);
+  const [resume, setResume] = useState(store.treatment.resume);
+  const [medicine, setMedicine] = useState(store.treatment.medicine);
+  const [quantity, setQuantity] = useState(store.treatment.quantity);
+  const [initial_date, setInitialDate] = useState(new Date());
+  const [exp_date, setExpDate] = useState(new Date());
   //   const [medical_id, setMedicalId] = useState(medical_id);
-  const [patologies, setPatologies] = useState("");
-  const [surgey, setSurgey] = useState("SI");
-  const [finish_treatment, setFinishTreatment] = useState(0);
+  const [patologies, setPatologies] = useState(store.treatment.patologies);
+  const [surgey, setSurgey] = useState(store.treatment.surgey);
+  const [finish_treatment, setFinishTreatment] = useState(
+    store.treatment.finish_treatment
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await actions
-      .createTreatment(
+      .updateTreatmentById(
+        treatment_id,
         patient_id,
         resume,
         medicine,
@@ -52,26 +95,36 @@ const CreateTreatment = () => {
         surgey,
         finish_treatment
       )
-      .then((res) => console.log("Tratamiento creado con exito", res));
+
+      .then((res) => {
+        console.log("Tratamiento modificado con exito", res);
+        //   window.location.reload()
+      });
   };
 
-  const handleClear = (e) => {
-    e.preventDefault();
-    // setPatientId("");
-    setResume("");
-    setMedicine("");
-    setQuantity("");
-    setInitialDate("");
-    setExpDate("");
-    // setMedicalId("");
-    setPatologies("");
-    setSurgey("");
-    setFinishTreatment("");
-  };
+  //   const handleClear = (e) => {
+  //     e.preventDefault();
+  //     // setPatientId("");
+  //     setResume("");
+  //     setMedicine("");
+  //     setQuantity("");
+  //     setInitialDate("");
+  //     setExpDate("");
+  //     // setMedicalId("");
+  //     setPatologies("");
+  //     setSurgey("");
+  //     setFinishTreatment("");
+  //   };
 
   return (
     <div>
-      <h1>Crear tratamiento para {store.patientData.patientData && store.patientData.patientData.firstname}{" "}{store.patientData.patientData && store.patientData.patientData.lastname}</h1>
+      <h1>
+        Editar tratamiento para{" "}
+        {store.patientData.patientData &&
+          store.patientData.patientData.firstname}{" "}
+        {store.patientData.patientData &&
+          store.patientData.patientData.lastname}
+      </h1>
       <div className="w-full max-w-xs">
         <form
           onSubmit={handleSubmit}
@@ -196,14 +249,31 @@ const CreateTreatment = () => {
               <option value="NO">No</option>
             </select>
           </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="finish_treatment"
+            >
+              ¿Finalizar tratamiento?
+            </label>
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="finish_treatment"
+              value={finish_treatment}
+              onChange={(e) => setFinishTreatment(e.target.value)}
+            >
+              <option value="0">No</option>
+              <option value="1">Sí</option>
+            </select>
+          </div>
 
           <div className="flex items-center justify-between">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Crear Tratamiento
+              Guardar Modificacion
             </button>
             <button
               className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-              onClick={handleClear}
+              onClick={() => window.location.reload()}
             >
               Cancelar
             </button>
@@ -214,4 +284,4 @@ const CreateTreatment = () => {
   );
 };
 
-export default CreateTreatment;
+export default EditTreatment;

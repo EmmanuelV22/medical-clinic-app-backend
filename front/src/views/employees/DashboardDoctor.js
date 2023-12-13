@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Context } from "../../store/appContext";
 
-import CreateTreatment from "./CreateTreatment";
 
 import Navbar from "../../components/Navbar";
 import CardMyPatients from "../../components/employees/CardMyPatients";
@@ -25,7 +24,7 @@ const DashboardDoctor = () => {
             <CardMyPatients />
             <CardAllPatients />
             <CardAppointments />
-         <CreateTreatment />
+         
           </div>
         </>
       ) : (

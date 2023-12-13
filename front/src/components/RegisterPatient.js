@@ -133,7 +133,7 @@ const RegisterPatient = () => {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="birthdayPatient"
-              type="text"
+              type="date"
               placeholder="12/12/2000"
               value={birthday}
               onChange={(e) => setBirthDay(e.target.value)}

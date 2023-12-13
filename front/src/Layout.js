@@ -18,7 +18,11 @@ import MyPatients from "./views/employees/MyPatients";
 import MyAppointments from "./views/employees/MyAppointments";
 import PatientData from "./views/employees/PatientData";
 import HistoryByPatient from "./components/HistoryByPatient";
+
+import EditTreatment from "./views/employees/EditTreatment";
+
 import CreateHistoric from "./components/employees/CreateHistoric";
+
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -43,6 +47,12 @@ const Layout = () => {
         <Route
           path="/patient-treatments/:patient_id"
           element={<PatientTreatements />}
+        ></Route>
+        <Route path="/createTreatment/patient/:patient_id"
+        element={<CreateTreatment />}
+        ></Route>
+        <Route path="/editTreatment/:treatment_id"
+        element={<EditTreatment />}
         ></Route>
       </Routes>
     </BrowserRouter>

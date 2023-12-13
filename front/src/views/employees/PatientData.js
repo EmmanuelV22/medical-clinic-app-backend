@@ -93,7 +93,15 @@ const PatientData = () => {
             className="btn btn-success"
             onClick={() => handlePatientTreatments(id)}
           >
-            Ver tratamiento
+            Ver tratamientos
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={
+              () => navigate(`/createTreatment/patient/${id}`)
+            }
+          >
+            Crear tratamiento
           </button>
         </div>
       )}

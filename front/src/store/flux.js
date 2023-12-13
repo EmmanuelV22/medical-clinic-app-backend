@@ -21,6 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       isAuth: false,
       turnos: {},
       myAppointments: [],
+      treatment: {},
     },
     actions: {
       dateFormater: (date) => {
@@ -509,6 +510,58 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log("Error obteniendo historia clínica del paciente", error);
         }
+      },
+      getTreatmentById: async (id) => {
+        try {
+          const response = await axios.get(`${API}/treatment/${id}`, config);
+          const data = response.data;
+          console.log(data);
+          const store = getStore();
+          setStore({
+            ...store,
+            treatment: data.treatment,
+          });
+          return data;
+        } catch (error) {
+          console.log("Error obteniendo datos del tratamiento", error);
+        }
+      },
+      updateTreatmentById: async (
+        id,
+        patient_id,
+        resume,
+        medicine,
+        quantity,
+        initial_date,
+        exp_date,
+        medical_id,
+        patologies,
+        surgey,
+        finish_treatment
+      ) => {
+        try {
+          const response = await axios.put(
+            `${API}/update-treatment/${id}`,
+            {
+              patient_id,
+              resume,
+              medicine,
+              quantity,
+              initial_date,
+              exp_date,
+              medical_id,
+              patologies,
+              surgey,
+              finish_treatment,
+            },
+            config
+          );
+          console.log(id);
+          console.log(response);
+          return response;
+        } catch (error) {
+          console.log("Error no se pudo actualizar el tratamiento:", error);
+           }
       },
       createHistoric: async (
         patient_id,

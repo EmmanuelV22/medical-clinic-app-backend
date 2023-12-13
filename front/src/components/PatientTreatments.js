@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 const PatientTreatement = () => {
   const { actions, store } = useContext(Context);
 
   const { patient_id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetTreatments();
@@ -16,7 +17,7 @@ const PatientTreatement = () => {
   const handleGetTreatments = async () => {
     patient_id && (await actions.getTreatmentsPatient(patient_id));
     patient_id && (await actions.getPatientById(patient_id));
-    console.log("CONSOLEEEE", store.patientData);
+    console.log("Console log from patientTreatements", store.patientData);
   };
 
   const getDoctorData = async (id) => {
@@ -43,6 +44,7 @@ const PatientTreatement = () => {
             <th>Doctor</th>
             <th>Terminado</th>
             <th>Actualizado</th>
+            <th>Editable</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +71,46 @@ const PatientTreatement = () => {
                   {treatment.updatedAt !== null
                     ? actions.dateFormater(treatment.updatedAt)
                     : "NO"}
+                </td>
+                <td>
+                  {treatment.finish_treatment ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="icon icon-tabler icon-tabler-pencil-x"
+                      width="44"
+                      height="44"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="#ff2825"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                      <path d="M13.5 6.5l4 4" />
+                      <path d="M22 22l-5 -5" />
+                      <path d="M17 22l5 -5" />
+                    </svg>
+                  ) : (
+                    <svg
+                      onClick={() => navigate(`/editTreatment/${treatment.id}`)}
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="icon icon-tabler icon-tabler-pencil"
+                      width="44"
+                      height="44"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="#2c3e50"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                      <path d="M13.5 6.5l4 4" />
+                    </svg>
+                  )}
                 </td>
               </tr>
             ))
