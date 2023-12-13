@@ -3,8 +3,7 @@
 import React, { useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
-import HistoryByPatient from "../../components/patients/HistoryByPatient";
-
+import HistoryByPatient from "../../components/HistoryByPatient";
 const PatientData = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
@@ -53,7 +52,9 @@ const PatientData = () => {
           </p>
           <p>
             Fecha de nacimiento:{" "}
-            <span>{store.patientData.patientData.birthday}</span>{" "}
+            <span>
+              {actions.dateFormater(store.patientData.patientData.birthday)}
+            </span>{" "}
           </p>
           <p>
             DNI: <span>{store.patientData.patientData.dni}</span>{" "}

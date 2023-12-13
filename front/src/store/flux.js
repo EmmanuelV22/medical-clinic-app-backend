@@ -496,7 +496,19 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.get(`${API}/history/${id}`, config);
           const data = response.data;
-        } catch (error) {}
+          console.log(data);
+          const store = getStore();
+          setStore({
+            ...store,
+            patientData: {
+              ...store.patientData,
+              history: data.historic,
+            },
+          });
+          return data;
+        } catch (error) {
+          console.log("Error obteniendo historia clínica del paciente", error);
+        }
       },
     },
   };
