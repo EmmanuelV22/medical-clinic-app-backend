@@ -17,7 +17,7 @@ import PatientTreatements from "./components/PatientTreatments";
 import MyPatients from "./views/employees/MyPatients";
 import MyAppointments from "./views/employees/MyAppointments";
 import PatientData from "./views/employees/PatientData";
-import HistoryByPatient from "./components/patients/HistoryByPatient";
+import HistoryByPatient from "./components/HistoryByPatient";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
