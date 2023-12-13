@@ -65,9 +65,11 @@ const PatientTreatement = () => {
                   )}
                 </td>
                 <td>{treatment.finish_treatment ? "SI" : "NO"}</td>
-                <td>{treatment.updatedAt !== null
-            ? actions.dateFormater(treatment.updatedAt)
-            : "NO"}</td>
+                <td>
+                  {treatment.updatedAt !== null
+                    ? actions.dateFormater(treatment.updatedAt)
+                    : "NO"}
+                </td>
               </tr>
             ))
           ) : (
@@ -83,13 +85,12 @@ const PatientTreatement = () => {
 
 const DoctorInfo = ({ medicalId, getDoctorData }) => {
   const [doctorData, setDoctorData] = useState(null);
-  const {store} = useContext(Context)
-  
+  const { store } = useContext(Context);
 
   useEffect(() => {
     const fetchDoctorData = async () => {
       const data = await getDoctorData(medicalId);
-      console.log("CONSOLE DE DATA",data)
+      console.log("CONSOLE DE DATA", data);
       setDoctorData(data);
     };
 
