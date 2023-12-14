@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState , useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Context } from "../../store/appContext";
@@ -11,17 +11,16 @@ const CreateTreatment = () => {
   const { patient_id } = useParams();
 
   useEffect(() => {
-    getPatientData();
+    if (patient_id) {
+      getPatientData();
+    }
   }, [patient_id]);
 
   const getPatientData = async () => {
     try {
       const patientDetails = await actions.getPatientById(patient_id);
     } catch (error) {
-      console.error(
-        "Error recuperando info del paciente",
-        error
-      );
+      console.error("Error recuperando info del paciente", error);
     }
   };
 
@@ -71,7 +70,13 @@ const CreateTreatment = () => {
 
   return (
     <div>
-      <h1>Crear tratamiento para {store.patientData.patientData && store.patientData.patientData.firstname}{" "}{store.patientData.patientData && store.patientData.patientData.lastname}</h1>
+      <h1>
+        Crear tratamiento para{" "}
+        {store.patientData.patientData &&
+          store.patientData.patientData.firstname}{" "}
+        {store.patientData.patientData &&
+          store.patientData.patientData.lastname}
+      </h1>
       <div className="w-full max-w-xs">
         <form
           onSubmit={handleSubmit}

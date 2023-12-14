@@ -22,7 +22,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       turnos: {},
       myAppointments: [],
       treatment: {},
-      notifications: []
+      notifications: [],
+      notificationPatient: [],
     },
     actions: {
       dateFormater: (date) => {
@@ -564,7 +565,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return response;
         } catch (error) {
           console.log("Error no se pudo actualizar el tratamiento:", error);
-           }
+        }
       },
       createHistoric: async (
         patient_id,
@@ -590,6 +591,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(response);
         } catch (error) {
           console.log("No se pudo crear la hisoria:", error);
+        }
+      },
+      getNotifications: async () => {
+        try {
+          const response = await axios.get(`${API}/notifications`, config);
+          const data = response.data;
+          console.log(data);
+          const store = getStore();
+          setStore({ ...store, notifications: data });
+          return data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getNotificationsById: async (id) => {
+        try {
+          const response = await axios.get(
+            `${API}/notifications/${id}`,
+            config
+          );
+          const data = response.data;
+          console.log(data);
+          const store = getStore();
+          setStore({ ...store, notificationById: data });
+          return data;
+        } catch (error) {
+          console.log(error);
         }
       },
     },

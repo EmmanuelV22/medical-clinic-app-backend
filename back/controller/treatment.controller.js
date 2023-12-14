@@ -1,6 +1,8 @@
 const connectDB = require("../server");
 
 exports.createTreatment = async (req, res, next) => {
+  console.log("User in createTreatment:", req.user);
+
   const {
     patient_id,
     resume,
@@ -30,16 +32,37 @@ exports.createTreatment = async (req, res, next) => {
     finish_treatment,
   ];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  connectDB.query(query, values, async (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({ message: "Error creating treatment", error: error.message });
+      return res.status(400).json({
+        message: "Error creating treatment",
+        error: error.message,
+      });
     }
-    return res.status(201).json({
-      message: "Treatment successful created",
-      treatment: results.insertId,
-    });
+
+    // Traitement créé avec succès, maintenant ajoutons la notification
+    const notificationQuery =
+      "INSERT INTO notifications (patient_id, medical_id, message) VALUES (?, ?, ?)";
+
+    const notificationValues = [
+      patient_id,
+      medical_id,
+      "Nuevo tratamiento creado para usted.",
+    ];
+
+    try {
+      await connectDB.query(notificationQuery, notificationValues);
+      return res.status(201).json({
+        message: "Treatment successfully created",
+        treatment: results.insertId,
+      });
+    } catch (notificationError) {
+      console.error("Error creating notification:", notificationError);
+      return res.status(500).json({
+        message: "Error creating treatment and notification",
+        error: notificationError.message,
+      });
+    }
   });
 };
 

@@ -24,6 +24,13 @@ const {
   getHistories,
   createHistory,
 } = require("../controller/history.controller");
+const {
+  getNotifications,
+  getNotificationsById,
+} = require("../controller/notifications.controller");
+
+router.route("/notifications").get(private, getNotifications);
+router.route("/notifications/:patient_id").get(private, getNotificationsById);
 
 /////////////////turnos rutas////////////////////
 router
@@ -44,7 +51,6 @@ router.route("/history/:id").get(private, getHistoryByPatient);
 
 router.route("/create-history/:id").post(privateDr, createHistory);
 
-
 /////////////////tratamientos rutas////////////////////
 router
   .route("/treatments/patient/:patient_id")
@@ -53,7 +59,7 @@ router
   .route("/treatments/medical/:medical_id")
   .get(private, getTreatmentsMedical);
 router.route("/treatment/:id").get(private, getTreatmentById);
-router.route("/create-treatment").post(privateDr, createTreatment);
+router.route("/create-treatment").post(private, createTreatment);
 router.route("/update-treatment/:id").put(privateDr, updateTreatment);
 
 module.exports = router;
