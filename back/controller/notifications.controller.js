@@ -36,3 +36,24 @@ exports.getNotificationsById = async (req, res, next) => {
       .json({ message: "Get notifications success", notifications });
   });
 };
+
+exports.stateNotifications = async (req, res, next) => {
+  const notificationsId = req.params.notificationsId;
+  const newState = req.body.state;
+
+  const query = "UPDATE notifications SET state = ? WHERE id = ?";
+  const values = [newState, notificationsId];
+
+  connectDB.query(query, values, (error, results) => {
+    if (error) {
+      return res.status(400).json({
+        message: "Error updating appointment state",
+        error: error.message,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Update notification state success", results });
+  });
+};

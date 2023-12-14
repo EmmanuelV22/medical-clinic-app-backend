@@ -5,7 +5,6 @@ import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import { useNavigate } from "react-router-dom";
-import Notifications from "../../components/patients/Notifications";
 
 const MyPatients = () => {
   const { store, actions } = useContext(Context);
@@ -135,7 +134,6 @@ const MyPatients = () => {
         >
           Mis pacientes:
         </h1>
-        <Notifications />
         <SearchBar onSearch={handleSearch} />
         {searchError && (
           <p className="text-center text-danger">

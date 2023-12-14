@@ -612,10 +612,22 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = response.data;
           console.log(data);
           const store = getStore();
-          setStore({ ...store, notificationById: data });
+          setStore({ ...store, notificationById: data.notifications });
           return data;
         } catch (error) {
           console.log(error);
+        }
+      },
+      updateNotificationsState: async (notificationsId, newState) => {
+        try {
+          const response = await axios.put(
+            `${API}/notifications-state/${notificationsId}`,
+            config,
+            { state: newState }
+          );
+          console.log(response);
+        } catch (error) {
+          console.log("Error no se pudo actualizar el estado:", error);
         }
       },
     },

@@ -40,7 +40,7 @@ exports.privatePatient = (req, res, next) => {
       if (error) {
         return res.status(401).json({ message: "Token is not valid" });
       }
-      if (!user.blood_group) {
+      if (user.specialist) {
         return res.status(403).json({ message: "Unauthorized access" });
       }
       req.user = user;
