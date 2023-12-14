@@ -99,6 +99,7 @@ const PatientTreatement = () => {
                       class="icon icon-tabler icon-tabler-pencil"
                       width="44"
                       height="44"
+                      cursor="pointer"
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="#2c3e50"
