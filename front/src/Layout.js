@@ -22,7 +22,7 @@ import HistoryByPatient from "./components/HistoryByPatient";
 import EditTreatment from "./views/employees/EditTreatment";
 
 import CreateHistoric from "./components/employees/CreateHistoric";
-
+import MyNotifications from "./components/patients/MyNotifications";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -45,14 +45,20 @@ const Layout = () => {
         <Route path="/history/:id" element={<HistoryByPatient />}></Route>
         <Route path="/create-history/:id" element={<CreateHistoric />}></Route>
         <Route
+          path="/notifications/:patient_id"
+          element={<MyNotifications />}
+        ></Route>
+        <Route
           path="/patient-treatments/:patient_id"
           element={<PatientTreatements />}
         ></Route>
-        <Route path="/createTreatment/patient/:patient_id"
-        element={<CreateTreatment />}
+        <Route
+          path="/createTreatment/patient/:patient_id"
+          element={<CreateTreatment />}
         ></Route>
-        <Route path="/editTreatment/:treatment_id"
-        element={<EditTreatment />}
+        <Route
+          path="/editTreatment/:treatment_id"
+          element={<EditTreatment />}
         ></Route>
       </Routes>
     </BrowserRouter>

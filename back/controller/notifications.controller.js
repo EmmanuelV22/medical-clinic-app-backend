@@ -37,6 +37,28 @@ exports.getNotificationsById = async (req, res, next) => {
   });
 };
 
+
+exports.stateNotifications = async (req, res, next) => {
+  const notificationsId = req.params.notificationsId;
+  const newState = req.body.state;
+
+  const query = "UPDATE notifications SET state = ? WHERE id = ?";
+  const values = [newState, notificationsId];
+
+  connectDB.query(query, values, (error, results) => {
+    if (error) {
+      return res.status(400).json({
+        message: "Error updating appointment state",
+        error: error.message,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Update notification state success", results });
+  });
+};
+
 exports.deleteNotifications = async (req ,res ,next) => {
 const id = req.params.id
 const query = "DELETE * from notifications WHERE id=?"
@@ -56,3 +78,4 @@ connectDB.query(query, values, (error, results, fields) => {
     .json({ message: "Delete notification success" });
 });
 }
+

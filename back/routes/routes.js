@@ -18,7 +18,15 @@ const {
 } = require("../controller/treatment.controller");
 
 const router = express.Router();
-const { privateEmployees, privateDr, private, privatePatient } = require("../middleware/auth");
+
+const {
+  privateEmployees,
+  privateDr,
+  private,
+  privatePatient,
+} = require("../middleware/auth");
+
+
 const {
   getHistoryByPatient,
   getHistories,
@@ -27,12 +35,23 @@ const {
 const {
   getNotifications,
   getNotificationsById,
+
+  stateNotifications,
+
   deleteNotifications
+
 } = require("../controller/notifications.controller");
 
+///////////////////Notificaciones rutas ///////////////////////////////
 router.route("/notifications").get(private, getNotifications);
 router.route("/notifications/:patient_id").get(private, getNotificationsById);
+
+router
+  .route("/notifications-state/:notificationsId")
+  .put(privatePatient, stateNotifications);
+
 router.route("notifications/delete/:id").delete(privatePatient, deleteNotifications)
+
 
 /////////////////turnos rutas////////////////////
 router
