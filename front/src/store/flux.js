@@ -620,6 +620,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
+      deleteNotifications: async (id) => {
+        try{
+          const response = await axios.delete(`${API}/notifications/delete/${id}`,config);
+          const data = response.data;
+          console.log(data)
+          return data
+        }catch (error){
+          console.log("Failed delete notification from flux",error)
+        }
+      }
     },
   };
 };
