@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       turnos: {},
       myAppointments: [],
       treatment: {},
+      notifications: []
     },
     actions: {
       dateFormater: (date) => {
@@ -173,7 +174,9 @@ const getState = ({ getStore, getActions, setStore }) => {
               start_time,
               end_time,
             },
-            config
+            {headers: {
+              Authorization: `${token}`
+            }},
           );
           console.log(res);
           if (res.status === 201) {
@@ -452,7 +455,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             patologies,
             surgey,
             finish_treatment,
-          });
+          }, config );
           console.log(response);
           return response;
         } catch (error) {
