@@ -443,18 +443,22 @@ const getState = ({ getStore, getActions, setStore }) => {
         finish_treatment
       ) => {
         try {
-          const response = await axios.post(`${API}/create-treatment`, {
-            patient_id,
-            resume,
-            medicine,
-            quantity,
-            initial_date,
-            exp_date,
-            medical_id,
-            patologies,
-            surgey,
-            finish_treatment,
-          });
+          const response = await axios.post(
+            `${API}/create-treatment`,
+            {
+              patient_id,
+              resume,
+              medicine,
+              quantity,
+              initial_date,
+              exp_date,
+              medical_id,
+              patologies,
+              surgey,
+              finish_treatment,
+            },
+            config
+          );
           console.log(response);
           return response;
         } catch (error) {
