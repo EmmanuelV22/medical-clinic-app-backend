@@ -11,6 +11,8 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const { actions, store } = useContext(Context);
   const [selectedDate, setSelectedDate] = useState(null);
   const [available, setAvailable] = useState(1);
+  const [arrayDeExcludes, setArrayDeExcludes] = useState([]);
+  const [arrayDeExcludesForSelected, setArrayDeExcludesForSelected] = useState([]);
   const disabledDates = [];
   function agregarFechaDeshabilitada(dia, mes, año) {
     disabledDates.push(new Date(año, mes - 1, dia));
@@ -32,10 +34,23 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const fechaFin = new Date(2025, 11, 31); // 31 de diciembre de 2050
   // Deshabilitar todos los dias de descanso en el rango especificado
   deshabilitarFechaEnRango(fechaInicio, fechaFin);
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };
-  const [arrayDeExcludes, setArrayDeExcludes] = useState([]);
+    
+    const newExcludes = []
+    arrayDeExcludes.forEach(e => {
+      if(date.getDate() == e.getDate() && date.getMonth() === e.getMonth() && date.getFullYear() == e.getFullYear() ){
+        newExcludes.push(e)
+
+
+    }})
+    setArrayDeExcludesForSelected(newExcludes)
+    console.log(newExcludes)
+    }
+    
+  
+  
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -43,10 +58,11 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       if (arrAppointments) {
         const updatedExcludes = arrAppointments.agenda.map((e) => {
           const [hora, minutos] = e.time.split(":").map(Number);
-          return new Date(e.year, e.month, e.date, hora, minutos);
+          return new Date(e.year, e.month -1, e.date, hora, minutos);
         });
         // Actualizar el estado con las nuevas fechas ocupadas
         setArrayDeExcludes(updatedExcludes);
+        
       }
     };
 
@@ -56,7 +72,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   const handleScheduleAppointment = async () => {
     if (selectedDate) {
       const date = selectedDate.getDate();
-      const month = selectedDate.getMonth() + 1;
+      const month = selectedDate.getMonth() +1;
       const year = selectedDate.getFullYear();
       const day = selectedDate.getDay();
       const time = selectedDate.toLocaleTimeString().substring(0, 5);
@@ -104,7 +120,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           dateFormat="Pp"
           minTime={new Date().setHours(startTime, 0, 0, 0)}
           maxTime={new Date().setHours(endTime, 0, 0, 0)}
-          excludeTimes={arrayDeExcludes}
+          excludeTimes={arrayDeExcludesForSelected}
           excludeDates={disabledDates}
         />
       </div>
