@@ -463,22 +463,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
-          const response = await axios.post(
-            `${API}/create-treatment`,
-            {
-              patient_id,
-              resume,
-              medicine,
-              quantity,
-              initial_date,
-              exp_date,
-              medical_id,
-              patologies,
-              surgey,
-              finish_treatment,
-            },
-            config
-          );
           console.log(response);
           return response;
         } catch (error) {
@@ -642,20 +626,18 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-
       updateNotificationsState: async (notificationsId, newState) => {
         try {
           const response = await axios.put(
             `${API}/notifications-state/${notificationsId}`,
-            config,
-            { state: newState }
+            { state: newState },
+            config
           );
           console.log(response);
         } catch (error) {
           console.log("Error no se pudo actualizar el estado:", error);
         }
       },
-
       deleteNotifications: async (id) => {
         try {
           const response = await axios.delete(
