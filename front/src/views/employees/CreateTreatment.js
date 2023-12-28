@@ -51,7 +51,7 @@ const CreateTreatment = () => {
         surgey,
         finish_treatment
       )
-      .then((res) => console.log("Tratamiento creado con exito", res));
+      .then((res) => console.log("Tratamiento creado con exito"));
   };
 
   const handleClear = (e) => {

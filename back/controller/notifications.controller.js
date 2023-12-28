@@ -37,6 +37,7 @@ exports.getNotificationsById = async (req, res, next) => {
   });
 };
 
+
 exports.stateNotifications = async (req, res, next) => {
   const notificationsId = req.params.notificationsId;
   const newState = req.body.state;
@@ -57,3 +58,24 @@ exports.stateNotifications = async (req, res, next) => {
       .json({ message: "Update notification state success", results });
   });
 };
+
+exports.deleteNotifications = async (req ,res ,next) => {
+const id = req.params.id
+const query = "DELETE * from notifications WHERE id=?"
+const values= [id]
+connectDB.query(query, values, (error, results, fields) => {
+  if (error) {
+    return res.status(400).json({
+      message: "Error deleting notification",
+      error: error.message,
+    });
+  }
+  if (results.length === 0) {
+    return res.status(404).json({ message: "notification not found" });
+  }
+  return res
+    .status(200)
+    .json({ message: "Delete notification success" });
+});
+}
+
