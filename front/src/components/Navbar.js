@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import Notifications from "./Notifications";
+import NotificationsNavbar from "./patients/NotificationsNavbar";
 
 const Navbar = () => {
-  const { actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
   let navigate = useNavigate();
   function logout() {
     actions.logout();
@@ -43,36 +47,20 @@ const Navbar = () => {
                 Link
               </a>
             </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Action
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Another action
-                  </a>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li className="bg-danger">
-                  <Link to="/" onClick={logout} className="dropdown-item">
-                    cerrar sessión
-                  </Link>
-                </li>
-              </ul>
+            <li className="nav-item">
+              <Link to="/" onClick={logout} className="bg-danger nav-link">
+                cerrar sessión
+              </Link>
+            </li>
+            <li
+              className="nav-item dropdown nav-link"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <Notifications />
+              <NotificationsNavbar />
             </li>
           </ul>
         </div>
