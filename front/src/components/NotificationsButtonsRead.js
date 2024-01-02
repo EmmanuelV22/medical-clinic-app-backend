@@ -44,6 +44,7 @@ const NotificationsButtonsRead = ({ notification }) => {
       console.log("Error updating notification state:", error);
     }
   };
+
   return (
     <>
       {notification.state === "no leído" && (
@@ -59,21 +60,20 @@ const NotificationsButtonsRead = ({ notification }) => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icon-tabler-mail-exclamation"
+            className="icon icon-tabler icon-tabler-eye-off"
             width="30"
             height="30"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="#000"
+            stroke="#ff2825"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M15 19h-10a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v5.5" />
-            <path d="M3 7l9 6l9 -6" />
-            <path d="M19 16v3" />
-            <path d="M19 22v.01" />
+            <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+            <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" />
+            <path d="M3 3l18 18" />
           </svg>
         </button>
       )}
@@ -90,21 +90,19 @@ const NotificationsButtonsRead = ({ notification }) => {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icon-tabler-mail-opened"
-            width="30"
-            height="30"
+            className="icon icon-tabler icon-tabler-eye"
+            width="28"
+            height="28"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
-            stroke="#000"
+            stroke="#ff2825"
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 9l9 6l9 -6l-9 -6l-9 6" />
-            <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
-            <path d="M3 19l6 -6" />
-            <path d="M15 13l6 6" />
+            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
           </svg>
         </button>
       )}

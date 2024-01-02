@@ -21,6 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       isAuth: false,
       turnos: {},
       myAppointments: [],
+      appointment: {},
       treatment: {},
       treatments: [],
       notifications: [],
@@ -430,6 +431,26 @@ const getState = ({ getStore, getActions, setStore }) => {
             const store = getStore();
             setStore({ ...store, myAppointments: data.agenda });
             return data;
+          }
+        } catch (error) {
+          console.log("Error obteniendo citas del medico:", error);
+        }
+      },
+      loadPatientAppointments: async (patient_id) => {
+        try {
+          const response = await axios.get(
+            `${API}/appointment-patient/${patient_id}`,
+            config
+          );
+          if (response.status === 200) {
+            const data = await response.data;
+            console.log(data);
+            const store = getStore();
+            setStore({
+              ...store,
+              appointment: data.agenda,
+            });
+            return data.agenda;
           }
         } catch (error) {
           console.log("Error obteniendo citas del medico:", error);

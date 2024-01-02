@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import { useParams } from "react-router";
 import NotifcationsDelete from "./NotifcationsDelete";
+import NotificationsButtonsRead from "../NotificationsButtonsRead";
 
 const MyNotifications = () => {
   const { store, actions } = useContext(Context);
@@ -28,15 +29,31 @@ const MyNotifications = () => {
     }
   }, [patient_id]);
 
+  const treatmentMessages = store.notificationById
+    ? store.notificationById.filter((notif) => notif.treatment_message)
+    : [];
+
+  const appointmentMessages = store.notificationById
+    ? store.notificationById.filter((notif) => notif.appointment_message)
+    : [];
+
   return (
     <div>
-      {store.notificationById &&
-        store.notificationById.map((notification) => (
-          <li key={notification.id} className="d-flex">
-            {notification.treatment_message}
-            <NotifcationsDelete notification={notification} />
-          </li>
-        ))}
+      {treatmentMessages.map((notification) => (
+        <li key={notification.id} className="d-flex">
+          {notification.treatment_message}
+          <NotifcationsDelete notification={notification} />
+          <NotificationsButtonsRead notification={notification} />
+        </li>
+      ))}
+
+      {appointmentMessages.map((notification) => (
+        <li key={notification.id} className="d-flex">
+          {notification.appointment_message}
+          <NotifcationsDelete notification={notification} />
+          <NotificationsButtonsRead notification={notification} />
+        </li>
+      ))}
     </div>
   );
 };

@@ -46,7 +46,7 @@ exports.createTreatment = async (req, res, next) => {
     const notificationValues = [
       patient_id,
       medical_id,
-      results.insertId, // Utilisez l'insertId du traitement actuel
+      results.insertId,
       "Nuevo tratamiento, verifique por favor.",
     ];
 
@@ -168,9 +168,6 @@ exports.getTreatmentById = async (req, res, next) => {
       return res
         .status(400)
         .json({ message: "Error loading treatment", error: error.message });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ message: "Treatment not found" });
     }
     const treatment = results[0];
     return res

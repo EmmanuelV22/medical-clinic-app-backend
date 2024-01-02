@@ -4,10 +4,15 @@ import { Context } from "../../store/appContext";
 const NotifcationsDelete = ({ notification }) => {
   const { store, actions } = useContext(Context);
 
+  const handleDelete = async (id) => {
+    await actions.deleteNotifications(id);
+    window.location.reload();
+  };
+
   return (
     <div>
       <svg
-        onClick={() => actions.deleteNotifications(notification.id)}
+        onClick={() => handleDelete(notification.id)}
         xmlns="http://www.w3.org/2000/svg"
         className="icon icon-tabler icon-tabler-trash-x"
         width="28"
