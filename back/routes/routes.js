@@ -5,6 +5,7 @@ const {
   createAppointment,
   deleteAppointment,
   ConfirmationAgendaById,
+  getAppointmentById,
 } = require("../controller/agenda.controller");
 
 // const { createHistory } = require("../controller/history.controller");
@@ -56,6 +57,7 @@ router
 router
   .route("/appointments-patient/:patient_id")
   .get(private, getAppointmentPatients);
+router.route("/appointment-patient/:id").get(private, getAppointmentById);
 router
   .route("/appointments-medical/:medical_id")
   .get(private, getMedicalAppointments);

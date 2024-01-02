@@ -41,34 +41,38 @@ const NotificationsNavbar = () => {
   return (
     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
       {unreadNotifications.length > 0 ? (
-        unreadNotifications
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .slice(0, 10)
-          .map((notification, index) => (
-            <>
-              <div
+        <>
+          {unreadNotifications
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 10)
+            .map((notification, index) => (
+              <li
                 key={notification.id}
-                className="d-flex"
+                className="dropdown-item d-flex"
                 style={{ cursor: "pointer" }}
               >
-                <li
+                <span
                   onClick={() =>
                     navigate(`/patient-treatment/${notification.treatment_id}`)
                   }
-                  className="dropdown-item d-flex"
                 >
                   {notification.treatment_message}
-                </li>
+                </span>
+                <span
+                  onClick={() =>
+                    navigate(`/patient-appointment/${notification.agenda_id}`)
+                  }
+                >
+                  {notification.appointment_message}
+                </span>
                 <NotificationsButtonsRead notification={notification} />
-              </div>
-              <hr />
-              <div key={index}>
-                <Link onClick={() => handleNotification(store.patient.id)}>
-                  Ver todas mis notificaciones
-                </Link>
-              </div>
-            </>
-          ))
+              </li>
+            ))}
+          <hr />
+          <Link onClick={() => handleNotification(store.patient.id)}>
+            Ver todas mis notificaciones
+          </Link>
+        </>
       ) : (
         <>
           <li>¡No tienes notificaciones!</li>

@@ -16,12 +16,27 @@ exports.getAppointmentPatients = async (req, res, next) => {
         .json({ message: "Error fetching patient", error: error.message });
     }
 
-    if (results.length === 0) {
-      return res.status(404).json({ message: "agenda not found" });
+    const agenda = results[0];
+    return res.status(200).json({ message: "Get appointment success", agenda });
+  });
+};
+
+exports.getAppointmentById = async (req, res, next) => {
+  const id = req.params.id;
+
+  const query = "SELECT * FROM agenda WHERE id = ?";
+
+  const values = [id];
+
+  connectDB.query(query, values, (error, results, fields) => {
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "Error fetching patient", error: error.message });
     }
 
-    const agenda = results;
-    return res.status(200).json({ agenda });
+    const agenda = results[0];
+    return res.status(200).json({ message: "Get appointment success", agenda });
   });
 };
 
@@ -53,18 +68,21 @@ exports.createAppointment = async (req, res, next) => {
         .json({ message: "Error making agenda", error: error.message });
     }
     const notificationQuery =
-      "INSERT INTO notifications (patient_id, medical_id, appointment_message) VALUES (?, ?, ?)";
+      "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message) VALUES (?, ?, ?, ?)";
 
-    const notificationValues = [patient_id, medical_id, "Turno confirmado"];
+    const notificationValues = [
+      patient_id,
+      medical_id,
+      results.insertId,
+      "¡Turno confirmado!",
+    ];
 
     try {
       await connectDB.query(notificationQuery, notificationValues);
-      return res
-        .status(201)
-        .json({
-          message: "Appointment successfully created",
-          appointment: results.insertId,
-        });
+      return res.status(201).json({
+        message: "Appointment successfully created",
+        appointment: results.insertId,
+      });
     } catch (notificationError) {
       console.error("Error creating notification:", notificationError);
       return res.status(500).json({
