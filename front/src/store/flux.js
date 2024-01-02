@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       turnos: {},
       myAppointments: [],
       treatment: {},
+      treatments: [],
       notifications: [],
       notificationPatient: [],
     },
@@ -534,6 +535,22 @@ const getState = ({ getStore, getActions, setStore }) => {
           return data;
         } catch (error) {
           console.log("Error obteniendo datos del tratamiento", error);
+        }
+      },
+      getAllTreatments: async () => {
+        try {
+          const response = await axios.get(`${API}/treatments`, config);
+          if (response.status === 200) {
+            const responseData = response.data;
+            console.log(responseData);
+            setStore({ treatments: responseData });
+            return true;
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.log(error);
+          return [];
         }
       },
       updateTreatmentById: async (

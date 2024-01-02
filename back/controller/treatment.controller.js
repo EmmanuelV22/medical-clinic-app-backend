@@ -40,14 +40,14 @@ exports.createTreatment = async (req, res, next) => {
       });
     }
 
-    // Traitement créé avec succès, maintenant ajoutons la notification
     const notificationQuery =
-      "INSERT INTO notifications (patient_id, medical_id, message) VALUES (?, ?, ?)";
+      "INSERT INTO notifications (patient_id, medical_id, treatment_id, treatment_message) VALUES (?, ?, ?, ?)";
 
     const notificationValues = [
       patient_id,
       medical_id,
-      "Nuevo tratamiento creado para usted.",
+      results.insertId, // Utilisez l'insertId du traitement actuel
+      "Nuevo tratamiento, verifique por favor.",
     ];
 
     try {
@@ -176,5 +176,18 @@ exports.getTreatmentById = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "Get treatment success", treatment });
+  });
+};
+
+exports.getTreatments = async (req, res, next) => {
+  const query = "SELECT * FROM treatment";
+
+  connectDB.query(query, (error, results, fields) => {
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "Error loading treatment", error: error.message });
+    }
+    return res.status(200).json(results);
   });
 };

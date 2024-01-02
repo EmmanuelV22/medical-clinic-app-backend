@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Context } from "../store/appContext";
 
 const LoginPatient = () => {
@@ -8,6 +8,7 @@ const LoginPatient = () => {
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
+  const { patient_id } = useParams();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,7 +17,7 @@ const LoginPatient = () => {
 
     if (data) {
       const loggedInPatients = data.patients[0];
-      if (loggedInPatients) navigate("/dashboard-patient");
+      if (loggedInPatients) navigate(`/dashboard-patient`);
       window.location.reload();
     } else {
       alert("Error, log impossible");

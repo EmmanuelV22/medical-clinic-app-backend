@@ -46,15 +46,32 @@ exports.createAppointment = async (req, res, next) => {
     available,
   ];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  connectDB.query(query, values, async (error, results, fields) => {
     if (error) {
       return res
         .status(400)
         .json({ message: "Error making agenda", error: error.message });
     }
-    return res
-      .status(201)
-      .json({ message: "Agenda Success created", agenda: results.insertId });
+    const notificationQuery =
+      "INSERT INTO notifications (patient_id, medical_id, appointment_message) VALUES (?, ?, ?)";
+
+    const notificationValues = [patient_id, medical_id, "Turno confirmado"];
+
+    try {
+      await connectDB.query(notificationQuery, notificationValues);
+      return res
+        .status(201)
+        .json({
+          message: "Appointment successfully created",
+          appointment: results.insertId,
+        });
+    } catch (notificationError) {
+      console.error("Error creating notification:", notificationError);
+      return res.status(500).json({
+        message: "Error creating appointment and notification",
+        error: notificationError.message,
+      });
+    }
   });
 };
 
