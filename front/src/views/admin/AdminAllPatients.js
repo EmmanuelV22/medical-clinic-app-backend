@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
+import {  useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import PatientDetails from "../../components/admin/PatientDetails";
 import SortingTable from "../../components/SortingTable";
@@ -10,6 +11,7 @@ const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
   const [searchError, setSearchError] = useState(false);
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     actions.getAllPatients();
@@ -85,7 +87,8 @@ const AdminAllPatients = () => {
         ) : (
           <td>
             <button
-              title="historial clínica"
+              title="historia clínica"
+              onClick={()=>navigate(`/patient-history/${patient.id}`)}
               style={{ border: "none", background: "transparent" }}
             >
               <svg

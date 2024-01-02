@@ -54,9 +54,7 @@ exports.getHistoryByPatient = async (req, res, next) => {
         error: error.message,
       });
     }
-    if (results.length === 0) {
-      return res.status(404).json({ message: "Historic not found" });
-    }
+   
     const historic = results;
     return res.status(200).json({ message: "Get historic success", historic });
   });

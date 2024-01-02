@@ -52,6 +52,7 @@ const CreateTreatment = () => {
         finish_treatment
       )
       .then((res) => console.log("Tratamiento creado con exito"));
+      window.location.reload()
   };
 
   const handleClear = (e) => {

@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Context } from "../../store/appContext";
-// { patient_id, medical_id }
 
 const EditTreatment = () => {
   const { actions, store } = useContext(Context);
-
+  const navigate = useNavigate();
   const { treatment_id } = useParams();
 
   useEffect(() => {
@@ -98,24 +97,10 @@ const EditTreatment = () => {
 
       .then((res) => {
         console.log("Tratamiento modificado con exito", res);
-        //   window.location.reload()
-      });
+        navigate(`/patient-treatments/${patient_id}`);      });
   };
 
-  //   const handleClear = (e) => {
-  //     e.preventDefault();
-  //     // setPatientId("");
-  //     setResume("");
-  //     setMedicine("");
-  //     setQuantity("");
-  //     setInitialDate("");
-  //     setExpDate("");
-  //     // setMedicalId("");
-  //     setPatologies("");
-  //     setSurgey("");
-  //     setFinishTreatment("");
-  //   };
-
+ 
   return (
     <div>
       <h1>
