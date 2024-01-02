@@ -38,6 +38,7 @@ const CreateHistoric = ({ id }) => {
     console.log(id);
     setDate("");
     setDescription("");
+    window.location.reload()
   };
   return (
     <div>

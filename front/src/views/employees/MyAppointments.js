@@ -66,6 +66,7 @@ const MyAppointments = () => {
       await actions.updateAppointmentState(appointmentId, newState);
       // Rechargez les rendez-vous après la mise à jour de l'état
       actions.loadMedicalAppointmentsForDr(doctorID);
+      window.location.reload()
     } catch (error) {
       console.log("Error updating appointment state:", error);
     }
