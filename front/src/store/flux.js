@@ -76,12 +76,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/employees/${id}`,
             config
           );
-          console.log(response);
           if (response.status === 200) {
             const data = response.data;
             const store = getStore();
             setStore({ ...store, docData: { docData: data.employee } });
-            console.log("Employee by ID", data);
             return data.employee;
           }
         } catch (error) {
@@ -529,7 +527,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.get(`${API}/history/${id}`, config);
           const data = response.data;
-          console.log(data);
           const store = getStore();
           setStore({
             ...store,
@@ -547,7 +544,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.get(`${API}/treatment/${id}`, config);
           const data = response.data;
-          console.log(data);
           const store = getStore();
           setStore({
             ...store,

@@ -5,19 +5,23 @@ import React, { useContext } from "react";
 import Navbar from "../../components/Navbar";
 import CardAppointment from "../../components/patients/CardAppointment";
 import { Context } from "../../store/appContext";
+import CardTreatments from "../../components/patients/CardTreatments";
 
 const DashboardPatient = () => {
   const { store } = useContext(Context);
 
   return (
-    <div>
-      {store.patient && (
-        <>
-          <Navbar />
-          <CardAppointment />
-        </>
-      )}
-    </div>
+    <>
+      <Navbar />
+      <div className="d-flex">
+        {store.patient && (
+          <>
+            <CardAppointment />
+            <CardTreatments />
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

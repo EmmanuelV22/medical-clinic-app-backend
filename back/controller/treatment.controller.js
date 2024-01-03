@@ -1,8 +1,6 @@
 const connectDB = require("../server");
 
 exports.createTreatment = async (req, res, next) => {
-  console.log("User in createTreatment:", req.user);
-
   const {
     patient_id,
     resume,
@@ -47,7 +45,7 @@ exports.createTreatment = async (req, res, next) => {
       patient_id,
       medical_id,
       results.insertId,
-      "Nuevo tratamiento, verifique por favor.",
+      `Nuevo tratamiento creado por el Dr. ${req.user.firstname} ${req.user.lastname}.`,
     ];
 
     try {
@@ -147,9 +145,6 @@ exports.getTreatmentsPatient = async (req, res, next) => {
         message: "Error loading patient treatments",
         error: error.message,
       });
-    }
-    if (results.length === 0) {
-      return res.status(404).json({ message: "Treatments not found" });
     }
     const treatments = results;
     return res

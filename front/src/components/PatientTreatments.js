@@ -4,6 +4,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import DoctorInfo from "./DoctorInfo ";
 
 const PatientTreatement = () => {
   const { actions, store } = useContext(Context);
@@ -49,7 +50,9 @@ const PatientTreatement = () => {
           </tr>
         </thead>
         <tbody>
-          {store.patientData.treatments ? (
+          {store.patientData.treatments &&
+          store.employee.id &&
+          store.employee.specialist !== "admin" ? (
             store.patientData.treatments.map((treatment, index) => (
               <tr key={index}>
                 <td>{treatment.resume}</td>
@@ -77,15 +80,15 @@ const PatientTreatement = () => {
                   {treatment.finish_treatment ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="icon icon-tabler icon-tabler-pencil-x"
+                      className="icon icon-tabler icon-tabler-pencil-x"
                       width="44"
                       height="44"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="#ff2825"
                       fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
@@ -97,16 +100,16 @@ const PatientTreatement = () => {
                     <svg
                       onClick={() => navigate(`/editTreatment/${treatment.id}`)}
                       xmlns="http://www.w3.org/2000/svg"
-                      class="icon icon-tabler icon-tabler-pencil"
+                      className="icon icon-tabler icon-tabler-pencil"
                       width="44"
                       height="44"
                       cursor="pointer"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="#2c3e50"
                       fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
@@ -118,33 +121,12 @@ const PatientTreatement = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="11">Cargando tratamientos...</td>
+              <td colSpan="11">¡No estás autorizado!</td>
             </tr>
           )}
         </tbody>
       </table>
     </>
-  );
-};
-
-const DoctorInfo = ({ medicalId, getDoctorData }) => {
-  const [doctorData, setDoctorData] = useState(null);
-  const { store } = useContext(Context);
-
-  useEffect(() => {
-    const fetchDoctorData = async () => {
-      const data = await getDoctorData(medicalId);
-      console.log("CONSOLE DE DATA", data);
-      setDoctorData(data);
-    };
-
-    fetchDoctorData();
-  }, [medicalId]);
-
-  return doctorData ? (
-    <span>{`${doctorData.firstname} ${doctorData.lastname}`}</span>
-  ) : (
-    <span>Cargando datos del doctor...</span>
   );
 };
 
