@@ -74,7 +74,7 @@ exports.createAppointment = async (req, res, next) => {
       patient_id,
       medical_id,
       results.insertId,
-      "¡Turno confirmado!",
+      `¡Turno confirmado el ${date}/${month}/${year} a las ${time}!`,
     ];
 
     try {

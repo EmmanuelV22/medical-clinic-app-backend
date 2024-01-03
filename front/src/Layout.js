@@ -28,7 +28,7 @@ import TreatmentById from "./views/patients/TreatmentById";
 import AppointmentById from "./views/patients/AppointmentById";
 
 import PatientHistory from "./views/employees/PatientHistory";
-
+import MyTtreatments from "./views/patients/MyTtreatments";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -59,6 +59,10 @@ const Layout = () => {
         <Route
           path="/patient-treatments/:patient_id"
           element={<PatientTreatements />}
+        ></Route>
+        <Route
+          path="/mi-tratamiento/:patient_id"
+          element={<MyTtreatments />}
         ></Route>
         <Route
           path="/patient-treatment/:treatment_id"

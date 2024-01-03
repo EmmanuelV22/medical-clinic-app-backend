@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import { Context } from "../../store/appContext";
@@ -13,7 +14,6 @@ const AppointmentById = () => {
 
   useEffect(() => {
     getAppointmentByNotif();
-    console.log(store.appointment);
   }, []);
   return (
     <div>
