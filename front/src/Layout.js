@@ -29,6 +29,7 @@ import AppointmentById from "./views/patients/AppointmentById";
 
 import PatientHistory from "./views/employees/PatientHistory";
 import MyTtreatments from "./views/patients/MyTtreatments";
+import PasswordChange from "./views/patients/PasswordChange";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -51,6 +52,8 @@ const Layout = () => {
         <Route path="/history/:id" element={<HistoryByPatient />}></Route>
         <Route path="/create-history/:id" element={<CreateHistoric />}></Route>
         <Route path="/patient-history/:id" element={<PatientHistory />}></Route>
+        <Route path="/patients/update-password/:dni" element={<PasswordChange />}></Route>
+
 
         <Route
           path="/notifications/:patient_id"

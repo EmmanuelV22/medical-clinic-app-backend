@@ -8,16 +8,19 @@ const {
   getAllPatients,
   loginPatient,
   updatePatient,
+  updatePasswordPatient,
   deletePatient,
   getPatientById,
   getEmployeeById,
   registerPatient,
+  sendMailChangePassword
 } = require("./auth");
 
 const {
   privateAdmin,
   private,
   privateEmployees,
+  privatePatient,
 } = require("../middleware/auth");
 const router = express.Router();
 
@@ -36,5 +39,8 @@ router.route("/update-patient/:id").put(privateAdmin, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);
 router.route("/patients").get(privateEmployees, getAllPatients);
 router.route("/patients/:id").get(private, getPatientById);
+router.route("/patients/update-password/:dni").put(updatePasswordPatient);
+router.route("/patients/send-mail/:dni").get(sendMailChangePassword);
+
 
 module.exports = router;
