@@ -19,7 +19,6 @@ const PatientTreatement = () => {
   const handleGetTreatments = async () => {
     patient_id && (await actions.getTreatmentsPatient(patient_id));
     patient_id && (await actions.getPatientById(patient_id));
-    console.log("Console log from patientTreatements", store.patientData);
   };
 
   const getDoctorData = async (id) => {
@@ -38,7 +37,6 @@ const PatientTreatement = () => {
           <tr>
             <th>Resumen</th>
             <th>Medicina</th>
-            <th>Cantidad</th>
             <th>Fecha de inicio</th>
             <th>Fecha de finalización</th>
             <th>Patologías</th>
@@ -56,8 +54,17 @@ const PatientTreatement = () => {
             store.patientData.treatments.map((treatment, index) => (
               <tr key={index}>
                 <td>{treatment.resume}</td>
-                <td>{treatment.medicine}</td>
-                <td>{treatment.quantity}</td>
+                <td>
+                  {treatment.medicine_data &&
+                    JSON.parse(treatment.medicine_data).map(
+                      (medicine, medIndex) => (
+                        <div key={medIndex}>
+                          <div>{medicine.medicine_name}</div>
+                          <div>Quantity: {medicine.quantity}</div>
+                        </div>
+                      )
+                    )}
+                </td>
                 <td>{actions.dateFormater(treatment.initial_date)}</td>
                 <td>{actions.dateFormater(treatment.exp_date)}</td>
                 <td>{treatment.patologies}</td>

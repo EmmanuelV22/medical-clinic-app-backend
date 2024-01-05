@@ -8,13 +8,29 @@ const EditTreatment = () => {
   const { actions, store } = useContext(Context);
   const navigate = useNavigate();
   const { treatment_id } = useParams();
+  const medical_id = store.employee.id;
+  const [patient_id, setPatientId] = useState(store.treatment.patient_id);
+  const [resume, setResume] = useState(store.treatment.resume);
+  const [medicineData, setMedicineData] = useState(
+    store.treatment.medicineData
+  );
+  const [initial_date, setInitialDate] = useState(store.treatment.initial_date);
+  const [exp_date, setExpDate] = useState(store.treatment.exp_date);
+  const [patologies, setPatologies] = useState(store.treatment.patologies);
+  const [surgey, setSurgey] = useState(store.treatment.surgey);
+  const [finish_treatment, setFinishTreatment] = useState(
+    store.treatment.finish_treatment
+  );
 
   useEffect(() => {
-    getTreatmentData();
+    if (treatment_id) {
+      getTreatmentData();
+      console.log(treatment_id);
+    }
   }, [treatment_id]);
 
   useEffect(() => {
-    // Actualizar los estados locales cuando treatment en el store cambie
+    // Actualiser les états locaux lorsque le traitement dans le store change
     const initialDate = new Date(store.treatment.initial_date);
     const formattedDate = `${initialDate.getFullYear()}-${(
       initialDate.getMonth() + 1
@@ -31,13 +47,32 @@ const EditTreatment = () => {
 
     setPatientId(store.treatment.patient_id);
     setResume(store.treatment.resume);
-    setMedicine(store.treatment.medicine);
-    setQuantity(store.treatment.quantity);
+
+    if (
+      Array.isArray(store.treatment.medicineData) &&
+      store.treatment.medicineData.length > 0
+    ) {
+      setMedicineData(store.treatment.medicineData);
+    } else {
+      // Si la valeur de medicine_data est une chaîne JSON, parsez-la en tableau
+      const parsedMedicineData = JSON.parse(
+        store.treatment.medicine_data || "[]"
+      );
+
+      // Assurez-vous que parsedMedicineData est un tableau avant de l'assigner
+      if (Array.isArray(parsedMedicineData)) {
+        setMedicineData(parsedMedicineData);
+      } else {
+        setMedicineData([{ medicine_name: "", quantity: "" }]);
+      }
+    }
+
     setInitialDate(formattedDate);
     setExpDate(formattedExpDate);
     setPatologies(store.treatment.patologies);
     setSurgey(store.treatment.surgey);
     setFinishTreatment(store.treatment.finish_treatment);
+    console.log("Medicine Data in useEffect:", store.treatment);
   }, [store.treatment]);
 
   const getPatientData = async () => {
@@ -45,7 +80,6 @@ const EditTreatment = () => {
       const patientDetails = await actions.getPatientById(
         store.treatment.patient_id
       );
-      // Si vous avez besoin de faire quelque chose avec les détails du patient, vous pouvez le faire ici
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des détails du patient",
@@ -64,43 +98,51 @@ const EditTreatment = () => {
     }
   };
 
-  const medical_id = store.employee.id;
-  const [patient_id, setPatientId] = useState(store.treatment.patient_id);
-  const [resume, setResume] = useState(store.treatment.resume);
-  const [medicine, setMedicine] = useState(store.treatment.medicine);
-  const [quantity, setQuantity] = useState(store.treatment.quantity);
-  const [initial_date, setInitialDate] = useState(new Date());
-  const [exp_date, setExpDate] = useState(new Date());
-  //   const [medical_id, setMedicalId] = useState(medical_id);
-  const [patologies, setPatologies] = useState(store.treatment.patologies);
-  const [surgey, setSurgey] = useState(store.treatment.surgey);
-  const [finish_treatment, setFinishTreatment] = useState(
-    store.treatment.finish_treatment
-  );
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await actions
-      .updateTreatmentById(
-        treatment_id,
-        patient_id,
-        resume,
-        medicine,
-        quantity,
-        initial_date,
-        exp_date,
-        medical_id,
-        patologies,
-        surgey,
-        finish_treatment
-      )
+    console.log("Medicine Data before update:", medicineData);
 
+    const dataToUpdate = {
+      patient_id,
+      resume,
+      medicineData,
+      initial_date,
+      exp_date,
+      medical_id,
+      patologies,
+      surgey,
+      finish_treatment,
+    };
+
+    await actions
+      .updateTreatmentById(treatment_id, ...Object.values(dataToUpdate))
       .then((res) => {
         console.log("Tratamiento modificado con exito", res);
-        navigate(`/patient-treatments/${patient_id}`);      });
+        navigate(`/patient-treatments/${patient_id}`);
+      })
+      .catch((error) => {
+        console.error("Error al modificar el tratamiento", error);
+      });
   };
 
- 
+  const handleMedicineChange = (index, value) => {
+    const updatedMedicineData = [...medicineData];
+    updatedMedicineData[index].medicine_name = value;
+    setMedicineData(updatedMedicineData);
+  };
+
+  const handleQuantityChange = (index, value) => {
+    const updatedMedicineData = [...medicineData];
+    updatedMedicineData[index].quantity = value;
+    setMedicineData(updatedMedicineData);
+  };
+
+  const handleAddMedicine = (e) => {
+    // Ajoutez un nouvel objet médicament avec des valeurs par défaut
+    e.preventDefault();
+    setMedicineData([...medicineData, { medicine_name: "", quantity: "" }]);
+  };
+
   return (
     <div>
       <h1>
@@ -139,31 +181,37 @@ const EditTreatment = () => {
             >
               Medicina:
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="medicine"
-              type="text"
-              placeholder="Medicina del tratamiento"
-              value={medicine}
-              onChange={(e) => setMedicine(e.target.value)}
-            />
-          </div>
+            {Array.isArray(medicineData) &&
+              medicineData.map((medicineItem, index) => (
+                <div key={index} className="flex mb-2">
+                  <input
+                    className="shadow appearance-none border rounded w-2/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    type="text"
+                    placeholder="Nombre del medicamento"
+                    value={medicineItem.medicine_name}
+                    onChange={(e) =>
+                      handleMedicineChange(index, e.target.value)
+                    }
+                  />
+                  <input
+                    className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
+                    type="text"
+                    placeholder="Cantidad"
+                    value={medicineItem.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(index, e.target.value)
+                    }
+                  />
+                </div>
+              ))}
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="quantity"
+            {/* Ajoutez un bouton pour ajouter de nouveaux médicaments */}
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleAddMedicine}
             >
-              Cantidad:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="quantity"
-              type="text"
-              placeholder="Cantidad de medicamento"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
+              Ajouter Médicament
+            </button>
           </div>
 
           <div className="mb-4">
