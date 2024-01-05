@@ -1,77 +1,116 @@
 const connectDB = require("../server");
 
 exports.createTreatment = async (req, res, next) => {
-  const {
-    patient_id,
-    resume,
-    medicine,
-    quantity,
-    initial_date,
-    exp_date,
-    medical_id,
-    patologies,
-    surgey,
-    finish_treatment,
-  } = req.body;
+  try {
+    const {
+      patient_id,
+      resume,
+      medicineData,
+      initial_date,
+      exp_date,
+      medical_id,
+      patologies,
+      surgey,
+      finish_treatment,
+    } = req.body;
 
-  const query =
-    "INSERT INTO treatment (patient_id, resume , medicine , quantity , initial_date , exp_date, medical_id , patologies, surgey, finish_treatment) VALUES (?,?,?,?,?,?,?,?,?,?)";
-
-  const values = [
-    patient_id,
-    resume,
-    medicine,
-    quantity,
-    initial_date,
-    exp_date,
-    medical_id,
-    patologies,
-    surgey,
-    finish_treatment,
-  ];
-
-  connectDB.query(query, values, async (error, results, fields) => {
-    if (error) {
+    // Vérifiez si medicineData est défini avant d'utiliser map
+    if (!Array.isArray(medicineData)) {
+      console.error("Error: medicineData is not an array");
       return res.status(400).json({
         message: "Error creating treatment",
-        error: error.message,
+        error: "medicineData is not an array",
       });
     }
 
-    const notificationQuery =
-      "INSERT INTO notifications (patient_id, medical_id, treatment_id, treatment_message) VALUES (?, ?, ?, ?)";
+    // Créez un tableau d'objets avec les données des médicaments
+    const medicineDataArray = medicineData.map(
+      ({ medicine_name, quantity }) => ({
+        medicine_name,
+        quantity,
+      })
+    );
 
-    const notificationValues = [
+    // Convertissez le tableau d'objets en une chaîne JSON
+    const medicineDataString = JSON.stringify(medicineDataArray);
+
+    // Requête SQL pour insérer les données
+    const query =
+      "INSERT INTO treatment (patient_id, resume, initial_date, exp_date, medical_id, patologies, surgey, finish_treatment, medicine_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    // Valeurs à insérer dans la requête SQL
+    const values = [
       patient_id,
+      resume,
+      initial_date,
+      exp_date,
       medical_id,
-      results.insertId,
-      `Nuevo tratamiento creado por el Dr. ${req.user.firstname} ${req.user.lastname}.`,
+      patologies,
+      surgey,
+      finish_treatment,
+      medicineDataString,
     ];
 
-    try {
-      await connectDB.query(notificationQuery, notificationValues);
-      return res.status(201).json({
-        message: "Treatment successfully created",
-        treatment: results.insertId,
-      });
-    } catch (notificationError) {
-      console.error("Error creating notification:", notificationError);
-      return res.status(500).json({
-        message: "Error creating treatment and notification",
-        error: notificationError.message,
-      });
-    }
-  });
+    // Affichez le contenu de medicine_data avant l'exécution de la requête
+    console.log("Medicine Data Before Query:", medicineDataString);
+
+    // Exécutez la requête SQL
+    connectDB.query(
+      query,
+      values,
+      async (createTreatmentError, createTreatmentResults) => {
+        if (createTreatmentError) {
+          console.error("Error creating treatment:", createTreatmentError);
+          return res.status(400).json({
+            message: "Error creating treatment",
+            error: createTreatmentError.message,
+          });
+        }
+
+        const treatmentId = createTreatmentResults.insertId;
+
+        // Continuez avec la création de la notification ou d'autres actions si nécessaires
+        const notificationQuery =
+          "INSERT INTO notifications (patient_id, medical_id, treatment_id, treatment_message) VALUES (?, ?, ?, ?)";
+
+        const notificationValues = [
+          patient_id,
+          medical_id,
+          treatmentId,
+          `Nuevo tratamiento creado por el Dr. ${req.user.firstname} ${req.user.lastname}.`,
+        ];
+
+        try {
+          await connectDB.query(notificationQuery, notificationValues);
+
+          return res.status(201).json({
+            message: "Treatment successfully created",
+            treatment: treatmentId,
+          });
+        } catch (error) {
+          console.error("Error creating notification:", error);
+          return res.status(500).json({
+            message: "Error creating notification",
+            error: error.message,
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return res.status(500).json({
+      message: "Unexpected error",
+      error: error.message,
+    });
+  }
 };
 
 exports.updateTreatment = async (req, res, next) => {
   const id = req.params.id;
-
   const {
     patient_id,
     resume,
-    medicine,
-    quantity,
+    medicineData,
     initial_date,
     exp_date,
     medical_id,
@@ -80,22 +119,39 @@ exports.updateTreatment = async (req, res, next) => {
     finish_treatment,
   } = req.body;
 
+  // Verificar si medicineData está definido
+  if (!Array.isArray(medicineData)) {
+    console.error("Error: medicineData is not an array");
+    return res.status(400).json({
+      message: "Error updating treatment",
+      error: "medicineData is not an array",
+    });
+  }
+
+  // Créez un tableau d'objets avec les données des médicaments
+  const medicineDataArray = medicineData.map(({ medicine_name, quantity }) => ({
+    medicine_name,
+    quantity,
+  }));
+
+  // Convertissez le tableau d'objets en une chaîne JSON
+  const medicineDataString = JSON.stringify(medicineDataArray);
+
   const updatedAt = new Date();
 
   const query =
-    "UPDATE treatment SET patient_id=?, resume=? , medicine=? , quantity=? , initial_date=? , exp_date=?, medical_id=? , patologies=?, surgey=? , finish_treatment=?, updatedAt=? WHERE id=?";
+    "UPDATE treatment SET patient_id=?, resume=?, initial_date=?, exp_date=?, medical_id=?, patologies=?, surgey=?, finish_treatment=?, medicine_data=?, updatedAt=? WHERE id=?";
 
   const values = [
     patient_id,
     resume,
-    medicine,
-    quantity,
     initial_date,
     exp_date,
     medical_id,
     patologies,
     surgey,
     finish_treatment,
+    medicineDataString,
     updatedAt,
     id,
   ];
@@ -108,7 +164,7 @@ exports.updateTreatment = async (req, res, next) => {
     }
     return res
       .status(200)
-      .json({ message: "Treatment successful updated", treatment: id });
+      .json({ message: "Treatment successfully updated", treatment: id });
   });
 };
 

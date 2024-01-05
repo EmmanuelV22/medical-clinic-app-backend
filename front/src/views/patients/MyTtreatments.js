@@ -11,6 +11,7 @@ const MyTtreatments = () => {
 
   const handleGetTreatments = async () => {
     patient_id && (await actions.getTreatmentsPatient(patient_id));
+    console.log(store.patientData.treatments);
   };
 
   useEffect(() => {
@@ -57,8 +58,14 @@ const MyTtreatments = () => {
               filteredPatientId.slice(0, 10).map((treatment, index) => (
                 <tr key={index}>
                   <td>{treatment.resume}</td>
-                  <td>{treatment.medicine}</td>
-                  <td>{treatment.quantity}</td>
+                  <td>
+                    {treatment.medicine_data.map((medicine, medIndex) => (
+                      <div key={medIndex}>
+                        <div>Medicina: {medicine.medicine_name}</div>
+                        <div>Quantity: {medicine.quantity}</div>
+                      </div>
+                    ))}
+                  </td>
                   <td>{actions.dateFormater(treatment.initial_date)}</td>
                   <td>{actions.dateFormater(treatment.exp_date)}</td>
                   <td>{treatment.patologies}</td>

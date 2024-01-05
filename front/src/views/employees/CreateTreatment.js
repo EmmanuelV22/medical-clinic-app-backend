@@ -3,7 +3,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Context } from "../../store/appContext";
-// { patient_id, medical_id }
 
 const CreateTreatment = () => {
   const { actions, store } = useContext(Context);
@@ -25,48 +24,69 @@ const CreateTreatment = () => {
   };
 
   const medical_id = store.employee.id;
-  //   const [patient_id, setPatientId] = useState(patient_id);
   const [resume, setResume] = useState("");
-  const [medicine, setMedicine] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [medicines, setMedicines] = useState([{ name: "", quantity: 0 }]);
   const [initial_date, setInitialDate] = useState("");
   const [exp_date, setExpDate] = useState("");
-  //   const [medical_id, setMedicalId] = useState(medical_id);
   const [patologies, setPatologies] = useState("");
   const [surgey, setSurgey] = useState("SI");
   const [finish_treatment, setFinishTreatment] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await actions
-      .createTreatment(
+    try {
+      console.log("Medicine Data:", medicines);
+
+      const medicineData = medicines.map(({ name, quantity }) => ({
+        medicine_name: name,
+        quantity: parseInt(quantity, 10),
+      }));
+
+      console.log("Medicine Data:", medicineData);
+
+      await actions.createTreatment(
         patient_id,
         resume,
-        medicine,
-        quantity,
+        medicineData,
         initial_date,
         exp_date,
         medical_id,
         patologies,
         surgey,
         finish_treatment
-      )
-      .then((res) => console.log("Tratamiento creado con exito"));
-      window.location.reload()
+      );
+      window.location.reload();
+      console.log("Traitement créé avec succès");
+    } catch (error) {
+      console.error("Error creating treatment", error);
+    }
+  };
+
+  const handleMedicineChange = (index, key, value) => {
+    const updatedMedicines = [...medicines];
+    updatedMedicines[index][key] = value;
+    setMedicines(updatedMedicines);
+  };
+
+  const handleAddMedicine = () => {
+    setMedicines([...medicines, { name: "", quantity: 0 }]);
+  };
+
+  const handleRemoveMedicine = (index) => {
+    const updatedMedicines = [...medicines];
+    updatedMedicines.splice(index, 1);
+    setMedicines(updatedMedicines);
   };
 
   const handleClear = (e) => {
     e.preventDefault();
-    // setPatientId("");
     setResume("");
-    setMedicine("");
-    setQuantity("");
+    setMedicines([{ name: "", quantity: 0 }]);
     setInitialDate("");
     setExpDate("");
-    // setMedicalId("");
     setPatologies("");
-    setSurgey("");
-    setFinishTreatment("");
+    setSurgey("SI");
+    setFinishTreatment(0);
   };
 
   return (
@@ -100,39 +120,54 @@ const CreateTreatment = () => {
             />
           </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="medicine"
-            >
-              Medicina:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="medicine"
-              type="text"
-              placeholder="Medicina del tratamiento"
-              value={medicine}
-              onChange={(e) => setMedicine(e.target.value)}
-            />
-          </div>
+          {medicines.map((medicine, index) => (
+            <div key={index} className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor={`medicine${index}`}
+              >
+                Medicina #{index + 1}:
+              </label>
+              <div className="flex items-center">
+                <input
+                  className="shadow appearance-none border rounded w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id={`medicine${index}`}
+                  type="text"
+                  placeholder="Nombre de la medicina"
+                  value={medicine.name}
+                  onChange={(e) =>
+                    handleMedicineChange(index, "name", e.target.value)
+                  }
+                />
+                <input
+                  className="shadow appearance-none border rounded w-1/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
+                  type="number"
+                  placeholder="Cantidad"
+                  value={medicine.quantity}
+                  onChange={(e) =>
+                    handleMedicineChange(index, "quantity", e.target.value)
+                  }
+                />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    className="ml-2 text-red-500"
+                    onClick={() => handleRemoveMedicine(index)}
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="quantity"
-            >
-              Cantidad:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="quantity"
-              type="text"
-              placeholder="Cantidad de medicamento"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
+          <button
+            type="button"
+            className="mb-4 text-blue-500"
+            onClick={handleAddMedicine}
+          >
+            Agregar Medicina
+          </button>
 
           <div className="mb-4">
             <label

@@ -457,8 +457,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       createTreatment: async (
         patient_id,
         resume,
-        medicine,
-        quantity,
+        medicineData, // Envoyez le tableau medicineData directement
         initial_date,
         exp_date,
         medical_id,
@@ -472,8 +471,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               patient_id,
               resume,
-              medicine,
-              quantity,
+              medicineData, // Utilisez directement le tableau medicineData
               initial_date,
               exp_date,
               medical_id,
@@ -574,8 +572,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         id,
         patient_id,
         resume,
-        medicine,
-        quantity,
+        medicineData,
         initial_date,
         exp_date,
         medical_id,
@@ -589,8 +586,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               patient_id,
               resume,
-              medicine,
-              quantity,
+              medicineData,
               initial_date,
               exp_date,
               medical_id,
