@@ -681,6 +681,32 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Failed delete notification from flux", error);
         }
       },
+      sendChangePassword: async (dni) => {
+        try {
+          const response = await axios.get(
+            `${API_AUTH}/patients/send-mail/${dni}`
+          );
+          const data = response.data;
+          return data;
+        } catch (error) {
+          console.log("error from request mail send to api", error);
+        }
+      },
+      saveNewPassword: async (dni, password) => {
+        try {
+          const response = await axios.put(
+            `${API_AUTH}/patients/update-password/${dni}`,
+            { password: password }
+          );
+
+          if (response.status == "201") {
+            const data = response.data;
+            return data;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
     },
   };
 };

@@ -10,6 +10,18 @@ const LoginPatient = () => {
   let navigate = useNavigate();
   const { patient_id } = useParams();
 
+  async function handlePassword(e) {
+    e.preventDefault();
+
+    const data = await actions.sendChangePassword(dni);
+    if (data.status === 200) {
+      return alert(data.message)
+    } else {
+     return  alert(data.message);
+    }
+
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -93,6 +105,9 @@ const LoginPatient = () => {
       </div>
       <div className="mx-auto text-center">
         <button className="w-40 text-center bg-blue-500">Iniciar sesión</button>
+      </div>
+      <div className="mt-3">
+        <span role="button" onClick={handlePassword}>Olvidaste la contraseña?</span>
       </div>
     </form>
   );

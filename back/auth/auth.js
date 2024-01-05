@@ -512,19 +512,26 @@ exports.loginPatient = async (req, res, next) => {
 exports.updatePatient = async (req, res, next) => {
   const { firstname, lastname, email, address, password, id } = req.body;
   const updatedAt = new Date();
-  const query =
-    "UPDATE patients SET firstname = ?, lastname = ?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
-  const values = [firstname, lastname, email, address, password, updatedAt, id];
-  connectDB.query(query, values, (error, results, fields) => {
-    if (error) {
-      return res
-        .status(400)
-        .json({ message: "Error Updating Patient ", error: error.message });
+
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) {
+      return res.status(500).json({ message: "Error hashing password" });
     }
 
-    return res
-      .status(201)
-      .json({ message: "Patient successfully updated", patient: id });
+    const query =
+      "UPDATE patients SET firstname = ?, lastname = ?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
+    const values = [firstname, lastname, email, address, hash, updatedAt, id];
+    connectDB.query(query, values, (error, results, fields) => {
+      if (error) {
+        return res
+          .status(400)
+          .json({ message: "Error Updating Patient ", error: error.message });
+      }
+
+      return res
+        .status(201)
+        .json({ message: "Patient successfully updated", patient: id });
+    });
   });
 };
 
@@ -544,4 +551,130 @@ exports.deletePatient = async (req, res, next) => {
       .status(201)
       .json({ message: "Patient successfully deleted", id: id });
   });
+};
+
+exports.updatePasswordPatient = async (req, res, next) => {
+  const { password } = req.body;
+  const dni = req.params.dni;
+
+  const updatedAt = new Date();
+
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) {
+      return res.status(500).json({ message: "Error hashing password" });
+    }
+
+    const query =
+      "UPDATE patients SET password = ?, updatedAt = ? WHERE dni = ?";
+
+    const values = [hash, updatedAt, dni];
+
+    connectDB.query(query, values, (error, results, fields) => {
+      if (error) {
+        return res
+          .status(400)
+          .json({
+            message: "Error Updating Patient Password ",
+            error: error.message,
+          });
+      }
+
+      return res
+        .status(201)
+        .json({
+          message: "Patient Password successfully updated",
+          patient: dni,
+        });
+    });
+  });
+};
+
+const changePasswordEmail = (dni, res) => {
+  const EMAIL = process.env.USERMAIL;
+  const PASSWORD = process.env.PASSMAIL;
+
+  let config = {
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  };
+
+  let transporter = nodemailer.createTransport(config);
+
+  const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
+  const values = [dni];
+
+  connectDB.query(query, values, (error, results) => {
+    if (error) {
+      console.error("Error en la consulta a la base de datos", error);
+      return res
+        .status(500)
+        .json({
+          status: "error",
+          message: "Error en la consulta a la base de datos",
+          error: error.message,
+        });
+    }
+
+    const userEmail = results[0].email;
+    const userName = results[0].firstname;
+
+    const htmlContent = `
+    <html>
+      <head>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+      </head>
+      <body>
+        <div>
+          <h1>Hola ${userName}! Olvidaste la contraseña de Clínic'app? :( </h1>
+          <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
+          <p>No te preocupes es rapido y sencillo!</p>
+          <p>Estimado paciente de Clinic'app: Para obtener una nueva contraseña debes hacer click en el siguiente boton que te llevara a una nueva pestaña donde podras ingresar tu nueva contraseña</p>
+          <button class="btn-primary"><a href="http://localhost:3000/patients/update-password/${dni}">CLICK AQUI</a></button>
+          <p>Si este mail no es para ti ignoralo por favor</p>
+          <p>Gracias por confiar en Clinic'app</p>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    
+      </body>
+    </html>
+  `;
+
+    let message = {
+      from: EMAIL,
+      to: userEmail,
+      subject: "Cambio de contraseña para usuario de Clinic'app",
+      html: htmlContent,
+    };
+
+    transporter
+      .sendMail(message)
+      .then(() => {
+        console.log("Email sent successfully");
+        // Después de enviar el correo electrónico con éxito
+        return res
+          .status(200)
+          .json({ status: "200", message: "Email sent successfully" });
+      })
+      .catch((error) => {
+        console.error("Error sending email", error);
+        // En caso de error al enviar el correo electrónico
+        return res
+          .status(500)
+          .json({
+            status: "error",
+            message: "Error sending email",
+            error: error.message,
+          });
+      });
+  });
+};
+
+exports.sendMailChangePassword = async (req, res, next) => {
+  const dni = req.params.dni;
+  changePasswordEmail(dni, res);
 };
