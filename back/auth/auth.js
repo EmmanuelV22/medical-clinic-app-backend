@@ -556,6 +556,9 @@ exports.deletePatient = async (req, res, next) => {
 exports.updatePasswordPatient = async (req, res, next) => {
   const { password } = req.body;
   const dni = req.params.dni;
+  // const token = req.params.token
+
+  // validatePatientToken(dni , token)
 
   const updatedAt = new Date();
 
@@ -571,20 +574,16 @@ exports.updatePasswordPatient = async (req, res, next) => {
 
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
-        return res
-          .status(400)
-          .json({
-            message: "Error Updating Patient Password ",
-            error: error.message,
-          });
+        return res.status(400).json({
+          message: "Error Updating Patient Password ",
+          error: error.message,
+        });
       }
 
-      return res
-        .status(201)
-        .json({
-          message: "Patient Password successfully updated",
-          patient: dni,
-        });
+      return res.status(201).json({
+        message: "Patient Password successfully updated",
+        patient: dni,
+      });
     });
   });
 };
@@ -601,80 +600,161 @@ const changePasswordEmail = (dni, res) => {
     },
   };
 
-  let transporter = nodemailer.createTransport(config);
+  const query2 = `UPDATE patients SET temporalToken = ?  WHERE dni = ? `;
+  generateToken()
+    .then((result) => {
+      let temporalToken = result.token;
+      const values2 = [temporalToken, dni];
 
-  const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
-  const values = [dni];
-
-  connectDB.query(query, values, (error, results) => {
-    if (error) {
-      console.error("Error en la consulta a la base de datos", error);
-      return res
-        .status(500)
-        .json({
-          status: "error",
-          message: "Error en la consulta a la base de datos",
-          error: error.message,
-        });
-    }
-
-    const userEmail = results[0].email;
-    const userName = results[0].firstname;
-
-    const htmlContent = `
-    <html>
-      <head>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-
-      </head>
-      <body>
-        <div>
-          <h1>Hola ${userName}! Olvidaste la contraseña de Clínic'app? :( </h1>
-          <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
-          <p>No te preocupes es rapido y sencillo!</p>
-          <p>Estimado paciente de Clinic'app: Para obtener una nueva contraseña debes hacer click en el siguiente boton que te llevara a una nueva pestaña donde podras ingresar tu nueva contraseña</p>
-          <button class="btn-primary"><a href="http://localhost:3000/patients/update-password/${dni}">CLICK AQUI</a></button>
-          <p>Si este mail no es para ti ignoralo por favor</p>
-          <p>Gracias por confiar en Clinic'app</p>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-    
-      </body>
-    </html>
-  `;
-
-    let message = {
-      from: EMAIL,
-      to: userEmail,
-      subject: "Cambio de contraseña para usuario de Clinic'app",
-      html: htmlContent,
-    };
-
-    transporter
-      .sendMail(message)
-      .then(() => {
-        console.log("Email sent successfully");
-        // Después de enviar el correo electrónico con éxito
-        return res
-          .status(200)
-          .json({ status: "200", message: "Email sent successfully" });
-      })
-      .catch((error) => {
-        console.error("Error sending email", error);
-        // En caso de error al enviar el correo electrónico
-        return res
-          .status(500)
-          .json({
+      connectDB.query(query2, values2, (error, results) => {
+        if (error) {
+          console.error("Error en la modificacion del nuevo token", error);
+          return res.status(500).json({
             status: "error",
-            message: "Error sending email",
+            message: "Error en la modificacion del nuevo token",
             error: error.message,
           });
+        }
+        
+        let transporter = nodemailer.createTransport(config);
+
+        const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
+        const values = [dni];
+
+        connectDB.query(query, values, (error, results) => {
+          if (error) {
+            console.error("Error en la consulta a la base de datos", error);
+            return res.status(500).json({
+              status: "error",
+              message: "Error en la consulta a la base de datos",
+              error: error.message,
+            });
+          }
+
+          const userEmail = results[0].email;
+          const userName = results[0].firstname;
+
+          const htmlContent = `
+            <html>
+              <head>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+              </head>
+              <body>
+                <div>
+                  <h1>Hola ${userName}! Olvidaste la contraseña de Clínic'app? :( </h1>
+                  <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
+                  <p>No te preocupes es rapido y sencillo!</p>
+                  <p>Estimado paciente de Clinic'app: Para obtener una nueva contraseña debes hacer click en el siguiente boton que te llevara a una nueva pestaña donde podras ingresar tu nueva contraseña</p>
+                  <button class="btn-primary"><a href="http://localhost:3000/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
+                  <p>Si este mail no es para ti ignoralo por favor</p>
+                  <p>Gracias por confiar en Clinic'app</p>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+              </body>
+            </html>
+          `;
+
+          let message = {
+            from: EMAIL,
+            to: userEmail,
+            subject: "Cambio de contraseña para usuario de Clinic'app",
+            html: htmlContent,
+          };
+
+          transporter
+            .sendMail(message)
+            .then(() => {
+              console.log("Email sent successfully");
+              // Después de enviar el correo electrónico con éxito
+              return res
+                .status(200)
+                .json({ status: "200", message: "Email sent successfully" });
+            })
+            .catch((error) => {
+              console.error("Error sending email", error);
+              // En caso de error al enviar el correo electrónico
+              return res.status(500).json({
+                status: "error",
+                message: "Error sending email",
+                error: error.message,
+              });
+            });
+        });
       });
-  });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      return res.status(500).json({
+        status: "error",
+        message: "Error generando o verificando el token",
+        error: error.message,
+      });
+    });
 };
 
 exports.sendMailChangePassword = async (req, res, next) => {
   const dni = req.params.dni;
   changePasswordEmail(dni, res);
+};
+
+async function generateToken() {
+  try {
+    // Obtiene la fecha actual en milisegundos
+    const currentDate = new Date();
+    const currentTimestamp = currentDate.getTime();
+
+    // Genera un hash único basado en la fecha actual
+    const hashedDate = await bcrypt.hash(currentTimestamp.toString(), 10);
+
+    // Codifica el token resultante en base64
+    const base64Token = Buffer.from(hashedDate).toString("base64");
+
+    return {
+      token: base64Token,
+      expirationTimestamp: currentTimestamp + 60 * 1000,
+    }; // 60 segundos de expiración como ejemplo
+  } catch (error) {
+    console.error("Error generando el token:", error);
+    throw error;
+  }
+}
+
+exports.validateTokenPatient = async (req, res, next) => {
+  const dni = req.params.dni;
+  const token = req.params.token;
+
+  try {
+    const query = `SELECT temporalToken FROM patients WHERE dni = ? `;
+    const values = [dni];
+
+    connectDB.query(query, values, (error, results) => {
+      if (error) {
+        console.error("Error en la consulta a la base de datos", error);
+        return res.status(500).json({
+          status: "error",
+          message: "Error en la consulta a la base de datos",
+          error: error.message,
+        });
+      }
+
+      const temporalToken = results[0] ? results[0].temporalToken : null;
+
+      if (token !== temporalToken) {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid token",
+        });
+      }
+
+      next();
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
 };

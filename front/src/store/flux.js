@@ -692,10 +692,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("error from request mail send to api", error);
         }
       },
-      saveNewPassword: async (dni, password) => {
+      saveNewPassword: async (dni, password, token) => {
         try {
           const response = await axios.put(
-            `${API_AUTH}/patients/update-password/${dni}`,
+            `${API_AUTH}/patients/update-password/${dni}/${token}`,
             { password: password }
           );
 

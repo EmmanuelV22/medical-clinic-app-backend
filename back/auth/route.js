@@ -13,7 +13,8 @@ const {
   getPatientById,
   getEmployeeById,
   registerPatient,
-  sendMailChangePassword
+  sendMailChangePassword,
+  validateTokenPatient
 } = require("./auth");
 
 const {
@@ -39,7 +40,7 @@ router.route("/update-patient/:id").put(privateAdmin, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);
 router.route("/patients").get(privateEmployees, getAllPatients);
 router.route("/patients/:id").get(private, getPatientById);
-router.route("/patients/update-password/:dni").put(updatePasswordPatient);
+router.route("/patients/update-password/:dni/:token").put(validateTokenPatient,updatePasswordPatient);
 router.route("/patients/send-mail/:dni").get(sendMailChangePassword);
 
 
