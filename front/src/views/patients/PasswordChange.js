@@ -6,15 +6,14 @@ import { Context } from "../../store/appContext";
 const PasswordChange = () => {
   const { actions, store } = useContext(Context);
   const { dni } = useParams();
-  //   let navigate = useNavigate();
+  const { token } = useParams();
 
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await actions.saveNewPassword(dni, password);
-      console.log(response);
+      const response = await actions.saveNewPassword(dni, password, token);
 
       if (response.status === 201) {
         return alert(response.message);
@@ -22,7 +21,9 @@ const PasswordChange = () => {
         return alert(response.message);
       }
     } catch (error) {
-      console.log(error);
+      alert(
+        "Error intentando cambiar contraseña, Acceso denegado: parametros incorrectos"
+      );
     }
   };
 

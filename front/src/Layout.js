@@ -52,7 +52,7 @@ const Layout = () => {
         <Route path="/history/:id" element={<HistoryByPatient />}></Route>
         <Route path="/create-history/:id" element={<CreateHistoric />}></Route>
         <Route path="/patient-history/:id" element={<PatientHistory />}></Route>
-        <Route path="/patients/update-password/:dni" element={<PasswordChange />}></Route>
+        <Route path="/patients/update-password/:dni/:token" element={<PasswordChange />}></Route>
 
 
         <Route

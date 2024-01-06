@@ -59,12 +59,15 @@ const MyTtreatments = () => {
                 <tr key={index}>
                   <td>{treatment.resume}</td>
                   <td>
-                    {treatment.medicine_data.map((medicine, medIndex) => (
-                      <div key={medIndex}>
-                        <div>Medicina: {medicine.medicine_name}</div>
-                        <div>Quantity: {medicine.quantity}</div>
-                      </div>
-                    ))}
+                  {treatment.medicine_data &&
+                      JSON.parse(treatment.medicine_data).map(
+                        (medicine, medIndex) => (
+                          <div key={medIndex}>
+                            <div>{medicine.medicine_name}</div>
+                            <div>Quantity: {medicine.quantity}</div>
+                          </div>
+                        )
+                      )}
                   </td>
                   <td>{actions.dateFormater(treatment.initial_date)}</td>
                   <td>{actions.dateFormater(treatment.exp_date)}</td>
