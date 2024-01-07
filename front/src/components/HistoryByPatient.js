@@ -3,6 +3,7 @@
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import { Context } from "../store/appContext";
+import DoctorInfo from "./DoctorInfo ";
 
 const HistoryByPatient = () => {
   const { id } = useParams();
@@ -20,23 +21,22 @@ const HistoryByPatient = () => {
     }
   };
 
+  const getDoctorData = async (id) => {
+    const doctorData = await actions.getEmployeeById(id);
+    return doctorData;
+  };
+
   useEffect(() => {
-    if (id){
+    if (id) {
       fetchPatientData();
     }
   }, [id]);
 
-  // const filterPatient = store.patientData && store.patientData.history
-  // ? store.patientData.patientData.filter(patient => patient.id === store.patientData.history.patient_id )
-  // : [];
-
-
   return (
     <div>
-      {store.patientData &&
-        store.patientData.history?.length > 0 ?
+      {store.patientData && store.patientData.history?.length > 0 ? (
         store.patientData?.history.map((e) => (
-          <div key={e.id}>
+          <div className="border border-dark " key={e.id}>
             <p>
               descripción:
               <span>{e.description}</span>
@@ -45,13 +45,23 @@ const HistoryByPatient = () => {
               fecha:
               <span>{actions.dateFormater(e.date)}</span>
             </p>
-          </div> 
-        ))
-        :
-          <div>
-         <h3> No datos ingresados de historial</h3> 
+            <p>
+              Escrito por :
+              <span>
+                {" "}
+                <DoctorInfo
+                  medicalId={e.medical_id}
+                  getDoctorData={getDoctorData}
+                />
+              </span>
+            </p>
           </div>
-      }
+        ))
+      ) : (
+        <div>
+          <h3> No datos ingresados de historial</h3>
+        </div>
+      )}
     </div>
   );
 };
