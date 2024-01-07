@@ -118,48 +118,56 @@ const AdminAllEmployees = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center">
-        <img
-          src="../clinic-logo-removebg.png"
-          alt="logo app clinic"
-          style={{ width: "5rem" }}
-          onClick={() => navigate("/")}
-        />
-        <div>
-          <button
-            onClick={() => navigate("/dashboard-admin")}
-            className="btn btn-warning m-3"
-          >
-            Volver
-          </button>
-        </div>
-      </div>
-      <div className="admin-employee-content">
-        <h1
-          className="text-center font-bold my-4"
-          style={{ fontSize: "2.5rem" }}
-        >
-          Lista de empleados:
-        </h1>
-        <SearchBar onSearch={handleSearch} />
-        {searchError && (
-          <p className="text-center text-danger">
-            No se encontraron empleados.
-          </p>
-        )}
-        <div
-          className="table-responsive"
-          style={{ width: "100%", margin: "0 auto" }}
-        >
-          <SortingTable
-            headers={headers}
-            data={
-              filteredEmployees.length > 0 ? filteredEmployees : store.employees
-            }
-            renderRow={renderRow}
-          />
-        </div>
-      </div>
+      {store?.employee && store.employee?.specialist === "admin" ? (
+        <>
+          <div className="d-flex justify-content-between align-items-center">
+            <img
+              src="../clinic-logo-removebg.png"
+              alt="logo app clinic"
+              style={{ width: "5rem" }}
+              onClick={() => navigate("/")}
+            />
+            <div>
+              <button
+                onClick={() => navigate("/dashboard-admin")}
+                className="btn btn-warning m-3"
+              >
+                Volver
+              </button>
+            </div>
+          </div>
+          <div className="admin-employee-content">
+            <h1
+              className="text-center font-bold my-4"
+              style={{ fontSize: "2.5rem" }}
+            >
+              Lista de empleados:
+            </h1>
+            <SearchBar onSearch={handleSearch} />
+            {searchError && (
+              <p className="text-center text-danger">
+                No se encontraron empleados.
+              </p>
+            )}
+            <div
+              className="table-responsive"
+              style={{ width: "100%", margin: "0 auto" }}
+            >
+              <SortingTable
+                headers={headers}
+                data={
+                  filteredEmployees.length > 0
+                    ? filteredEmployees
+                    : store.employees
+                }
+                renderRow={renderRow}
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <h1>componente denegado</h1>
+      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import PatientDetails from "../../components/admin/PatientDetails";
 import SortingTable from "../../components/SortingTable";
@@ -88,7 +88,7 @@ const AdminAllPatients = () => {
           <td>
             <button
               title="historia clínica"
-              onClick={()=>navigate(`/patient-history/${patient.id}`)}
+              onClick={() => navigate(`/patient-history/${patient.id}`)}
               style={{ border: "none", background: "transparent" }}
             >
               <svg
@@ -132,25 +132,38 @@ const AdminAllPatients = () => {
   };
 
   return (
-    <div className="admin-patient-content">
-      <h1 className="text-center font-bold my-4" style={{ fontSize: "2.5rem" }}>
-        Lista de pacientes:
-      </h1>
-      <SearchBar onSearch={handleSearch} />
-      {searchError && (
-        <p className="text-center text-danger">No se encontraron pacientes.</p>
+    <>
+      {store?.employee && store.employee?.specialist ? (
+        <div className="admin-patient-content">
+          <h1
+            className="text-center font-bold my-4"
+            style={{ fontSize: "2.5rem" }}
+          >
+            Lista de pacientes:
+          </h1>
+          <SearchBar onSearch={handleSearch} />
+          {searchError && (
+            <p className="text-center text-danger">
+              No se encontraron pacientes.
+            </p>
+          )}
+          <div
+            className="table-responsive"
+            style={{ width: "100%", margin: "0 auto" }}
+          >
+            <SortingTable
+              headers={headers}
+              data={
+                filteredPatients.length > 0 ? filteredPatients : store.patients
+              }
+              renderRow={renderRow}
+            />
+          </div>
+        </div>
+      ) : (
+        <h2>componente denegado</h2>
       )}
-      <div
-        className="table-responsive"
-        style={{ width: "100%", margin: "0 auto" }}
-      >
-        <SortingTable
-          headers={headers}
-          data={filteredPatients.length > 0 ? filteredPatients : store.patients}
-          renderRow={renderRow}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

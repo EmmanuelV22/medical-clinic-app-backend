@@ -66,7 +66,7 @@ const MyAppointments = () => {
       await actions.updateAppointmentState(appointmentId, newState);
       // Rechargez les rendez-vous après la mise à jour de l'état
       actions.loadMedicalAppointmentsForDr(doctorID);
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.log("Error updating appointment state:", error);
     }
@@ -168,34 +168,41 @@ const MyAppointments = () => {
 
   return (
     <>
-      <div className="admin-appointments-content">
-        <h1
-          className="text-center font-bold my-4"
-          style={{ fontSize: "2.5rem" }}
-        >
-          Lista de Citas Médicas:
-        </h1>
-        <SearchBar onSearch={handleSearch} />
-        {searchError && (
-          <p className="text-center text-danger">
-            No se encontraron citas médicas.
-          </p>
-        )}
-        <div
-          className="table-responsive"
-          style={{ width: "100%", margin: "0 auto" }}
-        >
-          <SortingTable
-            headers={headers}
-            data={
-              filteredAppointments.length > 0
-                ? filteredAppointments
-                : sortedAppointments
-            }
-            renderRow={renderRow}
-          />
+      {store.employee &&
+      store.employee.specialist &&
+      (store.employee.specialist !== "enfermera" ||
+        store.employee.specialist !== "enfermero") ? (
+        <div className="admin-appointments-content">
+          <h1
+            className="text-center font-bold my-4"
+            style={{ fontSize: "2.5rem" }}
+          >
+            Lista de Citas Médicas:
+          </h1>
+          <SearchBar onSearch={handleSearch} />
+          {searchError && (
+            <p className="text-center text-danger">
+              No se encontraron citas médicas.
+            </p>
+          )}
+          <div
+            className="table-responsive"
+            style={{ width: "100%", margin: "0 auto" }}
+          >
+            <SortingTable
+              headers={headers}
+              data={
+                filteredAppointments.length > 0
+                  ? filteredAppointments
+                  : sortedAppointments
+              }
+              renderRow={renderRow}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <h2>componente denegado</h2>
+      )}
     </>
   );
 };

@@ -38,23 +38,29 @@ const MyNotifications = () => {
     : [];
 
   return (
-    <div>
-      {treatmentMessages.map((notification) => (
-        <li key={notification.id} className="d-flex">
-          {notification.treatment_message}
-          <NotifcationsDelete notification={notification} />
-          <NotificationsButtonsRead notification={notification} />
-        </li>
-      ))}
+    <>
+      {store.patient && store.patient.id ? (
+        <div>
+          {treatmentMessages.map((notification) => (
+            <li key={notification.id} className="d-flex">
+              {notification.treatment_message}
+              <NotifcationsDelete notification={notification} />
+              <NotificationsButtonsRead notification={notification} />
+            </li>
+          ))}
 
-      {appointmentMessages.map((notification) => (
-        <li key={notification.id} className="d-flex">
-          {notification.appointment_message}
-          <NotifcationsDelete notification={notification} />
-          <NotificationsButtonsRead notification={notification} />
-        </li>
-      ))}
-    </div>
+          {appointmentMessages.map((notification) => (
+            <li key={notification.id} className="d-flex">
+              {notification.appointment_message}
+              <NotifcationsDelete notification={notification} />
+              <NotificationsButtonsRead notification={notification} />
+            </li>
+          ))}
+        </div>
+      ) : (
+        <h1>DENEGADO</h1>
+      )}
+    </>
   );
 };
 

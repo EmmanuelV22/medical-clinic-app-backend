@@ -12,15 +12,21 @@ const DashboardPatient = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="d-flex">
-        {store.patient && (
-          <>
-            <CardAppointment />
-            <CardTreatments />
-          </>
-        )}
-      </div>
+      {store?.patient && store.patient?.id ? (
+        <>
+          <Navbar />
+          <div className="d-flex">
+            {store.patient && (
+              <>
+                <CardAppointment />
+                <CardTreatments />
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <h2>componente denegado</h2>
+      )}
     </>
   );
 };

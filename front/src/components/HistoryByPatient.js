@@ -21,7 +21,7 @@ const HistoryByPatient = () => {
   };
 
   useEffect(() => {
-    if (id){
+    if (id) {
       fetchPatientData();
     }
   }, [id]);
@@ -30,11 +30,11 @@ const HistoryByPatient = () => {
   // ? store.patientData.patientData.filter(patient => patient.id === store.patientData.history.patient_id )
   // : [];
 
-
   return (
     <div>
-      {store.patientData &&
-        store.patientData.history?.length > 0 ?
+      {(store.patient || store.employee.specialist !== "admin") &&
+      store.patientData &&
+      store.patientData.history?.length > 0 ? (
         store.patientData?.history.map((e) => (
           <div key={e.id}>
             <p>
@@ -45,13 +45,13 @@ const HistoryByPatient = () => {
               fecha:
               <span>{actions.dateFormater(e.date)}</span>
             </p>
-          </div> 
-        ))
-        :
-          <div>
-         <h3> No datos ingresados de historial</h3> 
           </div>
-      }
+        ))
+      ) : (
+        <div>
+          <h3> No datos ingresados de historial</h3>
+        </div>
+      )}
     </div>
   );
 };

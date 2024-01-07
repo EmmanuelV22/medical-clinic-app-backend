@@ -38,28 +38,34 @@ const CreateHistoric = ({ id }) => {
     console.log(id);
     setDate("");
     setDescription("");
-    window.location.reload()
+    window.location.reload();
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="description">Descripción</label>{" "}
-        <input
-          type="text"
-          value={description}
-          id="description"
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <label htmlFor="date">Fecha</label>{" "}
-        <input
-          id="date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <button>crear historia</button>
-      </form>
-    </div>
+    <>
+      {store.employee && store.employee.specialist !== "admin" ? (
+        <div>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="description">Descripción</label>{" "}
+            <input
+              type="text"
+              value={description}
+              id="description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <label htmlFor="date">Fecha</label>{" "}
+            <input
+              id="date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <button>crear historia</button>
+          </form>
+        </div>
+      ) : (
+        <h1>denegado</h1>
+      )}
+    </>
   );
 };
 

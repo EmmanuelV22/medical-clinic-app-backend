@@ -51,7 +51,10 @@ const PatientData = () => {
 
   return (
     <>
-      {store.patientData && store.patientData.patientData && (
+      {store?.employee &&
+      store.employee?.specialist !== "admin" &&
+      store.patientData &&
+      store.patientData.patientData ? (
         <div key={store.patientData.patientData.id}>
           <h2>
             Ficha personal de {store.patientData.patientData.firstname}{" "}
@@ -97,13 +100,13 @@ const PatientData = () => {
           </button>
           <button
             className="btn btn-primary"
-            onClick={
-              () => navigate(`/createTreatment/patient/${id}`)
-            }
+            onClick={() => navigate(`/createTreatment/patient/${id}`)}
           >
             Crear tratamiento
           </button>
         </div>
+      ) : (
+        <h2>componente denegado</h2>
       )}
     </>
   );

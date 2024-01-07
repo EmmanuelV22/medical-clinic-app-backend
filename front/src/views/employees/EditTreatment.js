@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -25,7 +26,6 @@ const EditTreatment = () => {
   useEffect(() => {
     if (treatment_id) {
       getTreatmentData();
-      console.log(treatment_id);
     }
   }, [treatment_id]);
 
@@ -143,177 +143,185 @@ const EditTreatment = () => {
     setMedicineData([...medicineData, { medicine_name: "", quantity: "" }]);
   };
 
+  const isDoctor = store.employee.id;
+
   return (
-    <div>
-      <h1>
-        Editar tratamiento para{" "}
-        {store.patientData.patientData &&
-          store.patientData.patientData.firstname}{" "}
-        {store.patientData.patientData &&
-          store.patientData.patientData.lastname}
-      </h1>
-      <div className="w-full max-w-xs">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        >
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="resume"
+    <>
+      {isDoctor ? (
+        <div>
+          <h1>
+            Editar tratamiento para{" "}
+            {store.patientData.patientData &&
+              store.patientData.patientData.firstname}{" "}
+            {store.patientData.patientData &&
+              store.patientData.patientData.lastname}
+          </h1>
+          <div className="w-full max-w-xs">
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
             >
-              Resumen:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="resume"
-              type="text"
-              placeholder="Resumen del tratamiento"
-              value={resume}
-              onChange={(e) => setResume(e.target.value)}
-            />
-          </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="resume"
+                >
+                  Resumen:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="resume"
+                  type="text"
+                  placeholder="Resumen del tratamiento"
+                  value={resume}
+                  onChange={(e) => setResume(e.target.value)}
+                />
+              </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="medicine"
-            >
-              Medicina:
-            </label>
-            {Array.isArray(medicineData) &&
-              medicineData.map((medicineItem, index) => (
-                <div key={index} className="flex mb-2">
-                  <input
-                    className="shadow appearance-none border rounded w-2/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    type="text"
-                    placeholder="Nombre del medicamento"
-                    value={medicineItem.medicine_name}
-                    onChange={(e) =>
-                      handleMedicineChange(index, e.target.value)
-                    }
-                  />
-                  <input
-                    className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
-                    type="text"
-                    placeholder="Cantidad"
-                    value={medicineItem.quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(index, e.target.value)
-                    }
-                  />
-                </div>
-              ))}
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="medicine"
+                >
+                  Medicina:
+                </label>
+                {Array.isArray(medicineData) &&
+                  medicineData.map((medicineItem, index) => (
+                    <div key={index} className="flex mb-2">
+                      <input
+                        className="shadow appearance-none border rounded w-2/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        type="text"
+                        placeholder="Nombre del medicamento"
+                        value={medicineItem.medicine_name}
+                        onChange={(e) =>
+                          handleMedicineChange(index, e.target.value)
+                        }
+                      />
+                      <input
+                        className="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
+                        type="text"
+                        placeholder="Cantidad"
+                        value={medicineItem.quantity}
+                        onChange={(e) =>
+                          handleQuantityChange(index, e.target.value)
+                        }
+                      />
+                    </div>
+                  ))}
 
-            {/* Ajoutez un bouton pour ajouter de nouveaux médicaments */}
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={handleAddMedicine}
-            >
-              Ajouter Médicament
-            </button>
-          </div>
+                {/* Ajoutez un bouton pour ajouter de nouveaux médicaments */}
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleAddMedicine}
+                >
+                  Ajouter Médicament
+                </button>
+              </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="initial_date"
-            >
-              Fecha de Inicio:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="initial_date"
-              type="date"
-              placeholder="Fecha de Inicio"
-              value={initial_date}
-              onChange={(e) => setInitialDate(e.target.value)}
-            />
-          </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="initial_date"
+                >
+                  Fecha de Inicio:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="initial_date"
+                  type="date"
+                  placeholder="Fecha de Inicio"
+                  value={initial_date}
+                  onChange={(e) => setInitialDate(e.target.value)}
+                />
+              </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="exp_date"
-            >
-              Fecha de finalizacion:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="exp_date"
-              type="date"
-              placeholder="Fecha de finalizacion"
-              value={exp_date}
-              onChange={(e) => setExpDate(e.target.value)}
-            />
-          </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="exp_date"
+                >
+                  Fecha de finalizacion:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="exp_date"
+                  type="date"
+                  placeholder="Fecha de finalizacion"
+                  value={exp_date}
+                  onChange={(e) => setExpDate(e.target.value)}
+                />
+              </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="patologies"
-            >
-              Patologias:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="patologies"
-              type="text"
-              placeholder="Patologias a tener en cuenta"
-              value={patologies}
-              onChange={(e) => setPatologies(e.target.value)}
-            />
-          </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="patologies"
+                >
+                  Patologias:
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="patologies"
+                  type="text"
+                  placeholder="Patologias a tener en cuenta"
+                  value={patologies}
+                  onChange={(e) => setPatologies(e.target.value)}
+                />
+              </div>
 
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="surgey"
-            >
-              Cirugia:
-            </label>
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="surgey"
-              value={surgey}
-              onChange={(e) => setSurgey(e.target.value)}
-            >
-              <option value="SI">Sí</option>
-              <option value="NO">No</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="finish_treatment"
-            >
-              ¿Finalizar tratamiento?
-            </label>
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="finish_treatment"
-              value={finish_treatment}
-              onChange={(e) => setFinishTreatment(e.target.value)}
-            >
-              <option value="0">No</option>
-              <option value="1">Sí</option>
-            </select>
-          </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="surgey"
+                >
+                  Cirugia:
+                </label>
+                <select
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="surgey"
+                  value={surgey}
+                  onChange={(e) => setSurgey(e.target.value)}
+                >
+                  <option value="SI">Sí</option>
+                  <option value="NO">No</option>
+                </select>
+              </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="finish_treatment"
+                >
+                  ¿Finalizar tratamiento?
+                </label>
+                <select
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="finish_treatment"
+                  value={finish_treatment}
+                  onChange={(e) => setFinishTreatment(e.target.value)}
+                >
+                  <option value="0">No</option>
+                  <option value="1">Sí</option>
+                </select>
+              </div>
 
-          <div className="flex items-center justify-between">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Guardar Modificacion
-            </button>
-            <button
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-              onClick={() => window.location.reload()}
-            >
-              Cancelar
-            </button>
+              <div className="flex items-center justify-between">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  Guardar Modificacion
+                </button>
+                <button
+                  className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                  onClick={() => window.location.reload()}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      ) : (
+        <h1>DENEGADO</h1>
+      )}
+    </>
   );
 };
 
