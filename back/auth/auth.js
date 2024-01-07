@@ -465,7 +465,7 @@ exports.loginPatient = async (req, res, next) => {
     if (results.length === 0) {
       return res
         .status(400)
-        .json({ message: "Patient not found", error: error.message });
+        .json({ message: "Patient not found", error: error });
     }
     const patient = results[0];
 

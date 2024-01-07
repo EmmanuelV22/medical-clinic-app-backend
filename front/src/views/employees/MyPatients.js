@@ -46,7 +46,6 @@ const MyPatients = () => {
   };
 
   const headers = [
-    { field: "id", label: "ID", sortable: true },
     { field: "firstname", label: "Nombre", sortable: true },
     { field: "lastname", label: "Apellido", sortable: true },
     { field: "dni", label: "DNI", sortable: true },
@@ -61,7 +60,6 @@ const MyPatients = () => {
   const renderRow = (patient) => (
     <React.Fragment key={patient.id}>
       <tr className="infos-contain">
-        <td>{patient.id}</td>
         <td>{patient.firstname}</td>
         <td>{patient.lastname}</td>
         <td>{patient.dni}</td>

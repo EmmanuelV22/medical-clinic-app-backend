@@ -38,7 +38,7 @@ const CreateHistoric = ({ id }) => {
     console.log(id);
     setDate("");
     setDescription("");
-    window.location.reload()
+    window.location.reload();
   };
   return (
     <div>
@@ -57,7 +57,7 @@ const CreateHistoric = ({ id }) => {
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
-        <button>crear historia</button>
+        <button className="btn btn-success">crear historia</button>
       </form>
     </div>
   );

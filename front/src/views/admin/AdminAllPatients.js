@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import PatientDetails from "../../components/admin/PatientDetails";
 import SortingTable from "../../components/SortingTable";
@@ -18,7 +18,6 @@ const AdminAllPatients = () => {
   }, []);
 
   const headers = [
-    { field: "id", label: "ID", sortable: true },
     { field: "firstname", label: "Nombre", sortable: true },
     { field: "lastname", label: "Apellido", sortable: true },
     { field: "dni", label: "DNI", sortable: true },
@@ -43,7 +42,6 @@ const AdminAllPatients = () => {
   const renderRow = (patient) => (
     <React.Fragment key={patient.id}>
       <tr className="infos-contain">
-        <td>{patient.id}</td>
         <td>{patient.firstname}</td>
         <td>{patient.lastname}</td>
         <td>{patient.dni}</td>
@@ -88,7 +86,7 @@ const AdminAllPatients = () => {
           <td>
             <button
               title="historia clínica"
-              onClick={()=>navigate(`/patient-history/${patient.id}`)}
+              onClick={() => navigate(`/patient-history/${patient.id}`)}
               style={{ border: "none", background: "transparent" }}
             >
               <svg
