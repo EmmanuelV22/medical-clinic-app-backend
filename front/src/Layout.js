@@ -30,15 +30,21 @@ import AppointmentById from "./views/patients/AppointmentById";
 
 import PatientHistory from "./views/employees/PatientHistory";
 import MyTtreatments from "./views/patients/MyTtreatments";
+import PasswordChange from "./views/patients/PasswordChange";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
   return (
     <BrowserRouter basename={basename}>
       <Routes>
+
         {/*RUTAS PUBLICAS */}
         <Route path="/acceso-denegado" element={<AccessDenied />} />
         <Route path="/" element={<Home />} />
+
+       
+
+
 
         {/*RUTAS PRIVADAS */}
         <Route path="/appointment-post" element={<SpecialistPicker />} />
@@ -48,7 +54,8 @@ const Layout = () => {
           path="/patient-treatments/:patient_id"
           element={<PatientTreatements />}
         />
-
+        <Route path="/patients/update-password/:dni/:token" element={<PasswordChange />}/>
+          
         {/*RUTAS ADMINS */}
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard-admin" element={<DashboardAdmin />} />

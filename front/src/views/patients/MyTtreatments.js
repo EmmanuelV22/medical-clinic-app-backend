@@ -33,6 +33,7 @@ const MyTtreatments = () => {
 
   return (
     <>
+
       {isAuthorized ? (
         <>
           <h1>
@@ -41,6 +42,7 @@ const MyTtreatments = () => {
           </h1>
           <table>
             <thead>
+
               <tr>
                 <th>Resumen</th>
                 <th>Medicina</th>

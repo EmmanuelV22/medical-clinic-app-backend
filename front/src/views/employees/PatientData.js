@@ -9,6 +9,7 @@ const PatientData = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
   const [createHistoric, setCreateHistoric] = useState(false);
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   const isCreating = () => {
@@ -17,6 +18,10 @@ const PatientData = () => {
 
   const isNotCreating = () => {
     setCreateHistoric(false);
+  };
+
+  const handleShow = () => {
+    setShow(!show);
   };
 
   const handlePatientTreatments = async () => {
@@ -45,6 +50,19 @@ const PatientData = () => {
     }
   };
 
+  const calcularEdad = (fechaNacimiento) => {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const mes = hoy.getMonth() - fechaNac.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+      edad--;
+    }
+
+    return edad;
+  };
+
   useEffect(() => {
     getPatientData();
   }, [id]);
@@ -60,6 +78,28 @@ const PatientData = () => {
             Ficha personal de {store.patientData.patientData.firstname}{" "}
             {store.patientData.patientData.lastname}
           </h2>
+          <div>{createHistoric && <CreateHistoric id={id} />}</div>
+          {!createHistoric ? (
+            <button className="btn btn-danger" onClick={isCreating}>
+              Crear nueva historia
+            </button>
+          ) : (
+            <button className="btn btn-danger" onClick={isNotCreating}>
+              Cancelar
+            </button>
+          )}
+          <button
+            className="btn btn-success"
+            onClick={() => handlePatientTreatments(id)}
+          >
+            Ver tratamientos
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(`/createTreatment/patient/${id}`)}
+          >
+            Crear tratamiento
+          </button>
           <p>
             email: <span>{store.patientData.patientData.email}</span>{" "}
           </p>
@@ -68,6 +108,10 @@ const PatientData = () => {
             <span>
               {actions.dateFormater(store.patientData.patientData.birthday)}
             </span>{" "}
+          </p>
+          <p>
+            Edad:
+            <span>{calcularEdad(store.patientData.patientData.birthday)}</span>
           </p>
           <p>
             DNI: <span>{store.patientData.patientData.dni}</span>{" "}
@@ -81,29 +125,15 @@ const PatientData = () => {
               {store.patientData.patientData.blood_group.toUpperCase()}
             </span>{" "}
           </p>
-          <div>
-            <HistoryByPatient />
+          <div className="border border-dark rounded">
+            <h3>Historia Clinica: </h3>
+            <button onClick={handleShow} className="btn btn-secondary">
+              {show ? "Ocultar" : "Ver"}
+            </button>
+            {show && <HistoryByPatient />}
           </div>
-          <div>
-            {!createHistoric ? (
-              <button onClick={isCreating}>Crear nuevo historia</button>
-            ) : (
-              <button onClick={isNotCreating}>Cancelar</button>
-            )}
-          </div>
-          <div>{createHistoric && <CreateHistoric id={id} />}</div>
-          <button
-            className="btn btn-success"
-            onClick={() => handlePatientTreatments(id)}
-          >
-            Ver tratamientos
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate(`/createTreatment/patient/${id}`)}
-          >
-            Crear tratamiento
-          </button>
+
+
         </div>
       ) : (
         <h2>componente denegado</h2>

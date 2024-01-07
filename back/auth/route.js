@@ -8,19 +8,24 @@ const {
   getAllPatients,
   loginPatient,
   updatePatient,
+  updatePasswordPatient,
   deletePatient,
   getPatientById,
   getEmployeeById,
   registerPatient,
+  sendMailChangePassword,
+  validateTokenPatient
 } = require("./auth");
 
 const {
   privateAdmin,
   private,
   privateEmployees,
+
   privateDr,
   privatePatient,
   privateNurse,
+
 } = require("../middleware/auth");
 const router = express.Router();
 
@@ -39,6 +44,9 @@ router.route("/update-patient/:id").put(privateAdmin, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);
 router.route("/patients").get(privateEmployees, getAllPatients);
 router.route("/patients/:id").get(private, getPatientById);
+router.route("/patients/update-password/:dni/:token").put(validateTokenPatient,updatePasswordPatient);
+router.route("/patients/send-mail/:dni").get(sendMailChangePassword);
+
 
 //////////////AUTH MIDDLEWARE ADMIN ROUTES /////////////
 router.route("/admin").get(privateAdmin);

@@ -41,6 +41,7 @@ const CreateHistoric = ({ id }) => {
     window.location.reload();
   };
   return (
+
     <>
       {store.employee && store.employee.specialist !== "admin" ? (
         <div>
@@ -66,6 +67,7 @@ const CreateHistoric = ({ id }) => {
         <h1>denegado</h1>
       )}
     </>
+
   );
 };
 
