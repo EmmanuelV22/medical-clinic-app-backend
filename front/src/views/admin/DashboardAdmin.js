@@ -10,7 +10,7 @@ const DashboardAdmin = () => {
 
   return (
     <>
-      {store?.employee && store.employee.specialist === "admin" ? (
+      {store?.employee && store.employee?.specialist === "admin" ? (
         <>
           <Navbar />
           <div className="d-flex justify-content-evenly flex-wrap my-5">

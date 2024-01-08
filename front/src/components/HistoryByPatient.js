@@ -32,9 +32,14 @@ const HistoryByPatient = () => {
     }
   }, [id]);
 
+
+
   return (
     <div>
-      {store.patientData && store.patientData.history?.length > 0 ? (
+      {(store.patient || store.employee.specialist !== "admin") &&
+      store.patientData &&
+      store.patientData.history?.length > 0 ? (
+
         store.patientData?.history.map((e) => (
           <div className="border border-dark " key={e.id}>
             <p>
@@ -45,6 +50,7 @@ const HistoryByPatient = () => {
               fecha:
               <span>{actions.dateFormater(e.date)}</span>
             </p>
+
             <p>
               Escrito por :
               <span>
@@ -55,6 +61,7 @@ const HistoryByPatient = () => {
                 />
               </span>
             </p>
+
           </div>
         ))
       ) : (

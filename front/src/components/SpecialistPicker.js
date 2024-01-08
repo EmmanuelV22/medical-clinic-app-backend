@@ -37,73 +37,79 @@ const SpecialistPicker = () => {
 
   return (
     <>
-      <div>
-        <select
-          className="form-select"
-          aria-label="Select a specialty"
-          onChange={handleSpecialistChange}
-          value={selectedSpecialist}
-        >
-          <option value="" disabled selected>
-            Selecciona una especialidad
-          </option>
-          {specialistPicker.map((speciality) => (
-            <option key={speciality} value={speciality}>
-              {speciality}
-            </option>
-          ))}
-        </select>
-      </div>
-      {choiceSpecialist && (
-        <div>
-          <select
-            className="form-select"
-            aria-label="Select a doctor"
-            onChange={handleDoctorChange}
-            value={selectedDoctor}
-          >
-            <option value="" disabled selected>
-              Selecciona un médico
-            </option>
-            {store.employees &&
-              store.employees.length >= 1 &&
-              store.employees
-                .filter(
-                  (employee) => employee.specialist === selectedSpecialist
-                )
-                .map((employee) => (
-                  <option key={employee.id} value={employee.lastname}>
-                    Dr.{employee.lastname}
-                  </option>
-                ))}
-          </select>
-        </div>
-      )}
-      {choiceSpecialist && choiceDoc && (
-        <div className="d-flex justify-content-center mt-5">
-          <AppointmentScheduler
-            doctorId={
-              store.employees.find(
-                (employee) => employee.lastname === selectedDoctor
-              ).id
-            }
-            daysOff={
-              store.employees.find(
-                (employee) => employee.lastname === selectedDoctor
-              ).days_off
-            }
-            startTime={
-              store.employees.find(
-                (employee) => employee.lastname === selectedDoctor
-              ).start_time
-            }
-            endTime={
-              store.employees.find(
-                (employee) => employee.lastname === selectedDoctor
-              ).end_time
-            }
-          />
-        </div>
+      {store.patient || store.employee.specialist === "admin" ? (
+        <>
+          <div>
+            <select
+              className="form-select"
+              aria-label="Select a specialty"
+              onChange={handleSpecialistChange}
+              value={selectedSpecialist}
+            >
+              <option value="" disabled selected>
+                Selecciona una especialidad
+              </option>
+              {specialistPicker.map((speciality) => (
+                <option key={speciality} value={speciality}>
+                  {speciality}
+                </option>
+              ))}
+            </select>
+          </div>
+          {choiceSpecialist && (
+            <div>
+              <select
+                className="form-select"
+                aria-label="Select a doctor"
+                onChange={handleDoctorChange}
+                value={selectedDoctor}
+              >
+                <option value="" disabled selected>
+                  Selecciona un médico
+                </option>
+                {store.employees &&
+                  store.employees.length >= 1 &&
+                  store.employees
+                    .filter(
+                      (employee) => employee.specialist === selectedSpecialist
+                    )
+                    .map((employee) => (
+                      <option key={employee.id} value={employee.lastname}>
+                        Dr.{employee.lastname}
+                      </option>
+                    ))}
+              </select>
+            </div>
+          )}
+          {choiceSpecialist && choiceDoc && (
+            <div className="d-flex justify-content-center mt-5">
+              <AppointmentScheduler
+                doctorId={
+                  store.employees.find(
+                    (employee) => employee.lastname === selectedDoctor
+                  ).id
+                }
+                daysOff={
+                  store.employees.find(
+                    (employee) => employee.lastname === selectedDoctor
+                  ).days_off
+                }
+                startTime={
+                  store.employees.find(
+                    (employee) => employee.lastname === selectedDoctor
+                  ).start_time
+                }
+                endTime={
+                  store.employees.find(
+                    (employee) => employee.lastname === selectedDoctor
+                  ).end_time
+                }
+              />
+            </div>
+          )}
+        </>
+      ) : (
+        <h1>denegado</h1>
       )}
     </>
   );

@@ -10,6 +10,7 @@ import AdminAllPatients from "./views/admin/AdminAllPatients";
 import AdminAllEmployees from "./views/admin/AdminAllEmployees";
 import EmployeeDetail from "./components/admin/EmployeeDetail";
 import SpecialistPicker from "./components/SpecialistPicker";
+import AccessDenied from "../src/views/AccessDenied";
 
 import CreateTreatment from "./views/employees/CreateTreatment";
 import PatientTreatements from "./components/PatientTreatments";
@@ -36,53 +37,65 @@ const Layout = () => {
   return (
     <BrowserRouter basename={basename}>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/dashboard-admin" element={<DashboardAdmin />}></Route>
-        <Route path="/dashboard-patient" element={<DashboardPatient />}></Route>
-        <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
-        <Route path="/pacientes" element={<AdminAllPatients />}></Route>
-        <Route path="/patients/:id" element={<PatientData />}></Route>
-        <Route path="/mis-pacientes" element={<MyPatients />}></Route>
-        <Route path="/mis-turnos" element={<MyAppointments />}></Route>
-        <Route path="/empleados" element={<AdminAllEmployees />}></Route>
-        <Route path="/employees/:id" element={<EmployeeDetail />}></Route>
-        <Route path="/appointment-post" element={<SpecialistPicker />}></Route>
-        <Route path="/new-treatment" element={<CreateTreatment />}></Route>
-        <Route path="/history/:id" element={<HistoryByPatient />}></Route>
-        <Route path="/create-history/:id" element={<CreateHistoric />}></Route>
-        <Route path="/patient-history/:id" element={<PatientHistory />}></Route>
-        <Route path="/patients/update-password/:dni/:token" element={<PasswordChange />}></Route>
+
+        {/*RUTAS PUBLICAS */}
+        <Route path="/acceso-denegado" element={<AccessDenied />} />
+        <Route path="/" element={<Home />} />
+
+       
 
 
-        <Route
-          path="/notifications/:patient_id"
-          element={<MyNotifications />}
-        ></Route>
+
+        {/*RUTAS PRIVADAS */}
+        <Route path="/appointment-post" element={<SpecialistPicker />} />
+        <Route path="/history/:id" element={<HistoryByPatient />} />
+        <Route path="/patient-history/:id" element={<PatientHistory />} />
         <Route
           path="/patient-treatments/:patient_id"
           element={<PatientTreatements />}
-        ></Route>
-        <Route
-          path="/mi-tratamiento/:patient_id"
-          element={<MyTtreatments />}
-        ></Route>
-        <Route
-          path="/patient-treatment/:treatment_id"
-          element={<TreatmentById />}
-        ></Route>
-        <Route
-          path="/patient-appointment/:appointment_id"
-          element={<AppointmentById />}
-        ></Route>
-        <Route
-          path="/createTreatment/patient/:patient_id"
-          element={<CreateTreatment />}
-        ></Route>
+        />
+        <Route path="/patients/update-password/:dni/:token" element={<PasswordChange />}/>
+          
+        {/*RUTAS ADMINS */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+        <Route path="/empleados" element={<AdminAllEmployees />} />
+        <Route path="/employees/:id" element={<EmployeeDetail />} />
+
+        {/*RUTAS DOCTORES */}
+        <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
+        <Route path="/mis-pacientes" element={<MyPatients />} />
+        <Route path="/patients/:id" element={<PatientData />} />
+        <Route path="/new-treatment" element={<CreateTreatment />} />
+        <Route path="/create-history/:id" element={<CreateHistoric />} />
         <Route
           path="/editTreatment/:treatment_id"
           element={<EditTreatment />}
-        ></Route>
+        />
+        <Route
+          path="/createTreatment/patient/:patient_id"
+          element={<CreateTreatment />}
+        />
+
+        {/*RUTAS EMPLEADO */}
+        <Route path="/pacientes" element={<AdminAllPatients />} />
+        <Route path="/mis-turnos" element={<MyAppointments />} />
+
+        {/*RUTAS PACIENTES */}
+        <Route path="/dashboard-patient" element={<DashboardPatient />} />
+        <Route
+          path="/patient-appointment/:appointment_id"
+          element={<AppointmentById />}
+        />
+        <Route path="/mi-tratamiento/:patient_id" element={<MyTtreatments />} />
+        <Route
+          path="/patient-treatment/:treatment_id"
+          element={<TreatmentById />}
+        />
+        <Route
+          path="/notifications/:patient_id"
+          element={<MyNotifications />}
+        />
       </Routes>
     </BrowserRouter>
   );

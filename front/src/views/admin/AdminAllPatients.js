@@ -130,25 +130,38 @@ const AdminAllPatients = () => {
   };
 
   return (
-    <div className="admin-patient-content">
-      <h1 className="text-center font-bold my-4" style={{ fontSize: "2.5rem" }}>
-        Lista de pacientes:
-      </h1>
-      <SearchBar onSearch={handleSearch} />
-      {searchError && (
-        <p className="text-center text-danger">No se encontraron pacientes.</p>
+    <>
+      {store?.employee && store.employee?.specialist ? (
+        <div className="admin-patient-content">
+          <h1
+            className="text-center font-bold my-4"
+            style={{ fontSize: "2.5rem" }}
+          >
+            Lista de pacientes:
+          </h1>
+          <SearchBar onSearch={handleSearch} />
+          {searchError && (
+            <p className="text-center text-danger">
+              No se encontraron pacientes.
+            </p>
+          )}
+          <div
+            className="table-responsive"
+            style={{ width: "100%", margin: "0 auto" }}
+          >
+            <SortingTable
+              headers={headers}
+              data={
+                filteredPatients.length > 0 ? filteredPatients : store.patients
+              }
+              renderRow={renderRow}
+            />
+          </div>
+        </div>
+      ) : (
+        <h2>componente denegado</h2>
       )}
-      <div
-        className="table-responsive"
-        style={{ width: "100%", margin: "0 auto" }}
-      >
-        <SortingTable
-          headers={headers}
-          data={filteredPatients.length > 0 ? filteredPatients : store.patients}
-          renderRow={renderRow}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
