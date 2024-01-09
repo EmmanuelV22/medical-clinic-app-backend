@@ -8,6 +8,7 @@ import { Context } from "../../store/appContext";
 import CardTreatments from "../../components/patients/CardTreatments";
 import CardMyHistory from "../../components/patients/CardMyHistory";
 
+import CardGetAppointment from "../../components/patients/CardGetAppointments";
 
 const DashboardPatient = () => {
   const { store } = useContext(Context);
@@ -21,6 +22,7 @@ const DashboardPatient = () => {
             {store.patient && (
               <>
                 <CardAppointment />
+                <CardGetAppointment />
                 <CardTreatments />
                 <CardMyHistory />
               </>

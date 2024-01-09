@@ -16,7 +16,7 @@ exports.getAppointmentPatients = async (req, res, next) => {
         .json({ message: "Error fetching patient", error: error.message });
     }
 
-    const agenda = results[0];
+    const agenda = results;
     return res.status(200).json({ message: "Get appointment success", agenda });
   });
 };
