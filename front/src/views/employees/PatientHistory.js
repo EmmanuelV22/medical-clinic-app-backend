@@ -14,7 +14,7 @@ const PatientHistory = () => {
     try {
       const PatientTreatements = await actions.getTreatmentsPatient(id);
       // Naviguer vers la route des détails du patient avec l'ID
-      navigate(`/patient-treatments/${id}`);
+      store.employee.id ? (navigate(`/patient-treatments/${id}`)) : (navigate(`/mi-tratamiento/${id}`));
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des détails du patient",

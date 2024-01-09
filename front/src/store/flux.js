@@ -26,8 +26,15 @@ const getState = ({ getStore, getActions, setStore }) => {
       treatments: [],
       notifications: [],
       notificationPatient: [],
+      response: {
+        type: "",
+        message: ""
+      }
     },
     actions: {
+      showNotification: async (message, type) => {
+        setStore({ response: { message, type } })
+      },
       dateFormater: (date) => {
         return new Date(date).toLocaleDateString("es-ES", {
           year: "numeric",
@@ -257,8 +264,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       logout: () => {
+        const store = getStore()
         let token = Cookies.remove("jwt");
-        setStore({ isAuth: false });
+        setStore({...store, isAuth: false, response: {type:"success", message:"Log out ok"}});
         return token != null ? true : false;
       },
       deleteEmployee: async (employeeId) => {

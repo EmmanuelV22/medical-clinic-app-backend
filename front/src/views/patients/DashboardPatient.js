@@ -6,6 +6,8 @@ import Navbar from "../../components/Navbar";
 import CardAppointment from "../../components/patients/CardAppointment";
 import { Context } from "../../store/appContext";
 import CardTreatments from "../../components/patients/CardTreatments";
+import CardMyHistory from "../../components/patients/CardMyHistory";
+
 
 const DashboardPatient = () => {
   const { store } = useContext(Context);
@@ -20,6 +22,7 @@ const DashboardPatient = () => {
               <>
                 <CardAppointment />
                 <CardTreatments />
+                <CardMyHistory />
               </>
             )}
           </div>
