@@ -19,24 +19,6 @@ const MyAppointments = () => {
     )
   );
 
-  const getMyAppointments = async () => {
-    if (doctorID) {
-      await actions.loadMedicalAppointmentsForDr(doctorID);
-      actions.getAllPatients();
-
-      // Tri des rendez-vous par ordre chronologique
-      const sortedAppointments = [...store.myAppointments].sort((a, b) => {
-        // Convertir les dates en objets Date pour la comparaison
-        const dateA = new Date(`${a.year}-${a.month}-${a.date} ${a.time}`);
-        const dateB = new Date(`${b.year}-${b.month}-${b.date} ${b.time}`);
-
-        return dateA - dateB;
-      });
-
-      setSortedAppointments(sortedAppointments);
-    }
-  };
-
   useEffect(() => {
     if (doctorID !== null) {
       getMyAppointments();
@@ -88,6 +70,34 @@ const MyAppointments = () => {
       ...prevStatus,
       [appointmentId]: "no asistido",
     }));
+  };
+
+  const getMyAppointments = async () => {
+    if (doctorID) {
+      await actions.loadMedicalAppointmentsForDr(doctorID);
+      actions.getAllPatients();
+
+      // Filtrer les rendez-vous passés
+      const currentDate = new Date();
+      const filteredAppointments = store.myAppointments.filter(
+        (appointment) => {
+          const appointmentDate = new Date(
+            `${appointment.year}-${appointment.month}-${appointment.date} ${appointment.time}`
+          );
+
+          return appointmentDate >= currentDate;
+        }
+      );
+
+      const sortedAppointments = filteredAppointments.sort((a, b) => {
+        const dateA = new Date(`${a.year}-${a.month}-${a.date} ${a.time}`);
+        const dateB = new Date(`${b.year}-${b.month}-${b.date} ${b.time}`);
+
+        return dateA - dateB;
+      });
+
+      setSortedAppointments(sortedAppointments);
+    }
   };
 
   const renderRow = (appointment) => {

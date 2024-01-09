@@ -13,7 +13,9 @@ const PatientTreatement = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleGetTreatments();
+    if (patient_id) {
+      handleGetTreatments();
+    }
   }, [patient_id]);
 
   const handleGetTreatments = async () => {
