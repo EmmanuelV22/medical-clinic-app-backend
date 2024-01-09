@@ -50,7 +50,7 @@ const PatientTreatement = () => {
         </thead>
         <tbody>
           {store.patientData.treatments &&
-          store.employee.id &&
+          (store.employee.id || store.patient.id) &&
           store.employee.specialist !== "admin" ? (
             store.patientData.treatments.map((treatment, index) => (
               <tr key={index}>

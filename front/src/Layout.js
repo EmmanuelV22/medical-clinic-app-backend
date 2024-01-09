@@ -31,12 +31,14 @@ import AppointmentById from "./views/patients/AppointmentById";
 import PatientHistory from "./views/employees/PatientHistory";
 import MyTtreatments from "./views/patients/MyTtreatments";
 import PasswordChange from "./views/patients/PasswordChange";
+import Alerts from "./components/Alerts";
 import PatientAppointments from "./views/patients/PatientAppointments";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
   return (
     <BrowserRouter basename={basename}>
+      <Alerts />
       <Routes>
         {/*RUTAS PUBLICAS */}
         <Route path="/acceso-denegado" element={<AccessDenied />} />

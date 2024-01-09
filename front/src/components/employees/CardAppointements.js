@@ -20,7 +20,7 @@ const CardAppointments = () => {
           </div>
         </div>
       ) : (
-        <h1>Espacio resevado al personal medical!</h1>
+        <h1>Espacio resevado al personal medico!</h1>
       )}
     </div>
   );

@@ -43,10 +43,8 @@ const MyTtreatments = () => {
             <thead>
               <tr>
                 <th>Resumen</th>
-                <th>Medicina</th>
                 <th>Fecha de inicio</th>
                 <th>Fecha de finalización</th>
-                <th>Patologías</th>
                 <th>Cirugía</th>
                 <th>Doctor</th>
                 <th>Terminado</th>
@@ -61,20 +59,8 @@ const MyTtreatments = () => {
                   filteredPatientId.slice(0, 10).map((treatment, index) => (
                     <tr key={index}>
                       <td>{treatment.resume}</td>
-                      <td>
-                        {treatment.medicine_data &&
-                          JSON.parse(treatment.medicine_data).map(
-                            (medicine, medIndex) => (
-                              <div key={medIndex}>
-                                <div>{medicine.medicine_name}</div>
-                                <div>Quantity: {medicine.quantity}</div>
-                              </div>
-                            )
-                          )}
-                      </td>
                       <td>{actions.dateFormater(treatment.initial_date)}</td>
                       <td>{actions.dateFormater(treatment.exp_date)}</td>
-                      <td>{treatment.patologies}</td>
                       <td>
                         {treatment.surgey === "" ? "NO" : treatment.surgey}
                       </td>

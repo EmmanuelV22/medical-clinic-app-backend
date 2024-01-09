@@ -25,15 +25,26 @@ const LoginPatient = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const data = await actions.loginPatient(dni, password);
+    const data = await actions
+    .loginPatient(dni, password)
+    .then((res) => {
+      actions.showNotification(res.message,"success")
+      navigate(`/dashboard-patient`);
+            window.location.reload();
 
-    if (data) {
-      const loggedInPatients = data.patients[0];
-      if (loggedInPatients) navigate(`/dashboard-patient`);
-      window.location.reload();
-    } else {
-      alert("Error, log impossible");
-    }
+    })
+      .catch((err) => {
+      
+        actions.showNotification(err.message,"danger")
+      })
+
+    // if (data) {
+    //   const loggedInPatients = data;
+    //   if (loggedInPatients) 
+    //   window.location.reload();
+    // } else {
+    //   alert("Error, log impossible");
+    // }
   }
 
   return (
