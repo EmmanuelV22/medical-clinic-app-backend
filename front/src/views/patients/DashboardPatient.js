@@ -7,7 +7,9 @@ import CardAppointment from "../../components/patients/CardAppointment";
 import { Context } from "../../store/appContext";
 import CardTreatments from "../../components/patients/CardTreatments";
 import CardMyHistory from "../../components/patients/CardMyHistory";
+
 import CardSettings from "../../components/patients/CardSettings";
+
 
 import CardGetAppointment from "../../components/patients/CardGetAppointments";
 
@@ -24,7 +26,7 @@ const DashboardPatient = () => {
         <>
           <Navbar />
           <h1>Bienvenido {store.patientData?.patientData?.firstname}  {store.patientData?.patientData?.lastname}</h1>
-          <div className="d-flex">
+          <div className="d-flex justify-content-evenly flex-wrap my-5">
             {store.patient && (
               <>
                 <CardAppointment />

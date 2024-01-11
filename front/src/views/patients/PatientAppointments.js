@@ -4,6 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
+import ConfirmDeleteAppointment from "../../components/patients/ConfirmDeleteAppointment";
+import { useNavigate } from "react-router";
 
 const PatientAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -11,11 +13,11 @@ const PatientAppointments = () => {
   const [searchError, setSearchError] = useState(false);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [sortedAppointments, setSortedAppointments] = useState([]);
+  let navgiate = useNavigate();
 
   useEffect(() => {
     if (patientID) {
       getMyAppointments();
-      console.log(filteredDr);
     }
   }, [patientID]);
 
@@ -48,10 +50,6 @@ const PatientAppointments = () => {
   const getMyAppointments = async () => {
     if (patientID) {
       await actions.loadPatientAppointments(patientID);
-      console.log(
-        "Appointments Patient after load:",
-        store.appointmentsPatient
-      );
       actions.getAllEmployees();
 
       // Filtrer les rendez-vous passés
@@ -75,6 +73,12 @@ const PatientAppointments = () => {
 
       setSortedAppointments(sortedAppointments);
     }
+  };
+
+  const handleDelete = async (id) => {
+    await actions.deleteNotifications(id);
+    await actions.deleteAppointment(id);
+    window.location.reload();
   };
 
   const renderRow = (appointment) => {
@@ -106,12 +110,12 @@ const PatientAppointments = () => {
                 background: "transparent",
                 color: "green",
               }}
-              title="modificar"
-              // onClick={() => handleConfirmation(appointment.id)}
+              title="planificar turno"
+              onClick={() => navgiate("/planificar-turno")}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-rotate"
+                className="icon icon-tabler icon-tabler-calendar-plus"
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
@@ -122,7 +126,12 @@ const PatientAppointments = () => {
                 strokeLinejoin="round"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M19.95 11a8 8 0 1 0 -.5 4m.5 5v-5h-5" />
+                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                <path d="M16 3v4" />
+                <path d="M8 3v4" />
+                <path d="M4 11h16" />
+                <path d="M16 19h6" />
+                <path d="M19 16v6" />
               </svg>
             </button>
             <button
@@ -133,11 +142,12 @@ const PatientAppointments = () => {
                 marginLeft: "15px",
               }}
               title="cancelar"
-              // onClick={() => handleCancellation(appointment.id)}
+              data-bs-toggle="modal"
+              data-bs-target={"#deleteAppointment-" + appointment.id}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-trash"
+                className="icon icon-tabler icon-tabler-trash"
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
@@ -157,6 +167,10 @@ const PatientAppointments = () => {
             </button>
           </td>
         </tr>
+        <ConfirmDeleteAppointment
+          handleDelete={handleDelete}
+          appointment={appointment}
+        />
       </React.Fragment>
     );
   };

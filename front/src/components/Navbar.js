@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Notifications from "./Notifications";
 import NotificationsNavbar from "./patients/NotificationsNavbar";
+import DarkMode from "./DarkMode";
 
 const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -16,7 +17,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar navbar-expand-md bg-white">
+    <nav className="navbar navbar-expand-md">
       <div className="container-fluid">
         <img
           src="../clinic-logo-removebg.png"
@@ -52,16 +53,18 @@ const Navbar = () => {
                 cerrar sessión
               </Link>
             </li>
-            <li
-              className="nav-item dropdown nav-link"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <Notifications />
-              <NotificationsNavbar />
-            </li>
+            {store.employee && store.employee.specialist !== "admin" && (
+              <li
+                className="nav-item dropdown nav-link"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <Notifications />
+                <NotificationsNavbar />
+              </li>
+            )}
           </ul>
         </div>
       </div>

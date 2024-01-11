@@ -11,27 +11,22 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const data = await actions
-    .login(personalID, password)
-    
-    
-    if (data) {
+    const data = await actions.login(personalID, password);
 
-      actions.showNotification("Successfull log in","success")
+    if (data) {
+      actions.showNotification("Successfull log in", "success");
       const loggedInEmployee = data.employees[0];
-      
 
       if (loggedInEmployee.specialist === "admin") {
         navigate("/dashboard-admin");
-        
+
         window.location.reload();
-        
       } else {
         navigate("/dashboard-doctor");
         window.location.reload();
       }
     } else {
-      actions.showNotification("error log in","danger")
+      actions.showNotification("error log in", "danger");
 
       // alert("Erreur, vérifiez vos infos");
     }

@@ -12,7 +12,7 @@ const CardAppointment = () => {
           <div className="card-body">
             <h5 className="card-title">Agendarse</h5>
             <p className="card-text">¡Acá puedes sacar un turno!</p>
-            <Link to="/appointment-post" className="card-link">
+            <Link to="/planificar-turno" className="card-link">
               turnos
             </Link>
           </div>

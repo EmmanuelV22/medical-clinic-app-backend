@@ -95,20 +95,109 @@ exports.createAppointment = async (req, res, next) => {
 
 ////////////////////////////////////
 
-exports.deleteAppointment = async (req, res, next) => {
+(exports.changeAppointment = async (req, res, next) => {
   const id = req.params.id;
-  const query = "DELETE FROM agenda WHERE id = ?";
-  const values = [id];
+  const { date, month, year, day, time, medical_id, patient_id } = req.body;
+  const state = "confirmado";
+  const updatedAt = new Date();
+
+  const query =
+    "UPDATE agenda SET date=?, month=?, year=?, day=?, time=?, state=?, medical_id=?, patient_id=?, updatedAt=? WHERE id=?";
+
+  const values = [
+    date,
+    month,
+    year,
+    day,
+    time,
+    state,
+    medical_id,
+    patient_id,
+    updatedAt,
+    id,
+  ];
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error deleting agenda", error: error.message });
+        .json({ message: "Error changing appointment", error: error });
     }
-    return res.status(200).json({ message: "Delete sucess" });
+    return res
+      .status(200)
+      .json({ message: "Appointment successfully changed", appointment: id });
   });
-};
+}),
+  ////////////////////////////////////
+
+  (exports.deleteAppointment = async (req, res, next) => {
+    const id = req.params.id;
+
+    // Iniciar la transacción
+    connectDB.beginTransaction((err) => {
+      if (err) {
+        return res
+          .status(500)
+          .json({ message: "Error starting transaction", error: err.message });
+      }
+
+      // Eliminar notificaciones relacionadas en la tabla 'notifications'
+      const deleteNotificationsQuery =
+        "DELETE FROM notifications WHERE agenda_id = ?";
+      const notificationsValues = [id];
+
+      connectDB.query(
+        deleteNotificationsQuery,
+        notificationsValues,
+        (error, results, fields) => {
+          if (error) {
+            // Si hay un error, hacer rollback y manejar el error
+            connectDB.rollback(() => {
+              return res.status(400).json({
+                message: "Error deleting notifications",
+                error: error.message,
+              });
+            });
+          }
+
+          // Continuar con la eliminación en la tabla 'agenda'
+          const deleteAgendaQuery = "DELETE FROM agenda WHERE id = ?";
+          const agendaValues = [id];
+
+          connectDB.query(
+            deleteAgendaQuery,
+            agendaValues,
+            (error, results, fields) => {
+              if (error) {
+                // Si hay un error, hacer rollback y manejar el error
+                connectDB.rollback(() => {
+                  return res.status(400).json({
+                    message: "Error deleting agenda",
+                    error: error.message,
+                  });
+                });
+              }
+
+              // Confirmar la transacción si todo ha ido bien
+              connectDB.commit((err) => {
+                if (err) {
+                  // Si hay un error en el commit, hacer rollback y manejar el error
+                  connectDB.rollback(() => {
+                    return res.status(500).json({
+                      message: "Error committing transaction",
+                      error: err.message,
+                    });
+                  });
+                }
+
+                return res.status(200).json({ message: "Delete success" });
+              });
+            }
+          );
+        }
+      );
+    });
+  });
 
 /////////////////////////////////////////
 
