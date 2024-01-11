@@ -75,8 +75,9 @@ const PatientAppointments = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    actions.deleteAppointment(id);
+  const handleDelete = async (id) => {
+    await actions.deleteNotifications(id);
+    await actions.deleteAppointment(id);
     window.location.reload();
   };
 
