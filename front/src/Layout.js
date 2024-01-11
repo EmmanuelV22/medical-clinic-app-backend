@@ -33,7 +33,11 @@ import MyTtreatments from "./views/patients/MyTtreatments";
 import PasswordChange from "./views/patients/PasswordChange";
 import Alerts from "./components/Alerts";
 import PatientAppointments from "./views/patients/PatientAppointments";
+
+import PatientModal from "./components/patients/PatientModal";
+
 import DarkMode from "./components/DarkMode";
+
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -87,6 +91,7 @@ const Layout = () => {
         <Route path="/mis-turnos" element={<MyAppointments />} />
 
         {/*RUTAS PACIENTES */}
+        <Route path="/patient/update/:id" element={<PatientModal />}></Route>
         <Route path="/dashboard-patient" element={<DashboardPatient />} />
         <Route
           path="/patient-appointment/:appointment_id"

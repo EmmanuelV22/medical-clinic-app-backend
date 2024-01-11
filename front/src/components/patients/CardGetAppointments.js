@@ -10,6 +10,7 @@ const CardGetAppointment = () => {
       {store.patient ? (
         <div className="card" style={{ width: "18rem" }}>
           <div className="card-body">
+            <h5 className="card-title">Mis Proximas citas</h5>
             <p className="card-text">¡Acá puedes ver todos tus turnos!</p>
             <Link to="/turnos-paciente" className="card-link">
               Por acá
