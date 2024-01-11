@@ -47,9 +47,9 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
     const newExcludes = [];
     arrayDeExcludes.forEach((e) => {
       if (
-        date.getDate() == e.getDate() &&
+        date.getDate() === e.getDate() &&
         date.getMonth() === e.getMonth() &&
-        date.getFullYear() == e.getFullYear()
+        date.getFullYear() === e.getFullYear()
       ) {
         newExcludes.push(e);
       }
@@ -129,7 +129,9 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           excludeDates={disabledDates}
         />
       </div>
-      <button onClick={handleScheduleAppointment}>Planificar turno</button>
+      <div>
+        <button onClick={handleScheduleAppointment}>Planificar turno</button>
+      </div>
     </div>
   );
 };

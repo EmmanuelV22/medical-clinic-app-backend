@@ -15,32 +15,29 @@ const LoginPatient = () => {
 
     const data = await actions.sendChangePassword(dni);
     if (data.status === 200) {
-      return alert(data.message)
+      return alert(data.message);
     } else {
-     return  alert(data.message);
+      return alert(data.message);
     }
-
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     const data = await actions
-    .loginPatient(dni, password)
-    .then((res) => {
-      actions.showNotification(res.message,"success")
-      navigate(`/dashboard-patient`);
-            window.location.reload();
-
-    })
-      .catch((err) => {
-      
-        actions.showNotification(err.message,"danger")
+      .loginPatient(dni, password)
+      .then((res) => {
+        actions.showNotification(res.message, "success");
+        navigate(`/dashboard-patient`);
+        window.location.reload();
       })
+      .catch((err) => {
+        actions.showNotification(err.message, "danger");
+      });
 
     // if (data) {
     //   const loggedInPatients = data;
-    //   if (loggedInPatients) 
+    //   if (loggedInPatients)
     //   window.location.reload();
     // } else {
     //   alert("Error, log impossible");
@@ -118,7 +115,9 @@ const LoginPatient = () => {
         <button className="w-40 text-center bg-blue-500">Iniciar sesión</button>
       </div>
       <div className="mt-3">
-        <span role="button" onClick={handlePassword}>Olvidaste la contraseña?</span>
+        <span role="button" onClick={handlePassword}>
+          Olvidaste la contraseña?
+        </span>
       </div>
     </form>
   );

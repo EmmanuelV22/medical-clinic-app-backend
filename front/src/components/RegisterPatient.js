@@ -6,6 +6,7 @@ const RegisterPatient = () => {
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastName] = useState("");
+  const [sex, setSex] = useState("");
   const [DNI, setDNI] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -18,6 +19,7 @@ const RegisterPatient = () => {
     const request = await actions.registerPatient(
       firstname,
       lastname,
+      sex,
       email,
       DNI,
       address,
@@ -29,6 +31,7 @@ const RegisterPatient = () => {
     if (request) {
       setFirstname("");
       setLastName("");
+      setSex("");
       setEmail("");
       setDNI("");
       setAddress("");
@@ -44,6 +47,7 @@ const RegisterPatient = () => {
     e.preventDefault();
     setFirstname("");
     setLastName("");
+    setSex("");
     setEmail("");
     setDNI("");
     setAddress("");
@@ -93,6 +97,38 @@ const RegisterPatient = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="MalePatient"
+            >
+              Sexo
+            </label>
+            <div className="flex">
+              <label className="mr-2">
+                <input
+                  type="radio"
+                  id="MalePatient"
+                  name="sex"
+                  value="M"
+                  checked={sex === "M"}
+                  onChange={(e) => setSex(e.target.value)}
+                />
+                Hombre
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  id="FemalePatient"
+                  name="sex"
+                  value="F"
+                  checked={sex === "F"}
+                  onChange={(e) => setSex(e.target.value)}
+                />
+                Mujer
+              </label>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="DNIPatient"
             >
               DNI
@@ -106,7 +142,6 @@ const RegisterPatient = () => {
               onChange={(e) => setDNI(e.target.value)}
             />
           </div>
-
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"

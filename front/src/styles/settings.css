@@ -9,4 +9,20 @@
   --color-2: #000000;
   --color-3: #36a2a3;
   --color-4: #e03f3e;
+  --background-dark: #102e2f;
+  --text-dark: #fbfdfd;
+}
+
+body{
+  background-color: var(--color-1);
+  color: var(--color-2);
+}
+
+body.dark-mode, body.dark-mode a,
+body.dark-mode li,
+body.dark-mode input,
+body.dark-mode table, body.dark-mode button
+{
+  background-color: var(--background-dark);
+  color: var(--color-1);
 }
