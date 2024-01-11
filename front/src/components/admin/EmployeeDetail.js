@@ -151,6 +151,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="input-group mb-3">
+                        <label>Dia libre</label>
                         <input
                           type="text"
                           className="form-control border-l-0"
@@ -163,6 +164,8 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="input-group mb-3">
+                        <label>Hora de inicio</label>
+
                         <input
                           type="text"
                           className="form-control border-l-0"
@@ -175,6 +178,8 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="input-group mb-3">
+                        <label>Hora de salida</label>
+
                         <input
                           type="text"
                           className="form-control border-l-0"

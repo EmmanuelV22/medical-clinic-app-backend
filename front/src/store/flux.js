@@ -370,6 +370,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             { firstname, lastname, email, address, password, id },
             config
           );
+          // setStore({...patient, firstname,
+          //   lastname,
+          //   email,
+          //   address})
           console.log(response.data);
         } catch (error) {
           console.log("Error al modificar paciente", error);

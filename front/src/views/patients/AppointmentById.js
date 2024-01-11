@@ -13,18 +13,14 @@ const AppointmentById = () => {
   };
   const getDoctorData = async (id) => {
     const doctorData = await actions.getEmployeeById(id);
-    return doctorData
-    
+    return doctorData;
   };
-
-
 
   const formattedDay = String(store.appointment.date).padStart(2, "0");
 
   useEffect(() => {
     getAppointmentByNotif();
     getDoctorData(store.appointment.medical_id);
-
   }, [store.appointment.medical_id]);
   return (
     <div>
@@ -34,21 +30,16 @@ const AppointmentById = () => {
         {formattedDay}/{store.appointment.month}/{store.appointment.year}
       </p>
       <h3>Estado de la consulta:</h3>
-      <p>
-        {store.appointment.state}
-      </p>
+      <p>{store.appointment.state}</p>
       <h3>Nombre del especialista:</h3>
       <p>
-      <DoctorInfo
-        medicalId={store.appointment.medical_id}
-        getDoctorData={getDoctorData}
-      />
+        <DoctorInfo
+          medicalId={store.appointment.medical_id}
+          getDoctorData={getDoctorData}
+        />
       </p>
       <h3>Especialidad:</h3>
-      <p>
-        {store.docData?.docData?.specialist}
-      </p>
-      
+      <p>{store.docData?.docData?.specialist}</p>
     </div>
   );
 };

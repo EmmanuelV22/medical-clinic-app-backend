@@ -343,10 +343,6 @@ exports.getPatientById = async (req, res, next) => {
         .json({ message: "Error fetching patient", error: error.message });
     }
 
-    if (results.length === 0) {
-      return res.status(404).json({ message: "Patient not found" });
-    }
-
     const patient = results[0];
     return res.status(200).json({ patient });
   });
@@ -615,7 +611,7 @@ const changePasswordEmail = (dni, res) => {
             error: error.message,
           });
         }
-        
+
         let transporter = nodemailer.createTransport(config);
 
         const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
