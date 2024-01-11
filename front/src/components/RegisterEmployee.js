@@ -10,33 +10,52 @@ const RegisterEmployee = () => {
   const [specialist, setSpecialist] = useState("");
   const [password, setPassword] = useState("");
   const [personalID, setPersonalID] = useState("");
+  const [sex, setSex] = useState("");
+  const [birthday, setBirthDay] = useState("");
+  const [days_off, setDays_off] = useState();
+  const [start_time, setStart_time] = useState("");
+  const [end_time, setEnd_time] = useState("");
 
   const { actions } = useContext(Context);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const request = await actions.registerEmployee(
-      firstname,
-      lastname,
-      email,
-      DNI,
-      address,
-      password,
-      personalID,
-      specialist
-    );
-    console.log(request);
-    if (request) {
-      setFirstname("");
-      setLastName("");
-      setEmail("");
-      setDNI("");
-      setAddress("");
-      setPassword("");
-      setPersonalID("");
-      setSpecialist("");
-    } else {
-      console.log("Error creating employee");
+    try {
+      e.preventDefault();
+      const request = await actions.registerEmployee(
+        firstname,
+        lastname,
+        sex,
+        email,
+        address,
+        birthday,
+        DNI,
+        specialist,
+        personalID,
+        days_off,
+        start_time,
+        end_time,
+        password
+      );
+
+      console.log(request);
+
+      if (request) {
+        setFirstname("");
+        setLastName("");
+        setSex("");
+        setEmail("");
+        setDNI("");
+        setAddress("");
+        setBirthDay("");
+        setPassword("");
+        setPersonalID("");
+        setSpecialist("");
+        setDays_off("");
+        setStart_time("");
+        setEnd_time("");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
     }
   };
 
@@ -44,6 +63,7 @@ const RegisterEmployee = () => {
     e.preventDefault();
     setFirstname("");
     setLastName("");
+    setSex("");
     setEmail("");
     setDNI("");
     setAddress("");
@@ -95,20 +115,35 @@ const RegisterEmployee = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="DNI"
+              htmlFor="MalePatient"
             >
-              DNI
+              Sexo
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="DNI"
-              type="text"
-              placeholder="123456789"
-              value={DNI}
-              onChange={(e) => setDNI(e.target.value)}
-            />
+            <div className="flex">
+              <label className="mr-2">
+                <input
+                  type="radio"
+                  id="MalePatient"
+                  name="sex"
+                  value="M"
+                  checked={sex === "M"}
+                  onChange={(e) => setSex(e.target.value)}
+                />
+                Hombre
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  id="FemalePatient"
+                  name="sex"
+                  value="F"
+                  checked={sex === "F"}
+                  onChange={(e) => setSex(e.target.value)}
+                />
+                Mujer
+              </label>
+            </div>
           </div>
-
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -144,6 +179,39 @@ const RegisterEmployee = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="birthdayPatient"
+            >
+              Fecha de nacimiento
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="birthdayPatient"
+              type="date"
+              placeholder="12/12/2000"
+              value={birthday}
+              onChange={(e) => setBirthDay(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="DNI"
+            >
+              DNI
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="DNI"
+              type="text"
+              placeholder="123456789"
+              value={DNI}
+              onChange={(e) => setDNI(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="specialist"
             >
               Especialidad
@@ -173,7 +241,60 @@ const RegisterEmployee = () => {
               onChange={(e) => setPersonalID(e.target.value)}
             />
           </div>
-
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="PersonalID"
+            >
+              Días de reposo
+            </label>
+            <input
+              type="text"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              aria-label="days_off"
+              aria-describedby="employee-days-off"
+              placeholder="days_off"
+              value={days_off}
+              onChange={(e) => setDays_off(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="PersonalID"
+            >
+              Hora empezar
+            </label>
+            <input
+              type="text"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              aria-label="start_time"
+              aria-describedby="employee-start-time"
+              placeholder="start_time"
+              value={start_time}
+              onChange={(e) => setStart_time(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="PersonalID"
+            >
+              Hora de fin
+            </label>
+            <input
+              type="text"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              aria-label="end-time"
+              aria-describedby="employee-end-time"
+              placeholder="end_time"
+              value={end_time}
+              onChange={(e) => setEnd_time(e.target.value)}
+              required
+            />
+          </div>
           <div className="mb-6">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"

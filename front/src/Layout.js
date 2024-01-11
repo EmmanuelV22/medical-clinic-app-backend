@@ -33,19 +33,23 @@ import MyTtreatments from "./views/patients/MyTtreatments";
 import PasswordChange from "./views/patients/PasswordChange";
 import Alerts from "./components/Alerts";
 import PatientAppointments from "./views/patients/PatientAppointments";
+import DarkMode from "./components/DarkMode";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
   return (
     <BrowserRouter basename={basename}>
       <Alerts />
+      <div>
+        <DarkMode />
+      </div>
       <Routes>
         {/*RUTAS PUBLICAS */}
         <Route path="/acceso-denegado" element={<AccessDenied />} />
         <Route path="/" element={<Home />} />
 
         {/*RUTAS PRIVADAS */}
-        <Route path="/appointment-post" element={<SpecialistPicker />} />
+        <Route path="/planificar-turno" element={<SpecialistPicker />} />
         <Route path="/history/:id" element={<HistoryByPatient />} />
         <Route path="/patient-history/:id" element={<PatientHistory />} />
         <Route

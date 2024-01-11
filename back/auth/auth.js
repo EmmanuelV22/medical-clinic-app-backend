@@ -54,16 +54,21 @@ exports.register = async (req, res, next) => {
   const {
     firstname,
     lastname,
+    sex,
     email,
     address,
+    birthday,
     dni,
     specialist,
-    password,
     personalID,
     days_off,
     start_time,
     end_time,
+    password,
   } = req.body;
+
+  // Formate la fecha para la inserción de la base de datos (AAAA-MM-DD)
+  const formattedBirthday = new Date(birthday).toISOString().split("T")[0];
   const createdAt = new Date().toISOString().split("T")[0];
 
   bcrypt.hash(password, 10, async (err, hash) => {
@@ -72,12 +77,14 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO employees (firstname, lastname, email, address, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO employees (firstname, lastname, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
+      sex,
       email,
       address,
+      formattedBirthday,
       dni,
       specialist,
       personalID,
@@ -87,7 +94,7 @@ exports.register = async (req, res, next) => {
       end_time,
       hash,
     ];
-
+    console.log(values);
     connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
         return res.status(400).json({
@@ -104,15 +111,17 @@ exports.register = async (req, res, next) => {
         {
           firstname,
           lastname,
+          sex,
           email,
           address,
+          birthday,
           dni,
           specialist,
           personalID,
-          createdAt,
           days_off,
           start_time,
           end_time,
+          password,
         },
         process.env.jwtSecret,
         {
@@ -371,6 +380,7 @@ exports.registerPatient = async (req, res, next) => {
   const {
     firstname,
     lastname,
+    sex,
     email,
     address,
     dni,
@@ -396,10 +406,11 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO patients (firstname, lastname, email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO patients (firstname, lastname, sex,  email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
+      sex,
       email,
       address,
       dni,
@@ -423,6 +434,7 @@ exports.registerPatient = async (req, res, next) => {
         {
           firstname,
           lastname,
+          sex,
           email,
           address,
           dni,
@@ -615,7 +627,7 @@ const changePasswordEmail = (dni, res) => {
             error: error.message,
           });
         }
-        
+
         let transporter = nodemailer.createTransport(config);
 
         const query = `SELECT email , firstname FROM patients WHERE dni = ? `;

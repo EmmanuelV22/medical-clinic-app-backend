@@ -28,12 +28,12 @@ const getState = ({ getStore, getActions, setStore }) => {
       notificationPatient: [],
       response: {
         type: "",
-        message: ""
-      }
+        message: "",
+      },
     },
     actions: {
       showNotification: async (message, type) => {
-        setStore({ response: { message, type } })
+        setStore({ response: { message, type } });
       },
       dateFormater: (date) => {
         return new Date(date).toLocaleDateString("es-ES", {
@@ -120,6 +120,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       registerPatient: async (
         firstname,
         lastname,
+        sex,
         email,
         dni,
         address,
@@ -134,6 +135,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               firstname,
               lastname,
+              sex,
               email,
               dni,
               address,
@@ -156,15 +158,17 @@ const getState = ({ getStore, getActions, setStore }) => {
       registerEmployee: async (
         firstname,
         lastname,
+        sex,
         email,
-        dni,
         address,
-        password,
-        personalID,
+        birthday,
+        dni,
         specialist,
+        personalID,
         days_off,
         start_time,
-        end_time
+        end_time,
+        password
       ) => {
         try {
           const res = await axios.post(
@@ -172,15 +176,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               firstname,
               lastname,
+              sex,
               email,
-              dni,
               address,
-              password,
-              personalID,
+              birthday,
+              dni,
               specialist,
+              personalID,
               days_off,
               start_time,
               end_time,
+              password,
             },
             {
               headers: {
@@ -264,9 +270,13 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       logout: () => {
-        const store = getStore()
+        const store = getStore();
         let token = Cookies.remove("jwt");
-        setStore({...store, isAuth: false, response: {type:"success", message:"Log out ok"}});
+        setStore({
+          ...store,
+          isAuth: false,
+          response: { type: "success", message: "Log out ok" },
+        });
         return token != null ? true : false;
       },
       deleteEmployee: async (employeeId) => {
@@ -463,6 +473,52 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error obteniendo citas del medico:", error);
         }
       },
+      deleteAppointment: async (id) => {
+        try {
+          const response = axios.delete(
+            `${API}/delete-appointment/${id}`,
+            config
+          );
+          const data = response.data;
+          return data;
+        } catch (error) {
+          console.log("Failed delete appointment from flux", error);
+        }
+      },
+      changeAppointment: async (
+        date,
+        month,
+        year,
+        day,
+        time,
+        state,
+        medical_id,
+        patient_id,
+        updatedAt,
+        id
+      ) => {
+        try {
+          const response = axios.put(
+            `${API}/change-appointment/${id}`,
+            {
+              date,
+              month,
+              year,
+              day,
+              time,
+              state,
+              medical_id,
+              patient_id,
+              updatedAt,
+              id,
+            },
+            config
+          );
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      },
       createTreatment: async (
         patient_id,
         resume,
@@ -642,7 +698,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.get(`${API}/notifications`, config);
           const data = response.data;
-          console.log(data);
           const store = getStore();
           setStore({ ...store, notifications: data });
           return data;
@@ -708,7 +763,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             { password: password }
           );
 
-          if (response.status == "201") {
+          if (response.status === "201") {
             const data = response.data;
             return data;
           }
