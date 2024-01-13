@@ -34,7 +34,9 @@ const MyNotifications = () => {
     : [];
 
   const appointmentMessages = store.notificationById
-    ? store.notificationById.filter((notif) => notif.appointment_message)
+    ? store.notificationById.filter(
+        (notif) => notif.appointment_message_patient
+      )
     : [];
 
   return (
@@ -51,7 +53,7 @@ const MyNotifications = () => {
 
           {appointmentMessages.map((notification) => (
             <li key={notification.id} className="d-flex">
-              {notification.appointment_message}
+              {notification.appointment_message_patient}
               <NotifcationsDelete notification={notification} />
               <NotificationsButtonsRead notification={notification} />
             </li>

@@ -207,10 +207,6 @@ exports.login = async (req, res, next) => {
         .json({ message: "Error fetching employee", error: error.message });
     }
 
-    if (results.length === 0) {
-      return res.status(401).json({ message: "Employee not found" });
-    }
-
     const employee = results[0];
     console.log(employee);
     bcrypt.compare(password, employee.password, (err, result) => {

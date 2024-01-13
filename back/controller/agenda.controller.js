@@ -67,27 +67,60 @@ exports.createAppointment = async (req, res, next) => {
         .status(400)
         .json({ message: "Error making agenda", error: error.message });
     }
-    const notificationQuery =
-      "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message) VALUES (?, ?, ?, ?)";
 
-    const notificationValues = [
+    const appointmentId = results.insertId;
+
+    const notificationQueryPatient =
+      "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
+
+    const notificationValuesPatient = [
       patient_id,
       medical_id,
-      results.insertId,
+      appointmentId,
       `¡Turno confirmado el ${date}/${month}/${year} a las ${time}!`,
     ];
 
     try {
-      await connectDB.query(notificationQuery, notificationValues);
+      await connectDB.query(
+        notificationQueryPatient,
+        notificationValuesPatient
+      );
+    } catch (notificationError) {
+      console.error("Error creating patient notification:", notificationError);
+      return res.status(500).json({
+        message: "Error creating appointment and patient notification",
+        error: notificationError.message,
+      });
+    }
+
+    // const queryPatientById = 'SELECT firstname, lastname FROM patients WHERE id = ?'
+    // const valuesPatient = [patient_id]
+    // Send notification to the doctor
+    const doctorNotificationQuery =
+      "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_employee) VALUES (?, ?, ?, ?)";
+
+    const doctorNotificationValues = [
+      patient_id,
+      medical_id,
+      appointmentId,
+      `¡Nuevo turno agendado por el paciente ${patient_id} el ${date}/${month}/${year} a las ${time}!`,
+    ];
+
+    try {
+      await connectDB.query(doctorNotificationQuery, doctorNotificationValues);
+
       return res.status(201).json({
         message: "Appointment successfully created",
-        appointment: results.insertId,
+        appointment: appointmentId,
       });
-    } catch (notificationError) {
-      console.error("Error creating notification:", notificationError);
+    } catch (doctorNotificationError) {
+      console.error(
+        "Error creating doctor notification:",
+        doctorNotificationError
+      );
       return res.status(500).json({
-        message: "Error creating appointment and notification",
-        error: notificationError.message,
+        message: "Error creating appointment and doctor notification",
+        error: doctorNotificationError.message,
       });
     }
   });

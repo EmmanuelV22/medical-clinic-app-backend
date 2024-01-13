@@ -2,14 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import NotificationsButtonsRead from "../NotificationsButtonsRead";
 
-const NotificationsNavbar = () => {
+const NotificationAppointment = () => {
   const { store, actions } = useContext(Context);
-  const [notificationStatus, setNotificationStatus] = useState({});
-  const { patient_id } = useParams();
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
   let navigate = useNavigate();
 
   const handleNotification = async (patientId) => {
@@ -26,31 +25,29 @@ const NotificationsNavbar = () => {
 
   const getNotifications = async () => {
     await actions.getNotifications();
+    const filteredNotifications = store.notifications.filter(
+      (notification) =>
+        notification.state === "no leído" &&
+        notification.medical_id === store.employee.id &&
+        store.employee
+    );
+    setUnreadNotifications(filteredNotifications);
   };
-
   useEffect(() => {
     getNotifications();
   }, []);
 
-  const unreadNotifications = store.notifications.filter(
-    (notification) =>
-      notification.state === "no leído" &&
-      notification.patient_id === store.patient.id &&
-      store.patient
-  );
-
   return (
-    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-      {unreadNotifications.length > 0 ? (
+    <ul className="dropdown-menu" aria-labelledby="navbarDrop">
+      {unreadNotifications && unreadNotifications.length > 0 ? (
         <>
           {unreadNotifications
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .slice(0, 10)
             .map(
               (notification, index) =>
-                // Check if appointment_message_patient is not null or treatment_message is present
-                (notification.appointment_message_patient !== null ||
-                  notification.treatment_message) && (
+                // Added parentheses around the conditional rendering block
+                notification.appointment_message_employee !== null && (
                   <li
                     key={notification.id}
                     className="dropdown-item d-flex"
@@ -59,29 +56,23 @@ const NotificationsNavbar = () => {
                     <span
                       onClick={() =>
                         navigate(
-                          `/patient-treatment/${notification.treatment_id}`
+                          `/patient-appointment/${notification.agenda_id}`
                         )
                       }
                     >
-                      {notification.treatment_message}
+                      {/* Corrected syntax for displaying the notification message */}
+                      {notification.appointment_message_employee}
                     </span>
-                    {notification.appointment_message_patient && (
-                      <span
-                        onClick={() =>
-                          navigate(
-                            `/patient-appointment/${notification.agenda_id}`
-                          )
-                        }
-                      >
-                        {notification.appointment_message_patient}
-                      </span>
-                    )}
+
+                    {/* Assuming NotificationsButtonsRead is a valid component */}
                     <NotificationsButtonsRead notification={notification} />
                   </li>
                 )
             )}
+
           <hr />
-          <Link onClick={() => handleNotification(store.patient.id)}>
+          {/* Assuming `handleNotification` and `store.employee.id` are defined */}
+          <Link onClick={() => handleNotification(store.employee.id)}>
             Ver todas mis notificaciones
           </Link>
         </>
@@ -89,7 +80,8 @@ const NotificationsNavbar = () => {
         <>
           <li>¡No tienes notificaciones!</li>
           <div>
-            <Link onClick={() => handleNotification(store.patient.id)}>
+            {/* Assuming `handleNotification` and `store.employee.id` are defined */}
+            <Link onClick={() => handleNotification(store.employee.id)}>
               Ver todas mis notificaciones
             </Link>
           </div>
@@ -99,4 +91,4 @@ const NotificationsNavbar = () => {
   );
 };
 
-export default NotificationsNavbar;
+export default NotificationAppointment;

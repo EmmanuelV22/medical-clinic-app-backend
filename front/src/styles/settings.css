@@ -9,7 +9,7 @@
   --color-2: #000000;
   --color-3: #36a2a3;
   --color-4: #e03f3e;
-  --background-dark: #102e2f;
+  --color-dark: #102e2f;
   --text-dark: #fbfdfd;
 }
 
@@ -18,11 +18,18 @@ body{
   color: var(--color-2);
 }
 
-body.dark-mode, body.dark-mode a,
-body.dark-mode li,
+body.dark-mode,
 body.dark-mode input,
-body.dark-mode table, body.dark-mode button
+body.dark-mode button
 {
-  background-color: var(--background-dark);
+  background-color: var(--color-dark);
   color: var(--color-1);
+}
+
+body.dark-mode p,
+body.dark-mode table,
+body.dark-mode a,
+body.dark-mode li{
+  color: var(--color-dark);
+
 }

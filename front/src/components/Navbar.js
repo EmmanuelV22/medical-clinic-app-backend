@@ -6,10 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import Notifications from "./Notifications";
 import NotificationsNavbar from "./patients/NotificationsNavbar";
-import DarkMode from "./DarkMode";
+import NotificationAppointment from "./employees/NotificationAppointment";
 
 const Navbar = () => {
   const { store, actions } = useContext(Context);
+
   let navigate = useNavigate();
   function logout() {
     actions.logout();
@@ -53,7 +54,7 @@ const Navbar = () => {
                 cerrar sessión
               </Link>
             </li>
-            {store.employee && store.employee.specialist !== "admin" && (
+            {store.patient.id && (
               <li
                 className="nav-item dropdown nav-link"
                 id="navbarDropdown"
@@ -63,6 +64,18 @@ const Navbar = () => {
               >
                 <Notifications />
                 <NotificationsNavbar />
+              </li>
+            )}
+            {store.employee.id && (
+              <li
+                className="nav-item dropdown nav-link"
+                id="navbarDrop"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <Notifications />
+                <NotificationAppointment />
               </li>
             )}
           </ul>
