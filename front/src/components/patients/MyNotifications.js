@@ -11,15 +11,30 @@ const MyNotifications = () => {
   const { patient_id } = useParams();
 
   const getNotification = async () => {
-    try {
-      if (patient_id) {
-        await actions.getNotificationsById(patient_id);
+    if (store.patient.id) {
+      try {
+        if (patient_id) {
+          await actions.getNotificationsById(patient_id);
+        }
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des détails du patient",
+          error
+        );
       }
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des détails du patient",
-        error
-      );
+    } else if (store.employee.id) {
+      try {
+        if (patient_id) {
+          await actions.getNotificationsByIdForDr(patient_id);
+        }
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des détails du dr",
+          error
+        );
+      }
+    } else {
+      return console.log("Denegado");
     }
   };
 
@@ -27,7 +42,7 @@ const MyNotifications = () => {
     if (patient_id) {
       getNotification();
     }
-  }, [patient_id]);
+  }, [patient_id, store.employee]);
 
   const treatmentMessages = store.notificationById
     ? store.notificationById.filter((notif) => notif.treatment_message)
@@ -35,13 +50,15 @@ const MyNotifications = () => {
 
   const appointmentMessages = store.notificationById
     ? store.notificationById.filter(
-        (notif) => notif.appointment_message_patient
+        (notif) =>
+          notif.appointment_message_patient !== null ||
+          notif.appointment_message_employee !== null
       )
     : [];
 
   return (
     <>
-      {store.patient && store.patient.id ? (
+      {store.patient.id ? (
         <div>
           {treatmentMessages.map((notification) => (
             <li key={notification.id} className="d-flex">
@@ -59,8 +76,21 @@ const MyNotifications = () => {
             </li>
           ))}
         </div>
+      ) : store.employee.id ? (
+        <div>
+          {appointmentMessages.map(
+            (notification) =>
+              notification.appointment_message_employee !== null && (
+                <li key={notification.id} className="d-flex">
+                  {notification.appointment_message_employee}
+                  <NotifcationsDelete notification={notification} />
+                  <NotificationsButtonsRead notification={notification} />
+                </li>
+              )
+          )}
+        </div>
       ) : (
-        <h1>DENEGADO</h1>
+        <h1>denegado</h1>
       )}
     </>
   );

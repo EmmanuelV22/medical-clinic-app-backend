@@ -8,13 +8,19 @@ const Notifications = () => {
   const { store, actions } = useContext(Context);
   let navigate = useNavigate();
 
-  const unreadNotifications = store.notifications.filter(
-    (notification) =>
-      (notification.state === "no leído" &&
-        notification.patient_id === store.patient.id) ||
-      (notification.state === "no leído" &&
-        notification.medical_id === store.employee.id)
-  );
+  const unreadNotifications = store.notifications.filter((notification) => {
+    if (notification.state === "no leído") {
+      if (
+        (notification.patient_id === store.patient.id &&
+          notification.appointment_message_patient) ||
+        (notification.medical_id === store.employee.id &&
+          notification.appointment_message_employee)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
 
   return (
     <>

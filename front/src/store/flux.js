@@ -21,6 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       isAuth: false,
       turnos: {},
       myAppointments: [],
+      appointment: {},
       appointmentsPatient: [],
       treatment: {},
       treatments: [],
@@ -470,7 +471,26 @@ const getState = ({ getStore, getActions, setStore }) => {
               ...store,
               appointmentsPatient: data.agenda,
             });
-            console.log(store.appointmentsPatient);
+            return data;
+          }
+        } catch (error) {
+          console.log("Error obteniendo citas del medico:", error);
+        }
+      },
+      loadPatientAppointmentById: async (patient_id) => {
+        try {
+          const response = await axios.get(
+            `${API}/appointment-id-patient/${patient_id}`,
+            config
+          );
+          if (response.status === 200) {
+            const data = await response.data;
+            console.log(data);
+            const store = getStore();
+            setStore({
+              ...store,
+              appointment: data.agenda,
+            });
             return data;
           }
         } catch (error) {
@@ -713,6 +733,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.get(
             `${API}/notifications/${id}`,
+            config
+          );
+          const data = response.data;
+          console.log(data);
+          const store = getStore();
+          setStore({ ...store, notificationById: data.notifications });
+          return data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getNotificationsByIdForDr: async (id) => {
+        try {
+          const response = await axios.get(
+            `${API}/notifications-employee/${id}`,
             config
           );
           const data = response.data;

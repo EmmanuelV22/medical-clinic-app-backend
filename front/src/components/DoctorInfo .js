@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Context } from "../store/appContext";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 
 const DoctorInfo = ({ medicalId, getDoctorData }) => {
   const [doctorData, setDoctorData] = useState(null);
-  const { store } = useContext(Context);
 
   useEffect(() => {
     if (medicalId) {

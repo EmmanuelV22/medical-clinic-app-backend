@@ -27,8 +27,24 @@ exports.getNotificationsById = async (req, res, next) => {
         error: error.message,
       });
     }
-    if (results.length === 0) {
-      return res.status(404).json({ message: "notifications not found" });
+    const notifications = results;
+    return res
+      .status(200)
+      .json({ message: "Get notifications success", notifications });
+  });
+};
+
+exports.getNotificationsByIdForEmployee = async (req, res, next) => {
+  const medical_id = req.params.medical_id;
+  const query = "SELECT * FROM notifications WHERE medical_id = ?";
+  const values = [medical_id];
+
+  connectDB.query(query, values, (error, results, fields) => {
+    if (error) {
+      return res.status(400).json({
+        message: "Error loading patient notifications",
+        error: error.message,
+      });
     }
     const notifications = results;
     return res
