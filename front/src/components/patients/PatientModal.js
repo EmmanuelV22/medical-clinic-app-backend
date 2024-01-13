@@ -2,45 +2,37 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../../store/appContext";
 import ConfirmUpdateMyInfo from "./ConfirmUpdateMyInfo";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const PatientModal = () => {
   const { store, actions } = useContext(Context);
   let navigate = useNavigate();
+  const { id } = useParams();
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
 
   const funcioncita = async () => {
-    await actions.getPatientById(id);
-    console.log(store.patientData.patientData);
+    if (id) {
+      await actions.getPatientById(id);
+      const patientData = store.patientData?.patientData;
+      if (patientData) {
+        setFirstname(patientData.firstname || "");
+        setLastname(patientData.lastname || "");
+        setEmail(patientData.email || "");
+        setPassword(patientData.password || "");
+        setAddress(patientData.address || "");
+      }
+    }
   };
 
-  // const patientDataObject = store.patientData?.patientData;
-
-  const [firstname, setFirstname] = useState(
-    store.patientData?.patientData?.firstname
-      ? store.patientData?.patientData?.firstname
-      : ""
-  );
-  const [lastname, setLastname] = useState(
-    store.patientData?.patientData?.lastname
-      ? store.patientData?.patientData?.lastname
-      : ""
-  );
-  const [email, setEmail] = useState(
-    store.patientData?.patientData?.email
-      ? store.patientData?.patientData?.email
-      : ""
-  );
-  const [password, setPassword] = useState(
-    store.patientData?.patientData?.password
-      ? store.patientData?.patientData?.password
-      : ""
-  );
-  const [address, setAddress] = useState(
-    store.patientData?.patientData?.address
-      ? store.patientData?.patientData?.address
-      : ""
-  );
-  const [id, setId] = useState(store.patient.id);
+  useEffect(() => {
+    if (id) {
+      funcioncita();
+    }
+  }, [id]); // Modification de la dépendance pour inclure id
 
   const handleUpdatePatient = async () => {
     try {
@@ -62,7 +54,8 @@ const PatientModal = () => {
 
   return (
     <>
-      {store.patientData && (
+      {store.patient?.id === store.patientData?.patientData?.id &&
+      store.patientData ? (
         <>
           <div className="modal-dialog">
             <div className="modal-content">
@@ -163,6 +156,8 @@ const PatientModal = () => {
 
           <ConfirmUpdateMyInfo editPatientData={handleUpdatePatient} />
         </>
+      ) : (
+        <h1>denegado</h1>
       )}
     </>
   );

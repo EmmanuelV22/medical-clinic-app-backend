@@ -10,8 +10,10 @@ const Notifications = () => {
 
   const unreadNotifications = store.notifications.filter(
     (notification) =>
-      notification.state === "no leído" &&
-      notification.patient_id === store.patient.id
+      (notification.state === "no leído" &&
+        notification.patient_id === store.patient.id) ||
+      (notification.state === "no leído" &&
+        notification.medical_id === store.employee.id)
   );
 
   return (

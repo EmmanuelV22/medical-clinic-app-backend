@@ -46,7 +46,7 @@ const SpecialistPicker = () => {
               onChange={handleSpecialistChange}
               value={selectedSpecialist}
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Selecciona una especialidad
               </option>
               {specialistPicker.map((speciality) => (
@@ -64,7 +64,7 @@ const SpecialistPicker = () => {
                 onChange={handleDoctorChange}
                 value={selectedDoctor}
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Selecciona un médico
                 </option>
                 {store.employees &&
