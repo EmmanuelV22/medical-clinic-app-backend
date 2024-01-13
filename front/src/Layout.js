@@ -66,6 +66,7 @@ const Layout = () => {
         />
 
         {/*RUTAS ADMINS */}
+        <Route path="/planificar-turno/:patient_id_params" element={<SpecialistPicker />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard-admin" element={<DashboardAdmin />} />
         <Route path="/empleados" element={<AdminAllEmployees />} />
@@ -97,7 +98,7 @@ const Layout = () => {
           path="/patient-appointment/:appointment_id"
           element={<AppointmentById />}
         />
-        <Route path="/turnos-paciente" element={<PatientAppointments />} />
+        <Route path="/turnos-paciente/:patient_id" element={<PatientAppointments />} />
         <Route path="/mi-tratamiento/:patient_id" element={<MyTtreatments />} />
         <Route
           path="/patient-treatment/:treatment_id"

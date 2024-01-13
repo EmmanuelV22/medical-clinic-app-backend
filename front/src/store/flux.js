@@ -767,10 +767,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             { password: password }
           );
 
-          if (response.status === "201") {
+          
             const data = response.data;
             return data;
-          }
+          
         } catch (error) {
           console.log(error);
         }

@@ -81,6 +81,49 @@ const AdminAllPatients = () => {
             >
               &#10008;
             </button>
+            <svg
+              cursor="pointer"
+              onClick={() => navigate(`/planificar-turno/${patient.id}`)}
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-calendar-plus"
+              width="44"
+              height="44"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="#ff2825"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+              <path d="M16 3v4" />
+              <path d="M8 3v4" />
+              <path d="M4 11h16" />
+              <path d="M16 19h6" />
+              <path d="M19 16v6" />
+            </svg>
+            <svg
+            cursor="pointer"
+            onClick={() => navigate(`/turnos-paciente/${patient.id}`)}
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-list-search"
+              width="44"
+              height="44"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="#ff2825"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 15m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+              <path d="M18.5 18.5l2.5 2.5" />
+              <path d="M4 6h16" />
+              <path d="M4 12h4" />
+              <path d="M4 18h4" />
+            </svg>
           </td>
         ) : (
           <td>
