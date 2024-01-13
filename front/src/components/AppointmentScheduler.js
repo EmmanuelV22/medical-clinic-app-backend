@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import DatePicker from "react-datepicker";
 import es from "date-fns/locale/es";
 import { Context } from "../store/appContext";
@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 // import '../styles/datepicker.scss';
 const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
+  const {patient_id_params} = useParams()
   const { actions, store } = useContext(Context);
   const [selectedDate, setSelectedDate] = useState(null);
   const [available, setAvailable] = useState(1);
@@ -74,17 +75,19 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
     fetchAppointments();
   }, [doctorId]);
 
+    
+
   const handleScheduleAppointment = async () => {
-    if (selectedDate) {
+    if((selectedDate && store.patient.id) || (selectedDate && patient_id_params)) {
       const date = selectedDate.getDate();
       const month = selectedDate.getMonth() + 1;
       const year = selectedDate.getFullYear();
       const day = selectedDate.getDay();
       const time = selectedDate.toLocaleTimeString().substring(0, 5);
       const state = "confirmado";
-      const patient_id = store.patient.id;
       const medical_id = doctorId;
-      console.log(patient_id);
+      const patient_id = store.patient.id ? store.patient.id : patient_id_params
+      // console.log(patient_id);
       await actions
         .postAppointment(
           date,

@@ -5,10 +5,11 @@ import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import ConfirmDeleteAppointment from "../../components/patients/ConfirmDeleteAppointment";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const PatientAppointments = () => {
   const { store, actions } = useContext(Context);
+  const {patient_id} = useParams();
   const patientID = store.patient ? store.patient.id : null;
   const [searchError, setSearchError] = useState(false);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -16,7 +17,7 @@ const PatientAppointments = () => {
   let navgiate = useNavigate();
 
   useEffect(() => {
-    if (patientID) {
+    if (patientID || patient_id) {
       getMyAppointments();
     }
   }, [patientID]);
@@ -48,8 +49,10 @@ const PatientAppointments = () => {
   ];
 
   const getMyAppointments = async () => {
-    if (patientID) {
-      await actions.loadPatientAppointments(patientID);
+    if (patientID || patient_id) {
+      patientID ? await actions.loadPatientAppointments(patientID) : 
+      await actions.loadPatientAppointments(patient_id);
+
       actions.getAllEmployees();
 
       // Filtrer les rendez-vous passés
@@ -196,7 +199,7 @@ const PatientAppointments = () => {
 
   return (
     <>
-      {store?.patient ? (
+      {store?.patient || patient_id ? (
         <div className="admin-appointments-content">
           <h1
             className="text-center font-bold my-4"
