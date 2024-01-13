@@ -7,6 +7,7 @@ import { Context } from "../../store/appContext";
 const AppointmentById = () => {
   const { store, actions } = useContext(Context);
   const { appointment_id } = useParams();
+
   const [doctorData, setDoctorData] = useState(null);
 
   const getAppointmentByNotif = async () => {
@@ -17,6 +18,7 @@ const AppointmentById = () => {
     } catch (error) {
       console.log("Error obteniendo citas del medico:", error);
     }
+
   };
 
   const getDoctorData = async (id) => {
@@ -27,6 +29,7 @@ const AppointmentById = () => {
       console.log("Error obteniendo datos del médico:", error);
     }
   };
+
 
   const formattedDay = String(store.appointment?.date).padStart(2, "0");
 
@@ -41,11 +44,13 @@ const AppointmentById = () => {
     fetchData();
   }, [store.appointment?.medical_id]);
 
+
   return (
     <div>
       <h1>Detalles de turno confirmado:</h1>
       <h3>Fecha Reservada:</h3>
       <p>
+
         {formattedDay}/{store.appointment?.month}/{store.appointment?.year}
       </p>
       <h3>Estado de la consulta:</h3>
@@ -56,6 +61,7 @@ const AppointmentById = () => {
         {store.docData?.docData?.lastname}
         {/* <DoctorInfo
           medicalId={store.appointment?.medical_id}
+
           getDoctorData={getDoctorData}
         /> */}
       </p>
