@@ -10,8 +10,13 @@ const NotificationsButtonsRead = ({ notification }) => {
 
   const updateNotificationState = async (notificationId, newState) => {
     try {
-      await actions.updateNotificationsState(notificationId, newState);
-      actions.getNotificationsById(patient_id);
+      if (store.patient.id) {
+        await actions.updateNotificationsState(notificationId, newState);
+        actions.getNotificationsById(patient_id);
+      } else if (store.employee.id) {
+        await actions.updateNotificationsState(notificationId, newState);
+        actions.getNotificationsByIdForDr(patient_id);
+      }
     } catch (error) {
       console.log("Error updating notification state:", error);
     }
@@ -25,6 +30,7 @@ const NotificationsButtonsRead = ({ notification }) => {
         ...prevStatus,
         [notificationId]: "leído",
       }));
+      console.log(notificationStatus);
       window.location.reload();
     } catch (error) {
       console.log("Error updating notification state:", error);

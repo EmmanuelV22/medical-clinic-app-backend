@@ -21,6 +21,26 @@ exports.getAppointmentPatients = async (req, res, next) => {
   });
 };
 
+exports.getAppointmenByIdPatient = async (req, res, next) => {
+  const patient_id = req.params.patient_id;
+
+  const query = "SELECT * FROM agenda WHERE id = ?";
+  console.log("Patient ID:", patient_id);
+
+  const values = [patient_id];
+
+  connectDB.query(query, values, (error, results, fields) => {
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "Error fetching patient", error: error.message });
+    }
+    console.log(results);
+    const agenda = results[0];
+    return res.status(200).json({ message: "Get appointment success", agenda });
+  });
+};
+
 exports.getAppointmentById = async (req, res, next) => {
   const id = req.params.id;
 
@@ -270,7 +290,6 @@ exports.ConfirmationAgendaById = async (req, res, next) => {
         error: error.message,
       });
     }
-
     return res
       .status(200)
       .json({ message: "Update appointment state success", results });

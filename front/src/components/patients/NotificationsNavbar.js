@@ -2,14 +2,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import NotificationsButtonsRead from "../NotificationsButtonsRead";
 
 const NotificationsNavbar = () => {
   const { store, actions } = useContext(Context);
-  const [notificationStatus, setNotificationStatus] = useState({});
-  const { patient_id } = useParams();
   let navigate = useNavigate();
 
   const handleNotification = async (patientId) => {

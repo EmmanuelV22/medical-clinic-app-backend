@@ -11,9 +11,9 @@ const NotificationAppointment = () => {
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   let navigate = useNavigate();
 
-  const handleNotification = async (patientId) => {
+  const handleNotificationEmployee = async (patientId) => {
     try {
-      const patientDetails = await actions.getPatientById(patientId);
+      const patientDetails = await actions.getEmployeeById(patientId);
       navigate(`/notifications/${patientId}`);
     } catch (error) {
       console.error(
@@ -48,31 +48,17 @@ const NotificationAppointment = () => {
               (notification, index) =>
                 // Added parentheses around the conditional rendering block
                 notification.appointment_message_employee !== null && (
-                  <li
-                    key={notification.id}
-                    className="dropdown-item d-flex"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <span
-                      onClick={() =>
-                        navigate(
-                          `/patient-appointment/${notification.agenda_id}`
-                        )
-                      }
-                    >
-                      {/* Corrected syntax for displaying the notification message */}
+                  <li key={notification.id} className="dropdown-item d-flex">
+                    <span style={{ cursor: "default" }}>
                       {notification.appointment_message_employee}
                     </span>
-
-                    {/* Assuming NotificationsButtonsRead is a valid component */}
                     <NotificationsButtonsRead notification={notification} />
                   </li>
                 )
             )}
 
           <hr />
-          {/* Assuming `handleNotification` and `store.employee.id` are defined */}
-          <Link onClick={() => handleNotification(store.employee.id)}>
+          <Link onClick={() => handleNotificationEmployee(store.employee.id)}>
             Ver todas mis notificaciones
           </Link>
         </>
@@ -80,8 +66,7 @@ const NotificationAppointment = () => {
         <>
           <li>¡No tienes notificaciones!</li>
           <div>
-            {/* Assuming `handleNotification` and `store.employee.id` are defined */}
-            <Link onClick={() => handleNotification(store.employee.id)}>
+            <Link onClick={() => handleNotificationEmployee(store.employee.id)}>
               Ver todas mis notificaciones
             </Link>
           </div>

@@ -7,6 +7,7 @@ const {
   ConfirmationAgendaById,
   getAppointmentById,
   changeAppointment,
+  getAppointmenByIdPatient,
 } = require("../controller/agenda.controller");
 
 // const { createHistory } = require("../controller/history.controller");
@@ -40,15 +41,21 @@ const {
   getNotificationsById,
   stateNotifications,
   deleteNotifications,
+  getNotificationsByIdForEmployee,
 } = require("../controller/notifications.controller");
 
 ///////////////////Notificaciones rutas ///////////////////////////////
 router.route("/notifications").get(private, getNotifications);
-router.route("/notifications/:patient_id").get(private, getNotificationsById);
+router
+  .route("/notifications/:patient_id")
+  .get(privatePatient, getNotificationsById);
+router
+  .route("/notifications-employee/:medical_id")
+  .get(privateDr, getNotificationsByIdForEmployee);
 
 router
   .route("/notifications-state/:notificationsId")
-  .put(privatePatient, stateNotifications);
+  .put(private, stateNotifications);
 
 router
   .route("/notifications/delete/:id")
@@ -58,6 +65,9 @@ router
 router
   .route("/appointments-patient/:patient_id")
   .get(private, getAppointmentPatients);
+router
+  .route("/appointment-id-patient/:patient_id")
+  .get(private, getAppointmenByIdPatient);
 router.route("/appointment-patient/:id").get(private, getAppointmentById);
 router
   .route("/appointments-medical/:medical_id")
