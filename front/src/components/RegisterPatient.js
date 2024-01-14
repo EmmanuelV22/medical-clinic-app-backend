@@ -6,6 +6,7 @@ const RegisterPatient = () => {
 
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [sex, setSex] = useState("");
   const [DNI, setDNI] = useState("");
   const [email, setEmail] = useState("");
@@ -19,6 +20,7 @@ const RegisterPatient = () => {
     const request = await actions.registerPatient(
       firstname,
       lastname,
+      phone,
       sex,
       email,
       DNI,
@@ -31,6 +33,7 @@ const RegisterPatient = () => {
     if (request) {
       setFirstname("");
       setLastName("");
+      setPhone("");
       setSex("");
       setEmail("");
       setDNI("");
@@ -47,6 +50,7 @@ const RegisterPatient = () => {
     e.preventDefault();
     setFirstname("");
     setLastName("");
+    setPhone("");
     setSex("");
     setEmail("");
     setDNI("");
@@ -92,6 +96,22 @@ const RegisterPatient = () => {
               placeholder="Batistuta"
               value={lastname}
               onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="Phone"
+            >
+              Telefono
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="Phone"
+              type="number"
+              placeholder="Telefono"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
           <div className="mb-4">

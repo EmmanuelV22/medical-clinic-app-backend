@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 const RegisterEmployee = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [DNI, setDNI] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
@@ -24,6 +25,7 @@ const RegisterEmployee = () => {
       const request = await actions.registerEmployee(
         firstname,
         lastname,
+        phone,
         sex,
         email,
         address,
@@ -42,6 +44,7 @@ const RegisterEmployee = () => {
       if (request) {
         setFirstname("");
         setLastName("");
+        setPhone("");
         setSex("");
         setEmail("");
         setDNI("");
@@ -63,6 +66,7 @@ const RegisterEmployee = () => {
     e.preventDefault();
     setFirstname("");
     setLastName("");
+    setPhone("");
     setSex("");
     setEmail("");
     setDNI("");
@@ -110,6 +114,22 @@ const RegisterEmployee = () => {
               placeholder="Maradona"
               value={lastname}
               onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="Phone"
+            >
+              Telefono
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="Phone"
+              type="number"
+              placeholder="Telefono"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
           <div className="mb-4">

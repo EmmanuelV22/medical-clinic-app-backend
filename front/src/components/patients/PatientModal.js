@@ -14,6 +14,7 @@ const PatientModal = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState(0);
 
   const funcioncita = async () => {
     if (id) {
@@ -22,6 +23,7 @@ const PatientModal = () => {
       if (patientData) {
         setFirstname(patientData.firstname || "");
         setLastname(patientData.lastname || "");
+        setPhone(patientData.phone || "");
         setEmail(patientData.email || "");
         setPassword(patientData.password || "");
         setAddress(patientData.address || "");
@@ -40,6 +42,7 @@ const PatientModal = () => {
       const response = await actions.updatePatient(
         firstname,
         lastname,
+        phone,
         email,
         address,
         password,
@@ -67,30 +70,20 @@ const PatientModal = () => {
               </div>
               <div className="modal-body">
                 <form className="mx-auto w-75">
-                  <div className="input-group mb-3">
-                    <label>Nombre</label>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 text-sm font-bold mb-2"
+                      htmlFor="Phone"
+                    >
+                      Telefono
+                    </label>
                     <input
-                      type="text"
-                      className="form-control border-l-0"
-                      aria-label="firstname"
-                      aria-describedby="patient-firstname"
-                      placeholder="firstname"
-                      value={firstname}
-                      onChange={(e) => setFirstname(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="input-group mb-3">
-                    <label>Apellido</label>
-                    <input
-                      type="text"
-                      className="form-control border-l-0"
-                      aria-label="lastname"
-                      aria-describedby="patient-lastname"
-                      placeholder="lastname"
-                      value={lastname}
-                      onChange={(e) => setLastname(e.target.value)}
-                      required
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="Phone"
+                      type="number"
+                      placeholder="Telefono"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
                   <div className="input-group mb-3">

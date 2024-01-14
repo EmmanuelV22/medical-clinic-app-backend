@@ -121,6 +121,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       registerPatient: async (
         firstname,
         lastname,
+        phone,
         sex,
         email,
         dni,
@@ -136,6 +137,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               firstname,
               lastname,
+              phone,
               sex,
               email,
               dni,
@@ -159,6 +161,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       registerEmployee: async (
         firstname,
         lastname,
+        phone,
         sex,
         email,
         address,
@@ -177,6 +180,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               firstname,
               lastname,
+              phone,
               sex,
               email,
               address,
@@ -331,6 +335,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       updateEmployee: async (
         firstname,
         lastname,
+        phone,
         personalID,
         email,
         dni,
@@ -348,6 +353,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             {
               firstname,
               lastname,
+              phone,
               personalID,
               email,
               dni,
@@ -370,6 +376,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       updatePatient: async (
         firstname,
         lastname,
+        phone,
         email,
         address,
         password,
@@ -378,7 +385,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.put(
             `${API_AUTH}/update-patient/${id}`,
-            { firstname, lastname, email, address, password, id },
+            { firstname, lastname,phone, email, address, password, id },
             config
           );
           // setStore({...patient, firstname,

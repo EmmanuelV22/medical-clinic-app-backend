@@ -40,7 +40,7 @@ const PatientTreatement = () => {
             <th>Resumen</th>
             <th>Fecha de inicio</th>
             <th>Fecha de finalización</th>
-            <th>Patologías</th>
+            <th>Cirugia</th>
             <th>Doctor</th>
             <th>Terminado</th>
             <th>Actualizado</th>
