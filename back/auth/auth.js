@@ -62,7 +62,7 @@ exports.register = async (req, res, next) => {
     dni,
     specialist,
     personalID,
-    days_off,
+    days_off: daysOffArray,
     start_time,
     end_time,
     password,
@@ -76,6 +76,40 @@ exports.register = async (req, res, next) => {
     if (err) {
       return res.status(500).json({ message: "Error hashing password" });
     }
+
+    const convertDayNamesToNumbers = (dayNames) => {
+      console.log("Input dayNames:", dayNames);
+
+      const dayNameToNumber = (dayName) => {
+        if (typeof dayName === "string") {
+          // Vérifiez si dayName est une chaîne de caractères
+          switch (dayName.toLowerCase()) {
+            case "domingo":
+              return 1;
+            case "lunes":
+              return 2;
+            case "martes":
+              return 3;
+            case "miércoles":
+              return 4;
+            case "jueves":
+              return 5;
+            case "viernes":
+              return 6;
+            case "sábado":
+              return 7;
+            default:
+              return 0;
+          }
+        } else {
+          return 0; // Si dayName n'est pas une chaîne, retournez une valeur par défaut
+        }
+      };
+
+      return dayNames.map(dayNameToNumber);
+    };
+
+    const convertedDaysOffArray = convertDayNamesToNumbers(daysOffArray);
 
     const query =
       "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -91,11 +125,12 @@ exports.register = async (req, res, next) => {
       specialist,
       personalID,
       createdAt,
-      days_off,
+      JSON.stringify(convertedDaysOffArray),
       start_time,
       end_time,
       hash,
     ];
+
     console.log(values);
     connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
@@ -104,6 +139,7 @@ exports.register = async (req, res, next) => {
           error: error.message,
         });
       }
+      // const daysOffArrayFromDB = JSON.parse(results[0].days_off);
 
       // Envoi de l'e-mail
       sendConfirmationEmail(email, firstname, lastname);
@@ -121,7 +157,7 @@ exports.register = async (req, res, next) => {
           dni,
           specialist,
           personalID,
-          days_off,
+          days_off: daysOffArray,
           start_time,
           end_time,
           password,
