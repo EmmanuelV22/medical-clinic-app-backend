@@ -101,7 +101,7 @@ const PatientData = () => {
             Crear tratamiento
           </button>
           <p>
-            email: <span>{store.patientData.patientData.email}</span>{" "}
+            Telefono: <span>{store.patientData.patientData.phone}</span>{" "}
           </p>
           <p>
             Fecha de nacimiento:{" "}

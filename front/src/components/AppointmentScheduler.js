@@ -104,7 +104,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
         .catch((error) => {
           console.error("Error al planificar el turno", error.message);
         });
-      navigate("/turnos-paciente");
+      navigate(`/turnos-paciente/${store.patient.id}`);
     } else {
       console.warn("Seleccione una fecha y hora para planificar el turno.");
     }

@@ -14,12 +14,14 @@ const PatientDetails = ({ patientData }) => {
   const [password, setPassword] = useState(patientData.password);
   const [address, setAddress] = useState(patientData.address);
   const [id, setId] = useState(patientData.id);
+  const [phone, setPhone] = useState(patientData.phone);
 
   const handleUpdatePatient = async () => {
     try {
       const response = await actions.updatePatient(
         firstname,
         lastname,
+        phone,
         email,
         address,
         password,
@@ -79,6 +81,22 @@ const PatientDetails = ({ patientData }) => {
                     value={lastname}
                     onChange={(e) => setLastname(e.target.value)}
                     required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="Phone"
+                  >
+                    Telefono
+                  </label>
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="Phone"
+                    type="number"
+                    placeholder="Telefono"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
                 <div className="input-group mb-3">

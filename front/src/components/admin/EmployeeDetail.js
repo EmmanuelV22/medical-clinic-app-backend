@@ -8,6 +8,7 @@ const EmployeeDetail = ({ employeeData }) => {
   const { store, actions } = useContext(Context);
   const [firstname, setFirstname] = useState(employeeData.firstname);
   const [lastname, setLastname] = useState(employeeData.lastname);
+  const [phone, setPhone] = useState(employeeData.phone);
   const [personalID, setPersonalID] = useState(employeeData.personalID);
   const [email, setEmail] = useState(employeeData.email);
   const [specialist, setSpecialist] = useState(employeeData.specialist);
@@ -25,6 +26,7 @@ const EmployeeDetail = ({ employeeData }) => {
       const updatedData = await actions.updateEmployee(
         firstname,
         lastname,
+        phone,
         personalID,
         email,
         address,
@@ -36,6 +38,7 @@ const EmployeeDetail = ({ employeeData }) => {
         password,
         id
       );
+
       window.location.reload();
     } catch (error) {
       console.error("Error updating employee:", error);
@@ -96,6 +99,22 @@ const EmployeeDetail = ({ employeeData }) => {
                           value={lastname}
                           onChange={(e) => setLastname(e.target.value)}
                           required
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-gray-700 text-sm font-bold mb-2"
+                          htmlFor="Phone"
+                        >
+                          Telefono
+                        </label>
+                        <input
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          id="Phone"
+                          type="number"
+                          placeholder="Telefono"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
                         />
                       </div>
                       <div className="input-group mb-3">

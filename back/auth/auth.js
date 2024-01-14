@@ -54,6 +54,7 @@ exports.register = async (req, res, next) => {
   const {
     firstname,
     lastname,
+    phone,
     sex,
     email,
     address,
@@ -77,10 +78,11 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO employees (firstname, lastname, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
+      phone,
       sex,
       email,
       address,
@@ -111,6 +113,7 @@ exports.register = async (req, res, next) => {
         {
           firstname,
           lastname,
+          phone,
           sex,
           email,
           address,
@@ -254,6 +257,7 @@ exports.update = async (req, res, next) => {
   const {
     firstname,
     lastname,
+    phone,
     personalID,
     email,
     specialist,
@@ -270,10 +274,11 @@ exports.update = async (req, res, next) => {
       return res.status(500).json({ message: "Error hashing password" });
     }
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
     const values = [
       firstname,
       lastname,
+      phone,
       personalID,
       email,
       specialist,
@@ -372,6 +377,7 @@ exports.registerPatient = async (req, res, next) => {
   const {
     firstname,
     lastname,
+    phone,
     sex,
     email,
     address,
@@ -398,10 +404,11 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO patients (firstname, lastname, sex,  email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
+      phone,
       sex,
       email,
       address,
@@ -426,6 +433,7 @@ exports.registerPatient = async (req, res, next) => {
         {
           firstname,
           lastname,
+          phone,
           sex,
           email,
           address,
@@ -484,6 +492,7 @@ exports.loginPatient = async (req, res, next) => {
             id: patient.id,
             firstname: patient.firstname,
             lastname: patient.lastname,
+            phone: patient.phone,
             dni: patient.dni,
             email: patient.email,
             address: patient.address,
@@ -514,7 +523,7 @@ exports.loginPatient = async (req, res, next) => {
 ///////////////////////////////////////////////////
 
 exports.updatePatient = async (req, res, next) => {
-  const { firstname, lastname, email, address, password, id } = req.body;
+  const { firstname, lastname, phone, email, address, password, id } = req.body;
   const updatedAt = new Date();
 
   bcrypt.hash(password, 10, async (err, hash) => {
@@ -523,8 +532,8 @@ exports.updatePatient = async (req, res, next) => {
     }
 
     const query =
-      "UPDATE patients SET firstname = ?, lastname = ?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
-    const values = [firstname, lastname, email, address, hash, updatedAt, id];
+      "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
+    const values = [firstname, lastname, phone, email, address, hash, updatedAt, id];
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
         return res

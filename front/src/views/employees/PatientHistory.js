@@ -49,7 +49,7 @@ const PatientHistory = () => {
             {store.patientData.patientData.lastname}
           </h2>
           <p>
-            email: <span>{store.patientData.patientData.email}</span>{" "}
+            Telefono: <span>{store.patientData.patientData.phone}</span>{" "}
           </p>
           <p>
             Fecha de nacimiento:{" "}
