@@ -1,6 +1,31 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 
+const dayNameToDayNumber = (dayName) => {
+  switch (typeof dayName === "string" && dayName.toLowerCase()) {
+    case "domingo":
+      return 1;
+    case "lunes":
+      return 2;
+    case "martes":
+      return 3;
+    case "miércoles":
+      return 4;
+    case "jueves":
+      return 5;
+    case "viernes":
+      return 6;
+    case "sábado":
+      return 7;
+    default:
+      return 0;
+  }
+};
+
+const convertDayNamesToNumbers = (dayNames) => {
+  return dayNames.map(dayNameToDayNumber);
+};
+
 const RegisterEmployee = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastName] = useState("");
@@ -12,15 +37,16 @@ const RegisterEmployee = () => {
   const [personalID, setPersonalID] = useState("");
   const [sex, setSex] = useState("");
   const [birthday, setBirthDay] = useState("");
-  const [days_off, setDays_off] = useState();
+  const [days_off, setDays_off] = useState([]);
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
-
   const { actions } = useContext(Context);
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      const daysOffArray = convertDayNamesToNumbers(days_off);
+
       const request = await actions.registerEmployee(
         firstname,
         lastname,
@@ -31,7 +57,7 @@ const RegisterEmployee = () => {
         DNI,
         specialist,
         personalID,
-        days_off,
+        daysOffArray,
         start_time,
         end_time,
         password
@@ -50,7 +76,7 @@ const RegisterEmployee = () => {
         setPassword("");
         setPersonalID("");
         setSpecialist("");
-        setDays_off("");
+        setDays_off([]);
         setStart_time("");
         setEnd_time("");
       }
@@ -248,16 +274,24 @@ const RegisterEmployee = () => {
             >
               Días de reposo
             </label>
-            <input
-              type="text"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              aria-label="days_off"
-              aria-describedby="employee-days-off"
-              placeholder="days_off"
-              value={days_off}
-              onChange={(e) => setDays_off(e.target.value)}
-              required
-            />
+            <div className="flex">
+              <input
+                type="text"
+                className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+                placeholder="Día 1"
+                value={days_off[0]}
+                onChange={(e) => setDays_off([e.target.value, days_off[1]])}
+                required
+              />
+              <input
+                type="text"
+                className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
+                placeholder="Día 2"
+                value={days_off[1]}
+                onChange={(e) => setDays_off([days_off[0], e.target.value])}
+                required
+              />
+            </div>
           </div>
           <div className="mb-4">
             <label

@@ -33,8 +33,6 @@ const MyNotifications = () => {
           error
         );
       }
-    } else {
-      return console.log("Denegado");
     }
   };
 
@@ -42,7 +40,7 @@ const MyNotifications = () => {
     if (patient_id) {
       getNotification();
     }
-  }, [patient_id, store.employee]);
+  }, [patient_id, store.employee, store.patient]);
 
   const treatmentMessages = store.notificationById
     ? store.notificationById.filter((notif) => notif.treatment_message)
@@ -68,13 +66,16 @@ const MyNotifications = () => {
             </li>
           ))}
 
-          {appointmentMessages.map((notification) => (
-            <li key={notification.id} className="d-flex">
-              {notification.appointment_message_patient}
-              <NotifcationsDelete notification={notification} />
-              <NotificationsButtonsRead notification={notification} />
-            </li>
-          ))}
+          {appointmentMessages.map(
+            (notification) =>
+              notification.appointment_message_patient !== null && (
+                <li key={notification.id} className="d-flex">
+                  {notification.appointment_message_patient}
+                  <NotifcationsDelete notification={notification} />
+                  <NotificationsButtonsRead notification={notification} />
+                </li>
+              )
+          )}
         </div>
       ) : store.employee.id ? (
         <div>
