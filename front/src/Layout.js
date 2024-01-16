@@ -37,6 +37,7 @@ import PatientAppointments from "./views/patients/PatientAppointments";
 import PatientModal from "./components/patients/PatientModal";
 
 import DarkMode from "./components/DarkMode";
+import DashboardEnfermero from "./views/employees/DashboardEnfermero";
 
 
 const Layout = () => {
@@ -74,6 +75,7 @@ const Layout = () => {
 
         {/*RUTAS DOCTORES */}
         <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
+        <Route path="/dashboard-nurse" element={<DashboardEnfermero />}></Route>
         <Route path="/mis-pacientes" element={<MyPatients />} />
         <Route path="/patients/:id" element={<PatientData />} />
         <Route path="/new-treatment" element={<CreateTreatment />} />

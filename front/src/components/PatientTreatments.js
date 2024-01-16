@@ -44,7 +44,7 @@ const PatientTreatement = () => {
             <th>Doctor</th>
             <th>Terminado</th>
             <th>Actualizado</th>
-            <th>Editable</th>
+            {!["enfermero", "enfermera"].includes(store.employee.specialist) &&<th>Editable</th>}
             <th>Detalle</th>
           </tr>
         </thead>
@@ -72,7 +72,7 @@ const PatientTreatement = () => {
                     ? actions.dateFormater(treatment.updatedAt)
                     : "NO"}
                 </td>
-                <td>
+                {!["enfermero", "enfermera"].includes(store.employee.specialist) && <td>
                   {treatment.finish_treatment ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ const PatientTreatement = () => {
                       <path d="M13.5 6.5l4 4" />
                     </svg>
                   )}
-                </td>
+                </td>}
                 <td>
                   {" "}
                   <svg
