@@ -53,8 +53,7 @@ const EmployeeDetail = ({ employeeData }) => {
         password,
         id
       );
-      console.log(updatedData);
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.error("Error updating employee:", error);
     }
@@ -127,14 +126,14 @@ const EmployeeDetail = ({ employeeData }) => {
                       <div className="mb-4">
                         <label
                           className="block text-gray-700 text-sm font-bold mb-2"
-                          // htmlFor="Phone"
+                          // htmlFor="PhoneEmployee"
                         >
                           Telefono
                         </label>
                         <input
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          // id="Phone"
-                          type="number"
+                          // id="PhoneEmployee"
+                          type="tel"
                           placeholder="Telefono"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
@@ -212,7 +211,7 @@ const EmployeeDetail = ({ employeeData }) => {
                           <option value="domingo">0: Domingo</option>
                           <option value="lunes">1: Lunes</option>
                           <option value="martes">2: Martes</option>
-                          <option value="miercoles">3: Miercoles</option>
+                          <option value="miércoles">3: Miércoles</option>
                           <option value="jueves">4: Jueves</option>
                           <option value="viernes">5: Viernes</option>
                           <option value="sábado">6: Sábado</option>
@@ -238,7 +237,7 @@ const EmployeeDetail = ({ employeeData }) => {
                           <option value="domingo">0: Domingo</option>
                           <option value="lunes">1: Lunes</option>
                           <option value="martes">2: Martes</option>
-                          <option value="miercoles">3: Miercoles</option>
+                          <option value="miércoles">3: Miércoles</option>
                           <option value="jueves">4: Jueves</option>
                           <option value="viernes">5: Viernes</option>
                           <option value="sábado">6: Sábado</option>
