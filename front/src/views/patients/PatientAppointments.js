@@ -107,36 +107,7 @@ const PatientAppointments = () => {
                 </React.Fragment>
               ))}
           <td style={{ margin: "auto" }}>
-            <button
-              style={{
-                border: "none",
-                background: "transparent",
-                color: "green",
-              }}
-              title="planificar turno"
-              onClick={() => navgiate("/planificar-turno")}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-calendar-plus"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="#ff2825"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-                <path d="M16 3v4" />
-                <path d="M8 3v4" />
-                <path d="M4 11h16" />
-                <path d="M16 19h6" />
-                <path d="M19 16v6" />
-              </svg>
-            </button>
+            
             <button
               style={{
                 border: "none",
@@ -208,6 +179,36 @@ const PatientAppointments = () => {
             Lista de Citas Médicas:
           </h1>
           <SearchBar onSearch={handleSearch} />
+          <button
+              style={{
+                border: "none",
+                background: "transparent",
+                color: "green",
+              }}
+              title="planificar turno"
+              onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-calendar-plus"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="#ff2825"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                <path d="M16 3v4" />
+                <path d="M8 3v4" />
+                <path d="M4 11h16" />
+                <path d="M16 19h6" />
+                <path d="M19 16v6" />
+              </svg>
+            </button>
           {searchError && (
             <p className="text-center text-danger">
               No se encontraron citas médicas.

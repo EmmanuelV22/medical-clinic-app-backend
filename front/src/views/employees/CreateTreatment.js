@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Context } from "../../store/appContext";
 
 const CreateTreatment = () => {
+  const navigate = useNavigate()
   const { actions, store } = useContext(Context);
 
   const { patient_id } = useParams();
@@ -87,6 +88,8 @@ const CreateTreatment = () => {
     setPatologies("");
     setSurgey("SI");
     setFinishTreatment(0);
+    navigate(`/patients/${store.patientData.patientData.id}`)
+
   };
 
   return (

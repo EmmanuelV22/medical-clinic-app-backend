@@ -4,11 +4,22 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import HistoryByPatient from "../../components/HistoryByPatient";
+import CreateHistoric from "../../components/employees/CreateHistoric";
 const PatientHistory = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
   const [createHistoric, setCreateHistoric] = useState(false);
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
+
+  const isCreating = () => {
+    setCreateHistoric(true);
+  };
+
+  const handleShow = () => {
+    setShow(!show);
+  };
+
 
   const handlePatientTreatments = async () => {
     try {
@@ -48,6 +59,21 @@ const PatientHistory = () => {
             Ficha personal de {store.patientData.patientData.firstname}{" "}
             {store.patientData.patientData.lastname}
           </h2>
+          <button
+            className="btn btn-success"
+            onClick={() => handlePatientTreatments(id)}
+          >
+            Ver tratamientos
+          </button>
+          <div>{createHistoric && <CreateHistoric id={id} />}</div>
+          {!createHistoric && ["enfermero", "enfermera"].includes(store.employee.specialist)
+ ? (
+            <button className="btn btn-danger" onClick={isCreating}>
+              Crear nueva historia
+            </button>
+          ) : (
+            null
+          )}
           <p>
             Telefono: <span>{store.patientData.patientData.phone}</span>{" "}
           </p>
@@ -69,16 +95,13 @@ const PatientHistory = () => {
               {store.patientData.patientData.blood_group.toUpperCase()}
             </span>{" "}
           </p>
-          <div>
-            <HistoryByPatient
-            />
+          <div className="border border-dark rounded">
+            <h3>Historia Clinica: </h3>
+            <button onClick={handleShow} className="btn btn-secondary">
+              {show ? "Ocultar" : "Ver"}
+            </button>
+            {show && <HistoryByPatient />}
           </div>
-          <button
-            className="btn btn-success"
-            onClick={() => handlePatientTreatments(id)}
-          >
-            Ver tratamientos
-          </button>
         </div>
       )}
     </>

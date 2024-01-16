@@ -310,7 +310,7 @@ const EditTreatment = () => {
                 </button>
                 <button
                   className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                  onClick={() => window.location.reload()}
+                  onClick={() => navigate(`/patients/${store.patientData.patientData.id}`)}
                 >
                   Cancelar
                 </button>

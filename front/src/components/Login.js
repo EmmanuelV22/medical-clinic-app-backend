@@ -21,7 +21,13 @@ const Login = () => {
         navigate("/dashboard-admin");
 
         window.location.reload();
-      } else {
+      }
+        if (loggedInEmployee.specialist === "enfermero" || loggedInEmployee.specialist === "enfermera") {
+          navigate("/dashboard-nurse");
+  
+          window.location.reload();
+        
+      } if (loggedInEmployee.specialist !== "admin" && loggedInEmployee.specialist !== "enfermero" && loggedInEmployee.specialist !== "enfermera" ) {
         navigate("/dashboard-doctor");
         window.location.reload();
       }
