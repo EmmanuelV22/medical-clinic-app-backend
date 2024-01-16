@@ -1,31 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 
-const dayNameToDayNumber = (dayName) => {
-  switch (typeof dayName === "string" && dayName.toLowerCase()) {
-    case "domingo":
-      return 1;
-    case "lunes":
-      return 2;
-    case "martes":
-      return 3;
-    case "miércoles":
-      return 4;
-    case "jueves":
-      return 5;
-    case "viernes":
-      return 6;
-    case "sábado":
-      return 7;
-    default:
-      return 0;
-  }
-};
-
-const convertDayNamesToNumbers = (dayNames) => {
-  return dayNames.map(dayNameToDayNumber);
-};
-
 const RegisterEmployee = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastName] = useState("");
@@ -38,15 +13,30 @@ const RegisterEmployee = () => {
   const [personalID, setPersonalID] = useState("");
   const [sex, setSex] = useState("");
   const [birthday, setBirthDay] = useState("");
-  const [days_off, setDays_off] = useState([]);
+  const [days_off, setDays_off] = useState({ day1: "", day2: "" });
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
   const { actions } = useContext(Context);
 
+  const dayNameToNumber = {
+    domingo: 0,
+    lunes: 1,
+    martes: 2,
+    miércoles: 3,
+    jueves: 4,
+    viernes: 5,
+    sábado: 6,
+  };
+
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const daysOffArray = convertDayNamesToNumbers(days_off);
+      console.log("days_off (before conversion):", days_off);
+
+      const daysOffArray =
+        days_off && Object.values(days_off).map((day) => dayNameToNumber[day]);
+
+      console.log("days off Data:", daysOffArray);
 
       const request = await actions.registerEmployee(
         firstname,
@@ -79,7 +69,7 @@ const RegisterEmployee = () => {
         setPassword("");
         setPersonalID("");
         setSpecialist("");
-        setDays_off([]);
+        setDays_off({ day1: "", day2: "" });
         setStart_time("");
         setEnd_time("");
       }
@@ -171,8 +161,8 @@ const RegisterEmployee = () => {
                   type="radio"
                   id="MalePatient"
                   name="sex"
-                  value="M"
-                  checked={sex === "M"}
+                  value="H"
+                  checked={sex === "H"}
                   onChange={(e) => setSex(e.target.value)}
                 />
                 Hombre
@@ -182,8 +172,8 @@ const RegisterEmployee = () => {
                   type="radio"
                   id="FemalePatient"
                   name="sex"
-                  value="F"
-                  checked={sex === "F"}
+                  value="M"
+                  checked={sex === "M"}
                   onChange={(e) => setSex(e.target.value)}
                 />
                 Mujer
@@ -290,28 +280,54 @@ const RegisterEmployee = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="PersonalID"
+              htmlFor="daysOffSelect1"
             >
-              Días de reposo
+              Día 1
             </label>
-            <div className="flex">
-              <input
-                type="text"
-                className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
-                placeholder="Día 1"
-                value={days_off[0]}
-                onChange={(e) => setDays_off([e.target.value, days_off[1]])}
-                required
-              />
-              <input
-                type="text"
-                className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
-                placeholder="Día 2"
-                value={days_off[1]}
-                onChange={(e) => setDays_off([days_off[0], e.target.value])}
-                required
-              />
-            </div>
+            <select
+              id="daysOffSelect1"
+              className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={days_off.day1}
+              onChange={(e) =>
+                setDays_off({ ...days_off, day1: e.target.value })
+              }
+              required
+            >
+              <option value="">Selecciona un día</option>
+              <option value="domingo">0: Domingo</option>
+              <option value="lunes">1: Lunes</option>
+              <option value="martes">2: Martes</option>
+              <option value="miercoles">3: Miercoles</option>
+              <option value="jueves">4: Jueves</option>
+              <option value="viernes">5: Viernes</option>
+              <option value="sábado">6: Sábado</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="daysOffSelect2"
+            >
+              Día 2
+            </label>
+            <select
+              id="daysOffSelect2"
+              className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={days_off.day2}
+              onChange={(e) =>
+                setDays_off({ ...days_off, day2: e.target.value })
+              }
+              required
+            >
+              <option value="">Selecciona un día</option>
+              <option value="domingo">0: Domingo</option>
+              <option value="lunes">1: Lunes</option>
+              <option value="martes">2: Martes</option>
+              <option value="miercoles">3: Miercoles</option>
+              <option value="jueves">4: Jueves</option>
+              <option value="viernes">5: Viernes</option>
+              <option value="sábado">6: Sábado</option>
+            </select>
           </div>
           <div className="mb-4">
             <label

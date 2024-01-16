@@ -62,12 +62,23 @@ exports.register = async (req, res, next) => {
     dni,
     specialist,
     personalID,
-    days_off: daysOffArray,
+    days_off,
     start_time,
     end_time,
     password,
   } = req.body;
 
+  if (!Array.isArray(days_off)) {
+    console.error("Error: days_off is not an array");
+    return res.status(400).json({
+      message: "Error creating employee",
+      error: "days_off is not an array",
+    });
+  }
+
+  const daysOffArray = days_off.map((dayNumber, index) => ({
+    [`day${index + 1}`]: dayNumber.toString(),
+  }));
   // Formate la fecha para la inserción de la base de datos (AAAA-MM-DD)
   const formattedBirthday = new Date(birthday).toISOString().split("T")[0];
   const createdAt = new Date().toISOString().split("T")[0];
@@ -76,40 +87,6 @@ exports.register = async (req, res, next) => {
     if (err) {
       return res.status(500).json({ message: "Error hashing password" });
     }
-
-    const convertDayNamesToNumbers = (dayNames) => {
-      console.log("Input dayNames:", dayNames);
-
-      const dayNameToNumber = (dayName) => {
-        if (typeof dayName === "string") {
-          // Vérifiez si dayName est une chaîne de caractères
-          switch (dayName.toLowerCase()) {
-            case "domingo":
-              return 1;
-            case "lunes":
-              return 2;
-            case "martes":
-              return 3;
-            case "miércoles":
-              return 4;
-            case "jueves":
-              return 5;
-            case "viernes":
-              return 6;
-            case "sábado":
-              return 7;
-            default:
-              return 0;
-          }
-        } else {
-          return 0; // Si dayName n'est pas une chaîne, retournez une valeur par défaut
-        }
-      };
-
-      return dayNames.map(dayNameToNumber);
-    };
-
-    const convertedDaysOffArray = convertDayNamesToNumbers(daysOffArray);
 
     const query =
       "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -125,13 +102,14 @@ exports.register = async (req, res, next) => {
       specialist,
       personalID,
       createdAt,
-      JSON.stringify(convertedDaysOffArray),
+      JSON.stringify(daysOffArray),
       start_time,
       end_time,
       hash,
     ];
 
     console.log(values);
+
     connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
         return res.status(400).json({
@@ -139,7 +117,6 @@ exports.register = async (req, res, next) => {
           error: error.message,
         });
       }
-      // const daysOffArrayFromDB = JSON.parse(results[0].days_off);
 
       // Envoi de l'e-mail
       sendConfirmationEmail(email, firstname, lastname);
@@ -305,6 +282,19 @@ exports.update = async (req, res, next) => {
     id,
   } = req.body;
   const updatedAt = new Date();
+
+  if (!Array.isArray(days_off)) {
+    console.error("Error: days_off is not an array");
+    return res.status(400).json({
+      message: "Error creating employee",
+      error: "days_off is not an array",
+    });
+  }
+
+  // const daysOffArray = days_off.map((dayNumber, index) => ({
+  //   [`day${index + 1}`]: dayNumber.toString(),
+  // }));
+
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
       return res.status(500).json({ message: "Error hashing password" });
@@ -320,7 +310,7 @@ exports.update = async (req, res, next) => {
       specialist,
       address,
       updatedAt,
-      days_off,
+      JSON.stringify(days_off),
       start_time,
       end_time,
       hash,
@@ -569,7 +559,16 @@ exports.updatePatient = async (req, res, next) => {
 
     const query =
       "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
-    const values = [firstname, lastname, phone, email, address, hash, updatedAt, id];
+    const values = [
+      firstname,
+      lastname,
+      phone,
+      email,
+      address,
+      hash,
+      updatedAt,
+      id,
+    ];
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
         return res
