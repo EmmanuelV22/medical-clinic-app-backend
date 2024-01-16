@@ -297,7 +297,7 @@ const RegisterEmployee = () => {
               <option value="domingo">0: Domingo</option>
               <option value="lunes">1: Lunes</option>
               <option value="martes">2: Martes</option>
-              <option value="miercoles">3: Miercoles</option>
+              <option value="miércoles">3: Miércoles</option>
               <option value="jueves">4: Jueves</option>
               <option value="viernes">5: Viernes</option>
               <option value="sábado">6: Sábado</option>
@@ -323,7 +323,7 @@ const RegisterEmployee = () => {
               <option value="domingo">0: Domingo</option>
               <option value="lunes">1: Lunes</option>
               <option value="martes">2: Martes</option>
-              <option value="miercoles">3: Miercoles</option>
+              <option value="miércoles">3: Miércoles</option>
               <option value="jueves">4: Jueves</option>
               <option value="viernes">5: Viernes</option>
               <option value="sábado">6: Sábado</option>
