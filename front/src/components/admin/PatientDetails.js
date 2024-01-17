@@ -11,12 +11,13 @@ const PatientDetails = ({ patientData }) => {
   const [firstname, setFirstname] = useState(patientData.firstname);
   const [lastname, setLastname] = useState(patientData.lastname);
   const [email, setEmail] = useState(patientData.email);
-  const [password, setPassword] = useState(patientData.password);
+  const [password, setPassword] = useState("");
   const [address, setAddress] = useState(patientData.address);
   const [id, setId] = useState(patientData.id);
   const [phone, setPhone] = useState(patientData.phone);
 
   const handleUpdatePatient = async () => {
+   if (password.length <= 7) {
     try {
       const response = await actions.updatePatient(
         firstname,
@@ -30,6 +31,8 @@ const PatientDetails = ({ patientData }) => {
       window.location.reload();
     } catch (error) {
       console.log("Error updating patient", error);
+    }}else {
+      alert("El password debe ser de 8 caracteres") 
     }
   };
 
@@ -134,7 +137,7 @@ const PatientDetails = ({ patientData }) => {
                     aria-label="password"
                     aria-describedby="patient-password"
                     placeholder="Contraseña"
-                    value={password}
+                    value={password === "" ? "" : password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />

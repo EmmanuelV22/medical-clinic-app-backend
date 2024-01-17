@@ -806,3 +806,56 @@ exports.validateTokenPatient = async (req, res, next) => {
     });
   }
 };
+
+const sendNotificEmail = (userEmail, userFirstname, userLastname, response) => {
+  const EMAIL = process.env.USERMAIL; // Remplacez par votre adresse e-mail
+  const PASSWORD = process.env.PASSMAIL; // Remplacez par votre mot de passe e-mail
+
+  let config = {
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  };
+
+  let transporter = nodemailer.createTransport(config);
+
+  const htmlContent = `
+    <html>
+      <head>
+        <!-- Ajoutez des styles CSS si nécessaire -->
+      </head>
+      <body>
+        <div>
+          <h1>Bienvenido a Clínic'app</h1>
+          <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
+          
+          <p>Hola ${userFirstname} ${userLastname},
+          ¡${response}! </p>
+        </div>
+      </body>
+    </html>
+  `;
+
+  let message = {
+    from: EMAIL,
+    to: userEmail,
+    subject: "Nueva notificacion en tu Clinic App",
+    html: htmlContent,
+  };
+
+  transporter
+    .sendMail(message)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error("Error sending email", error);
+    });
+};
+
+exports.sendNotificationEmail = async (req, res, next) => {
+  const dni = req.params.dni;
+  sendNotificEmail(dni, res);
+};

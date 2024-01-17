@@ -15,6 +15,7 @@ const {
   registerPatient,
   sendMailChangePassword,
   validateTokenPatient,
+  sendNotificationEmail
 } = require("./auth");
 
 const {
@@ -47,6 +48,9 @@ router
   .route("/patients/update-password/:dni/:token")
   .put(validateTokenPatient, updatePasswordPatient);
 router.route("/patients/send-mail/:dni").get(sendMailChangePassword);
+router.route("/patients/send-mail-notification/:dni").get(sendNotificationEmail);
+
+
 
 //////////////AUTH MIDDLEWARE ADMIN ROUTES /////////////
 router.route("/admin").get(privateAdmin);
