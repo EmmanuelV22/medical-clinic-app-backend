@@ -16,8 +16,8 @@ const EmployeeDetail = ({ employeeData }) => {
   const [password, setPassword] = useState(employeeData.password);
   const [id, setId] = useState(employeeData.id);
   const [days_off, setDays_off] = useState({
-    day1: employeeData.days_off[0] || "",
-    day2: employeeData.days_off[1] || "",
+    day1: employeeData.days_off[0] || "0",
+    day2: employeeData.days_off[1] || "0",
   });
   const [start_time, setStart_time] = useState(employeeData.start_time);
   const [end_time, setEnd_time] = useState(employeeData.end_time);

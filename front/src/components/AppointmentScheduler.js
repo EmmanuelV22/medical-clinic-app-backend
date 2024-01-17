@@ -19,26 +19,36 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   );
   const disabledDates = [];
   let navigate = useNavigate();
-
-  function agregarFechaDeshabilitada(dia, mes, año) {
+    
+  function agregarFechaDeshabilitada(dia ,mes, año) {
     disabledDates.push(new Date(año, mes - 1, dia));
   }
 
+  console.log("CONSOLE de days off",daysOff)
+  console.log("CONSOLE de disable dates",disabledDates)
+
+
   function deshabilitarFechaEnRango(fechaInicio, fechaFin) {
     let currentDate = new Date(fechaInicio);
+    const array = JSON.parse(daysOff);
     while (currentDate <= fechaFin) {
-      if (currentDate.getDay() === daysOff) {
-        agregarFechaDeshabilitada(
-          currentDate.getDate(),
-          currentDate.getMonth() + 1,
-          currentDate.getFullYear()
-        );
-      }
+        
+          array.map((e) => {
+            if (currentDate.getDay() === e) {
+              agregarFechaDeshabilitada(
+                currentDate.getDate(),
+                currentDate.getMonth() + 1,
+                currentDate.getFullYear()
+              );
+            }
+          });
+        
       currentDate.setDate(currentDate.getDate() + 1);
     }
   }
-  const fechaInicio = new Date(2023, 0, 1); // 1 de enero de 2023
-  const fechaFin = new Date(2025, 11, 31); // 31 de diciembre de 2050
+
+  const fechaInicio = new Date(2024, 0, 1); // 1 de enero de 2023
+  const fechaFin = new Date(2024, 12, 31); // 31 de diciembre de 2050
   // Deshabilitar todos los dias de descanso en el rango especificado
   deshabilitarFechaEnRango(fechaInicio, fechaFin);
 

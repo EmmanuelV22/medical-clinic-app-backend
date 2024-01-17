@@ -76,9 +76,9 @@ exports.register = async (req, res, next) => {
     });
   }
 
-  const daysOffArray = days_off.map((dayNumber, index) => ({
-    [`day${index + 1}`]: dayNumber.toString(),
-  }));
+  const daysOffArray = days_off.map((dayNumber, index) => (
+     dayNumber
+  ));
   // Formate la fecha para la inserción de la base de datos (AAAA-MM-DD)
   const formattedBirthday = new Date(birthday).toISOString().split("T")[0];
   const createdAt = new Date().toISOString().split("T")[0];
