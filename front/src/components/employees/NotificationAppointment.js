@@ -29,6 +29,7 @@ const NotificationAppointment = () => {
       (notification) =>
         notification.state === "no leído" &&
         notification.medical_id === store.employee.id &&
+        notification.appointment_message_patient === null &&
         store.employee
     );
     setUnreadNotifications(filteredNotifications);

@@ -500,11 +500,11 @@ exports.loginPatient = async (req, res, next) => {
         .status(400)
         .json({ message: "Error patient login", error: error.message });
     }
-    if (results.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Patient not found", error: error });
-    }
+    // if (results.length === 0) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Patient not found", error: error });
+    // }
     const patient = results[0];
 
     bcrypt.compare(password, patient.password, (err, result) => {
@@ -540,7 +540,7 @@ exports.loginPatient = async (req, res, next) => {
           token: token,
         });
       } else {
-        return res.status(400).json({ message: "Login not successful" });
+        return res.status(400).json({ message: "Login not successful", error });
       }
     });
   });

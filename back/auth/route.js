@@ -26,14 +26,13 @@ const {
   privateDr,
   privatePatient,
   privateNurse,
-
 } = require("../middleware/auth");
 const router = express.Router();
 
 //////////////EMPLOYEES ROUTES///////////
 router.route("/register").post(privateAdmin, register);
 router.route("/login").post(login);
-router.route("/update/:id").put(privateAdmin, update);
+router.route("/update/:id").put(update);
 router.route("/delete/:id").delete(privateAdmin, deleteUser);
 router.route("/employees").get(private, getAllEmployees);
 router.route("/employees/:id").get(private, getEmployeeById);
@@ -45,7 +44,9 @@ router.route("/update-patient/:id").put(private, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);
 router.route("/patients").get(privateEmployees, getAllPatients);
 router.route("/patients/:id").get(private, getPatientById);
-router.route("/patients/update-password/:dni/:token").put(validateTokenPatient,updatePasswordPatient);
+router
+  .route("/patients/update-password/:dni/:token")
+  .put(validateTokenPatient, updatePasswordPatient);
 router.route("/patients/send-mail/:dni").get(sendMailChangePassword);
 router.route("/patients/send-mail-notification/:dni").get(sendNotificationEmail);
 
