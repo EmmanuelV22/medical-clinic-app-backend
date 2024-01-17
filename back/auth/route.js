@@ -22,7 +22,6 @@ const {
   privateAdmin,
   private,
   privateEmployees,
-
   privateDr,
   privatePatient,
   privateNurse,

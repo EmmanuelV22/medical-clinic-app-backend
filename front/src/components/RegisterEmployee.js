@@ -13,7 +13,8 @@ const RegisterEmployee = () => {
   const [personalID, setPersonalID] = useState("");
   const [sex, setSex] = useState("");
   const [birthday, setBirthDay] = useState("");
-  const [days_off, setDays_off] = useState({ day1: "", day2: "" });
+  const [days_off1, setDays_off1] = useState("");
+  const [days_off2, setDays_off2] = useState("");
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
   const { actions } = useContext(Context);
@@ -31,12 +32,16 @@ const RegisterEmployee = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      console.log("days_off (before conversion):", days_off);
+      // console.log("days_off (before conversion):", daysOfToArray);
+
+      const daysOfToArray = [days_off1,days_off2]
 
       const daysOffArray =
-        days_off && Object.values(days_off).map((day) => dayNameToNumber[day]);
+        daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
 
-      console.log("days off Data:", daysOffArray);
+      // console.log("days off Data:", daysOffArray);
+
+
 
       const request = await actions.registerEmployee(
         firstname,
@@ -69,7 +74,8 @@ const RegisterEmployee = () => {
         setPassword("");
         setPersonalID("");
         setSpecialist("");
-        setDays_off({ day1: "", day2: "" });
+        setDays_off1("");
+        setDays_off2("");
         setStart_time("");
         setEnd_time("");
       }
@@ -90,6 +96,8 @@ const RegisterEmployee = () => {
     setPassword("");
     setPersonalID("");
     setSpecialist("");
+    setDays_off1("");
+    setDays_off2("");
   };
 
   return (
@@ -287,9 +295,9 @@ const RegisterEmployee = () => {
             <select
               id="daysOffSelect1"
               className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={days_off.day1}
+              value={days_off1}
               onChange={(e) =>
-                setDays_off({ ...days_off, day1: e.target.value })
+                setDays_off1( e.target.value )
               }
               required
             >
@@ -313,9 +321,9 @@ const RegisterEmployee = () => {
             <select
               id="daysOffSelect2"
               className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              value={days_off.day2}
+              value={days_off2}
               onChange={(e) =>
-                setDays_off({ ...days_off, day2: e.target.value })
+                setDays_off2(e.target.value)
               }
               required
             >
