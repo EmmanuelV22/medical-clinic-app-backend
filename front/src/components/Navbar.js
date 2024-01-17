@@ -54,29 +54,33 @@ const Navbar = () => {
                 cerrar sessión
               </Link>
             </li>
-            {store.patient.id && (
-              <li
-                className="nav-item dropdown nav-link"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <Notifications />
-                <NotificationsNavbar />
-              </li>
-            )}
-            {store.employee.id && (
-              <li
-                className="nav-item dropdown nav-link"
-                id="navbarDrop"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <Notifications />
-                <NotificationAppointment />
-              </li>
+            {store.employee.specialist !== "admin" && (
+              <>
+                {store.patient.id && (
+                  <li
+                    className="nav-item dropdown nav-link"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <Notifications />
+                    <NotificationsNavbar />
+                  </li>
+                )}
+                {store.employee.id && (
+                  <li
+                    className="nav-item dropdown nav-link"
+                    id="navbarDrop"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <Notifications />
+                    <NotificationAppointment />
+                  </li>
+                )}
+              </>
             )}
           </ul>
         </div>

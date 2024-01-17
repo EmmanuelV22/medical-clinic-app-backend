@@ -28,12 +28,14 @@ const NotificationsNavbar = () => {
 
   useEffect(() => {
     getNotifications();
+    console.log("Unread Notifications:", unreadNotifications);
   }, []);
 
   const unreadNotifications = store.notifications.filter(
     (notification) =>
       notification.state === "no leído" &&
       notification.patient_id === store.patient.id &&
+      notification.appointment_message_employee === null &&
       store.patient
   );
 
@@ -47,8 +49,7 @@ const NotificationsNavbar = () => {
             .map(
               (notification, index) =>
                 // Check if appointment_message_patient is not null or treatment_message is present
-                (notification.appointment_message_patient !== null ||
-                  notification.treatment_message) && (
+                notification.appointment_message_patient !== null && (
                   <li
                     key={notification.id}
                     className="dropdown-item d-flex"
@@ -79,18 +80,20 @@ const NotificationsNavbar = () => {
                 )
             )}
           <hr />
-          <Link onClick={() => handleNotification(store.patient.id)}>
-            Ver todas mis notificaciones
-          </Link>
+          <li>
+            <Link onClick={() => handleNotification(store.patient.id)}>
+              Ver todas mis notificaciones
+            </Link>
+          </li>
         </>
       ) : (
         <>
           <li>¡No tienes notificaciones!</li>
-          <div>
+          <li>
             <Link onClick={() => handleNotification(store.patient.id)}>
               Ver todas mis notificaciones
             </Link>
-          </div>
+          </li>
         </>
       )}
     </ul>
