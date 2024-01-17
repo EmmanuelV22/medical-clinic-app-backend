@@ -25,7 +25,6 @@ const PatientModal = () => {
         setLastname(patientData.lastname || "");
         setPhone(patientData.phone || "");
         setEmail(patientData.email || "");
-        setPassword(patientData.password || "");
         setAddress(patientData.address || "");
       }
     }
@@ -38,21 +37,25 @@ const PatientModal = () => {
   }, [id]); // Modification de la dépendance pour inclure id
 
   const handleUpdatePatient = async () => {
-    try {
-      const response = await actions.updatePatient(
-        firstname,
-        lastname,
-        phone,
-        email,
-        address,
-        password,
-        id
-      );
-      navigate("/dashboard-patient");
-      window.location.reload();
-      return response;
-    } catch (error) {
-      console.log("Error updating patient", error);
+    if (password.length > 3) {
+      try {
+        const response = await actions.updatePatient(
+          firstname,
+          lastname,
+          phone,
+          email,
+          address,
+          password,
+          id
+        );
+        navigate("/dashboard-patient");
+        window.location.reload();
+        return response;
+      } catch (error) {
+        console.log("Error updating patient", error);
+      }
+    } else {
+      alert("El password debe ser de 3 caracteres o mas");
     }
   };
 
@@ -121,7 +124,7 @@ const PatientModal = () => {
                       aria-label="password"
                       aria-describedby="patient-password"
                       placeholder="Contraseña"
-                      value={password}
+                      value={password === "" ? "" : password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
@@ -158,3 +161,4 @@ const PatientModal = () => {
 };
 
 export default PatientModal;
+

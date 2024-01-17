@@ -101,6 +101,9 @@ const PatientData = () => {
             Crear tratamiento
           </button>
           <p>
+            Sexo: <span>{store.patientData.patientData.sex === 'M' ? "Masculino" : "Femenino"}</span>{" "}
+          </p>
+          <p>
             Telefono: <span>{store.patientData.patientData.phone}</span>{" "}
           </p>
           <p>
