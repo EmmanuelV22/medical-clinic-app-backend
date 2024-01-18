@@ -1,3 +1,4 @@
+const {  sendNotificationEmail } = require("../auth/auth");
 const connectDB = require("../server");
 
 /* patient_id will be used from store loged data*/
@@ -90,6 +91,12 @@ exports.createAppointment = async (req, res, next) => {
 
     const appointmentId = results.insertId;
 
+    const msg = `¡Turno confirmado el ${date}/${month}/${year} a las ${time}!
+    Te esperamos`
+     ///llamar a la funcion send mail////
+     sendNotificationEmail(patient_id, msg, medical_id, res)
+
+
     const notificationQueryPatient =
       "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
 
@@ -105,6 +112,9 @@ exports.createAppointment = async (req, res, next) => {
         notificationQueryPatient,
         notificationValuesPatient
       );
+
+      
+
     } catch (notificationError) {
       console.error("Error creating patient notification:", notificationError);
       return res.status(500).json({
@@ -133,6 +143,8 @@ exports.createAppointment = async (req, res, next) => {
         message: "Appointment successfully created",
         appointment: appointmentId,
       });
+
+     
     } catch (doctorNotificationError) {
       console.error(
         "Error creating doctor notification:",
