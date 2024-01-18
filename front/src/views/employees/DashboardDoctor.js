@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar";
 import CardMyPatients from "../../components/employees/CardMyPatients";
 import CardAllPatients from "../../components/employees/CardAllPatients";
 import CardAppointments from "../../components/employees/CardAppointements";
+import CardMap from "../../components/CardMap";
 
 const DashboardDoctor = () => {
   const { store } = useContext(Context);
@@ -22,6 +23,7 @@ const DashboardDoctor = () => {
             <CardMyPatients />
             <CardAllPatients />
             <CardAppointments />
+            <CardMap />
           </div>
         </>
       ) : (
