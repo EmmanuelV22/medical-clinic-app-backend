@@ -1,3 +1,4 @@
+const { sendNotificationEmail } = require("../auth/auth");
 const connectDB = require("../server");
 
 exports.createTreatment = async (req, res, next) => {
@@ -67,6 +68,13 @@ exports.createTreatment = async (req, res, next) => {
           });
         }
 
+        const msg =  `Nuevo tratamiento creado. Inicia el dia ${initial_date}, con las siguientes instrucciones: ${resume} para tratar la siguiente patologia ${patologies}.
+        Saludos cordiales`
+
+         
+        ///llamar a la funcion send mail////
+        sendNotificationEmail(patient_id, msg, medical_id, res)
+
         const treatmentId = createTreatmentResults.insertId;
 
         // Continuez avec la création de la notification ou d'autres actions si nécessaires
@@ -82,6 +90,8 @@ exports.createTreatment = async (req, res, next) => {
 
         try {
           await connectDB.query(notificationQuery, notificationValues);
+
+          
 
           return res.status(201).json({
             message: "Treatment successfully created",

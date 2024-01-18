@@ -76,9 +76,7 @@ exports.register = async (req, res, next) => {
     });
   }
 
-  const daysOffArray = days_off.map((dayNumber, index) => (
-     dayNumber
-  ));
+  const daysOffArray = days_off.map((dayNumber, index) => dayNumber);
   // Formate la fecha para la inserción de la base de datos (AAAA-MM-DD)
   const formattedBirthday = new Date(birthday).toISOString().split("T")[0];
   const createdAt = new Date().toISOString().split("T")[0];
@@ -807,7 +805,7 @@ exports.validateTokenPatient = async (req, res, next) => {
   }
 };
 
-const sendNotificEmail = (userEmail, userFirstname, userLastname, response) => {
+exports.sendNotificationEmail = (id, msg, medical_id, res) => {
   const EMAIL = process.env.USERMAIL; // Remplacez par votre adresse e-mail
   const PASSWORD = process.env.PASSMAIL; // Remplacez par votre mot de passe e-mail
 
@@ -821,41 +819,73 @@ const sendNotificEmail = (userEmail, userFirstname, userLastname, response) => {
 
   let transporter = nodemailer.createTransport(config);
 
-  const htmlContent = `
+  const query = `SELECT email , firstname , lastname FROM patients WHERE id = ? `;
+  const values = [id];
+
+  const queryEmployee =
+    "SELECT firstname, lastname, specialist FROM employees WHERE id = ?";
+  const valuesEmployee = [medical_id];
+
+  connectDB.query(queryEmployee, valuesEmployee, (error, results) => {
+    if (error) {
+      console.error("Error en la consulta a la base de datos", error);
+      return res.status(500).json({
+        status: "error",
+        message: "Error en la consulta a la base de datos",
+        error: error.message,
+      });
+    }
+    const medicalname = results[0].firstname;
+    const medicallastname = results[0].lastname;
+    const specialist = results[0].specialist;
+
+    connectDB.query(query, values, (error, results) => {
+      if (error) {
+        console.error("Error en la consulta a la base de datos", error);
+        return res.status(500).json({
+          status: "error",
+          message: "Error en la consulta a la base de datos",
+          error: error.message,
+        });
+      }
+
+      const userEmail = results[0].email;
+      const userName = results[0].firstname;
+      const userLastName = results[0].lastname;
+
+      const htmlContent = `
     <html>
       <head>
         <!-- Ajoutez des styles CSS si nécessaire -->
       </head>
       <body>
         <div>
-          <h1>Bienvenido a Clínic'app</h1>
+          <h1>Nuevo mensaje de Clínic'app</h1>
           <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
           
-          <p>Hola ${userFirstname} ${userLastname},
-          ¡${response}! </p>
+          <p>Hola ${userName} ${userLastName}, tenemos el siguiente mensaje para ti del ${specialist} ${medicalname} ${medicallastname}: 
+          ${msg} </p>
+          <p>Gracias por confiar en Clinic'app</p>
         </div>
       </body>
     </html>
   `;
 
-  let message = {
-    from: EMAIL,
-    to: userEmail,
-    subject: "Nueva notificacion en tu Clinic App",
-    html: htmlContent,
-  };
+      let message = {
+        from: EMAIL,
+        to: userEmail,
+        subject: "Nueva notificacion en tu Clinic App",
+        html: htmlContent,
+      };
 
-  transporter
-    .sendMail(message)
-    .then(() => {
-      console.log("Email sent successfully");
-    })
-    .catch((error) => {
-      console.error("Error sending email", error);
+      transporter
+        .sendMail(message)
+        .then(() => {
+          console.log("Email sent successfully");
+        })
+        .catch((error) => {
+          console.error("Error sending email", error);
+        });
     });
-};
-
-exports.sendNotificationEmail = async (req, res, next) => {
-  const dni = req.params.dni;
-  sendNotificEmail(dni, res);
+  });
 };
