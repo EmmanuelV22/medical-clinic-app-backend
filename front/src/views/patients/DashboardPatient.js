@@ -12,6 +12,7 @@ import CardSettings from "../../components/patients/CardSettings";
 
 
 import CardGetAppointment from "../../components/patients/CardGetAppointments";
+import CardMap from "../../components/CardMap";
 
 const DashboardPatient = () => {
   const { store, actions } = useContext(Context);
@@ -34,6 +35,7 @@ const DashboardPatient = () => {
                 <CardTreatments />
                 <CardMyHistory />
                 <CardSettings />
+                <CardMap />
               </>
             )}
           </div>
