@@ -38,8 +38,14 @@ import PatientModal from "./components/patients/PatientModal";
 
 import DarkMode from "./components/DarkMode";
 import DashboardEnfermero from "./views/employees/DashboardEnfermero";
+
 import AllAppointments from "./views/AllAppointments";
 import DarkModeRobot from "./components/DarkModeRobot";
+
+import MapView from "./views/MapView";
+import Footer from "./components/Footer";
+import AboutUs from "./views/AboutUs";
+
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -54,6 +60,8 @@ const Layout = () => {
         {/*RUTAS PUBLICAS */}
         <Route path="/acceso-denegado" element={<AccessDenied />} />
         <Route path="/" element={<Home />} />
+        <Route path="clinic/aboutUs" element={<AboutUs />} />
+        
 
         {/*RUTAS PRIVADAS */}
         <Route path="/planificar-turno" element={<SpecialistPicker />} />
@@ -66,6 +74,10 @@ const Layout = () => {
         <Route
           path="/patients/update-password/:dni/:token"
           element={<PasswordChange />}
+        />
+        <Route
+          path="/clinc/maps"
+          element={<MapView />}
         />
 
         {/*RUTAS ADMINS */}
@@ -120,7 +132,10 @@ const Layout = () => {
           element={<MyNotifications />}
         />
       </Routes>
+      <Footer />
+      
     </BrowserRouter>
+    
   );
 };
 
