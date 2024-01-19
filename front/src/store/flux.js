@@ -20,6 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       employee: [],
       isAuth: false,
       turnos: {},
+      allAppointments: [],
       myAppointments: [],
       appointment: {},
       appointmentsPatient: [],
@@ -102,7 +103,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = response.data;
-            console.log("Patient by ID", data);
             const store = getStore();
             setStore({
               ...store,
@@ -150,7 +150,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (res.status === 201) {
-            console.log("Register patient OK", res);
             return true;
           }
         } catch (error) {
@@ -199,9 +198,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-          console.log(res);
           if (res.status === 201) {
-            console.log("Register employee OK", res);
             return true;
           }
         } catch (error) {
@@ -221,7 +218,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             const store = getStore();
             Cookies.set("jwt", data.token);
-            console.log(data);
             setStore({ ...store, isAuth: true, employee: data.employees });
             return data;
           }
@@ -237,11 +233,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           if (response.status === 201) {
             const data = response.data;
-            console.log(data);
 
             const store = getStore();
             Cookies.set("jwt", data.token);
-            console.log(data);
 
             setStore({ ...store, isAuth: true, patient: data.patients });
 
@@ -265,7 +259,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                 setStore({ ...store, isAuth: true, employee: data.user });
               } else {
                 setStore({ ...store, isAuth: true, patient: data.user });
-                console.log("log from isAuth", store.patient);
               }
             }
           } catch (error) {
@@ -290,17 +283,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/delete/${employeeId}`,
             config
           );
-          console.log(response, employeeId);
           if (response.status === 200) {
             setStore((prevStore) => {
               const updatedEmployees = prevStore.employees.filter(
                 (employee) => employee.id !== employeeId
               );
-              console.log("Deleted Employees:", updatedEmployees);
 
               return { ...prevStore, employees: updatedEmployees };
             });
-            console.log("¡Empleado eliminado con éxito!");
             // window.location.reload();
             // Realizar cualquier otra acción necesaria después de eliminar
           }
@@ -315,17 +305,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/delete-patient/${patientID}`,
             config
           );
-          console.log(response, patientID);
           if (response.status === 200) {
             setStore((prevStore) => {
               const updatedPatient = prevStore.patients.filter(
                 (patient) => patient.id !== patientID
               );
-              console.log("Deleted patients:", updatedPatient);
 
               return { ...prevStore, patients: updatedPatient };
             });
-            console.log("Paciente eliminado con éxito!");
           }
         } catch (error) {
           console.error("Error al eliminar paciente, error");
@@ -367,8 +354,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
-
-          console.log(response.data);
         } catch (error) {
           console.log(error);
         }
@@ -385,7 +370,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.put(
             `${API_AUTH}/update-patient/${id}`,
-            { firstname, lastname,phone, email, address, password, id },
+            { firstname, lastname, phone, email, address, password, id },
             config
           );
           // setStore({...patient, firstname,
@@ -502,6 +487,18 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           console.log("Error obteniendo citas del medico:", error);
+        }
+      },
+      getAllAppointments: async () => {
+        try {
+          const response = await axios.get(`${API}/appointments`, config);
+          if (response.status === 200) {
+            const data = response.data;
+            setStore({ allAppointments: data.results });
+            return true;
+          } else return [];
+        } catch (error) {
+          console.error(error);
         }
       },
       deleteAppointment: async (id) => {
@@ -809,10 +806,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             { password: password }
           );
 
-          
-            const data = response.data;
-            return data;
-          
+          const data = response.data;
+          return data;
         } catch (error) {
           console.log(error);
         }

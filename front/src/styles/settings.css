@@ -30,6 +30,6 @@ body.dark-mode p,
 body.dark-mode table,
 body.dark-mode a,
 body.dark-mode li{
-  color: var(--color-dark);
+  color: var(--text-dark);
 
 }

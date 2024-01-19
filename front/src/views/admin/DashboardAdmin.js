@@ -1,10 +1,14 @@
 import React, { useContext } from "react";
-import { Context } from "../../store/appContext";
 import Navbar from "../../components/Navbar";
 import CardAllPatients from "../../components/admin/CardAllPatients";
 import CardAllEmployees from "../../components/admin/CardAllEmployees";
 import CardRegister from "../../components/admin/CardRegister";
+
+import CardAllAppointments from "../../components/admin/CardAllAppointments";
+import { Context } from "../../store/appContext";
+
 import CardMap from "../../components/CardMap";
+
 
 const DashboardAdmin = () => {
   const { store } = useContext(Context);
@@ -18,7 +22,10 @@ const DashboardAdmin = () => {
             <CardAllPatients />
             <CardAllEmployees />
             <CardRegister />
+
+            <CardAllAppointments />
             <CardMap />
+
           </div>
         </>
       ) : (

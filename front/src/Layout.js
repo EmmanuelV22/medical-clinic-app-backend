@@ -38,6 +38,10 @@ import PatientModal from "./components/patients/PatientModal";
 
 import DarkMode from "./components/DarkMode";
 import DashboardEnfermero from "./views/employees/DashboardEnfermero";
+
+import AllAppointments from "./views/AllAppointments";
+import DarkModeRobot from "./components/DarkModeRobot";
+
 import MapView from "./views/MapView";
 import Footer from "./components/Footer";
 import AboutUs from "./views/AboutUs";
@@ -48,6 +52,7 @@ const Layout = () => {
   return (
     <BrowserRouter basename={basename}>
       <Alerts />
+      <DarkModeRobot />
       <div>
         <DarkMode />
       </div>
@@ -76,7 +81,10 @@ const Layout = () => {
         />
 
         {/*RUTAS ADMINS */}
-        <Route path="/planificar-turno/:patient_id_params" element={<SpecialistPicker />} />
+        <Route
+          path="/planificar-turno/:patient_id_params"
+          element={<SpecialistPicker />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard-admin" element={<DashboardAdmin />} />
         <Route path="/empleados" element={<AdminAllEmployees />} />
@@ -101,6 +109,7 @@ const Layout = () => {
         {/*RUTAS EMPLEADO */}
         <Route path="/pacientes" element={<AdminAllPatients />} />
         <Route path="/mis-turnos" element={<MyAppointments />} />
+        <Route path="/turnos" element={<AllAppointments />} />
 
         {/*RUTAS PACIENTES */}
         <Route path="/patient/update/:id" element={<PatientModal />}></Route>
@@ -109,7 +118,10 @@ const Layout = () => {
           path="/patient-appointment/:appointment_id"
           element={<AppointmentById />}
         />
-        <Route path="/turnos-paciente/:patient_id" element={<PatientAppointments />} />
+        <Route
+          path="/turnos-paciente/:patient_id"
+          element={<PatientAppointments />}
+        />
         <Route path="/mi-tratamiento/:patient_id" element={<MyTtreatments />} />
         <Route
           path="/patient-treatment/:treatment_id"

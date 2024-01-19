@@ -39,7 +39,7 @@ const MyTtreatments = () => {
             Lista de Tratamientos de {store.patient.firstname}{" "}
             {store.patient.lastname}
           </h1>
-          <table>
+          <table className="table">
             <thead>
               <tr>
                 <th>Resumen</th>
