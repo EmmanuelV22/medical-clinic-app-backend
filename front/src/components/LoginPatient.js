@@ -23,6 +23,9 @@ const LoginPatient = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (password == ""){
+      return actions.showNotification("Datos incorrectos", "danger");
+    }else{
 
     const data = await actions
       .loginPatient(dni, password)
@@ -34,7 +37,7 @@ const LoginPatient = () => {
       .catch((err) => {
         actions.showNotification(err.message, "danger");
       });
-
+    }
     // if (data) {
     //   const loggedInPatients = data;
     //   if (loggedInPatients)

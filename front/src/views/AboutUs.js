@@ -4,7 +4,7 @@ import clinic from "../../src/clinic-logo-removebg.png";
 const AboutUs = () => {
   return (
     <div
-      className="bg-black text-white container-fluid pt-2 pb-5"
+      className=" container-fluid pt-2 pb-5"
       style={{ minHeight: "100vh" }}
     >
       <br />
@@ -52,9 +52,9 @@ const AboutUs = () => {
       </h1>
 
       <div className="container">
-        <div className="row">
-          <div className="col-12 col-md-4 mb-4">
-            <div className="card bg-black text-white  ">
+        <div className="row d-flex justify-content-center">
+          <div className="col col-md-3 mb-4">
+            <div className="card  ">
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ height: "200px" }}
@@ -85,7 +85,7 @@ const AboutUs = () => {
                   rel="noopener noreferrer"
                 >
                   <p className="card-text text-center">
-                    <span className="text-muted text-white text-center">
+                    <span className="text-muted  text-center">
                       https://github.com/EmmanuelV22
                     </span>
                   </p>
@@ -94,8 +94,8 @@ const AboutUs = () => {
             </div>
           </div>
 
-          <div className="col-12 col-md-4 mb-4">
-            <div className="card bg-black text-white  ">
+          <div className="col col-md-3 mb-4">
+            <div className="card   ">
               <div
                 className="d-flex justify-content-center align-items-center"
                 style={{ height: "200px" }}
