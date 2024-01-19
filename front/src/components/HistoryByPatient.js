@@ -40,7 +40,9 @@ const HistoryByPatient = () => {
       store.patientData &&
       store.patientData.history?.length > 0 ? (
 
-        store.patientData?.history.map((e) => (
+        store.patientData?.history
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .map((e) => (
           <div className="border border-dark " key={e.id}>
             <p>
               descripción:

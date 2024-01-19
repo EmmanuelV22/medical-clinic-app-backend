@@ -11,6 +11,9 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (password == ""){
+      return actions.showNotification("Datos incorrectos", "danger");
+    }else{
     const data = await actions.login(personalID, password);
 
     if (data) {
@@ -32,10 +35,10 @@ const Login = () => {
         window.location.reload();
       }
     } else {
-      actions.showNotification("error log in", "danger");
+      actions.showNotification("Datos incorrectos", "danger");
 
       // alert("Erreur, vérifiez vos infos");
-    }
+    }}
   }
 
   return (

@@ -11,6 +11,7 @@ import AdminAllEmployees from "./views/admin/AdminAllEmployees";
 import EmployeeDetail from "./components/admin/EmployeeDetail";
 import SpecialistPicker from "./components/SpecialistPicker";
 import AccessDenied from "../src/views/AccessDenied";
+import clinic from "./clinic-logo-removebg.png";
 
 import CreateTreatment from "./views/employees/CreateTreatment";
 import PatientTreatements from "./components/PatientTreatments";
@@ -46,6 +47,7 @@ import MapView from "./views/MapView";
 import Footer from "./components/Footer";
 import AboutUs from "./views/AboutUs";
 
+import { FloatingWhatsApp } from "react-floating-whatsapp";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -61,7 +63,6 @@ const Layout = () => {
         <Route path="/acceso-denegado" element={<AccessDenied />} />
         <Route path="/" element={<Home />} />
         <Route path="clinic/aboutUs" element={<AboutUs />} />
-        
 
         {/*RUTAS PRIVADAS */}
         <Route path="/planificar-turno" element={<SpecialistPicker />} />
@@ -75,10 +76,7 @@ const Layout = () => {
           path="/patients/update-password/:dni/:token"
           element={<PasswordChange />}
         />
-        <Route
-          path="/clinc/maps"
-          element={<MapView />}
-        />
+        <Route path="/clinc/maps" element={<MapView />} />
 
         {/*RUTAS ADMINS */}
         <Route
@@ -133,9 +131,23 @@ const Layout = () => {
         />
       </Routes>
       <Footer />
-      
+
+      <FloatingWhatsApp
+        phoneNumber="+54 11 23278365"
+        accountName="Clinic'App"
+        chatMessage="Bienvenido/a a Clinic'App! Cómo podemos ayudarte?"
+        placeholder="Envia tu mensaje para ir a Whatsapp"
+        messageDelay={0}
+        statusMessage="Responde en menos de 5 minutos"
+        darkMode={false}
+        buttonStyle={{ position: "fixed", bottom: "1rem", right: "20px" }}
+        avatar={clinic}
+        allowEsc
+        allowClickAway
+        notification
+        notificationSound
+      />
     </BrowserRouter>
-    
   );
 };
 
