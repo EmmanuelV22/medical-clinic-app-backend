@@ -1,4 +1,4 @@
-const {  sendNotificationEmail } = require("../auth/auth");
+const { sendNotificationEmail } = require("../auth/auth");
 const connectDB = require("../server");
 
 /* patient_id will be used from store loged data*/
@@ -18,7 +18,9 @@ exports.getAppointmentPatients = async (req, res, next) => {
     }
 
     const agenda = results;
-    return res.status(200).json({ message: "Get appointment success", patient_id, agenda });
+    return res
+      .status(200)
+      .json({ message: "Get appointment success", patient_id, agenda });
   });
 };
 
@@ -61,6 +63,23 @@ exports.getAppointmentById = async (req, res, next) => {
   });
 };
 
+/////////////////////////////////////////////
+exports.getAllAppointment = async (req, res, next) => {
+  const query = "SELECT * FROM agenda";
+
+  connectDB.query(query, (error, results, fields) => {
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "Error fetching patient", error: error.message });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Get appointment success", results });
+  });
+};
+
 /////////////////////////////
 
 exports.createAppointment = async (req, res, next) => {
@@ -92,10 +111,9 @@ exports.createAppointment = async (req, res, next) => {
     const appointmentId = results.insertId;
 
     const msg = `¡Turno confirmado el ${date}/${month}/${year} a las ${time}!
-    Te esperamos`
-     ///llamar a la funcion send mail////
-     sendNotificationEmail(patient_id, msg, medical_id, res)
-
+    Te esperamos`;
+    ///llamar a la funcion send mail////
+    sendNotificationEmail(patient_id, msg, medical_id, res);
 
     const notificationQueryPatient =
       "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
@@ -112,9 +130,6 @@ exports.createAppointment = async (req, res, next) => {
         notificationQueryPatient,
         notificationValuesPatient
       );
-
-      
-
     } catch (notificationError) {
       console.error("Error creating patient notification:", notificationError);
       return res.status(500).json({
@@ -143,8 +158,6 @@ exports.createAppointment = async (req, res, next) => {
         message: "Appointment successfully created",
         appointment: appointmentId,
       });
-
-     
     } catch (doctorNotificationError) {
       console.error(
         "Error creating doctor notification:",

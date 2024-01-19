@@ -8,6 +8,7 @@ const {
   getAppointmentById,
   changeAppointment,
   getAppointmenByIdPatient,
+  getAllAppointment,
 } = require("../controller/agenda.controller");
 
 // const { createHistory } = require("../controller/history.controller");
@@ -62,6 +63,7 @@ router
   .delete(privatePatient, deleteNotifications);
 
 /////////////////turnos rutas////////////////////
+router.route("/appointments").get(privateEmployees, getAllAppointment);
 router
   .route("/appointments-patient/:patient_id")
   .get(private, getAppointmentPatients);
