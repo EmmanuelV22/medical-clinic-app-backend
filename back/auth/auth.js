@@ -218,14 +218,18 @@ exports.login = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching employee", error: error.message });
+        .json({ message: "Error al iniciar sesion", error: error.message });
     }
 
     const employee = results[0];
-    console.log(employee);
+
+    if (!employee) {
+      return res.status(500).json({ message: "Datos incorrectos" });
+    }
+
     bcrypt.compare(password, employee.password, (err, result) => {
       if (err) {
-        return res.status(500).json({ message: "Error comparing passwords" });
+        return res.status(500).json({ message: "Contraseña invalida" });
       }
 
       if (result) {
@@ -251,12 +255,12 @@ exports.login = async (req, res, next) => {
           maxAge: maxAge * 1000,
         });
         return res.status(201).json({
-          message: "Employee successfully Logged in",
+          message: "Inicio de sesion exitoso",
           employees: results,
           token: token,
         });
       } else {
-        return res.status(400).json({ message: "Login not successful" });
+        return res.status(400).json({ message: "Datos incorrectos" });
       }
     });
   });
@@ -323,20 +327,10 @@ exports.update = async (req, res, next) => {
           .json({ message: "Error updating user", error: error.message });
       }
     });
-    // Asegúrate de realizar un commit aquí si es necesario
-    connectDB.commit((commitError) => {
-      if (commitError) {
-        console.error("Error committing transaction:", commitError);
-        return res.status(400).json({
-          message: "Error committing transaction",
-          error: commitError.message,
-        });
-      }
 
-      return res.status(201).json({
-        message: "Employee successfully updated",
-        employee: id,
-      });
+    return res.status(201).json({
+      message: "Employee successfully updated",
+      employee: id,
     });
   });
 };
@@ -494,20 +488,20 @@ exports.loginPatient = async (req, res, next) => {
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
+      return results
         .status(400)
-        .json({ message: "Error patient login", error: error.message });
+        .json({ message: "Datos incorrectos", error: error.message });
     }
-    // if (results.length === 0) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Patient not found", error: error });
-    // }
+
     const patient = results[0];
+
+    if (!patient) {
+      return res.status(500).json({ message: "Datos incorrectos" });
+    }
 
     bcrypt.compare(password, patient.password, (err, result) => {
       if (err) {
-        return res.status(500).json({ message: "Error comparing passwords" });
+        return res.status(500).json({ message: "Datos incorrectos" });
       }
       if (result) {
         const maxAge = 3 * 60 * 60;
@@ -533,12 +527,14 @@ exports.loginPatient = async (req, res, next) => {
           maxAge: maxAge * 1000,
         });
         return res.status(201).json({
-          message: "Patient successfully logged",
+          message: "Inicio de sesion exitoso",
           patients: results,
           token: token,
         });
       } else {
-        return res.status(400).json({ message: "Login not successful", error });
+        return res
+          .status(400)
+          .json({ message: "Contraseña incorrecta", error });
       }
     });
   });
@@ -654,10 +650,9 @@ const changePasswordEmail = (dni, res) => {
 
       connectDB.query(query2, values2, (error, results) => {
         if (error) {
-          console.error("Error en la modificacion del nuevo token", error);
           return res.status(500).json({
             status: "error",
-            message: "Error en la modificacion del nuevo token",
+            message: "Datos incorrectos",
             error: error.message,
           });
         }
@@ -675,6 +670,10 @@ const changePasswordEmail = (dni, res) => {
               message: "Error en la consulta a la base de datos",
               error: error.message,
             });
+          }
+
+          if (results.length == 0) {
+            return res.status(500).json({ message: "Datos incorrectos" });
           }
 
           const userEmail = results[0].email;
@@ -711,18 +710,15 @@ const changePasswordEmail = (dni, res) => {
           transporter
             .sendMail(message)
             .then(() => {
-              console.log("Email sent successfully");
-              // Después de enviar el correo electrónico con éxito
               return res
                 .status(200)
-                .json({ status: "200", message: "Email sent successfully" });
+                .json({ message: "Email enviado correctamente" });
             })
             .catch((error) => {
-              console.error("Error sending email", error);
-              // En caso de error al enviar el correo electrónico
+              console.error("Error enviando email", error);
               return res.status(500).json({
                 status: "error",
-                message: "Error sending email",
+                message: "Error enviando email",
                 error: error.message,
               });
             });
@@ -733,7 +729,7 @@ const changePasswordEmail = (dni, res) => {
       console.error("Error:", error);
       return res.status(500).json({
         status: "error",
-        message: "Error generando o verificando el token",
+        message: "Datos incorrectos",
         error: error.message,
       });
     });

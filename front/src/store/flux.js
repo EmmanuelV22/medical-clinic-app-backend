@@ -49,13 +49,19 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getAllPatients: async () => {
         try {
+          const actions = getActions();
           const response = await axios.get(`${API_AUTH}/patients`, config);
           if (response.status === 200) {
             const responseData = response.data;
             // console.log("GET ALL Patients", responseData);
             setStore({ patients: responseData.results });
+            actions.showNotification(
+              "Pacientes obtenidos correctamente",
+              "success"
+            );
             return true;
           } else {
+            actions.showNotification("Error obteniendo pacientes", "danger");
             return [];
           }
         } catch (error) {
@@ -64,14 +70,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       getAllEmployees: async () => {
+        const actions = getActions();
         try {
           const response = await axios.get(`${API_AUTH}/employees`, config);
           if (response.status === 200) {
             const data = response.data;
             const store = getStore();
             setStore({ ...store, employees: data });
+            actions.showNotification(
+              "Datos obtenidos correctamente",
+              "success"
+            );
             return true;
           } else {
+            actions.showNotification("Error obteniendo datos", "danger");
+
             return [];
           }
         } catch (error) {
@@ -80,6 +93,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       getEmployeeById: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API_AUTH}/employees/${id}`,
@@ -89,13 +103,19 @@ const getState = ({ getStore, getActions, setStore }) => {
             const data = response.data;
             const store = getStore();
             setStore({ ...store, docData: { docData: data.employee } });
+            actions.showNotification(
+              "Datos obtenidos correctamente",
+              "success"
+            );
             return data.employee;
           }
         } catch (error) {
+          actions.showNotification("Error obteniendo datos", "danger");
           console.log(error);
         }
       },
       getPatientById: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API_AUTH}/patients/${id}`,
@@ -111,9 +131,17 @@ const getState = ({ getStore, getActions, setStore }) => {
                 patientData: data.patient,
               },
             });
+            actions.showNotification(
+              "Datos del paciente obtenidos correctamente",
+              "success"
+            );
             return data.patient;
           }
         } catch (error) {
+          actions.showNotification(
+            "Error obteniendo datos del paciente",
+            "danger"
+          );
           console.log(error);
           // return [];
         }
@@ -130,6 +158,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         password,
         bloodGroup
       ) => {
+        const actions = getActions();
         const blood_group = bloodGroup;
         try {
           const res = await axios.post(
@@ -150,9 +179,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           if (res.status === 201) {
+            actions.showNotification("Registro exitoso", "success");
             return true;
           }
         } catch (error) {
+          actions.showNotification(
+            "Error en registro, comprueba la informacion",
+            "danger"
+          );
           console.error(error);
           return false;
         }
@@ -174,6 +208,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         password
       ) => {
         try {
+          const actions = getActions();
           const res = await axios.post(
             `${API_AUTH}/register`,
             {
@@ -199,9 +234,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           if (res.status === 201) {
+            actions.showNotification("Registro exitoso", "success");
             return true;
           }
         } catch (error) {
+          const actions = getActions();
+
+          actions.showNotification(
+            "Error en registro, comprueba la informacion",
+            "danger"
+          );
           console.error(error);
           return false;
         }
@@ -239,10 +281,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             setStore({ ...store, isAuth: true, patient: data.patients });
 
-            return data;
+            return response;
           }
         } catch (error) {
-          console.log(error);
+          return error.response.data.message;
         }
       },
       isAuth: async () => {
@@ -262,7 +304,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               }
             }
           } catch (error) {
-            // Gérer l'erreur ici
             console.log(error);
           }
         }
@@ -273,11 +314,12 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({
           ...store,
           isAuth: false,
-          response: { type: "success", message: "Log out ok" },
+          response: { type: "success", message: "Cierre de sesion exitoso" },
         });
         return token != null ? true : false;
       },
       deleteEmployee: async (employeeId) => {
+        const actions = getActions();
         try {
           const response = await axios.delete(
             `${API_AUTH}/delete/${employeeId}`,
@@ -288,18 +330,20 @@ const getState = ({ getStore, getActions, setStore }) => {
               const updatedEmployees = prevStore.employees.filter(
                 (employee) => employee.id !== employeeId
               );
-
+              actions.showNotification(
+                "Funcionario eliminado con exito",
+                "success"
+              );
               return { ...prevStore, employees: updatedEmployees };
             });
-            // window.location.reload();
-            // Realizar cualquier otra acción necesaria después de eliminar
           }
         } catch (error) {
-          console.error("Error al eliminar empleado", error);
+          actions.showNotification("Error eliminando funcionario", "danger");
           throw error;
         }
       },
       deletePatient: async (patientID) => {
+        const actions = getActions();
         try {
           const response = await axios.delete(
             `${API_AUTH}/delete-patient/${patientID}`,
@@ -310,12 +354,17 @@ const getState = ({ getStore, getActions, setStore }) => {
               const updatedPatient = prevStore.patients.filter(
                 (patient) => patient.id !== patientID
               );
+              actions.showNotification(
+                "Paciente eliminado con exito",
+                "success"
+              );
 
               return { ...prevStore, patients: updatedPatient };
             });
           }
         } catch (error) {
-          console.error("Error al eliminar paciente, error");
+          actions.showNotification("Error al eliminar paciente", "danger");
+
           throw error;
         }
       },
@@ -325,7 +374,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         phone,
         personalID,
         email,
-        dni,
         specialist,
         address,
         days_off,
@@ -335,6 +383,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         id
       ) => {
         try {
+          const actions = getActions();
           const response = await axios.put(
             `${API_AUTH}/update/${id}`,
             {
@@ -343,7 +392,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               phone,
               personalID,
               email,
-              dni,
               specialist,
               address,
               days_off,
@@ -354,8 +402,15 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
+
+          actions.showNotification("Modificacion exitosa", "success");
+          return response;
         } catch (error) {
-          console.log(error);
+          const actions = getActions();
+          actions.showNotification(
+            "Error al modificar datos, comprueba la informacion",
+            "danger"
+          );
         }
       },
       updatePatient: async (
@@ -368,17 +423,21 @@ const getState = ({ getStore, getActions, setStore }) => {
         id
       ) => {
         try {
+          const actions = getActions();
           const response = await axios.put(
             `${API_AUTH}/update-patient/${id}`,
             { firstname, lastname, phone, email, address, password, id },
             config
           );
-          // setStore({...patient, firstname,
-          //   lastname,
-          //   email,
-          //   address})
-          console.log(response.data);
+          response &&
+            actions.showNotification("Modificacion exitosa", "success");
         } catch (error) {
+          const actions = getActions();
+
+          actions.showNotification(
+            "Error al modificar datos del paciente",
+            "danger"
+          );
           console.log("Error al modificar paciente", error);
         }
       },
@@ -394,6 +453,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         available
       ) => {
         try {
+          const actions = getActions();
           const response = await axios.post(
             `${API}/create-appointment/${patient_id}`,
             {
@@ -409,16 +469,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
-          console.log(response);
+          actions.showNotification("Cita reservada con exito", "success");
           return response;
         } catch (error) {
-          console.error(
-            "Erreur lors de la création du rendez-vous",
-            error.message
-          );
+          const actions = getActions();
+
+          actions.showNotification("Error reserva fallida", "danger");
+          console.error("Error creando cita", error.message);
         }
       },
       loadMedicalAppointments: async (medical_id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/appointments-medical/${medical_id}`,
@@ -426,14 +487,19 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
-            console.log(data);
+            actions.showNotification(
+              "Datos de la agenda cargados con exito",
+              "success"
+            );
             return data;
           }
         } catch (error) {
+          actions.showNotification("Error cargando agenda", "danger");
           console.log("Error obteniendo citas del medico:", error);
         }
       },
       loadMedicalAppointmentsForDr: async (medical_id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/appointments-medical/${medical_id}`,
@@ -443,13 +509,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             const data = await response.data;
             const store = getStore();
             setStore({ ...store, myAppointments: data.agenda });
+            actions.showNotification("Citas cargadas con exito", "success");
             return data;
           }
         } catch (error) {
+          actions.showNotification("Error obteniendo citas", "danger");
           console.log("Error obteniendo citas del medico:", error);
         }
       },
       loadPatientAppointments: async (patient_id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/appointments-patient/${patient_id}`,
@@ -463,13 +532,19 @@ const getState = ({ getStore, getActions, setStore }) => {
               ...store,
               appointmentsPatient: data.agenda,
             });
+            actions.showNotification("Citas obtenidas con exito", "success");
             return data;
           }
         } catch (error) {
-          console.log("Error obteniendo citas del medico:", error);
+          actions.showNotification(
+            "Error obteniendo citas del paciente",
+            "danger"
+          );
+          console.log("Error obteniendo citas del paciente:", error);
         }
       },
       loadPatientAppointmentById: async (patient_id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/appointment-id-patient/${patient_id}`,
@@ -483,70 +558,84 @@ const getState = ({ getStore, getActions, setStore }) => {
               ...store,
               appointment: data.agenda,
             });
+            actions.showNotification(
+              "Datos de la cita obtenidos con exito",
+              "success"
+            );
             return data;
           }
         } catch (error) {
-          console.log("Error obteniendo citas del medico:", error);
+          actions.showNotification(
+            "Error obteniendo datos de la cita",
+            "success"
+          );
+          console.log("Error obteniendo datos de la cita:", error);
         }
       },
       getAllAppointments: async () => {
+        const actions = getActions();
         try {
           const response = await axios.get(`${API}/appointments`, config);
           if (response.status === 200) {
             const data = response.data;
             setStore({ allAppointments: data.results });
+            actions.showNotification("Citas obtenidas con exito", "success");
             return true;
           } else return [];
         } catch (error) {
+          actions.showNotification("Error obteniendo citas", "danger");
           console.error(error);
         }
       },
       deleteAppointment: async (id) => {
+        const actions = getActions();
         try {
           const response = axios.delete(
             `${API}/delete-appointment/${id}`,
             config
           );
           const data = response.data;
+          actions.showNotification("Cita eliminada con exito", "success");
           return data;
         } catch (error) {
-          console.log("Failed delete appointment from flux", error);
+          actions.showNotification("Error eliminando cita", "danger");
+          console.log("Error eliminando cita", error);
         }
       },
-      changeAppointment: async (
-        date,
-        month,
-        year,
-        day,
-        time,
-        state,
-        medical_id,
-        patient_id,
-        updatedAt,
-        id
-      ) => {
-        try {
-          const response = axios.put(
-            `${API}/change-appointment/${id}`,
-            {
-              date,
-              month,
-              year,
-              day,
-              time,
-              state,
-              medical_id,
-              patient_id,
-              updatedAt,
-              id,
-            },
-            config
-          );
-          console.log(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      },
+      // changeAppointment: async (
+      //   date,
+      //   month,
+      //   year,
+      //   day,
+      //   time,
+      //   state,
+      //   medical_id,
+      //   patient_id,
+      //   updatedAt,
+      //   id
+      // ) => {
+      //   try {
+      //     const response = axios.put(
+      //       `${API}/change-appointment/${id}`,
+      //       {
+      //         date,
+      //         month,
+      //         year,
+      //         day,
+      //         time,
+      //         state,
+      //         medical_id,
+      //         patient_id,
+      //         updatedAt,
+      //         id,
+      //       },
+      //       config
+      //     );
+      //     console.log(response.data);
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // },
       createTreatment: async (
         patient_id,
         resume,
@@ -559,6 +648,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         finish_treatment
       ) => {
         try {
+          const actions = getActions();
           const response = await axios.post(
             `${API}/create-treatment`,
             {
@@ -575,24 +665,32 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
           console.log(response);
+          actions.showNotification("Tratamiento creado con exito", "success");
           return response;
         } catch (error) {
+          const actions = getActions();
+
+          actions.showNotification("Error creando tratamiento", "danger");
           console.log("Error creando tratamiento", error);
         }
       },
       updateAppointmentState: async (appointmentId, newState) => {
+        const actions = getActions();
         try {
           const response = await axios.put(
             `${API}/confirm-agenda/${appointmentId}`,
             { state: newState },
             config
           );
+          actions.showNotification("Cita actualizada correctamente", "success");
           console.log(response);
         } catch (error) {
+          actions.showNotification("Error actualizando cita", "danger");
           console.log("Error no se pudo actualizar el estado:", error);
         }
       },
       getTreatmentsPatient: async (patient_id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/treatments/patient/${patient_id}`,
@@ -608,13 +706,19 @@ const getState = ({ getStore, getActions, setStore }) => {
               treatments: data.treatments,
             },
           });
+          actions.showNotification(
+            "tratamientos obtenidos correctamente",
+            "success"
+          );
           return data;
           // }
         } catch (error) {
+          actions.showNotification("Error obteniendo tratamientos", "danger");
           console.log("Error obteniendo tratamientos del paciente", error);
         }
       },
       getHistoryPatientById: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(`${API}/history/${id}`, config);
           const data = response.data;
@@ -626,12 +730,18 @@ const getState = ({ getStore, getActions, setStore }) => {
               history: data.historic,
             },
           });
+          actions.showNotification("Historia obtenida con exito", "success");
           return data;
         } catch (error) {
+          actions.showNotification(
+            "Error obteniendo historia del paciente",
+            "danger"
+          );
           console.log("Error obteniendo historia clínica del paciente", error);
         }
       },
       getTreatmentById: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(`${API}/treatment/${id}`, config);
           const data = response.data;
@@ -640,23 +750,37 @@ const getState = ({ getStore, getActions, setStore }) => {
             ...store,
             treatment: data.treatment,
           });
+          actions.showNotification(
+            "Datos del tratamiento obtenidos correctamente",
+            "success"
+          );
           return data;
         } catch (error) {
+          actions.showNotification(
+            "Error obteniendo datos del tratamiento",
+            "danger"
+          );
           console.log("Error obteniendo datos del tratamiento", error);
         }
       },
       getAllTreatments: async () => {
+        const actions = getActions();
         try {
           const response = await axios.get(`${API}/treatments`, config);
           if (response.status === 200) {
             const responseData = response.data;
             console.log(responseData);
             setStore({ treatments: responseData });
+            actions.showNotification(
+              "Tratamientos obtenidos con exito",
+              "success"
+            );
             return true;
           } else {
             return [];
           }
         } catch (error) {
+          actions.showNotification("Error obteniendo tratamientos", "danger");
           console.log(error);
           return [];
         }
@@ -674,6 +798,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         finish_treatment
       ) => {
         try {
+          const actions = getActions();
           const response = await axios.put(
             `${API}/update-treatment/${id}`,
             {
@@ -691,8 +816,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           console.log(id);
           console.log(response);
+          actions.showNotification(
+            "Tratamiento actualizado con exito",
+            "success"
+          );
           return response;
         } catch (error) {
+          const actions = getActions();
+
+          actions.showNotification("Error actualizando tratamiento", "danger");
           console.log("Error no se pudo actualizar el tratamiento:", error);
         }
       },
@@ -705,6 +837,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         date
       ) => {
         try {
+          const actions = getActions();
           const response = await axios.post(
             `${API}/create-history/${patient_id}`,
             {
@@ -717,23 +850,34 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
+          actions.showNotification("Historia creada con exito", "success");
           console.log(response);
         } catch (error) {
+          const actions = getActions();
+
+          actions.showNotification("Error creando historia", "danger");
           console.log("No se pudo crear la hisoria:", error);
         }
       },
       getNotifications: async () => {
+        const actions = getActions();
         try {
           const response = await axios.get(`${API}/notifications`, config);
           const data = response.data;
           const store = getStore();
           setStore({ ...store, notifications: data });
+          actions.showNotification(
+            "Notificaciones obtenidas con exito",
+            "success"
+          );
           return data;
         } catch (error) {
+          actions.showNotification("Error obteniendo notificaciones", "danger");
           console.log(error);
         }
       },
       getNotificationsById: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/notifications/${id}`,
@@ -743,12 +887,21 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(data);
           const store = getStore();
           setStore({ ...store, notificationById: data.notifications });
+          actions.showNotification(
+            "Datos de notificacion obtenidos con exito",
+            "success"
+          );
           return data;
         } catch (error) {
+          actions.showNotification(
+            "Error obteniendo datos de notificacion",
+            "danger"
+          );
           console.log(error);
         }
       },
       getNotificationsByIdForDr: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.get(
             `${API}/notifications-employee/${id}`,
@@ -758,8 +911,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(data);
           const store = getStore();
           setStore({ ...store, notificationById: data.notifications });
+          actions.showNotification(
+            "Datos de notificacion obtenidos con exito",
+            "success"
+          );
           return data;
         } catch (error) {
+          actions.showNotification(
+            "Error obteniendo datos de notificacion",
+            "danger"
+          );
           console.log(error);
         }
       },
@@ -770,12 +931,25 @@ const getState = ({ getStore, getActions, setStore }) => {
             { state: newState },
             config
           );
+          const actions = getActions();
+
+          actions.showNotification(
+            "Notificacion modificada con exito",
+            "success"
+          );
           console.log(response);
         } catch (error) {
+          const actions = getActions();
+
+          actions.showNotification(
+            "Error modificando la notificacion",
+            "danger"
+          );
           console.log("Error no se pudo actualizar el estado:", error);
         }
       },
       deleteNotifications: async (id) => {
+        const actions = getActions();
         try {
           const response = await axios.delete(
             `${API}/notifications/delete/${id}`,
@@ -783,8 +957,16 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = response.data;
           console.log(data);
+          actions.showNotification(
+            "Notificacion eliminada con exito",
+            "success"
+          );
           return data;
         } catch (error) {
+          actions.showNotification(
+            "Error eliminando la notificacion",
+            "danger"
+          );
           console.log("Failed delete notification from flux", error);
         }
       },
@@ -793,13 +975,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(
             `${API_AUTH}/patients/send-mail/${dni}`
           );
-          const data = response.data;
-          return data;
+          return response;
         } catch (error) {
-          console.log("error from request mail send to api", error);
+          return error.response.data.message;
         }
       },
       saveNewPassword: async (dni, password, token) => {
+        const actions = getActions();
         try {
           const response = await axios.put(
             `${API_AUTH}/patients/update-password/${dni}/${token}`,
@@ -807,8 +989,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           const data = response.data;
+          actions.showNotification(
+            "Contraseña actualizada con exito",
+            "success"
+          );
           return data;
         } catch (error) {
+          actions.showNotification("Error actualizando contraseña", "danger");
           console.log(error);
         }
       },

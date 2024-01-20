@@ -11,34 +11,40 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (password == ""){
+    if (password == "") {
       return actions.showNotification("Datos incorrectos", "danger");
-    }else{
-    const data = await actions.login(personalID, password);
-
-    if (data) {
-      actions.showNotification("Successfull log in", "success");
-      const loggedInEmployee = data.employees[0];
-
-      if (loggedInEmployee.specialist === "admin") {
-        navigate("/dashboard-admin");
-
-        window.location.reload();
-      }
-        if (loggedInEmployee.specialist === "enfermero" || loggedInEmployee.specialist === "enfermera") {
-          navigate("/dashboard-nurse");
-  
-          window.location.reload();
-        
-      } if (loggedInEmployee.specialist !== "admin" && loggedInEmployee.specialist !== "enfermero" && loggedInEmployee.specialist !== "enfermera" ) {
-        navigate("/dashboard-doctor");
-        window.location.reload();
-      }
     } else {
-      actions.showNotification("Datos incorrectos", "danger");
+      const data = await actions.login(personalID, password);
 
-      // alert("Erreur, vérifiez vos infos");
-    }}
+      if (data) {
+        actions.showNotification("Inicio de sesion exitoso", "success");
+        const loggedInEmployee = data.employees[0];
+
+        if (loggedInEmployee.specialist === "admin") {
+          navigate("/dashboard-admin");
+
+          window.location.reload();
+        }
+        if (
+          loggedInEmployee.specialist === "enfermero" ||
+          loggedInEmployee.specialist === "enfermera"
+        ) {
+          navigate("/dashboard-nurse");
+
+          window.location.reload();
+        }
+        if (
+          loggedInEmployee.specialist !== "admin" &&
+          loggedInEmployee.specialist !== "enfermero" &&
+          loggedInEmployee.specialist !== "enfermera"
+        ) {
+          navigate("/dashboard-doctor");
+          window.location.reload();
+        }
+      } else {
+        actions.showNotification("Datos incorrectos", "danger");
+      }
+    }
   }
 
   return (

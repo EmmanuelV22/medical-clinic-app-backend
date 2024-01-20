@@ -41,7 +41,6 @@ import DarkMode from "./components/DarkMode";
 import DashboardEnfermero from "./views/employees/DashboardEnfermero";
 
 import AllAppointments from "./views/AllAppointments";
-import DarkModeRobot from "./components/DarkModeRobot";
 
 import MapView from "./views/MapView";
 import Footer from "./components/Footer";
@@ -54,7 +53,6 @@ const Layout = () => {
   return (
     <BrowserRouter basename={basename}>
       <Alerts />
-      <DarkModeRobot />
       <div>
         <DarkMode />
       </div>
