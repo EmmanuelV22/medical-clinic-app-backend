@@ -11,28 +11,31 @@ const PatientDetails = ({ patientData }) => {
   const [firstname, setFirstname] = useState(patientData.firstname);
   const [lastname, setLastname] = useState(patientData.lastname);
   const [email, setEmail] = useState(patientData.email);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(patientData.password);
   const [address, setAddress] = useState(patientData.address);
   const [id, setId] = useState(patientData.id);
   const [phone, setPhone] = useState(patientData.phone);
 
   const handleUpdatePatient = async () => {
-   if (password.length <= 7) {
-    try {
-      const response = await actions.updatePatient(
-        firstname,
-        lastname,
-        phone,
-        email,
-        address,
-        password,
-        id
-      );
-      window.location.reload();
-    } catch (error) {
-      console.log("Error updating patient", error);
-    }}else {
-      alert("El password debe ser de 8 caracteres") 
+    if (password.length >= 3) {
+      try {
+        const response = await actions.updatePatient(
+          firstname,
+          lastname,
+          phone,
+          email,
+          address,
+          password,
+          id
+        );
+        actions.showNotification("Datos actualizados correctamente", "success");
+
+        window.location.reload();
+      } catch (error) {
+        console.log("Error updating patient", error);
+      }
+    } else {
+      actions.showNotification("Verifica los datos ingresados", "danger");
     }
   };
 

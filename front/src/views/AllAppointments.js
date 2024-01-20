@@ -101,13 +101,13 @@ const AllAppointments = () => {
                 {combinedData?.length > 0 &&
                   combinedData.map((data) => (
                     <tr key={data.id}>
-                      <td>{data.patient.firstname}</td>
-                      <td>{data.patient.lastname}</td>
-                      <td>{data.patient.dni}</td>
-                      <td>{data.patient.phone}</td>
-                      <td>{data.employee.firstname}</td>
-                      <td>{data.employee.lastname}</td>
-                      <td>{data.employee.specialist}</td>
+                      <td>{data.patient?.firstname}</td>
+                      <td>{data.patient?.lastname}</td>
+                      <td>{data.patient?.dni}</td>
+                      <td>{data.patient?.phone}</td>
+                      <td>{data.employee?.firstname}</td>
+                      <td>{data.employee?.lastname}</td>
+                      <td>{data.employee?.specialist}</td>
                       <td>
                         {data.date}/{data.month}/{data.year}
                       </td>

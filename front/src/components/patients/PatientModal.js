@@ -37,7 +37,7 @@ const PatientModal = () => {
   }, [id]); // Modification de la dépendance pour inclure id
 
   const handleUpdatePatient = async () => {
-    if (password.length > 3) {
+    if (password.length >= 3) {
       try {
         const response = await actions.updatePatient(
           firstname,
@@ -55,7 +55,7 @@ const PatientModal = () => {
         console.log("Error updating patient", error);
       }
     } else {
-      alert("El password debe ser de 3 caracteres o mas");
+      actions.showNotification("Password incorrecto", "danger");
     }
   };
 
@@ -161,4 +161,3 @@ const PatientModal = () => {
 };
 
 export default PatientModal;
-

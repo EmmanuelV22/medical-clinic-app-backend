@@ -10,7 +10,6 @@ const Home = () => {
 
   function logout() {
     actions.logout();
-    alert("logout OK");
     navigate("/");
   }
 
