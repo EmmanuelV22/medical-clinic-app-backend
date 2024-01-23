@@ -29,12 +29,12 @@ const PatientTreatement = () => {
   };
 
   return (
-    <>
+    <div className={store.patientData.treatments.length < 5 && "vh-100"}>
       <h1>
         Lista de Tratamientos de {store.patientData?.patientData?.firstname}{" "}
         {store.patientData?.patientData?.lastname}
       </h1>
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>Resumen</th>
@@ -145,7 +145,7 @@ const PatientTreatement = () => {
           )}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

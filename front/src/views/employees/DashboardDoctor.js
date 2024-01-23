@@ -6,6 +6,7 @@ import CardMyPatients from "../../components/employees/CardMyPatients";
 import CardAllPatients from "../../components/employees/CardAllPatients";
 import CardAppointments from "../../components/employees/CardAppointements";
 import CardMap from "../../components/CardMap";
+import AccessDenied from "../AccessDenied";
 
 const DashboardDoctor = () => {
   const { store } = useContext(Context);
@@ -19,7 +20,11 @@ const DashboardDoctor = () => {
       store.employee?.specialist !== "enfermera" ? (
         <>
           <Navbar />
-          <div className="d-flex justify-content-evenly flex-wrap my-5">
+          <h1>
+              {store.empleyee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
+              {store.employee?.firstname} {store.employee?.lastname}
+            </h1>
+          <div className="d-flex justify-content-evenly flex-wrap vh-100">
             <CardMyPatients />
             <CardAllPatients />
             <CardAppointments />
@@ -28,7 +33,7 @@ const DashboardDoctor = () => {
         </>
       ) : (
         <div>
-          <h1>Acceso Denegado</h1>
+          <AccessDenied />
         </div>
       )}
     </>

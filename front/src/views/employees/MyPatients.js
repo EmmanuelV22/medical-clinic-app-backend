@@ -5,6 +5,8 @@ import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import { useNavigate } from "react-router-dom";
+import AccessDenied from "../../views/AccessDenied";
+
 
 const MyPatients = () => {
   const { store, actions } = useContext(Context);
@@ -128,7 +130,7 @@ const MyPatients = () => {
       {store.employee &&
       store.employee?.specialist &&
       store?.employee?.specialist !== "admin" ? (
-        <div className="admin-patient-content">
+        <div className="admin-patient-content vh-100">
           <h1
             className="text-center font-bold my-4"
             style={{ fontSize: "2.5rem" }}
@@ -157,7 +159,7 @@ const MyPatients = () => {
           </div>
         </div>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

@@ -4,11 +4,10 @@ import { useNavigate, useParams } from "react-router";
 import { Context } from "../store/appContext";
 
 const LoginPatient = () => {
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
-  const { patient_id } = useParams();
 
   async function handlePassword(e) {
     e.preventDefault();

@@ -13,6 +13,7 @@ import CardSettings from "../../components/patients/CardSettings";
 
 import CardGetAppointment from "../../components/patients/CardGetAppointments";
 import CardMap from "../../components/CardMap";
+import AccessDenied from "../AccessDenied";
 
 const DashboardPatient = () => {
   const { store, actions } = useContext(Context);
@@ -26,8 +27,8 @@ const DashboardPatient = () => {
       {store?.patient && store.patient?.id ? (
         <>
           <Navbar />
-          <h1>Bienvenido {store.patientData?.patientData?.firstname}  {store.patientData?.patientData?.lastname}</h1>
-          <div className="d-flex justify-content-evenly flex-wrap my-5">
+          <h1>{store.patientData?.patientData?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}{store.patientData?.patientData?.firstname}  {store.patientData?.patientData?.lastname}</h1>
+          <div className="d-flex justify-content-evenly flex-wrap vh-100">
             {store.patient && (
               <>
                 <CardAppointment />
@@ -41,7 +42,7 @@ const DashboardPatient = () => {
           </div>
         </>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

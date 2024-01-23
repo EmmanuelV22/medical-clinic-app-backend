@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Context } from "../../store/appContext";
 
 const NotifcationsDelete = ({ notification }) => {
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
 
   const handleDelete = async (id) => {
     await actions.deleteNotifications(id);

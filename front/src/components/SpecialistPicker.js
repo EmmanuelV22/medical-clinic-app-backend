@@ -36,11 +36,11 @@ const SpecialistPicker = () => {
   };
 
   return (
-    <>
+    <div className="container-fluid vh-100">
 
       {store.patient || store.employee.specialist === "admin" ? (
         <>
-    <div className='container-fluid mb-5 p-5 bg-white'>
+    <div className='container-fluid  bg-white '>
             <select
               className="form-select"
               aria-label="Select a specialty"
@@ -58,7 +58,7 @@ const SpecialistPicker = () => {
             </select>
           </div>
           {choiceSpecialist && (
-            <div>
+            <div className="container-fluid">
               <select
                 className="form-select"
                 aria-label="Select a doctor"
@@ -83,7 +83,7 @@ const SpecialistPicker = () => {
             </div>
           )}
           {choiceSpecialist && choiceDoc && (
-            <div className="d-flex justify-content-center mt-5">
+            <div className="d-flex justify-content-center mt-1">
               <AppointmentScheduler
                 doctorId={
                   store.employees.find(
@@ -112,7 +112,7 @@ const SpecialistPicker = () => {
       ) : (
         <h1>denegado</h1>
       )}
-    </>
+    </div>
   );
 };
 

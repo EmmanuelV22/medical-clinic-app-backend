@@ -34,7 +34,7 @@ const PatientModal = () => {
     if (id) {
       funcioncita();
     }
-  }, [id]); // Modification de la dépendance pour inclure id
+  }, [id]); 
 
   const handleUpdatePatient = async () => {
     if (password.length >= 3) {
@@ -52,7 +52,7 @@ const PatientModal = () => {
         window.location.reload();
         return response;
       } catch (error) {
-        console.log("Error updating patient", error);
+        return error
       }
     } else {
       actions.showNotification("Password incorrecto", "danger");
@@ -64,7 +64,7 @@ const PatientModal = () => {
       {store.patient?.id === store.patientData?.patientData?.id &&
       store.patientData ? (
         <>
-          <div className="modal-dialog">
+          <div className="modal-dialog vh-100">
             <div className="modal-content">
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">

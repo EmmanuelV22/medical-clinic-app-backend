@@ -11,7 +11,6 @@ const MyTtreatments = () => {
 
   const handleGetTreatments = async () => {
     patient_id && (await actions.getTreatmentsPatient(patient_id));
-    console.log(store.patientData.treatments);
   };
 
   useEffect(() => {

@@ -12,7 +12,6 @@ const HistoryByPatient = () => {
   const fetchPatientData = async () => {
     try {
       const historyResponse = await actions.getHistoryPatientById(id);
-      console.log(historyResponse);
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des données du patient : ",

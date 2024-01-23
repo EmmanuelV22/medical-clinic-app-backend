@@ -32,14 +32,12 @@ const RegisterEmployee = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      // console.log("days_off (before conversion):", daysOfToArray);
 
       const daysOfToArray = [days_off1, days_off2];
 
       const daysOffArray =
         daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
 
-      // console.log("days off Data:", daysOffArray);
 
       const request = await actions.registerEmployee(
         firstname,
@@ -58,7 +56,6 @@ const RegisterEmployee = () => {
         password
       );
 
-      console.log(request);
 
       if (request) {
         setFirstname("");

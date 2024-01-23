@@ -15,10 +15,7 @@ const NotificationsNavbar = () => {
       const patientDetails = await actions.getPatientById(patientId);
       navigate(`/notifications/${patientId}`);
     } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des détails du patient",
-        error
-      );
+      return error
     }
   };
 
@@ -28,7 +25,6 @@ const NotificationsNavbar = () => {
 
   useEffect(() => {
     getNotifications();
-    console.log("Unread Notifications:", unreadNotifications);
   }, []);
 
   const unreadNotifications = store.notifications.filter(

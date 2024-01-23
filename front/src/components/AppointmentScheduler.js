@@ -24,8 +24,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
     disabledDates.push(new Date(año, mes - 1, dia));
   }
 
-  console.log("CONSOLE de days off",daysOff)
-  console.log("CONSOLE de disable dates",disabledDates)
+ 
 
 
   function deshabilitarFechaEnRango(fechaInicio, fechaFin) {
@@ -66,7 +65,6 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       }
     });
     setArrayDeExcludesForSelected(newExcludes);
-    console.log(newExcludes);
   };
 
   useEffect(() => {
@@ -97,7 +95,6 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       const state = "confirmado";
       const medical_id = doctorId;
       const patient_id = store.patient.id ? store.patient.id : patient_id_params
-      // console.log(patient_id);
       await actions
         .postAppointment(
           date,
