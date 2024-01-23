@@ -10,12 +10,15 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <input
-      type="text"
-      placeholder="Busca por nombre o apellido"
-      value={searchQuery}
-      onChange={handleInputChange}
-    />
+    <div className="text-center mb-4">
+      <input
+        type="text"
+        className="search-input"
+        placeholder="Busca por nombre, apellido o DNI"
+        value={searchQuery}
+        onChange={handleInputChange}
+      />
+    </div>
   );
 };
 

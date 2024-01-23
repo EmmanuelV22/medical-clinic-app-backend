@@ -4,15 +4,53 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import EmployeeDetail from "../../components/admin/EmployeeDetail";
 import ConfirmDeleteEmployee from "../../components/admin/ConfirmDeleteEmployee";
-import { useNavigate } from "react-router";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
+import Navbar from "../../components/Navbar";
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
-  let navigate = useNavigate();
   const [searchError, setSearchError] = useState(false);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const dayNameToNumber = {
+    domingo: 0,
+    lunes: 1,
+    martes: 2,
+    miércoles: 3,
+    jueves: 4,
+    viernes: 5,
+    sábado: 6,
+  };
+
+  function convertNumberToDay(numDay) {
+    // Parsing de la chaîne en tableau si nécessaire
+    const daysOffArray = Array.isArray(numDay)
+      ? numDay
+      : JSON.parse(numDay.replace(/'/g, '"'));
+
+    // Mapping des jours
+    const dayNames = daysOffArray.map((numJour) => {
+      if (numJour >= 0 && numJour <= 6) {
+        return Object.keys(dayNameToNumber).find(
+          (key) => dayNameToNumber[key] === numJour
+        );
+      } else {
+        console.log("Jour invalide. Numéro de jour:", numJour);
+        return "Jour invalide";
+      }
+    });
+
+    console.log("Converted day names:", dayNames);
+    return dayNames.join(", ");
+  }
+  function formatTime(time) {
+    if (time !== undefined) {
+      const hours = time < 10 ? `0${time}` : `${time}`;
+      return `${hours}:00`;
+    } else {
+      return "";
+    }
+  }
 
   useEffect(() => {
     actions.getAllEmployees();
@@ -22,15 +60,13 @@ const AdminAllEmployees = () => {
     { field: "firstname", label: "Nombre", sortable: true },
     { field: "lastname", label: "Apellido", sortable: true },
     { field: "dni", label: "DNI", sortable: true },
-    { field: "address", label: "Dirección", sortable: true },
     { field: "personalID", label: "ID personal", sortable: true },
     { field: "especialidad", label: "Especialidad", sortable: true },
     { field: "email", label: "Email", sortable: true },
-    { field: "days_off", label: "Dias Libres" },
-    { field: "start_time", label: "Hora de inicio", sortable: true },
-    { field: "end_time", label: "Hora de finalizacion", sortable: true },
-    { field: "createdAt", label: "Creado", sortable: true },
-    { field: "updatedAt", label: "Actualizado", sortable: true },
+    { field: "days_off", label: "Dias Libres", sortable: false },
+    { field: "start_time", label: "Hora de inicio", sortable: false },
+    { field: "end_time", label: "Hora de finalizacion", sortable: false },
+    { field: "updatedAt", label: "Actualizado", sortable: false },
     { field: "actions", label: "Acciones" },
   ];
 
@@ -43,68 +79,106 @@ const AdminAllEmployees = () => {
     }
   };
 
-  const renderRow = (employee) => (
-    <React.Fragment key={employee.id}>
-      <tr className="infos-contain">
-        <td>{employee.firstname}</td>
-        <td>{employee.lastname}</td>
-        <td>{employee.dni}</td>
-        <td>{employee.address}</td>
-        <td>{employee.personalID}</td>
-        <td>{employee.specialist}</td>
-        <td>{employee.email}</td>
-        <td>{employee.days_off}</td>
-        <td>{employee.start_time}</td>
-        <td>{employee.end_time}</td>
-        <td>{actions.dateFormater(employee.createdAt)}</td>
-        <td>
-          {employee.updatedAt !== null
-            ? actions.dateFormater(employee.updatedAt)
-            : null}
-        </td>
+  const renderRow = (employee) => {
+    return (
+      <React.Fragment key={employee.id}>
+        <tr className="infos-contain">
+          <td>{employee.firstname}</td>
+          <td>{employee.lastname}</td>
+          <td>{employee.dni}</td>
+          <td>{employee.personalID}</td>
+          <td>{employee.specialist}</td>
+          <td>{employee.email}</td>
+          <td>{convertNumberToDay(employee.days_off)}</td>
+          <td>{formatTime(employee.start_time)}</td>
+          <td>{formatTime(employee.end_time)}</td>
+          <td>
+            {employee.updatedAt !== null
+              ? actions.dateFormater(employee.updatedAt)
+              : null}
+          </td>
 
-        <td className="text-center">
-          <button
-            style={{
-              background: "blue",
-              color: "white",
-              border: " 2px solid white",
-              padding: "2px 3px",
-              borderRadius: "6px",
-            }}
-            data-bs-toggle="modal"
-            data-bs-target={"#employeeModal-" + employee.id}
-          >
-            &#9998;
-          </button>
-          <button
-            style={{
-              background: "red",
-              color: "white",
-              border: " 2px solid white",
-              padding: "2px 3px",
-              borderRadius: "6px",
-            }}
-            data-bs-toggle="modal"
-            data-bs-target={"#deleteEmployee-" + employee.id}
-          >
-            &#10008;
-          </button>
-        </td>
-      </tr>
-      <EmployeeDetail employeeData={employee} />
-      <ConfirmDeleteEmployee
-        employeeData={employee}
-        handleDeleteEmployee={handleDeleteEmployee}
-      />
-    </React.Fragment>
-  );
+          <td className="text-center d-flex justitfy-content-center align-items-center">
+            <button
+              title="ver y editar datos"
+              className="btn-edit"
+              style={{
+                color: "white",
+                border: " 2px solid white",
+                padding: "0px 4px",
+                borderRadius: "6px",
+              }}
+              data-bs-toggle="modal"
+              data-bs-target={"#employeeModal-" + employee.id}
+            >
+              <span style={{ fontSize: "18px" }}> &#9998;</span>
+            </button>
+            <button
+              style={{
+                color: "white",
+                border: " 2px solid white",
+                padding: "2px 6px",
+                borderRadius: "6px",
+              }}
+              data-bs-toggle="modal"
+              data-bs-target={"#deleteEmployee-" + employee.id}
+              className="button btn-eliminar"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 69 14"
+                class="svgIcon bin-top"
+              >
+                <g clip-path="url(#clip0_35_24)">
+                  <path
+                    fill="black"
+                    d="M20.8232 2.62734L19.9948 4.21304C19.8224 4.54309 19.4808 4.75 19.1085 4.75H4.92857C2.20246 4.75 0 6.87266 0 9.5C0 12.1273 2.20246 14.25 4.92857 14.25H64.0714C66.7975 14.25 69 12.1273 69 9.5C69 6.87266 66.7975 4.75 64.0714 4.75H49.8915C49.5192 4.75 49.1776 4.54309 49.0052 4.21305L48.1768 2.62734C47.3451 1.00938 45.6355 0 43.7719 0H25.2281C23.3645 0 21.6549 1.00938 20.8232 2.62734ZM64.0023 20.0648C64.0397 19.4882 63.5822 19 63.0044 19H5.99556C5.4178 19 4.96025 19.4882 4.99766 20.0648L8.19375 69.3203C8.44018 73.0758 11.6746 76 15.5712 76H53.4288C57.3254 76 60.5598 73.0758 60.8062 69.3203L64.0023 20.0648Z"
+                  ></path>
+                </g>
+                <defs>
+                  <clipPath id="clip0_35_24">
+                    <rect fill="white" height="14" width="69"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 69 57"
+                class="svgIcon bin-bottom"
+              >
+                <g clip-path="url(#clip0_35_22)">
+                  <path
+                    fill="black"
+                    d="M20.8232 -16.3727L19.9948 -14.787C19.8224 -14.4569 19.4808 -14.25 19.1085 -14.25H4.92857C2.20246 -14.25 0 -12.1273 0 -9.5C0 -6.8727 2.20246 -4.75 4.92857 -4.75H64.0714C66.7975 -4.75 69 -6.8727 69 -9.5C69 -12.1273 66.7975 -14.25 64.0714 -14.25H49.8915C49.5192 -14.25 49.1776 -14.4569 49.0052 -14.787L48.1768 -16.3727C47.3451 -17.9906 45.6355 -19 43.7719 -19H25.2281C23.3645 -19 21.6549 -17.9906 20.8232 -16.3727ZM64.0023 1.0648C64.0397 0.4882 63.5822 0 63.0044 0H5.99556C5.4178 0 4.96025 0.4882 4.99766 1.0648L8.19375 50.3203C8.44018 54.0758 11.6746 57 15.5712 57H53.4288C57.3254 57 60.5598 54.0758 60.8062 50.3203L64.0023 1.0648Z"
+                  ></path>
+                </g>
+                <defs>
+                  <clipPath id="clip0_35_22">
+                    <rect fill="white" height="57" width="69"></rect>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </td>
+        </tr>
+        <EmployeeDetail employeeData={employee} />
+        <ConfirmDeleteEmployee
+          employeeData={employee}
+          handleDeleteEmployee={handleDeleteEmployee}
+        />
+      </React.Fragment>
+    );
+  };
 
   const handleSearch = (query) => {
     const filtered = store.employees.filter(
       (employee) =>
         employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        employee.lastname.toLowerCase().includes(query.toLowerCase())
+        employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
+        employee.dni.toString().includes(query)
     );
     // Set searchError to true if no employees found
     setSearchError(filtered.length === 0);
@@ -115,22 +189,7 @@ const AdminAllEmployees = () => {
     <>
       {store?.employee && store.employee?.specialist === "admin" ? (
         <>
-          <div className="d-flex justify-content-between align-items-center">
-            <img
-              src="../clinic-logo-removebg.png"
-              alt="logo app clinic"
-              style={{ width: "5rem" }}
-              onClick={() => navigate("/")}
-            />
-            <div>
-              <button
-                onClick={() => navigate("/dashboard-admin")}
-                className="btn btn-warning m-3"
-              >
-                Volver
-              </button>
-            </div>
-          </div>
+          <Navbar />
           <div className="admin-employee-content">
             <h1
               className="text-center font-bold my-4"
@@ -140,8 +199,8 @@ const AdminAllEmployees = () => {
             </h1>
             <SearchBar onSearch={handleSearch} />
             {searchError && (
-              <p className="text-center text-danger">
-                No se encontraron empleados.
+              <p className="text-center text-danger search-nf">
+                ¡No se encontraron empleados!
               </p>
             )}
             <div
