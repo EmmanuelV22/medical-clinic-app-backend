@@ -6,6 +6,8 @@ import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import ConfirmDeleteAppointment from "../../components/patients/ConfirmDeleteAppointment";
 import { useNavigate, useParams } from "react-router";
+import AccessDenied from "../../views/AccessDenied";
+
 
 const PatientAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -230,7 +232,7 @@ const PatientAppointments = () => {
           </div>
         </div>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

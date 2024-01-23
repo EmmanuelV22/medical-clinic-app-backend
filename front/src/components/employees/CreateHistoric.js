@@ -33,9 +33,8 @@ const CreateHistoric = ({ id }) => {
         date
       )
       .catch((err) => {
-        console.log(err);
+        return err
       });
-    console.log(id);
     setDate("");
     setDescription("");
     window.location.reload();

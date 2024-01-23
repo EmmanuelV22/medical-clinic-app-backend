@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import ConfirmUpdateEmployee from "./ConfirmUpdateEmployee";
+import AccessDenied from "../../views/AccessDenied";
 
 const EmployeeDetail = ({ employeeData }) => {
   const { store, actions } = useContext(Context);
@@ -53,7 +54,6 @@ const EmployeeDetail = ({ employeeData }) => {
         daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
 
       try {
-        console.log(employeeData.id);
 
         const updatedData = await actions.updateEmployee(
           firstname,
@@ -322,7 +322,7 @@ const EmployeeDetail = ({ employeeData }) => {
           />
         </>
       ) : (
-        <h1>componente denegado</h1>
+        <AccessDenied />
       )}
     </>
   );

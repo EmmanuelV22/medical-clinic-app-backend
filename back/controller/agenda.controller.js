@@ -14,13 +14,13 @@ exports.getAppointmentPatients = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching patient", error: error.message });
+        .json({ message: "Error , no hay resultados de la busqueda", error: error.message });
     }
 
     const agenda = results;
     return res
       .status(200)
-      .json({ message: "Get appointment success", patient_id, agenda });
+      .json({ message: "Citas obtenidas con exito", patient_id, agenda });
   });
 };
 
@@ -28,7 +28,6 @@ exports.getAppointmenByIdPatient = async (req, res, next) => {
   const patient_id = req.params.patient_id;
 
   const query = "SELECT * FROM agenda WHERE id = ?";
-  console.log("Patient ID:", patient_id);
 
   const values = [patient_id];
 
@@ -36,11 +35,10 @@ exports.getAppointmenByIdPatient = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching patient", error: error.message });
+        .json({ message: "Error , no hay resultados de citas en la busqueda", error: error.message });
     }
-    console.log(results);
     const agenda = results[0];
-    return res.status(200).json({ message: "Get appointment success", agenda });
+    return res.status(200).json({ message: "Cita obtenida con exito", agenda });
   });
 };
 
@@ -55,11 +53,11 @@ exports.getAppointmentById = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching patient", error: error.message });
+        .json({ message: "Error, no hay resultados de la busqueda", error: error.message });
     }
 
     const agenda = results[0];
-    return res.status(200).json({ message: "Get appointment success", agenda });
+    return res.status(200).json({ message: "Cita obtenida con exito", agenda });
   });
 };
 
@@ -71,12 +69,12 @@ exports.getAllAppointment = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching patient", error: error.message });
+        .json({ message: "Error obteniendo todas la citas", error: error.message });
     }
 
     return res
       .status(200)
-      .json({ message: "Get appointment success", results });
+      .json({ message: "Citas obtenidas con exito", results });
   });
 };
 
@@ -105,14 +103,14 @@ exports.createAppointment = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error making agenda", error: error.message });
+        .json({ message: "Error creando cita", error: error.message });
     }
 
     const appointmentId = results.insertId;
 
-    const msg = `¡Turno confirmado el ${date}/${month}/${year} a las ${time}!
-    Te esperamos`;
-    ///llamar a la funcion send mail////
+    const msg = `¡Turno confirmado para el dia ${date}/${month}/${year} , a las ${time} horas. 
+    Te esperamos!`;
+
     sendNotificationEmail(patient_id, msg, medical_id, res);
 
     const notificationQueryPatient =
@@ -122,7 +120,7 @@ exports.createAppointment = async (req, res, next) => {
       patient_id,
       medical_id,
       appointmentId,
-      `¡Turno confirmado el ${date}/${month}/${year} a las ${time}!`,
+      `¡Turno confirmado para el dia ${date}/${month}/${year} a las ${time} horas!`,
     ];
 
     try {
@@ -131,16 +129,13 @@ exports.createAppointment = async (req, res, next) => {
         notificationValuesPatient
       );
     } catch (notificationError) {
-      console.error("Error creating patient notification:", notificationError);
       return res.status(500).json({
-        message: "Error creating appointment and patient notification",
+        message: "Error creando cita",
         error: notificationError.message,
       });
     }
 
-    // const queryPatientById = 'SELECT firstname, lastname FROM patients WHERE id = ?'
-    // const valuesPatient = [patient_id]
-    // Send notification to the doctor
+    
     const doctorNotificationQuery =
       "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_employee) VALUES (?, ?, ?, ?)";
 
@@ -148,23 +143,20 @@ exports.createAppointment = async (req, res, next) => {
       patient_id,
       medical_id,
       appointmentId,
-      `¡Nuevo turno agendado por el paciente ${patient_id} el ${date}/${month}/${year} a las ${time}!`,
+      `¡Nuevo turno agendado por el paciente ${patient_id} el dia ${date}/${month}/${year} a las ${time} horas!`,
     ];
 
     try {
       await connectDB.query(doctorNotificationQuery, doctorNotificationValues);
 
       return res.status(201).json({
-        message: "Appointment successfully created",
+        message: "Cita creada con exito",
         appointment: appointmentId,
       });
     } catch (doctorNotificationError) {
-      console.error(
-        "Error creating doctor notification:",
-        doctorNotificationError
-      );
+     
       return res.status(500).json({
-        message: "Error creating appointment and doctor notification",
+        message: "Error creando cita",
         error: doctorNotificationError.message,
       });
     }
@@ -199,27 +191,25 @@ exports.createAppointment = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error changing appointment", error: error });
+        .json({ message: "Error cambiando cita", error: error });
     }
     return res
       .status(200)
-      .json({ message: "Appointment successfully changed", appointment: id });
+      .json({ message: "Cita cambiada con exito", appointment: id });
   });
 }),
   ////////////////////////////////////
 
-  (exports.deleteAppointment = async (req, res, next) => {
+  exports.deleteAppointment = async (req, res, next) => {
     const id = req.params.id;
 
-    // Iniciar la transacción
     connectDB.beginTransaction((err) => {
       if (err) {
         return res
           .status(500)
-          .json({ message: "Error starting transaction", error: err.message });
+          .json({ message: "Error eliminando cita", error: err.message });
       }
 
-      // Eliminar notificaciones relacionadas en la tabla 'notifications'
       const deleteNotificationsQuery =
         "DELETE FROM notifications WHERE agenda_id = ?";
       const notificationsValues = [id];
@@ -229,16 +219,14 @@ exports.createAppointment = async (req, res, next) => {
         notificationsValues,
         (error, results, fields) => {
           if (error) {
-            // Si hay un error, hacer rollback y manejar el error
             connectDB.rollback(() => {
               return res.status(400).json({
-                message: "Error deleting notifications",
+                message: "Error eliminando notificaciones",
                 error: error.message,
               });
             });
           }
 
-          // Continuar con la eliminación en la tabla 'agenda'
           const deleteAgendaQuery = "DELETE FROM agenda WHERE id = ?";
           const agendaValues = [id];
 
@@ -247,35 +235,32 @@ exports.createAppointment = async (req, res, next) => {
             agendaValues,
             (error, results, fields) => {
               if (error) {
-                // Si hay un error, hacer rollback y manejar el error
                 connectDB.rollback(() => {
                   return res.status(400).json({
-                    message: "Error deleting agenda",
+                    message: "Error eliminando cita",
                     error: error.message,
                   });
                 });
               }
 
-              // Confirmar la transacción si todo ha ido bien
               connectDB.commit((err) => {
                 if (err) {
-                  // Si hay un error en el commit, hacer rollback y manejar el error
                   connectDB.rollback(() => {
                     return res.status(500).json({
-                      message: "Error committing transaction",
+                      message: "Error haciendo comentario en la bd",
                       error: err.message,
                     });
                   });
                 }
 
-                return res.status(200).json({ message: "Delete success" });
+                return res.status(200).json({ message: "Eliminado con exito" });
               });
             }
           );
         }
       );
     });
-  });
+  };
 
 /////////////////////////////////////////
 
@@ -288,13 +273,13 @@ exports.getMedicalAppointments = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error getting agenda", error: error.message });
+        .json({ message: "Error obteniendo agenda del especialista", error: error.message });
     }
     if (results.length === 0) {
-      return res.status(404).json({ message: "Agenda not found" });
+      return res.status(404).json({ message: "Agenda no encontrada" });
     }
     const agenda = results;
-    return res.status(200).json({ message: "Get agenda success", agenda });
+    return res.status(200).json({ message: "Agenda obtenida con exito", agenda });
   });
 };
 
@@ -302,21 +287,19 @@ exports.getMedicalAppointments = async (req, res, next) => {
 
 exports.ConfirmationAgendaById = async (req, res, next) => {
   const appointmentId = req.params.appointmentId;
-  const newState = req.body.state; // Assurez-vous que votre requête inclut le nouvel état
-
-  // Votre requête SQL pour mettre à jour l'état du rendez-vous
+  const newState = req.body.state; 
   const query = "UPDATE agenda SET state = ? WHERE id = ?";
   const values = [newState, appointmentId];
 
   connectDB.query(query, values, (error, results) => {
     if (error) {
       return res.status(400).json({
-        message: "Error updating appointment state",
+        message: "Error al actualizar el estado de la cita",
         error: error.message,
       });
     }
     return res
       .status(200)
-      .json({ message: "Update appointment state success", results });
+      .json({ message: "Estado de la cita actualizado con exito", results });
   });
 };

@@ -32,7 +32,7 @@ const PatientDetails = ({ patientData }) => {
 
         window.location.reload();
       } catch (error) {
-        console.log("Error updating patient", error);
+        return error
       }
     } else {
       actions.showNotification("Verifica los datos ingresados", "danger");

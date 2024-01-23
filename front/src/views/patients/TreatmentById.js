@@ -10,7 +10,6 @@ const TreatmentById = () => {
 
   const getTreatmentByNotif = async () => {
     await actions.getTreatmentById(treatment_id);
-    console.log(store.treatment);
   };
 
   const getDoctorData = async (id) => {

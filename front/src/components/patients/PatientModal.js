@@ -52,7 +52,7 @@ const PatientModal = () => {
         window.location.reload();
         return response;
       } catch (error) {
-        console.log("Error updating patient", error);
+        return error
       }
     } else {
       actions.showNotification("Password incorrecto", "danger");

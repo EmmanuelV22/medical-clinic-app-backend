@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
+import AccessDenied from "../AccessDenied";
 
 const MyAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -50,7 +51,7 @@ const MyAppointments = () => {
       actions.loadMedicalAppointmentsForDr(doctorID);
       window.location.reload();
     } catch (error) {
-      console.log("Error updating appointment state:", error);
+      return error
     }
   };
 
@@ -211,7 +212,7 @@ const MyAppointments = () => {
           </div>
         </div>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied/>
       )}
     </>
   );

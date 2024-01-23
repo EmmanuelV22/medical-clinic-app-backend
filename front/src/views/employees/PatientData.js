@@ -5,6 +5,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import HistoryByPatient from "../../components/HistoryByPatient";
 import CreateHistoric from "../../components/employees/CreateHistoric";
+import AccessDenied from "../../views/AccessDenied";
+
+
+
 const PatientData = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
@@ -139,7 +143,7 @@ const PatientData = () => {
 
         </div>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

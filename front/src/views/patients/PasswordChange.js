@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import React, { useContext, useState } from "react";
+import { useParams } from "react-router";
 import { Context } from "../../store/appContext";
 
 const PasswordChange = () => {
-  const { actions, store } = useContext(Context);
+  const { actions } = useContext(Context);
   const { dni } = useParams();
   const { token } = useParams();
 

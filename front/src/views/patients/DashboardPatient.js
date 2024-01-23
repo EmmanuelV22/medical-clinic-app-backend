@@ -13,6 +13,7 @@ import CardSettings from "../../components/patients/CardSettings";
 
 import CardGetAppointment from "../../components/patients/CardGetAppointments";
 import CardMap from "../../components/CardMap";
+import AccessDenied from "../AccessDenied";
 
 const DashboardPatient = () => {
   const { store, actions } = useContext(Context);
@@ -41,7 +42,7 @@ const DashboardPatient = () => {
           </div>
         </>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

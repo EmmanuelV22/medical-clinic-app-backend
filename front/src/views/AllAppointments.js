@@ -4,6 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Context } from "../store/appContext";
 import SearchBar from "../components/SearchBar";
+import AccessDenied from "../../src/views/AccessDenied";
+
 
 const AllAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -119,7 +121,7 @@ const AllAppointments = () => {
           </div>
         </div>
       ) : (
-        <h1>componente denegado</h1>
+        <AccessDenied />
       )}
     </>
   );

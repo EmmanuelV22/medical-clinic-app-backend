@@ -5,6 +5,8 @@ import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import { useNavigate } from "react-router-dom";
+import AccessDenied from "../../views/AccessDenied";
+
 
 const MyPatients = () => {
   const { store, actions } = useContext(Context);
@@ -157,7 +159,7 @@ const MyPatients = () => {
           </div>
         </div>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

@@ -53,7 +53,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(`${API_AUTH}/patients`, config);
           if (response.status === 200) {
             const responseData = response.data;
-            // console.log("GET ALL Patients", responseData);
             setStore({ patients: responseData.results });
             actions.showNotification(
               "Pacientes obtenidos correctamente",
@@ -65,7 +64,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             return [];
           }
         } catch (error) {
-          console.log(error);
           return [];
         }
       },
@@ -88,7 +86,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             return [];
           }
         } catch (error) {
-          console.log(error);
           return [];
         }
       },
@@ -111,7 +108,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           actions.showNotification("Error obteniendo datos", "danger");
-          console.log(error);
         }
       },
       getPatientById: async (id) => {
@@ -142,7 +138,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo datos del paciente",
             "danger"
           );
-          console.log(error);
+
           // return [];
         }
       },
@@ -256,7 +252,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           if (response.status === 201) {
             const data = response.data;
-            // console.log(data);
 
             const store = getStore();
             Cookies.set("jwt", data.token);
@@ -264,7 +259,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             return data;
           }
         } catch (error) {
-          console.log(error);
+          return error;
         }
       },
       loginPatient: async (dni, password) => {
@@ -304,7 +299,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               }
             }
           } catch (error) {
-            console.log(error);
+            return error
           }
         }
       },
@@ -438,7 +433,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error al modificar datos del paciente",
             "danger"
           );
-          console.log("Error al modificar paciente", error);
         }
       },
       postAppointment: async (
@@ -495,7 +489,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           actions.showNotification("Error cargando agenda", "danger");
-          console.log("Error obteniendo citas del medico:", error);
         }
       },
       loadMedicalAppointmentsForDr: async (medical_id) => {
@@ -514,7 +507,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           actions.showNotification("Error obteniendo citas", "danger");
-          console.log("Error obteniendo citas del medico:", error);
         }
       },
       loadPatientAppointments: async (patient_id) => {
@@ -526,7 +518,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
-            console.log(data);
             const store = getStore();
             setStore({
               ...store,
@@ -540,7 +531,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo citas del paciente",
             "danger"
           );
-          console.log("Error obteniendo citas del paciente:", error);
         }
       },
       loadPatientAppointmentById: async (patient_id) => {
@@ -552,7 +542,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           if (response.status === 200) {
             const data = await response.data;
-            console.log(data);
             const store = getStore();
             setStore({
               ...store,
@@ -569,7 +558,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo datos de la cita",
             "success"
           );
-          console.log("Error obteniendo datos de la cita:", error);
         }
       },
       getAllAppointments: async () => {
@@ -599,43 +587,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           return data;
         } catch (error) {
           actions.showNotification("Error eliminando cita", "danger");
-          console.log("Error eliminando cita", error);
         }
       },
-      // changeAppointment: async (
-      //   date,
-      //   month,
-      //   year,
-      //   day,
-      //   time,
-      //   state,
-      //   medical_id,
-      //   patient_id,
-      //   updatedAt,
-      //   id
-      // ) => {
-      //   try {
-      //     const response = axios.put(
-      //       `${API}/change-appointment/${id}`,
-      //       {
-      //         date,
-      //         month,
-      //         year,
-      //         day,
-      //         time,
-      //         state,
-      //         medical_id,
-      //         patient_id,
-      //         updatedAt,
-      //         id,
-      //       },
-      //       config
-      //     );
-      //     console.log(response.data);
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // },
       createTreatment: async (
         patient_id,
         resume,
@@ -664,14 +617,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
-          console.log(response);
           actions.showNotification("Tratamiento creado con exito", "success");
           return response;
         } catch (error) {
           const actions = getActions();
 
           actions.showNotification("Error creando tratamiento", "danger");
-          console.log("Error creando tratamiento", error);
         }
       },
       updateAppointmentState: async (appointmentId, newState) => {
@@ -683,10 +634,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
           actions.showNotification("Cita actualizada correctamente", "success");
-          console.log(response);
         } catch (error) {
           actions.showNotification("Error actualizando cita", "danger");
-          console.log("Error no se pudo actualizar el estado:", error);
         }
       },
       getTreatmentsPatient: async (patient_id) => {
@@ -714,7 +663,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           // }
         } catch (error) {
           actions.showNotification("Error obteniendo tratamientos", "danger");
-          console.log("Error obteniendo tratamientos del paciente", error);
         }
       },
       getHistoryPatientById: async (id) => {
@@ -737,7 +685,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo historia del paciente",
             "danger"
           );
-          console.log("Error obteniendo historia clínica del paciente", error);
         }
       },
       getTreatmentById: async (id) => {
@@ -760,7 +707,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo datos del tratamiento",
             "danger"
           );
-          console.log("Error obteniendo datos del tratamiento", error);
         }
       },
       getAllTreatments: async () => {
@@ -769,7 +715,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(`${API}/treatments`, config);
           if (response.status === 200) {
             const responseData = response.data;
-            console.log(responseData);
             setStore({ treatments: responseData });
             actions.showNotification(
               "Tratamientos obtenidos con exito",
@@ -781,7 +726,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
         } catch (error) {
           actions.showNotification("Error obteniendo tratamientos", "danger");
-          console.log(error);
           return [];
         }
       },
@@ -814,8 +758,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
-          console.log(id);
-          console.log(response);
+          
           actions.showNotification(
             "Tratamiento actualizado con exito",
             "success"
@@ -825,7 +768,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const actions = getActions();
 
           actions.showNotification("Error actualizando tratamiento", "danger");
-          console.log("Error no se pudo actualizar el tratamiento:", error);
         }
       },
       createHistoric: async (
@@ -851,12 +793,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
           actions.showNotification("Historia creada con exito", "success");
-          console.log(response);
         } catch (error) {
           const actions = getActions();
 
           actions.showNotification("Error creando historia", "danger");
-          console.log("No se pudo crear la hisoria:", error);
         }
       },
       getNotifications: async () => {
@@ -873,7 +813,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           return data;
         } catch (error) {
           actions.showNotification("Error obteniendo notificaciones", "danger");
-          console.log(error);
         }
       },
       getNotificationsById: async (id) => {
@@ -884,7 +823,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
           const data = response.data;
-          console.log(data);
           const store = getStore();
           setStore({ ...store, notificationById: data.notifications });
           actions.showNotification(
@@ -897,7 +835,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo datos de notificacion",
             "danger"
           );
-          console.log(error);
         }
       },
       getNotificationsByIdForDr: async (id) => {
@@ -908,7 +845,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
           const data = response.data;
-          console.log(data);
           const store = getStore();
           setStore({ ...store, notificationById: data.notifications });
           actions.showNotification(
@@ -921,7 +857,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo datos de notificacion",
             "danger"
           );
-          console.log(error);
         }
       },
       updateNotificationsState: async (notificationsId, newState) => {
@@ -937,7 +872,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Notificacion modificada con exito",
             "success"
           );
-          console.log(response);
         } catch (error) {
           const actions = getActions();
 
@@ -945,7 +879,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error modificando la notificacion",
             "danger"
           );
-          console.log("Error no se pudo actualizar el estado:", error);
         }
       },
       deleteNotifications: async (id) => {
@@ -956,7 +889,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
           const data = response.data;
-          console.log(data);
           actions.showNotification(
             "Notificacion eliminada con exito",
             "success"
@@ -967,7 +899,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error eliminando la notificacion",
             "danger"
           );
-          console.log("Failed delete notification from flux", error);
         }
       },
       sendChangePassword: async (dni) => {
@@ -996,7 +927,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           return data;
         } catch (error) {
           actions.showNotification("Error actualizando contraseña", "danger");
-          console.log(error);
         }
       },
     },

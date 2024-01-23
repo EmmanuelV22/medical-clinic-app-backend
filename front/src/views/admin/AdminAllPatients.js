@@ -6,6 +6,8 @@ import PatientDetails from "../../components/admin/PatientDetails";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import ConfirmDeletePatient from "../../components/admin/ConfirmDeletePatient";
+import AccessDenied from "../../views/AccessDenied";
+
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
@@ -30,7 +32,6 @@ const AdminAllPatients = () => {
   ];
 
   const handleDelete = async (id) => {
-    console.log("Deleting patient with ID:", id);
     try {
       await actions.deletePatient(id);
       window.location.reload();
@@ -202,7 +203,7 @@ const AdminAllPatients = () => {
           </div>
         </div>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

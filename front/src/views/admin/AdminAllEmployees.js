@@ -7,6 +7,7 @@ import ConfirmDeleteEmployee from "../../components/admin/ConfirmDeleteEmployee"
 import { useNavigate } from "react-router";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
+import AccessDenied from "../AccessDenied";
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
@@ -161,7 +162,7 @@ const AdminAllEmployees = () => {
           </div>
         </>
       ) : (
-        <h1>componente denegado</h1>
+        <AccessDenied />
       )}
     </>
   );
