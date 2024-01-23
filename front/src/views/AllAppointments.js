@@ -56,7 +56,6 @@ const AllAppointments = () => {
         patient.dni.toString().includes(query)
     );
 
-    // Set searchError to true if no patients or employees found
     setSearchError(
       filteredEmployees.length === 0 && filteredPatients.length === 0
     );
@@ -82,7 +81,7 @@ const AllAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive"
+            className="table-responsive vh-100"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <table className="table">

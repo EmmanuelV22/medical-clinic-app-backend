@@ -11,14 +11,15 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (password == "") {
+    if (password === "") {
       return actions.showNotification("Datos incorrectos", "danger");
     } else {
       const data = await actions.login(personalID, password);
 
-      if (data) {
+      if (data.status === 201) {
         actions.showNotification("Inicio de sesion exitoso", "success");
-        const loggedInEmployee = data.employees[0];
+        
+        const loggedInEmployee = data.employees[0] 
 
         if (loggedInEmployee.specialist === "admin") {
           navigate("/dashboard-admin");

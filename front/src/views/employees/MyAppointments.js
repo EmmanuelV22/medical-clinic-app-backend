@@ -47,7 +47,6 @@ const MyAppointments = () => {
   const updateAppointmentState = async (appointmentId, newState) => {
     try {
       await actions.updateAppointmentState(appointmentId, newState);
-      // Rechargez les rendez-vous après la mise à jour de l'état
       actions.loadMedicalAppointmentsForDr(doctorID);
       window.location.reload();
     } catch (error) {
@@ -56,7 +55,6 @@ const MyAppointments = () => {
   };
 
   const handleConfirmation = async (appointmentId) => {
-    // Mettez à jour l'état pour la confirmation
     await updateAppointmentState(appointmentId, "asistido");
     setAppointmentStatus((prevStatus) => ({
       ...prevStatus,
@@ -65,7 +63,6 @@ const MyAppointments = () => {
   };
 
   const handleCancellation = async (appointmentId) => {
-    // Mettez à jour l'état pour l'annulation
     await updateAppointmentState(appointmentId, "no asistido");
     setAppointmentStatus((prevStatus) => ({
       ...prevStatus,
@@ -78,7 +75,6 @@ const MyAppointments = () => {
       await actions.loadMedicalAppointmentsForDr(doctorID);
       actions.getAllPatients();
 
-      // Filtrer les rendez-vous passés
       const currentDate = new Date();
       const filteredAppointments = store.myAppointments.filter(
         (appointment) => {
@@ -102,7 +98,6 @@ const MyAppointments = () => {
   };
 
   const renderRow = (appointment) => {
-    // Formater le jour avec deux chiffres
     const formattedDay = String(appointment.date).padStart(2, "0");
 
     return (
@@ -159,12 +154,10 @@ const MyAppointments = () => {
 
   const handleSearch = (query) => {
     const filteredAppointments = store.myAppointments.filter((appointment) => {
-      // Trouver le patient correspondant dans store.patients
       const patient = store.patients.find(
         (p) => p.id === appointment.patient_id
       );
 
-      // Effectuer la recherche sur les données du patient
       return (
         (patient &&
           (patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
@@ -197,7 +190,7 @@ const MyAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive"
+            className="table-responsive vh-100"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable

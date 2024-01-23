@@ -27,8 +27,8 @@ const DashboardPatient = () => {
       {store?.patient && store.patient?.id ? (
         <>
           <Navbar />
-          <h1>Bienvenido {store.patientData?.patientData?.firstname}  {store.patientData?.patientData?.lastname}</h1>
-          <div className="d-flex justify-content-evenly flex-wrap my-5">
+          <h1>{store.patientData?.patientData?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}{store.patientData?.patientData?.firstname}  {store.patientData?.patientData?.lastname}</h1>
+          <div className="d-flex justify-content-evenly flex-wrap vh-100">
             {store.patient && (
               <>
                 <CardAppointment />

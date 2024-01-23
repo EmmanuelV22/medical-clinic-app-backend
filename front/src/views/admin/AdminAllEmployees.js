@@ -146,7 +146,7 @@ const AdminAllEmployees = () => {
               </p>
             )}
             <div
-              className="table-responsive"
+              className="table-responsive vh-100"
               style={{ width: "100%", margin: "0 auto" }}
             >
               <SortingTable

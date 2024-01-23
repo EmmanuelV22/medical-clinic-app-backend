@@ -130,7 +130,7 @@ const MyPatients = () => {
       {store.employee &&
       store.employee?.specialist &&
       store?.employee?.specialist !== "admin" ? (
-        <div className="admin-patient-content">
+        <div className="admin-patient-content vh-100">
           <h1
             className="text-center font-bold my-4"
             style={{ fontSize: "2.5rem" }}

@@ -168,7 +168,6 @@ const AdminAllPatients = () => {
         patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
         patient.dni.toString().includes(query)
     );
-    // Set searchError to true if no employees found
     setSearchError(filtered.length === 0);
     setFilteredPatients(filtered);
   };
@@ -190,7 +189,7 @@ const AdminAllPatients = () => {
             </p>
           )}
           <div
-            className="table-responsive"
+            className="table-responsive vh-100"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable

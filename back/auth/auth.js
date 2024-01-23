@@ -250,6 +250,7 @@ exports.login = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Inicio de sesion exitoso",
+          status: 201,
           employees: results,
           token: token,
         });

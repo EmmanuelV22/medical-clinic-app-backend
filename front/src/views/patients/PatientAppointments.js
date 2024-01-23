@@ -25,8 +25,7 @@ const PatientAppointments = () => {
   }, [patientID]);
 
   const filteredDr =
-    // store?.appointmentsPatient &&
-    // store.appointmentsPatient?.length > 0 &&
+    
     store.employees.filter((employee) =>
       store.appointmentsPatient.some(
         (appointment) => appointment.medical_id === employee.id
@@ -57,7 +56,7 @@ const PatientAppointments = () => {
 
       actions.getAllEmployees();
 
-      // Filtrer les rendez-vous passés
+      
       const currentDate = new Date();
       const filteredAppointments = store.appointmentsPatient.filter(
         (appointment) => {
@@ -87,7 +86,7 @@ const PatientAppointments = () => {
   };
 
   const renderRow = (appointment) => {
-    // Formater le jour avec deux chiffres
+    
     const formattedDay = String(appointment.date).padStart(2, "0");
 
     return (
@@ -158,7 +157,6 @@ const PatientAppointments = () => {
         (p) => p.id === appointment.medical_id
       );
 
-      // Effectuer la recherche sur les données du patient
       return (
         employee &&
         (employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
@@ -172,7 +170,7 @@ const PatientAppointments = () => {
 
   return (
     <>
-      {store?.patient || patient_id ? (
+      {store.patient || store.employee.specialist === "admin" ? (
         <div className="admin-appointments-content">
           <h1
             className="text-center font-bold my-4"
@@ -217,7 +215,7 @@ const PatientAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive"
+            className="table-responsive vh-100"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable
