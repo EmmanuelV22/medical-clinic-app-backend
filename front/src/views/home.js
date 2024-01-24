@@ -3,21 +3,17 @@ import Login from "../components/Login";
 import DarkMode from "../components/DarkMode";
 
 const Home = () => {
-
   return (
     <>
       <DarkMode />
-      <div className="logo text-center mx-auto" style={{ height: "74.5vh" }}>
+      <div className="text-center" style={{ height: "77.8vh", width: "100%" }}>
         <img
-          style={{ transform: "translateY(-13.3%)" }}
+          style={{ width: "100%", paddingTop: "50px" }}
           src="../clinic-logo-removebg.png"
           alt="logo app clinic"
-          width="790"
         />
       </div>
-      <div style={{ position: "relative" }}>
-        <Login />
-      </div>
+      <Login />
     </>
   );
 };
