@@ -3,6 +3,7 @@ import Login from "../components/Login";
 import DarkMode from "../components/DarkMode";
 
 const Home = () => {
+
   return (
     <>
       <DarkMode />

@@ -5,18 +5,17 @@ const jwt = require("jsonwebtoken");
 exports.privateAdmin = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token)
       return res
         .status(401)
-        .json({ message: "No token, authorization denied" });
+        .json({ message: "No hay token, autorizacion denegada" });
 
     jwt.verify(token, process.env.jwtSecret, (error, user) => {
       if (error) {
-        return res.status(401).json({ message: "Token is not valid" });
+        return res.status(401).json({ message: "Token invalido" });
       }
       if (user.specialist !== "admin") {
-        return res.status(403).json({ message: "Unauthorized access" });
+        return res.status(403).json({ message: "Acceso denegado" });
       }
       req.user = user;
       next();
@@ -30,18 +29,17 @@ exports.privateAdmin = (req, res, next) => {
 exports.privatePatient = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token)
       return res
         .status(401)
-        .json({ message: "No token, authorization denied" });
+        .json({ message: "No hay token, autorizacion denegada" });
 
     jwt.verify(token, process.env.jwtSecret, (error, user) => {
       if (error) {
-        return res.status(401).json({ message: "Token is not valid" });
+        return res.status(401).json({ message: "Token invalido" });
       }
       if (user.specialist) {
-        return res.status(403).json({ message: "Unauthorized access" });
+        return res.status(403).json({ message: "Acceso denegado" });
       }
       req.user = user;
       next();
@@ -55,15 +53,14 @@ exports.privatePatient = (req, res, next) => {
 exports.privateDr = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token)
       return res
         .status(401)
-        .json({ message: "No token, authorization denied" });
+        .json({ message: "No hay token, autorizacion denegada" });
 
     jwt.verify(token, process.env.jwtSecret, (error, user) => {
       if (error) {
-        return res.status(401).json({ message: "Token is not valid" });
+        return res.status(401).json({ message: "Token invalido" });
       }
       if (
         user.specialist === "admin" &&
@@ -71,7 +68,7 @@ exports.privateDr = (req, res, next) => {
         user.specialist === "enfermera" &&
         user.blood_group
       ) {
-        return res.status(403).json({ message: "Unauthorized access" });
+        return res.status(403).json({ message: "Acceso denegado" });
       }
       req.user = user;
       next();
@@ -85,18 +82,17 @@ exports.privateDr = (req, res, next) => {
 exports.privateNurse = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token)
       return res
         .status(401)
-        .json({ message: "No token, authorization denied" });
+        .json({ message: "No hay token, autorizacion denegada" });
 
     jwt.verify(token, process.env.jwtSecret, (error, user) => {
       if (error) {
-        return res.status(401).json({ message: "Token is not valid" });
+        return res.status(401).json({ message: "Token invalido" });
       }
       if (user.specialist !== "enfermero" && user.specialist !== "enfermera") {
-        return res.status(403).json({ message: "Unauthorized access" });
+        return res.status(403).json({ message: "Acceso denegado" });
       }
       req.user = user;
       next();
@@ -110,15 +106,14 @@ exports.privateNurse = (req, res, next) => {
 exports.private = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token)
       return res
         .status(401)
-        .json({ message: "No token, authorization denied" });
+        .json({ message: "No hay token, autorizacion denegada" });
 
     jwt.verify(token, process.env.jwtSecret, (error, user) => {
       if (error) {
-        return res.status(401).json({ message: "Token is not valid" });
+        return res.status(401).json({ message: "Token invalido" });
       }
       req.user = user;
       next();
@@ -132,18 +127,17 @@ exports.private = (req, res, next) => {
 exports.privateEmployees = (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token)
       return res
         .status(401)
-        .json({ message: "No token, authorization denied" });
+        .json({ message: "No hay token, autorizacion denegada" });
 
     jwt.verify(token, process.env.jwtSecret, (error, user) => {
       if (error) {
-        return res.status(401).json({ message: "Token is not valid" });
+        return res.status(401).json({ message: "Token invalido" });
       }
       if (!user.specialist) {
-        return res.status(403).json({ message: "Unauthorized access" });
+        return res.status(403).json({ message: "Acceso denegado" });
       }
       req.user = user;
       next();

@@ -8,7 +8,9 @@ import CardAllAppointments from "../../components/admin/CardAllAppointments";
 import { Context } from "../../store/appContext";
 
 import CardMap from "../../components/CardMap";
-import CardSelectMenu from "../../components/CardSelectMenu";
+
+import AccessDenied from "../AccessDenied";
+
 
 const DashboardAdmin = () => {
   const { store } = useContext(Context);
@@ -18,7 +20,11 @@ const DashboardAdmin = () => {
       {store?.employee && store.employee?.specialist === "admin" ? (
         <>
           <Navbar />
-          <div className="d-flex justify-content-evenly flex-wrap my-5">
+          <h1>
+              {store.empleyee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
+              {store.employee?.firstname} {store.employee?.lastname}
+            </h1>
+          <div className="d-flex justify-content-evenly flex-wrap vh-100">
             <CardAllPatients />
             <CardAllEmployees />
             <CardRegister />
@@ -27,7 +33,7 @@ const DashboardAdmin = () => {
           </div>
         </>
       ) : (
-        <h1>Espacio resevado a los administradores!</h1>
+        <AccessDenied />
       )}
     </>
   );

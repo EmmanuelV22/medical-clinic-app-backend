@@ -72,7 +72,6 @@ const EditTreatment = () => {
     setPatologies(store.treatment.patologies);
     setSurgey(store.treatment.surgey);
     setFinishTreatment(store.treatment.finish_treatment);
-    console.log("Medicine Data in useEffect:", store.treatment);
   }, [store.treatment]);
 
   const getPatientData = async () => {
@@ -100,7 +99,6 @@ const EditTreatment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Medicine Data before update:", medicineData);
 
     const dataToUpdate = {
       patient_id,
@@ -117,11 +115,10 @@ const EditTreatment = () => {
     await actions
       .updateTreatmentById(treatment_id, ...Object.values(dataToUpdate))
       .then((res) => {
-        console.log("Tratamiento modificado con exito", res);
         navigate(`/patient-treatments/${patient_id}`);
       })
       .catch((error) => {
-        console.error("Error al modificar el tratamiento", error);
+        return error
       });
   };
 

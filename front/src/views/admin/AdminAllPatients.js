@@ -7,6 +7,8 @@ import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import ConfirmDeletePatient from "../../components/admin/ConfirmDeletePatient";
 import Navbar from "../../components/Navbar";
+import AccessDenied from "../../views/AccessDenied";
+
 
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
@@ -31,7 +33,6 @@ const AdminAllPatients = () => {
   ];
 
   const handleDelete = async (id) => {
-    console.log("Deleting patient with ID:", id);
     try {
       await actions.deletePatient(id);
       window.location.reload();
@@ -240,7 +241,6 @@ const AdminAllPatients = () => {
         patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
         patient.dni.toString().includes(query)
     );
-    // Set searchError to true if no employees found
     setSearchError(filtered.length === 0);
     setFilteredPatients(filtered);
   };
@@ -248,6 +248,7 @@ const AdminAllPatients = () => {
   return (
     <>
       {store?.employee && store.employee?.specialist ? (
+
         <>
           <Navbar />
           <div className="admin-patient-content">
@@ -264,7 +265,7 @@ const AdminAllPatients = () => {
               </p>
             )}
             <div
-              className="table-responsive"
+              className="table-responsive vh-100"
               style={{ width: "100%", margin: "0 auto" }}
             >
               <SortingTable
@@ -277,10 +278,11 @@ const AdminAllPatients = () => {
                 renderRow={renderRow}
               />
             </div>
+
           </div>
         </>
       ) : (
-        <h2>componente denegado</h2>
+        <AccessDenied />
       )}
     </>
   );

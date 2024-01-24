@@ -18,27 +18,24 @@ const NotificationsButtonsRead = ({ notification }) => {
         actions.getNotificationsByIdForDr(patient_id);
       }
     } catch (error) {
-      console.log("Error updating notification state:", error);
+      return error
     }
   };
 
   const handleRead = async (notificationId) => {
-    console.log("Mark as Read clicked for notificationId:", notificationId);
     try {
       await updateNotificationState(notificationId, "leído");
       setNotificationStatus((prevStatus) => ({
         ...prevStatus,
         [notificationId]: "leído",
       }));
-      console.log(notificationStatus);
       window.location.reload();
     } catch (error) {
-      console.log("Error updating notification state:", error);
+      return error
     }
   };
 
   const handleNotRead = async (notificationId) => {
-    console.log("Mark as Unread clicked for notificationId:", notificationId);
     try {
       await updateNotificationState(notificationId, "no leído");
       setNotificationStatus((prevStatus) => ({
@@ -47,7 +44,7 @@ const NotificationsButtonsRead = ({ notification }) => {
       }));
       window.location.reload();
     } catch (error) {
-      console.log("Error updating notification state:", error);
+      return error
     }
   };
 

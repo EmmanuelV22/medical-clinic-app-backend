@@ -6,7 +6,7 @@ exports.getNotifications = async (req, res, next) => {
   connectDB.query(query, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error notifications not found",
+        message: "Notificaciones no encontradas",
         error: error.message,
       });
     }
@@ -23,14 +23,14 @@ exports.getNotificationsById = async (req, res, next) => {
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error loading patient notifications",
+        message: "Error cargando notificaciones",
         error: error.message,
       });
     }
     const notifications = results;
     return res
       .status(200)
-      .json({ message: "Get notifications success", notifications });
+      .json({ message: "Notificaciones obtenidas con exito", notifications });
   });
 };
 
@@ -42,14 +42,14 @@ exports.getNotificationsByIdForEmployee = async (req, res, next) => {
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error loading patient notifications",
+        message: "Notificaciones no encontradas",
         error: error.message,
       });
     }
     const notifications = results;
     return res
       .status(200)
-      .json({ message: "Get notifications success", notifications });
+      .json({ message: "Notificaciones obtenidas con exito", notifications });
   });
 };
 
@@ -63,14 +63,14 @@ exports.stateNotifications = async (req, res, next) => {
   connectDB.query(query, values, (error, results) => {
     if (error) {
       return res.status(400).json({
-        message: "Error updating appointment state",
+        message: "Error actualizando estado de notificacion",
         error: error.message,
       });
     }
 
     return res
       .status(200)
-      .json({ message: "Update notification state success", results });
+      .json({ message: "Estado de notificacion actualizada con exito", results });
   });
 };
 
@@ -81,10 +81,10 @@ exports.deleteNotifications = async (req, res, next) => {
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error deleting notification",
+        message: "Error eliminando notificacion",
         error: error.message,
       });
     }
-    return res.status(200).json({ message: "Delete notification success" });
+    return res.status(200).json({ message: "Notificacion eliminada con exito" });
   });
 };

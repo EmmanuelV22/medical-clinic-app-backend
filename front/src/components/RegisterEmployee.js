@@ -32,15 +32,11 @@ const RegisterEmployee = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      // console.log("days_off (before conversion):", daysOfToArray);
 
-      const daysOfToArray = [days_off1,days_off2]
+      const daysOfToArray = [days_off1, days_off2];
 
       const daysOffArray =
         daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
-
-      // console.log("days off Data:", daysOffArray);
-
 
 
       const request = await actions.registerEmployee(
@@ -60,7 +56,6 @@ const RegisterEmployee = () => {
         password
       );
 
-      console.log(request);
 
       if (request) {
         setFirstname("");
@@ -296,9 +291,7 @@ const RegisterEmployee = () => {
               id="daysOffSelect1"
               className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               value={days_off1}
-              onChange={(e) =>
-                setDays_off1( e.target.value )
-              }
+              onChange={(e) => setDays_off1(e.target.value)}
               required
             >
               <option value="">Selecciona un día</option>
@@ -322,9 +315,7 @@ const RegisterEmployee = () => {
               id="daysOffSelect2"
               className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               value={days_off2}
-              onChange={(e) =>
-                setDays_off2(e.target.value)
-              }
+              onChange={(e) => setDays_off2(e.target.value)}
               required
             >
               <option value="">Selecciona un día</option>
@@ -342,7 +333,7 @@ const RegisterEmployee = () => {
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="PersonalID"
             >
-              Hora empezar
+              Hora de inicio
             </label>
             <input
               type="text"
@@ -360,7 +351,7 @@ const RegisterEmployee = () => {
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="PersonalID"
             >
-              Hora de fin
+              Hora de finalizacion
             </label>
             <input
               type="text"

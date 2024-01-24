@@ -11,7 +11,7 @@ const PatientDetails = ({ patientData }) => {
   const [firstname, setFirstname] = useState(patientData.firstname);
   const [lastname, setLastname] = useState(patientData.lastname);
   const [email, setEmail] = useState(patientData.email);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(patientData.password);
   const [address, setAddress] = useState(patientData.address);
   const [id, setId] = useState(patientData.id);
   const [phone, setPhone] = useState(patientData.phone);
@@ -23,7 +23,9 @@ const PatientDetails = ({ patientData }) => {
   const [updatedAt, setUpdated] = useState(patientData.updatedAt);
 
   const handleUpdatePatient = async () => {
-    if (password.length <= 7) {
+
+    if (password.length >= 3) {
+
       try {
         const response = await actions.updatePatient(
           firstname,
@@ -34,12 +36,16 @@ const PatientDetails = ({ patientData }) => {
           password,
           id
         );
+
+        actions.showNotification("Datos actualizados correctamente", "success");
+
         window.location.reload();
       } catch (error) {
-        console.log("Error updating patient", error);
+        return error
       }
     } else {
-      alert("El password debe ser de 8 caracteres");
+      actions.showNotification("Verifica los datos ingresados", "danger");
+
     }
   };
 

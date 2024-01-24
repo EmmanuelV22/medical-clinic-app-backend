@@ -29,7 +29,6 @@ const RegisterPatient = () => {
       password,
       bloodGroup
     );
-    console.log(request);
     if (request) {
       setFirstname("");
       setLastName("");
@@ -41,9 +40,7 @@ const RegisterPatient = () => {
       setPassword("");
       setBirthDay("");
       setBloodGroop("");
-    } else {
-      console.log("Error creating patient");
-    }
+    } 
   };
 
   const handleClear = (e) => {

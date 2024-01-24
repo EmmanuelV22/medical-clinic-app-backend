@@ -6,7 +6,10 @@ import EmployeeDetail from "../../components/admin/EmployeeDetail";
 import ConfirmDeleteEmployee from "../../components/admin/ConfirmDeleteEmployee";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
+
 import Navbar from "../../components/Navbar";
+import AccessDenied from "../AccessDenied";
+
 
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
@@ -204,7 +207,7 @@ const AdminAllEmployees = () => {
               </p>
             )}
             <div
-              className="table-responsive"
+              className="table-responsive vh-100"
               style={{ width: "100%", margin: "0 auto" }}
             >
               <SortingTable
@@ -220,7 +223,7 @@ const AdminAllEmployees = () => {
           </div>
         </>
       ) : (
-        <h1>componente denegado</h1>
+        <AccessDenied />
       )}
     </>
   );

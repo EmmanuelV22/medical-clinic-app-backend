@@ -12,10 +12,10 @@ const AppointmentById = () => {
   const getAppointmentByNotif = async () => {
     try {
       const data = await actions.loadPatientAppointmentById(appointment_id);
-      // Vous pouvez gérer les données de rendez-vous ici si nécessaire
-      console.log(data);
+      
+      
     } catch (error) {
-      console.log("Error obteniendo citas del medico:", error);
+      return error
     }
   };
 
@@ -24,7 +24,7 @@ const AppointmentById = () => {
       const doctorData = await actions.getEmployeeById(id);
       setDoctorData(doctorData);
     } catch (error) {
-      console.log("Error obteniendo datos del médico:", error);
+      return error
     }
   };
 

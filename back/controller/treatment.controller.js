@@ -15,16 +15,13 @@ exports.createTreatment = async (req, res, next) => {
       finish_treatment,
     } = req.body;
 
-    // Vérifiez si medicineData est défini avant d'utiliser map
     if (!Array.isArray(medicineData)) {
-      console.error("Error: medicineData is not an array");
       return res.status(400).json({
-        message: "Error creating treatment",
+        message: "Error creando tratamiento",
         error: "medicineData is not an array",
       });
     }
 
-    // Créez un tableau d'objets avec les données des médicaments
     const medicineDataArray = medicineData.map(
       ({ medicine_name, quantity }) => ({
         medicine_name,
@@ -32,14 +29,11 @@ exports.createTreatment = async (req, res, next) => {
       })
     );
 
-    // Convertissez le tableau d'objets en une chaîne JSON
     const medicineDataString = JSON.stringify(medicineDataArray);
 
-    // Requête SQL pour insérer les données
     const query =
       "INSERT INTO treatment (patient_id, resume, initial_date, exp_date, medical_id, patologies, surgey, finish_treatment, medicine_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    // Valeurs à insérer dans la requête SQL
     const values = [
       patient_id,
       resume,
@@ -52,32 +46,27 @@ exports.createTreatment = async (req, res, next) => {
       medicineDataString,
     ];
 
-    // Affichez le contenu de medicine_data avant l'exécution de la requête
-    console.log("Medicine Data Before Query:", medicineDataString);
 
-    // Exécutez la requête SQL
     connectDB.query(
       query,
       values,
       async (createTreatmentError, createTreatmentResults) => {
         if (createTreatmentError) {
-          console.error("Error creating treatment:", createTreatmentError);
           return res.status(400).json({
-            message: "Error creating treatment",
+            message: "Error creando tratamiento",
             error: createTreatmentError.message,
           });
         }
 
-        const msg =  `Nuevo tratamiento creado. Inicia el dia ${initial_date}, con las siguientes instrucciones: ${resume} para tratar la siguiente patologia ${patologies}.
+        const msg =  `Nuevo tratamiento creado. Inicia el dia:  ${initial_date}, con las siguientes instrucciones:  ${resume} ,para tratar la siguiente patologia:  ${patologies}.  
         Saludos cordiales`
 
          
-        ///llamar a la funcion send mail////
         sendNotificationEmail(patient_id, msg, medical_id, res)
 
         const treatmentId = createTreatmentResults.insertId;
 
-        // Continuez avec la création de la notification ou d'autres actions si nécessaires
+       
         const notificationQuery =
           "INSERT INTO notifications (patient_id, medical_id, treatment_id, treatment_message) VALUES (?, ?, ?, ?)";
 
@@ -94,22 +83,20 @@ exports.createTreatment = async (req, res, next) => {
           
 
           return res.status(201).json({
-            message: "Treatment successfully created",
+            message: "Tratamiento creado con exito",
             treatment: treatmentId,
           });
         } catch (error) {
-          console.error("Error creating notification:", error);
           return res.status(500).json({
-            message: "Error creating notification",
+            message: "Error creando notificacion",
             error: error.message,
           });
         }
       }
     );
   } catch (error) {
-    console.error("Unexpected error:", error);
     return res.status(500).json({
-      message: "Unexpected error",
+      message: "Error creando tratamiento",
       error: error.message,
     });
   }
@@ -131,20 +118,17 @@ exports.updateTreatment = async (req, res, next) => {
 
   // Verificar si medicineData está definido
   if (!Array.isArray(medicineData)) {
-    console.error("Error: medicineData is not an array");
     return res.status(400).json({
-      message: "Error updating treatment",
+      message: "Error actualizando tratamiento",
       error: "medicineData is not an array",
     });
   }
 
-  // Créez un tableau d'objets avec les données des médicaments
   const medicineDataArray = medicineData.map(({ medicine_name, quantity }) => ({
     medicine_name,
     quantity,
   }));
 
-  // Convertissez le tableau d'objets en une chaîne JSON
   const medicineDataString = JSON.stringify(medicineDataArray);
 
   const updatedAt = new Date();
@@ -170,11 +154,11 @@ exports.updateTreatment = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error updating treatment", error: error.message });
+        .json({ message: "Error actualizando tratamiento", error: error.message });
     }
     return res
       .status(200)
-      .json({ message: "Treatment successfully updated", treatment: id });
+      .json({ message: "Tratamiento actualizado con exito", treatment: id });
   });
 };
 
@@ -186,17 +170,17 @@ exports.getTreatmentsMedical = async (req, res, next) => {
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error loading medical treatments",
+        message: "Error cargando tratamientos",
         error: error.message,
       });
     }
     if (results.length === 0) {
-      return res.status(404).json({ message: "Treatments not found" });
+      return res.status(404).json({ message: "Tratamientos no encontrados" });
     }
     const treatments = results;
     return res
       .status(200)
-      .json({ message: "Get treatments success", treatments });
+      .json({ message: "Tratamientos obtenidos con exito", treatments });
   });
 };
 
@@ -208,14 +192,14 @@ exports.getTreatmentsPatient = async (req, res, next) => {
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error loading patient treatments",
+        message: "Error obteniendo tratamientos",
         error: error.message,
       });
     }
     const treatments = results;
     return res
       .status(200)
-      .json({ message: "Get treatments success", treatments });
+      .json({ message: "Tratamientos obtenidos con exito", treatments });
   });
 };
 
@@ -228,12 +212,12 @@ exports.getTreatmentById = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error loading treatment", error: error.message });
+        .json({ message: "Error obteniendo tratamiento", error: error.message });
     }
     const treatment = results[0];
     return res
       .status(200)
-      .json({ message: "Get treatment success", treatment });
+      .json({ message: "Tratamiento obtenido con exito", treatment });
   });
 };
 
@@ -244,7 +228,7 @@ exports.getTreatments = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error loading treatment", error: error.message });
+        .json({ message: "Error obteniendo tratamientos", error: error.message });
     }
     return res.status(200).json(results);
   });

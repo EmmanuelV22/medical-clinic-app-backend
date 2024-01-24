@@ -3,7 +3,7 @@ const connectDB = require("../server");
 exports.createHistory = async (req, res, next) => {
   const { patient_id, medical_id, agenda_id, treatment_id, description } =
     req.body;
-  const date = new Date().toISOString().split("T")[0]; // Obtiene la fecha actual en formato 'YYYY-MM-DD'
+  const date = new Date().toISOString().split("T")[0]; 
 
   const query =
     "INSERT INTO history (patient_id, medical_id, agenda_id, treatment_id, description, date) VALUES (?, ?, ?, ?, ?, ?)";
@@ -20,11 +20,11 @@ exports.createHistory = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error creating history", error: error.message });
+        .json({ message: "Error creando historia", error: error.message });
     }
     return res
       .status(201)
-      .json({ message: "History success created", history: results.insertId });
+      .json({ message: "Historia creada con exito", history: results.insertId });
   });
 };
 
@@ -35,7 +35,7 @@ exports.getHistories = (req, res, next) => {
     if (error) {
       res
         .status(400)
-        .json({ message: "Error histories not found", error: error.message });
+        .json({ message: "Historias no encontradas", error: error.message });
     }
 
     res.status(200).json(results);
@@ -50,12 +50,12 @@ exports.getHistoryByPatient = async (req, res, next) => {
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
-        message: "Error loading patient historic",
+        message: "Error historias no encontradas",
         error: error.message,
       });
     }
    
     const historic = results;
-    return res.status(200).json({ message: "Get historic success", historic });
+    return res.status(200).json({ message: "Historias obtenidas con exito", historic });
   });
 };

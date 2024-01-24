@@ -12,29 +12,26 @@ const LoginPatient = () => {
   async function handlePassword(e) {
     e.preventDefault();
 
-    const data = await actions.sendChangePassword(dni);
-    if (data.status === 200) {
-      return alert(data.message);
+    const response = await actions.sendChangePassword(dni);
+    if (response?.status === 200) {
+      actions.showNotification(response.data.message, "success");
     } else {
-      return alert(data.message);
+      actions.showNotification(response, "danger");
     }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (password === "") {
-      return actions.showNotification("Datos incorrectos", "danger");
+
+
+    const response = await actions.loginPatient(dni, password);
+    if (response.status === 201) {
+      actions.showNotification(response.data.message, "success");
+      navigate(`/dashboard-patient`);
+      window.location.reload();
     } else {
-      const data = await actions
-        .loginPatient(dni, password)
-        .then((res) => {
-          actions.showNotification(res.message, "success");
-          navigate(`/dashboard-patient`);
-          window.location.reload();
-        })
-        .catch((err) => {
-          actions.showNotification(err.message, "danger");
-        });
+      actions.showNotification(response, "danger");
+
     }
   }
 

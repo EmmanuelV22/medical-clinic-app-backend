@@ -4,6 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Context } from "../store/appContext";
 import SearchBar from "../components/SearchBar";
+import AccessDenied from "../../src/views/AccessDenied";
+
 
 const AllAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -54,7 +56,6 @@ const AllAppointments = () => {
         patient.dni.toString().includes(query)
     );
 
-    // Set searchError to true if no patients or employees found
     setSearchError(
       filteredEmployees.length === 0 && filteredPatients.length === 0
     );
@@ -80,7 +81,7 @@ const AllAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive"
+            className="table-responsive vh-100"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <table className="table">
@@ -101,13 +102,13 @@ const AllAppointments = () => {
                 {combinedData?.length > 0 &&
                   combinedData.map((data) => (
                     <tr key={data.id}>
-                      <td>{data.patient.firstname}</td>
-                      <td>{data.patient.lastname}</td>
-                      <td>{data.patient.dni}</td>
-                      <td>{data.patient.phone}</td>
-                      <td>{data.employee.firstname}</td>
-                      <td>{data.employee.lastname}</td>
-                      <td>{data.employee.specialist}</td>
+                      <td>{data.patient?.firstname}</td>
+                      <td>{data.patient?.lastname}</td>
+                      <td>{data.patient?.dni}</td>
+                      <td>{data.patient?.phone}</td>
+                      <td>{data.employee?.firstname}</td>
+                      <td>{data.employee?.lastname}</td>
+                      <td>{data.employee?.specialist}</td>
                       <td>
                         {data.date}/{data.month}/{data.year}
                       </td>
@@ -119,7 +120,7 @@ const AllAppointments = () => {
           </div>
         </div>
       ) : (
-        <h1>componente denegado</h1>
+        <AccessDenied />
       )}
     </>
   );

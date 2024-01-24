@@ -9,8 +9,7 @@ const nodemailer = require("nodemailer");
  **********************************************************/
 
 exports.getEmployeeById = async (req, res, next) => {
-  const id = req.params.id; // Je suppose que l'ID est dans les paramètres de l'URL
-  console.log("id from employee by id:", id);
+  const id = req.params.id; 
 
   const query = "SELECT * FROM employees WHERE id = ?";
   const values = [id];
@@ -19,11 +18,11 @@ exports.getEmployeeById = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching patient", error: error.message });
+        .json({ message: "Error obteniendo paciente", error: error.message });
     }
 
     if (results.length === 0) {
-      return res.status(404).json({ message: "Employee not found" });
+      return res.status(404).json({ message: "Empleado no encontrado" });
     }
 
     const employee = results[0];
@@ -34,17 +33,17 @@ exports.getEmployeeById = async (req, res, next) => {
 ////////////////////////////////////////////////
 
 exports.getAllEmployees = (req, res, next) => {
-  const query = "SELECT * FROM employees"; // Définis ta requête SQL ici
+  const query = "SELECT * FROM employees"; 
 
   connectDB.query(query, (error, results, fields) => {
     if (error) {
       res
         .status(400)
-        .json({ message: "Error employees not found", error: error.message });
+        .json({ message: "Empleado no encontrado", error: error.message });
       return;
     }
 
-    res.status(200).json(results); // Envoie les résultats en réponse
+    res.status(200).json(results); 
   });
 };
 
@@ -69,21 +68,19 @@ exports.register = async (req, res, next) => {
   } = req.body;
 
   if (!Array.isArray(days_off)) {
-    console.error("Error: days_off is not an array");
     return res.status(400).json({
-      message: "Error creating employee",
+      message: "Error creando empleado",
       error: "days_off is not an array",
     });
   }
 
   const daysOffArray = days_off.map((dayNumber, index) => dayNumber);
-  // Formate la fecha para la inserción de la base de datos (AAAA-MM-DD)
   const formattedBirthday = new Date(birthday).toISOString().split("T")[0];
   const createdAt = new Date().toISOString().split("T")[0];
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
-      return res.status(500).json({ message: "Error hashing password" });
+      return res.status(500).json({ message: "Error hasheando password" });
     }
 
     const query =
@@ -106,17 +103,16 @@ exports.register = async (req, res, next) => {
       hash,
     ];
 
-    console.log(values);
 
     connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
         return res.status(400).json({
-          message: "Error creating user from api auth",
+          message: "Error crando empleado",
           error: error.message,
         });
       }
 
-      // Envoi de l'e-mail
+     
       sendConfirmationEmail(email, firstname, lastname);
 
       const maxAge = 3 * 60 * 60;
@@ -149,7 +145,7 @@ exports.register = async (req, res, next) => {
       });
 
       res.status(201).json({
-        message: "Employee successfully created",
+        message: "Empleado creado con exito",
         employee: results.insertId,
       });
     });
@@ -158,10 +154,9 @@ exports.register = async (req, res, next) => {
 
 //////////////////////////////////////////////////
 
-// Fonction pour envoyer l'e-mail de confirmation
 const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
-  const EMAIL = process.env.USERMAIL; // Remplacez par votre adresse e-mail
-  const PASSWORD = process.env.PASSMAIL; // Remplacez par votre mot de passe e-mail
+  const EMAIL = process.env.USERMAIL; 
+  const PASSWORD = process.env.PASSMAIL; 
 
   let config = {
     service: "gmail",
@@ -176,7 +171,6 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
   const htmlContent = `
     <html>
       <head>
-        <!-- Ajoutez des styles CSS si nécessaire -->
       </head>
       <body>
         <div>
@@ -200,10 +194,10 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
   transporter
     .sendMail(message)
     .then(() => {
-      console.log("Email sent successfully");
+      console.log("Email enviado con exito");
     })
     .catch((error) => {
-      console.error("Error sending email", error);
+      console.error("Fallo al enviar email", error);
     });
 };
 
@@ -218,14 +212,18 @@ exports.login = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching employee", error: error.message });
+        .json({ message: "Error al iniciar sesion", error: error.message });
     }
 
     const employee = results[0];
-    console.log(employee);
+
+    if (!employee) {
+      return res.status(500).json({ message: "Datos incorrectos" });
+    }
+
     bcrypt.compare(password, employee.password, (err, result) => {
       if (err) {
-        return res.status(500).json({ message: "Error comparing passwords" });
+        return res.status(500).json({ message: "Contraseña invalida" });
       }
 
       if (result) {
@@ -251,12 +249,13 @@ exports.login = async (req, res, next) => {
           maxAge: maxAge * 1000,
         });
         return res.status(201).json({
-          message: "Employee successfully Logged in",
+          message: "Inicio de sesion exitoso",
+          status: 201,
           employees: results,
           token: token,
         });
       } else {
-        return res.status(400).json({ message: "Login not successful" });
+        return res.status(400).json({ message: "Datos incorrectos" });
       }
     });
   });
@@ -284,18 +283,16 @@ exports.update = async (req, res, next) => {
   if (!Array.isArray(days_off)) {
     console.error("Error: days_off is not an array");
     return res.status(400).json({
-      message: "Error creating employee",
+      message: "Error actualizando datos del empleado",
       error: "days_off is not an array",
     });
   }
 
-  // const daysOffArray = days_off.map((dayNumber, index) => ({
-  //   [`day${index + 1}`]: dayNumber.toString(),
-  // }));
+
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
-      return res.status(500).json({ message: "Error hashing password" });
+      return res.status(500).json({ message: "Error hasheando password" });
     }
     const query =
       "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
@@ -317,26 +314,15 @@ exports.update = async (req, res, next) => {
 
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
-        console.error("Error executing query:", error);
         return res
           .status(400)
-          .json({ message: "Error updating user", error: error.message });
+          .json({ message: "Error actualizando datos del empleado", error: error.message });
       }
     });
-    // Asegúrate de realizar un commit aquí si es necesario
-    connectDB.commit((commitError) => {
-      if (commitError) {
-        console.error("Error committing transaction:", commitError);
-        return res.status(400).json({
-          message: "Error committing transaction",
-          error: commitError.message,
-        });
-      }
 
-      return res.status(201).json({
-        message: "Employee successfully updated",
-        employee: id,
-      });
+    return res.status(201).json({
+      message: "Datos del empleado actualizado con exito",
+      employee: id,
     });
   });
 };
@@ -345,18 +331,17 @@ exports.update = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   const id = req.params.id;
-  console.log("Received DELETE request for ID:", id);
   const query = "DELETE FROM employees WHERE id = ?";
   const values = [id];
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error delete", error: error.message });
+        .json({ message: "Error borrando empleado", error: error.message });
     }
     return res
       .status(200)
-      .json({ message: "Employee successfully deleted", id: results.insertId });
+      .json({ message: "Empleado borrado con exito", id: results.insertId });
   });
 };
 
@@ -374,7 +359,7 @@ exports.getPatientById = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error fetching patient", error: error.message });
+        .json({ message: "Paciente no encontrado", error: error.message });
     }
 
     const patient = results[0];
@@ -389,7 +374,7 @@ exports.getAllPatients = async (req, res, next) => {
     if (error) {
       res
         .status(400)
-        .json({ message: "Error, patients not found", error: error.message });
+        .json({ message: "Pacientes no encontrados", error: error.message });
       return;
     }
     res.status(200).json({ results });
@@ -411,20 +396,17 @@ exports.registerPatient = async (req, res, next) => {
     blood_group,
   } = req.body;
   const createdAt = new Date().toISOString().split("T")[0];
-  // Convertir cadena a instancia de fecha
   const birthdayDate = new Date(birthday);
 
-  // Compruebe si cumpleañosDate es una instancia de fecha válida
   if (isNaN(birthdayDate.getTime())) {
-    return res.status(400).json({ message: "Birth date is not valid" });
+    return res.status(400).json({ message: "Fecha invalida" });
   }
 
-  // Formatee la fecha para la inserción de la base de datos (AAAA-MM-DD)
   const formattedBirthday = birthdayDate.toISOString().split("T")[0];
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
-      return res.status(500).json({ message: "Error hashing password" });
+      return res.status(500).json({ message: "Error hasehando password" });
     }
 
     const query =
@@ -447,7 +429,7 @@ exports.registerPatient = async (req, res, next) => {
       if (error) {
         return res
           .status(400)
-          .json({ message: "Error creating patient", error: error.message });
+          .json({ message: "Error creando paciente", error: error.message });
       }
 
       sendConfirmationEmail(email, firstname, lastname);
@@ -477,7 +459,7 @@ exports.registerPatient = async (req, res, next) => {
       });
 
       res.status(201).json({
-        message: "Patient successfully created",
+        message: "Paciente creado exitosamente",
         patient: results.insertId,
       });
     });
@@ -494,20 +476,20 @@ exports.loginPatient = async (req, res, next) => {
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
+      return results
         .status(400)
-        .json({ message: "Error patient login", error: error.message });
+        .json({ message: "Datos incorrectos, paciente no encontrado", error: error.message });
     }
-    // if (results.length === 0) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Patient not found", error: error });
-    // }
+
     const patient = results[0];
+
+    if (!patient) {
+      return res.status(500).json({ message: "Datos incorrectos, paciente no encontrado" });
+    }
 
     bcrypt.compare(password, patient.password, (err, result) => {
       if (err) {
-        return res.status(500).json({ message: "Error comparing passwords" });
+        return res.status(500).json({ message: "Datos incorrectos" });
       }
       if (result) {
         const maxAge = 3 * 60 * 60;
@@ -533,12 +515,14 @@ exports.loginPatient = async (req, res, next) => {
           maxAge: maxAge * 1000,
         });
         return res.status(201).json({
-          message: "Patient successfully logged",
+          message: "Inicio de sesion exitoso",
           patients: results,
           token: token,
         });
       } else {
-        return res.status(400).json({ message: "Login not successful", error });
+        return res
+          .status(400)
+          .json({ message: "Contraseña incorrecta", error });
       }
     });
   });
@@ -552,7 +536,7 @@ exports.updatePatient = async (req, res, next) => {
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
-      return res.status(500).json({ message: "Error hashing password" });
+      return res.status(500).json({ message: "Error hasehando password" });
     }
 
     const query =
@@ -571,19 +555,18 @@ exports.updatePatient = async (req, res, next) => {
       if (error) {
         return res
           .status(400)
-          .json({ message: "Error Updating Patient ", error: error.message });
+          .json({ message: "Error actualizando datos del paciente ", error: error.message });
       }
 
       return res
         .status(201)
-        .json({ message: "Patient successfully updated", patient: id });
+        .json({ message: "Paciente actualizado correctamente", patient: id });
     });
   });
 };
 
 exports.deletePatient = async (req, res, next) => {
   const id = req.params.id;
-  console.log("Received DELETE request for ID:", id);
 
   const query = "DELETE FROM patients WHERE id = ?";
   const values = [id];
@@ -591,26 +574,24 @@ exports.deletePatient = async (req, res, next) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error deleting patient", error: error.message });
+        .json({ message: "Error eliminando paciente", error: error.message });
     }
     return res
       .status(201)
-      .json({ message: "Patient successfully deleted", id: id });
+      .json({ message: "Paciente eliminado con exito", id: id });
   });
 };
 
 exports.updatePasswordPatient = async (req, res, next) => {
   const { password } = req.body;
   const dni = req.params.dni;
-  // const token = req.params.token
 
-  // validatePatientToken(dni , token)
 
   const updatedAt = new Date();
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
-      return res.status(500).json({ message: "Error hashing password" });
+      return res.status(500).json({ message: "Error hasheando password" });
     }
 
     const query =
@@ -621,13 +602,13 @@ exports.updatePasswordPatient = async (req, res, next) => {
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
-          message: "Error Updating Patient Password ",
+          message: "Error actualizando password",
           error: error.message,
         });
       }
 
       return res.status(201).json({
-        message: "Patient Password successfully updated",
+        message: "Password actualziado con exito",
         patient: dni,
       });
     });
@@ -654,10 +635,9 @@ const changePasswordEmail = (dni, res) => {
 
       connectDB.query(query2, values2, (error, results) => {
         if (error) {
-          console.error("Error en la modificacion del nuevo token", error);
           return res.status(500).json({
             status: "error",
-            message: "Error en la modificacion del nuevo token",
+            message: "Datos incorrectos",
             error: error.message,
           });
         }
@@ -669,12 +649,15 @@ const changePasswordEmail = (dni, res) => {
 
         connectDB.query(query, values, (error, results) => {
           if (error) {
-            console.error("Error en la consulta a la base de datos", error);
             return res.status(500).json({
               status: "error",
               message: "Error en la consulta a la base de datos",
               error: error.message,
             });
+          }
+
+          if (results.length == 0) {
+            return res.status(500).json({ message: "Datos incorrectos" });
           }
 
           const userEmail = results[0].email;
@@ -684,6 +667,7 @@ const changePasswordEmail = (dni, res) => {
             <html>
               <head>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+                <title>Clinic'app</title>
               </head>
               <body>
                 <div>
@@ -691,9 +675,9 @@ const changePasswordEmail = (dni, res) => {
                   <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
                   <p>No te preocupes es rapido y sencillo!</p>
                   <p>Estimado paciente de Clinic'app: Para obtener una nueva contraseña debes hacer click en el siguiente boton que te llevara a una nueva pestaña donde podras ingresar tu nueva contraseña</p>
-                  <button class="btn-primary"><a href="http://localhost:3000/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
+                  <button class="btn btn-primary rounded"><a href="http://localhost:3000/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
                   <p>Si este mail no es para ti ignoralo por favor</p>
-                  <p>Gracias por confiar en Clinic'app</p>
+                  <h2>Gracias por confiar en Clinic'app</h2>
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
@@ -711,18 +695,14 @@ const changePasswordEmail = (dni, res) => {
           transporter
             .sendMail(message)
             .then(() => {
-              console.log("Email sent successfully");
-              // Después de enviar el correo electrónico con éxito
               return res
                 .status(200)
-                .json({ status: "200", message: "Email sent successfully" });
+                .json({ message: "Email enviado correctamente" });
             })
             .catch((error) => {
-              console.error("Error sending email", error);
-              // En caso de error al enviar el correo electrónico
               return res.status(500).json({
                 status: "error",
-                message: "Error sending email",
+                message: "Error enviando email",
                 error: error.message,
               });
             });
@@ -730,10 +710,9 @@ const changePasswordEmail = (dni, res) => {
       });
     })
     .catch((error) => {
-      console.error("Error:", error);
       return res.status(500).json({
         status: "error",
-        message: "Error generando o verificando el token",
+        message: "Datos incorrectos",
         error: error.message,
       });
     });
@@ -746,22 +725,18 @@ exports.sendMailChangePassword = async (req, res, next) => {
 
 async function generateToken() {
   try {
-    // Obtiene la fecha actual en milisegundos
     const currentDate = new Date();
     const currentTimestamp = currentDate.getTime();
 
-    // Genera un hash único basado en la fecha actual
     const hashedDate = await bcrypt.hash(currentTimestamp.toString(), 10);
 
-    // Codifica el token resultante en base64
     const base64Token = Buffer.from(hashedDate).toString("base64");
 
     return {
       token: base64Token,
       expirationTimestamp: currentTimestamp + 60 * 1000,
-    }; // 60 segundos de expiración como ejemplo
+    };
   } catch (error) {
-    console.error("Error generando el token:", error);
     throw error;
   }
 }
@@ -776,7 +751,6 @@ exports.validateTokenPatient = async (req, res, next) => {
 
     connectDB.query(query, values, (error, results) => {
       if (error) {
-        console.error("Error en la consulta a la base de datos", error);
         return res.status(500).json({
           status: "error",
           message: "Error en la consulta a la base de datos",
@@ -789,25 +763,24 @@ exports.validateTokenPatient = async (req, res, next) => {
       if (token !== temporalToken) {
         return res.status(400).json({
           status: "error",
-          message: "Invalid token",
+          message: "Token invalido",
         });
       }
 
       next();
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       status: "error",
-      message: "Internal server error",
+      message: "Error validando token",
       error: error.message,
     });
   }
 };
 
 exports.sendNotificationEmail = (id, msg, medical_id, res) => {
-  const EMAIL = process.env.USERMAIL; // Remplacez par votre adresse e-mail
-  const PASSWORD = process.env.PASSMAIL; // Remplacez par votre mot de passe e-mail
+  const EMAIL = process.env.USERMAIL; 
+  const PASSWORD = process.env.PASSMAIL; 
 
   let config = {
     service: "gmail",
@@ -828,7 +801,6 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
 
   connectDB.query(queryEmployee, valuesEmployee, (error, results) => {
     if (error) {
-      console.error("Error en la consulta a la base de datos", error);
       return res.status(500).json({
         status: "error",
         message: "Error en la consulta a la base de datos",
@@ -841,7 +813,6 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
 
     connectDB.query(query, values, (error, results) => {
       if (error) {
-        console.error("Error en la consulta a la base de datos", error);
         return res.status(500).json({
           status: "error",
           message: "Error en la consulta a la base de datos",
@@ -856,7 +827,7 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
       const htmlContent = `
     <html>
       <head>
-        <!-- Ajoutez des styles CSS si nécessaire -->
+      <title>Clinic'app</title>
       </head>
       <body>
         <div>
@@ -865,7 +836,7 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
           
           <p>Hola ${userName} ${userLastName}, tenemos el siguiente mensaje para ti del ${specialist} ${medicalname} ${medicallastname}: 
           ${msg} </p>
-          <p>Gracias por confiar en Clinic'app</p>
+          <h2>Gracias por confiar en Clinic'app</h2>
         </div>
       </body>
     </html>
@@ -881,10 +852,10 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
       transporter
         .sendMail(message)
         .then(() => {
-          console.log("Email sent successfully");
+          console.log("Email enviado con exito");
         })
         .catch((error) => {
-          console.error("Error sending email", error);
+          console.error("Error enviando email", error);
         });
     });
   });

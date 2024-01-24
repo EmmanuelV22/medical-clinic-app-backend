@@ -36,14 +36,12 @@ const CreateTreatment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Medicine Data:", medicines);
 
       const medicineData = medicines.map(({ name, quantity }) => ({
         medicine_name: name,
         quantity: parseInt(quantity, 10),
       }));
 
-      console.log("Medicine Data:", medicineData);
 
       await actions.createTreatment(
         patient_id,
@@ -57,9 +55,8 @@ const CreateTreatment = () => {
         finish_treatment
       );
       window.location.reload();
-      console.log("Traitement créé avec succès");
     } catch (error) {
-      console.error("Error creating treatment", error);
+      return error
     }
   };
 

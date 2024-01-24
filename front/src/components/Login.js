@@ -17,9 +17,12 @@ const Login = () => {
     } else {
       const data = await actions.login(personalID, password);
 
-      if (data) {
-        actions.showNotification("Successfull log in", "success");
-        const loggedInEmployee = data.employees[0];
+
+      if (data.status === 201) {
+        actions.showNotification("Inicio de sesion exitoso", "success");
+        
+        const loggedInEmployee = data.employees[0] 
+
 
         if (loggedInEmployee.specialist === "admin") {
           navigate("/dashboard-admin");
@@ -45,7 +48,6 @@ const Login = () => {
       } else {
         actions.showNotification("Datos incorrectos", "danger");
 
-        // alert("Erreur, vérifiez vos infos");
       }
     }
   }
