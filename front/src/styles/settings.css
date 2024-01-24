@@ -16,6 +16,8 @@
 body{
   background-color: var(--color-1);
   color: var(--color-2);
+  overflow-x: hidden;
+  height: 100%;
 }
 
 body.dark-mode,
@@ -33,3 +35,21 @@ body.dark-mode li{
   color: var(--text-dark);
 
 }
+
+.btn-edit {
+  background-color: var(--color-3);
+}
+
+.btn-eliminar{
+  background-color: var(--color-4)!important;
+}
+
+.btn-turno svg{
+  transform: translateY(-10%);
+}
+
+.btn-edit span {
+  display: block;
+  transform: translateY(-5%)!important;
+}
+

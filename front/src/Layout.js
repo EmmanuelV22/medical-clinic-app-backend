@@ -37,7 +37,6 @@ import PatientAppointments from "./views/patients/PatientAppointments";
 
 import PatientModal from "./components/patients/PatientModal";
 
-import DarkMode from "./components/DarkMode";
 import DashboardEnfermero from "./views/employees/DashboardEnfermero";
 
 import AllAppointments from "./views/AllAppointments";
@@ -53,9 +52,6 @@ const Layout = () => {
   return (
     <BrowserRouter basename={basename}>
       <Alerts />
-      <div>
-        <DarkMode />
-      </div>
       <Routes>
         {/*RUTAS PUBLICAS */}
         <Route path="/acceso-denegado" element={<AccessDenied />} />

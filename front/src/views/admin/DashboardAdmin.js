@@ -8,7 +8,9 @@ import CardAllAppointments from "../../components/admin/CardAllAppointments";
 import { Context } from "../../store/appContext";
 
 import CardMap from "../../components/CardMap";
+
 import AccessDenied from "../AccessDenied";
+
 
 const DashboardAdmin = () => {
   const { store } = useContext(Context);
@@ -26,7 +28,6 @@ const DashboardAdmin = () => {
             <CardAllPatients />
             <CardAllEmployees />
             <CardRegister />
-
             <CardAllAppointments />
             <CardMap />
           </div>

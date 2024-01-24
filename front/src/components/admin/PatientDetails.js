@@ -15,9 +15,17 @@ const PatientDetails = ({ patientData }) => {
   const [address, setAddress] = useState(patientData.address);
   const [id, setId] = useState(patientData.id);
   const [phone, setPhone] = useState(patientData.phone);
+  const [dni, setDNI] = useState(patientData.dni);
+  const [birthday, setBirthday] = useState(patientData.birthday);
+  const [sex, setSex] = useState(patientData.sex);
+  const [blood, setBlood] = useState(patientData.blood_group);
+  const [createdAt, setCreated] = useState(patientData.createdAt);
+  const [updatedAt, setUpdated] = useState(patientData.updatedAt);
 
   const handleUpdatePatient = async () => {
+
     if (password.length >= 3) {
+
       try {
         const response = await actions.updatePatient(
           firstname,
@@ -28,6 +36,7 @@ const PatientDetails = ({ patientData }) => {
           password,
           id
         );
+
         actions.showNotification("Datos actualizados correctamente", "success");
 
         window.location.reload();
@@ -36,6 +45,7 @@ const PatientDetails = ({ patientData }) => {
       }
     } else {
       actions.showNotification("Verifica los datos ingresados", "danger");
+
     }
   };
 
@@ -62,67 +72,109 @@ const PatientDetails = ({ patientData }) => {
               ></button>
             </div>
             <div className="modal-body">
-              <form className="mx-auto w-75">
-                <div className="input-group mb-3">
+              <form className="row g-3 needs-validation">
+                <div className="col-md-6">
                   <label>Nombre</label>
                   <input
                     type="text"
-                    className="form-control border-l-0"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="firstname"
                     aria-describedby="patient-firstname"
                     placeholder="firstname"
                     value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
-                    required
+                    readOnly
+                    disabled
                   />
                 </div>
-                <div className="input-group mb-3">
+                <div className="col-md-6 ">
                   <label>Apellido</label>
                   <input
                     type="text"
-                    className="form-control border-l-0"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="lastname"
                     aria-describedby="patient-lastname"
                     placeholder="lastname"
                     value={lastname}
-                    onChange={(e) => setLastname(e.target.value)}
-                    required
+                    readOnly
+                    disabled
                   />
                 </div>
-                <div className="mb-4">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    // htmlFor="Phone"
-                  >
+                <div className="col-md-6">
+                  <label>DNI</label>
+                  <input
+                    type="text"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    aria-label="dni"
+                    aria-describedby="patient-lastname"
+                    value={dni}
+                    readOnly
+                    disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Sexo</label>
+                  <input
+                    type="text"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    aria-label="sex"
+                    aria-describedby="patient-lastname"
+                    value={sex}
+                    readOnly
+                    disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Fecha de nacimiento</label>
+                  <input
+                    type="text"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    aria-label="birthday"
+                    aria-describedby="patient-lastname"
+                    value={actions.dateFormater(birthday)}
+                    readOnly
+                    disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Grupo sanguíneo</label>
+                  <input
+                    type="text"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    aria-label="blood"
+                    aria-describedby="patient-lastname"
+                    value={blood}
+                    readOnly
+                    disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label className="block text-gray-700 text-sm font-bold">
                     Telefono
                   </label>
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    // id="Phone"
                     type="tel"
-                    placeholder="Telefono"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
-                <div className="input-group mb-3">
+                <div className="col-md-6">
                   <label>E-mail</label>
                   <input
                     type="email"
-                    className="form-control border-l-0"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="email"
                     aria-describedby="patient-email"
-                    placeholder="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
-                <div className="input-group mb-3">
+                <div className="col-md-6">
                   <label>Dirección</label>
                   <input
                     type="text"
-                    className="form-control border-l-0"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="address"
                     aria-describedby="patient-address"
                     placeholder="address"
@@ -131,30 +183,46 @@ const PatientDetails = ({ patientData }) => {
                     required
                   />
                 </div>
-
-                <div className="input-group mb-3">
+                <div className="col-md-6">
                   <label>Contraseña</label>
                   <input
                     type="password"
-                    className="form-control border-l-0"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="password"
                     aria-describedby="patient-password"
                     placeholder="Contraseña"
-                    value={password === "" ? "" : password}
+                    value={""}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
+                <div className="col-md-6">
+                  <label>Cuenta creada</label>
+                  <input
+                    type="text"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    aria-label="created"
+                    aria-describedby="patient-lastname"
+                    value={actions.dateFormater(createdAt)}
+                    readOnly
+                    disabled
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label>Cuenta actualizada</label>
+                  <input
+                    type="text"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    aria-label="created"
+                    aria-describedby="patient-lastname"
+                    value={actions.dateFormater(updatedAt)}
+                    readOnly
+                    disabled
+                  />
+                </div>
               </form>
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                CERRAR
-              </button>
+            <div className="modal-footer m-auto">
               <button
                 type="button"
                 className="btn btn-primary"

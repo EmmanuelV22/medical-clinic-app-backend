@@ -37,7 +37,7 @@ const SortingTable = ({ headers, data, renderRow }) => {
     <>
       {/* Tabla con encabezados */}
       <table className="table">
-        <thead>
+        <thead className="table-header">
           <tr>
             {headers.map((header) => (
               <th key={header.field}>

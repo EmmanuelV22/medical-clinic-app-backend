@@ -16,14 +16,20 @@ const DarkMode = () => {
   }, [isDarkMode]);
 
   return (
-    <div>
-      <button onClick={toggleDarkMode}>
+    <div
+      style={{
+        position: "absolute",
+        top: "20px",
+        right: "50px",
+      }}
+    >
+      <button className="btn-dark-content" onClick={toggleDarkMode}>
         {isDarkMode ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-sun"
-            width="28"
-            height="28"
+            width="40"
+            height="40"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="#ffec00"
@@ -39,8 +45,8 @@ const DarkMode = () => {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-moon-stars"
-            width="28"
-            height="28"
+            width="40"
+            height="40"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="#597e8d"
