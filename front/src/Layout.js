@@ -136,6 +136,7 @@ const Layout = () => {
         darkMode={false}
         buttonStyle={{ position: "fixed", bottom: "1rem", right: "20px" }}
         avatar={clinic}
+        style={{ height: "auto", width: "auto" }}
         allowEsc
         allowClickAway
         notification
