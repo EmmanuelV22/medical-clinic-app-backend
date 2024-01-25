@@ -233,6 +233,7 @@ exports.login = async (req, res, next) => {
             id: employee.id,
             dni: employee.dni,
             email: employee.email,
+            sex: employee.sex,
             firstname: employee.firstname,
             lastname: employee.lastname,
             specialist: employee.specialist,

@@ -9,7 +9,6 @@ import ConfirmDeletePatient from "../../components/admin/ConfirmDeletePatient";
 import Navbar from "../../components/Navbar";
 import AccessDenied from "../../views/AccessDenied";
 
-
 const AdminAllPatients = () => {
   const { store, actions } = useContext(Context);
   const [searchError, setSearchError] = useState(false);
@@ -248,7 +247,6 @@ const AdminAllPatients = () => {
   return (
     <>
       {store?.employee && store.employee?.specialist ? (
-
         <>
           <Navbar />
           <div className="admin-patient-content">
@@ -265,7 +263,7 @@ const AdminAllPatients = () => {
               </p>
             )}
             <div
-              className="table-responsive vh-100"
+              className="table-responsive "
               style={{ width: "100%", margin: "0 auto" }}
             >
               <SortingTable
@@ -278,7 +276,6 @@ const AdminAllPatients = () => {
                 renderRow={renderRow}
               />
             </div>
-
           </div>
         </>
       ) : (

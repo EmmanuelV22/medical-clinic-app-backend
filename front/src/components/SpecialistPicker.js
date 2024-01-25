@@ -36,11 +36,10 @@ const SpecialistPicker = () => {
   };
 
   return (
-    <div className="container-fluid vh-100">
-
+    <div className="container-fluid ">
       {store.patient || store.employee.specialist === "admin" ? (
         <>
-    <div className='container-fluid  bg-white '>
+          <div className="container-fluid  bg-white ">
             <select
               className="form-select"
               aria-label="Select a specialty"

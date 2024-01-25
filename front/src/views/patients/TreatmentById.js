@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { useParams } from "react-router";
 import DoctorInfo from "../../components/DoctorInfo ";
+import Navbar from "../../components/Navbar"
 
 const TreatmentById = () => {
   const { store, actions } = useContext(Context);
@@ -29,6 +30,7 @@ const TreatmentById = () => {
 
   return (
     <div>
+      <Navbar />
       <h1>Detalles del tratamiento:</h1>
       <h2>Paciente:</h2>
       <p>

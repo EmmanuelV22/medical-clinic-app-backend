@@ -53,8 +53,11 @@ const Login = () => {
   }
 
   return (
-    <div className="wrapper">
-      <div className="card-switch">
+    <div 
+    className="wrapper"
+    >
+      <div
+       className="card-switch">
         <label className="switch">
           <input type="checkbox" className="toggle" />
           <span className="slider"></span>

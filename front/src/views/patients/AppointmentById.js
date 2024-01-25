@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Context } from "../../store/appContext";
+import Navbar from "../../components/Navbar";
 
 const AppointmentById = () => {
   const { store, actions } = useContext(Context);
@@ -12,10 +13,8 @@ const AppointmentById = () => {
   const getAppointmentByNotif = async () => {
     try {
       const data = await actions.loadPatientAppointmentById(appointment_id);
-      
-      
     } catch (error) {
-      return error
+      return error;
     }
   };
 
@@ -24,7 +23,7 @@ const AppointmentById = () => {
       const doctorData = await actions.getEmployeeById(id);
       setDoctorData(doctorData);
     } catch (error) {
-      return error
+      return error;
     }
   };
 
@@ -42,7 +41,8 @@ const AppointmentById = () => {
   }, [store.appointment?.medical_id]);
 
   return (
-    <div>
+    <div className="">
+      <Navbar />
       <h1>Detalles de turno confirmado:</h1>
       <h3>Fecha Reservada:</h3>
       <p>

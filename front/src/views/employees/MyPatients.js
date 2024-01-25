@@ -7,7 +7,6 @@ import SearchBar from "../../components/SearchBar";
 import { useNavigate } from "react-router-dom";
 import AccessDenied from "../../views/AccessDenied";
 
-
 const MyPatients = () => {
   const { store, actions } = useContext(Context);
   const doctorID = store.employee ? store.employee.id : null;
@@ -130,7 +129,7 @@ const MyPatients = () => {
       {store.employee &&
       store.employee?.specialist &&
       store?.employee?.specialist !== "admin" ? (
-        <div className="admin-patient-content vh-100">
+        <div className="admin-patient-content ">
           <h1
             className="text-center font-bold my-4"
             style={{ fontSize: "2.5rem" }}

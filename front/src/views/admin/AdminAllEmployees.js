@@ -10,7 +10,6 @@ import SearchBar from "../../components/SearchBar";
 import Navbar from "../../components/Navbar";
 import AccessDenied from "../AccessDenied";
 
-
 const AdminAllEmployees = () => {
   const { store, actions } = useContext(Context);
   const [searchError, setSearchError] = useState(false);
@@ -207,7 +206,7 @@ const AdminAllEmployees = () => {
               </p>
             )}
             <div
-              className="table-responsive vh-100"
+              className="table-responsive "
               style={{ width: "100%", margin: "0 auto" }}
             >
               <SortingTable

@@ -33,7 +33,7 @@ const MyTtreatments = () => {
   return (
     <>
       {isAuthorized ? (
-        <>
+        <div className="mb-3">
           <h1>
             Lista de Tratamientos de {store.patient.firstname}{" "}
             {store.patient.lastname}
@@ -81,6 +81,7 @@ const MyTtreatments = () => {
                           onClick={() =>
                             navigate(`/patient-treatment/${treatment.id}`)
                           }
+                          cursor="pointer"
                           xmlns="http://www.w3.org/2000/svg"
                           className="icon icon-tabler icon-tabler-eye"
                           width="28"
@@ -107,8 +108,8 @@ const MyTtreatments = () => {
                   </tr>
                 ))}
             </tbody>
-          </table>
-        </>
+          </table>z
+        </div>
       ) : (
         <h1>Acceso denegado</h1>
       )}

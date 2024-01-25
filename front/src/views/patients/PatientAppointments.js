@@ -8,10 +8,9 @@ import ConfirmDeleteAppointment from "../../components/patients/ConfirmDeleteApp
 import { useNavigate, useParams } from "react-router";
 import AccessDenied from "../../views/AccessDenied";
 
-
 const PatientAppointments = () => {
   const { store, actions } = useContext(Context);
-  const {patient_id} = useParams();
+  const { patient_id } = useParams();
   const patientID = store.patient ? store.patient.id : null;
   const [searchError, setSearchError] = useState(false);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -24,13 +23,11 @@ const PatientAppointments = () => {
     }
   }, [patientID]);
 
-  const filteredDr =
-    
-    store.employees.filter((employee) =>
-      store.appointmentsPatient.some(
-        (appointment) => appointment.medical_id === employee.id
-      )
-    );
+  const filteredDr = store.employees.filter((employee) =>
+    store.appointmentsPatient.some(
+      (appointment) => appointment.medical_id === employee.id
+    )
+  );
 
   const headers = [
     { field: "date", label: "Fecha", sortable: false },
@@ -51,12 +48,12 @@ const PatientAppointments = () => {
 
   const getMyAppointments = async () => {
     if (patientID || patient_id) {
-      patientID ? await actions.loadPatientAppointments(patientID) : 
-      await actions.loadPatientAppointments(patient_id);
+      patientID
+        ? await actions.loadPatientAppointments(patientID)
+        : await actions.loadPatientAppointments(patient_id);
 
       actions.getAllEmployees();
 
-      
       const currentDate = new Date();
       const filteredAppointments = store.appointmentsPatient.filter(
         (appointment) => {
@@ -86,7 +83,6 @@ const PatientAppointments = () => {
   };
 
   const renderRow = (appointment) => {
-    
     const formattedDay = String(appointment.date).padStart(2, "0");
 
     return (
@@ -108,7 +104,6 @@ const PatientAppointments = () => {
                 </React.Fragment>
               ))}
           <td style={{ margin: "auto" }}>
-            
             <button
               style={{
                 border: "none",
@@ -180,42 +175,42 @@ const PatientAppointments = () => {
           </h1>
           <SearchBar onSearch={handleSearch} />
           <button
-              style={{
-                border: "none",
-                background: "transparent",
-                color: "green",
-              }}
-              title="planificar turno"
-              onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
+            style={{
+              border: "none",
+              background: "transparent",
+              color: "green",
+            }}
+            title="planificar turno"
+            onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon icon-tabler icon-tabler-calendar-plus"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="#ff2825"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-calendar-plus"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="#ff2825"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-                <path d="M16 3v4" />
-                <path d="M8 3v4" />
-                <path d="M4 11h16" />
-                <path d="M16 19h6" />
-                <path d="M19 16v6" />
-              </svg>
-            </button>
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+              <path d="M16 3v4" />
+              <path d="M8 3v4" />
+              <path d="M4 11h16" />
+              <path d="M16 19h6" />
+              <path d="M19 16v6" />
+            </svg>
+          </button>
           {searchError && (
             <p className="text-center text-danger">
               No se encontraron citas médicas.
             </p>
           )}
           <div
-            className="table-responsive vh-100"
+            className="table-responsive "
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable

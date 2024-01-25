@@ -4,17 +4,20 @@ import DarkMode from "../components/DarkMode";
 
 const Home = () => {
   return (
-    <>
+    <div 
+    className=""
+    // style={{height:""}}
+    >
       <DarkMode />
-      <div className="text-center" style={{ height: "77.8vh", width: "100%" }}>
+      <div className="d-flex justify-content-center">
         <img
-          style={{ width: "100%", paddingTop: "50px" }}
+          style={{objectFit:"cover",zIndex:"-100",overflow:"hidden",width:"100%" }}
           src="../clinic-logo-removebg.png"
           alt="logo app clinic"
         />
       </div>
       <Login />
-    </>
+    </div>
   );
 };
 

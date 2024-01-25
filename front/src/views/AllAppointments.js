@@ -6,7 +6,6 @@ import { Context } from "../store/appContext";
 import SearchBar from "../components/SearchBar";
 import AccessDenied from "../../src/views/AccessDenied";
 
-
 const AllAppointments = () => {
   const { store, actions } = useContext(Context);
   let navigate = useNavigate();
@@ -81,7 +80,7 @@ const AllAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive vh-100"
+            className="table-responsive "
             style={{ width: "100%", margin: "0 auto" }}
           >
             <table className="table">

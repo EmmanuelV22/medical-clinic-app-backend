@@ -16,10 +16,10 @@ const DashboardEnfermero = () => {
         <>
           <Navbar />
           <h1>
-              {store.empleyee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
-              {store.employee?.firstname} {store.employee?.lastname}
-            </h1>
-          <div className="d-flex justify-content-evenly flex-wrap  vh-100">
+            {store.employee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
+            {store.employee?.firstname} {store.employee?.lastname}
+          </h1>
+          <div className="d-flex justify-content-evenly flex-wrap  ">
             <CardAllPatients />
             <CardMap />
           </div>

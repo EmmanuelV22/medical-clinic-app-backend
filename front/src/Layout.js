@@ -50,6 +50,9 @@ import { FloatingWhatsApp } from "react-floating-whatsapp";
 const Layout = () => {
   const basename = process.env.BASENAME || "";
   return (
+
+    <div>
+
     <BrowserRouter basename={basename}>
       <Alerts />
       <Routes>
@@ -143,6 +146,7 @@ const Layout = () => {
         notificationSound
       />
     </BrowserRouter>
+    </div>
   );
 };
 

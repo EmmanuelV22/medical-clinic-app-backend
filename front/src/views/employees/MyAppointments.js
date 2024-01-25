@@ -50,7 +50,7 @@ const MyAppointments = () => {
       actions.loadMedicalAppointmentsForDr(doctorID);
       window.location.reload();
     } catch (error) {
-      return error
+      return error;
     }
   };
 
@@ -190,7 +190,7 @@ const MyAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive vh-100"
+            className="table-responsive "
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable
@@ -205,7 +205,7 @@ const MyAppointments = () => {
           </div>
         </div>
       ) : (
-        <AccessDenied/>
+        <AccessDenied />
       )}
     </>
   );

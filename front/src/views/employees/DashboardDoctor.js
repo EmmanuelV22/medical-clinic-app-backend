@@ -21,10 +21,10 @@ const DashboardDoctor = () => {
         <>
           <Navbar />
           <h1>
-              {store.empleyee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
-              {store.employee?.firstname} {store.employee?.lastname}
-            </h1>
-          <div className="d-flex justify-content-evenly flex-wrap vh-100">
+            {store.employee?.sex === "h" ? "Bienvenido" : "Bienvenida"}{" "}
+            {store.employee?.firstname} {store.employee?.lastname}
+          </h1>
+          <div className="d-flex justify-content-evenly flex-wrap ">
             <CardMyPatients />
             <CardAllPatients />
             <CardAppointments />

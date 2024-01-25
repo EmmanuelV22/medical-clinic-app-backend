@@ -51,7 +51,7 @@ const PatientHistory = () => {
   return (
     <>
       {store.patientData && store.patientData.patientData && (
-        <div key={store.patientData.patientData.id}>
+        <div className="container-fluid"  key={store.patientData.patientData.id}>
           <h2>
             Ficha personal de {store.patientData.patientData.firstname}{" "}
             {store.patientData.patientData.lastname}
@@ -95,7 +95,7 @@ const PatientHistory = () => {
               {store.patientData.patientData.blood_group.toUpperCase()}
             </span>{" "}
           </p>
-          <div className="border border-dark rounded">
+          <div className="border border-dark rounded pb-1 mb-5">
             <h3>Historia Clinica: </h3>
             <button onClick={handleShow} className="btn btn-secondary">
               {show ? "Ocultar" : "Ver"}

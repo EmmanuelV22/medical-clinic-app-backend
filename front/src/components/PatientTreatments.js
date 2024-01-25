@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import DoctorInfo from "./DoctorInfo ";
+import AccessDenied from "../../src/views/AccessDenied";
 
 const PatientTreatement = () => {
   const { actions, store } = useContext(Context);
@@ -29,12 +30,12 @@ const PatientTreatement = () => {
   };
 
   return (
-    <div className={store.patientData.treatments.length < 5 && "vh-100"}>
+    <div className={store.patientData.treatments.length < 5 && ""}>
       <h1>
         Lista de Tratamientos de {store.patientData?.patientData?.firstname}{" "}
         {store.patientData?.patientData?.lastname}
       </h1>
-      <table className="table">
+      <table className="table ">
         <thead>
           <tr>
             <th>Resumen</th>
@@ -44,7 +45,9 @@ const PatientTreatement = () => {
             <th>Doctor</th>
             <th>Terminado</th>
             <th>Actualizado</th>
-            {!["enfermero", "enfermera"].includes(store.employee.specialist) &&<th>Editable</th>}
+            {!["enfermero", "enfermera"].includes(
+              store.employee.specialist
+            ) && <th>Editable</th>}
             <th>Detalle</th>
           </tr>
         </thead>
@@ -72,47 +75,53 @@ const PatientTreatement = () => {
                     ? actions.dateFormater(treatment.updatedAt)
                     : "NO"}
                 </td>
-                {!["enfermero", "enfermera"].includes(store.employee.specialist) && <td>
-                  {treatment.finish_treatment ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-pencil-x"
-                      width="44"
-                      height="44"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="#ff2825"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                      <path d="M13.5 6.5l4 4" />
-                      <path d="M22 22l-5 -5" />
-                      <path d="M17 22l5 -5" />
-                    </svg>
-                  ) : (
-                    <svg
-                      onClick={() => navigate(`/editTreatment/${treatment.id}`)}
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-pencil"
-                      width="44"
-                      height="44"
-                      cursor="pointer"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="#2c3e50"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-                      <path d="M13.5 6.5l4 4" />
-                    </svg>
-                  )}
-                </td>}
+                {!["enfermero", "enfermera"].includes(
+                  store.employee.specialist
+                ) && (
+                  <td>
+                    {treatment.finish_treatment ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-pencil-x"
+                        width="44"
+                        height="44"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#ff2825"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                        <path d="M13.5 6.5l4 4" />
+                        <path d="M22 22l-5 -5" />
+                        <path d="M17 22l5 -5" />
+                      </svg>
+                    ) : (
+                      <svg
+                        onClick={() =>
+                          navigate(`/editTreatment/${treatment.id}`)
+                        }
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-pencil"
+                        width="44"
+                        height="44"
+                        cursor="pointer"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#2c3e50"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                        <path d="M13.5 6.5l4 4" />
+                      </svg>
+                    )}
+                  </td>
+                )}
                 <td>
                   {" "}
                   <svg
@@ -140,7 +149,7 @@ const PatientTreatement = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="11">¡No estás autorizado!</td>
+              <AccessDenied />
             </tr>
           )}
         </tbody>

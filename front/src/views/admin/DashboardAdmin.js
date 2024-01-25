@@ -11,7 +11,6 @@ import CardMap from "../../components/CardMap";
 
 import AccessDenied from "../AccessDenied";
 
-
 const DashboardAdmin = () => {
   const { store } = useContext(Context);
 
@@ -21,10 +20,10 @@ const DashboardAdmin = () => {
         <>
           <Navbar />
           <h1>
-              {store.empleyee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
-              {store.employee?.firstname} {store.employee?.lastname}
-            </h1>
-          <div className="d-flex justify-content-evenly flex-wrap vh-100">
+            {store.employee?.sex === "H" ? "Bienvenido" : "Bienvenida"}{" "}
+            {store.employee?.firstname} {store.employee?.lastname}
+          </h1>
+          <div className="d-flex justify-content-evenly flex-wrap ">
             <CardAllPatients />
             <CardAllEmployees />
             <CardRegister />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import denied from "../../src/image_processing20221014-5440-1ixmd18.gif"
+import denied from "../../src/image_processing20221014-5440-1ixmd18.gif";
 
 const AccessDenied = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -7,7 +7,7 @@ const AccessDenied = () => {
   useEffect(() => {
     Load();
   }, []);
-  
+
   const Load = async () => {
     setTimeout(() => {
       setIsLoading(false);
@@ -15,22 +15,20 @@ const AccessDenied = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100">
-      {isLoading ? 
+    <div className="d-flex align-items-center justify-content-center ">
+      {isLoading ? (
         <div className="text-center">
           <div>
             <h1>Cargando...</h1>
           </div>
           <div className="loaderBar"></div>
         </div>
-        : 
+      ) : (
         <div className="denied-container">
-      <h1 className="denied-title">ACCESO DENEGADO</h1>
-      <img className="denied-image" src={denied} alt="Acceso denegado" />
-    </div>
-        
-       
-      }
+          <h1 className="denied-title">ACCESO DENEGADO</h1>
+          <img className="denied-image" src={denied} alt="Acceso denegado" />
+        </div>
+      )}
     </div>
   );
 };
