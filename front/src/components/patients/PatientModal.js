@@ -4,6 +4,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../../store/appContext";
 import ConfirmUpdateMyInfo from "./ConfirmUpdateMyInfo";
 import { useNavigate, useParams } from "react-router";
+import Navbar from "../Navbar";
+import AccessDenied from "../../views/AccessDenied";
 
 const PatientModal = () => {
   const { store, actions } = useContext(Context);
@@ -61,100 +63,85 @@ const PatientModal = () => {
 
   return (
     <>
+      <Navbar />
       {store.patient?.id === store.patientData?.patientData?.id &&
       store.patientData ? (
         <>
-          <div className="modal-dialog ">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Ficha de {firstname} {lastname}
-                </h1>
-              </div>
-              <div className="modal-body">
-                <form className="mx-auto w-75">
-                  <div className="mb-4">
-                    <label
-                      className="block text-gray-700 text-sm font-bold mb-2"
-                      htmlFor="Phone"
-                    >
-                      Telefono
-                    </label>
-                    <input
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="Phone"
-                      type="number"
-                      placeholder="Telefono"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group mb-3">
-                    <label>E-mail</label>
-                    <input
-                      type="email"
-                      className="form-control border-l-0"
-                      aria-label="email"
-                      aria-describedby="patient-email"
-                      placeholder="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="input-group mb-3">
-                    <label>Dirección</label>
-                    <input
-                      type="text"
-                      className="form-control border-l-0"
-                      aria-label="address"
-                      aria-describedby="patient-address"
-                      placeholder="address"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="input-group mb-3">
-                    <label>Contraseña</label>
-                    <input
-                      type="password"
-                      className="form-control border-l-0"
-                      aria-label="password"
-                      aria-describedby="patient-password"
-                      placeholder="Contraseña"
-                      value={password === "" ? "" : password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => navigate("/dashboard-patient")}
-                >
-                  VOLVER
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target={"#confirmPatient-" + id}
-                >
-                  GUARDAR CAMBIOS
-                </button>
-              </div>
-            </div>
+          <div className="text-center d-flex row justify-content-center mb-5">
+            <h1 className="mt-3"> {firstname} {lastname}, edita tu informacion:</h1>
           </div>
-
+          <div className="text-center d-flex justify-content-center row">
+            <form className="">
+              <div className="form">
+                <label htmlFor="Phone">Telefono</label>
+                <input
+                  className=" w-50"
+                  id="Phone"
+                  type="number"
+                  placeholder="Telefono"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <div className="">
+                <label>E-mail</label>
+                <input
+                  type="email"
+                  className="w-50"
+                  aria-label="email"
+                  aria-describedby="patient-email"
+                  placeholder="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="">
+                <label>Dirección</label>
+                <input
+                  type="text"
+                  className="w-50"
+                  aria-label="address"
+                  aria-describedby="patient-address"
+                  placeholder="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="">
+                <label>Contraseña</label>
+                <input
+                  type="password"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                  aria-label="password"
+                  aria-describedby="patient-password"
+                  placeholder="Contraseña"
+                  value={password === "" ? "" : password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button
+                type="button"
+                className="button3 text-black w-50 mt-3 w-50"
+                onClick={() => navigate("/dashboard-patient")}
+              >
+                VOLVER
+              </button>
+              <button
+                type="button"
+                className="button1 text-black mb-5 w-50"
+                onClick={handleUpdatePatient} // Se corrigió el manejo del evento onClick
+              >
+                GUARDAR CAMBIOS
+              </button>
+            </form>
+          </div>
           <ConfirmUpdateMyInfo editPatientData={handleUpdatePatient} />
         </>
       ) : (
-        <h1>denegado</h1>
+        <AccessDenied />
       )}
     </>
   );

@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Context } from "../../store/appContext";
+import Navbar from "../../components/Navbar";
 
 const CreateTreatment = () => {
   const navigate = useNavigate()
@@ -91,11 +92,12 @@ const CreateTreatment = () => {
 
   return (
     <>
+    <Navbar />
       {store.employee &&
       (store.employee.specialist !== "admin" ||
         store.employee.specialist !== "enfermera" ||
         store.employee.specialist !== "enfermero") ? (
-        <div>
+        <div className="d-flex row justify-content-center text-center">
           <h1>
             Crear tratamiento para{" "}
             {store.patientData.patientData &&
@@ -168,10 +170,10 @@ const CreateTreatment = () => {
 
               <button
                 type="button"
-                className="mb-4 text-blue-500"
+                className="mb-4 text-black button1 w-50"
                 onClick={handleAddMedicine}
               >
-                Agregar Medicina
+                Agregar + Medicina
               </button>
 
               <div className="mb-4">
@@ -244,11 +246,11 @@ const CreateTreatment = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <button className="button1 w-50 text-black mb-2">
                   Crear Tratamiento
                 </button>
                 <button
-                  className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                  className="button3 w-50 text-black"
                   onClick={handleClear}
                 >
                   Cancelar

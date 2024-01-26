@@ -5,6 +5,7 @@ import { Context } from "../../store/appContext";
 import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import AccessDenied from "../AccessDenied";
+import Navbar from "../../components/Navbar";
 
 const MyAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -172,6 +173,7 @@ const MyAppointments = () => {
 
   return (
     <>
+    <Navbar />
       {store.employee &&
       store.employee.specialist &&
       (store.employee.specialist !== "enfermera" ||
@@ -190,7 +192,7 @@ const MyAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive "
+            className="table-responsive mb-5"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable

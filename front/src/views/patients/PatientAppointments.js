@@ -7,6 +7,7 @@ import SearchBar from "../../components/SearchBar";
 import ConfirmDeleteAppointment from "../../components/patients/ConfirmDeleteAppointment";
 import { useNavigate, useParams } from "react-router";
 import AccessDenied from "../../views/AccessDenied";
+import Navbar from "../../components/Navbar";
 
 const PatientAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -165,6 +166,7 @@ const PatientAppointments = () => {
 
   return (
     <>
+    <Navbar />
       {store.patient || store.employee.specialist === "admin" ? (
         <div className="admin-appointments-content">
           <h1
@@ -210,7 +212,7 @@ const PatientAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive "
+            className="table-responsive mb-5"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable

@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar"
 
 import { Context } from "../../store/appContext";
 
@@ -144,8 +145,9 @@ const EditTreatment = () => {
 
   return (
     <>
+    <Navbar />
       {isDoctor ? (
-        <div>
+        <div className="text-center d-flex justify-content-center row">
           <h1>
             Editar tratamiento para{" "}
             {store.patientData.patientData &&
@@ -208,10 +210,10 @@ const EditTreatment = () => {
 
                 {/* Ajoutez un bouton pour ajouter de nouveaux médicaments */}
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="button1 text-black w-50"
                   onClick={handleAddMedicine}
                 >
-                  Ajouter Médicament
+                  Agregar + Medicina
                 </button>
               </div>
 
@@ -301,12 +303,12 @@ const EditTreatment = () => {
                 </select>
               </div>
 
-              <div className="flex items-center justify-between">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              <div className="d-flex row justify-content-center">
+                <button className="button1 text-black w-50 mb-3">
                   Guardar Modificacion
                 </button>
                 <button
-                  className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                  className="button3 w-50 text-black"
                   onClick={() => navigate(`/patients/${store.patientData.patientData.id}`)}
                 >
                   Cancelar

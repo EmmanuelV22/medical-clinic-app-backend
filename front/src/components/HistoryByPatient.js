@@ -42,8 +42,8 @@ const HistoryByPatient = () => {
         store.patientData?.history
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .map((e) => (
-          <div className="border border-dark " key={e.id}>
-            <p>
+          <div className="border border-dark w-50 rounded mx-auto mb-2 " key={e.id}>
+            <p className="mt-3">
               descripción:
               <span>{e.description}</span>
             </p>

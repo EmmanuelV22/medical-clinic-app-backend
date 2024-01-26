@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import DoctorInfo from "./DoctorInfo ";
 import AccessDenied from "../../src/views/AccessDenied";
+import Navbar from "./Navbar";
 
 const PatientTreatement = () => {
   const { actions, store } = useContext(Context);
@@ -30,12 +31,14 @@ const PatientTreatement = () => {
   };
 
   return (
-    <div className={store.patientData.treatments.length < 5 && ""}>
-      <h1>
+    <>
+    <Navbar />
+    <div className={store.patientData.treatments?.length < 5 && ""}>
+      <h1 className="text-center">
         Lista de Tratamientos de {store.patientData?.patientData?.firstname}{" "}
         {store.patientData?.patientData?.lastname}
       </h1>
-      <table className="table ">
+      <table className="table mb-5">
         <thead>
           <tr>
             <th>Resumen</th>
@@ -155,6 +158,7 @@ const PatientTreatement = () => {
         </tbody>
       </table>
     </div>
+    </>
   );
 };
 

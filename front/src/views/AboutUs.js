@@ -3,39 +3,48 @@ import clinic from "../../src/clinic-logo-removebg.png";
 
 const AboutUs = () => {
   return (
-    <div
-      className=" container-fluid pt-2 pb-5"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className=" container-fluid pt-2 pb-5" style={{ minHeight: "100vh" }}>
       <br />
       <h1
         style={{
           display: "flex",
           justifyContent: "center",
-          fontStyle: "italic",
-          fontFamily: "Helvetica",
+          
         }}
       >
-        About us
+        Quienes somos?
       </h1>
 
-      <p className="m-5" style={{ display: "flex", justifyContent: "center" }}>
-        Clinic'app es una app web desarrollada para facilitar las conexiones y
-        gestion de informacion entre los pacientes y el personal medico de la
-        clinica.<br></br> Su sistema se basa en lenguaje HTML + CSS + React
-        combinando con una rest API basada en NodeJS de Javascript y una base de
-        datos MySQL.<br></br> Proporciona herramientas para el paciente tales
-        como:
-        <br></br>-Programacion y gestion citas medicas
-        <br></br>-Visibilidad de historia clinica
+      <p
+        className="m-5 mx-auto"
+        style={{ maxWidth: "400px" }}
+      >
+        <h5 style={{display:"inline"}}>Clinic'app</h5> es una app web desarrollada para facilitar las
+        conexiones y gestion de informacion entre los pacientes y el personal
+        medico de la clinica.<br></br> Su sistema se basa en lenguaje HTML + CSS
+        + React combinando con una rest API basada en NodeJS de Javascript y una
+        base de datos MySQL.<br></br>
+        <br></br>
+        <h5>Proporciona herramientas para el paciente tales como:</h5>
+        <br></br>-Programacion y gestion de citas medicas
+        <br></br>-Lectura de historia clinica
         <br></br>-Seguimiento de tratamientos
         <br></br>-Ubicacion via google maps
+        <br></br>-Notificaciones y cambio de contraseña via mail
         <br></br>
-        Del lado del profesional de la salud cuenta con:
+        <br></br>
+        <h5>Del lado del profesional de la salud cuenta con:</h5>
         <br></br>-Gestion de pacientes
         <br></br>-Gestion de citas medicas propias
         <br></br>-Creacion y modificacion de tratamientos
         <br></br>-Registros en la historia clinica del paciente
+        <br></br>
+        <br></br>
+        <h5>El administrador puede:</h5>
+        <br></br>-Crear nuevos usuarios
+        <br></br>-Editar informacion de usuarios
+        <br></br>-Reservar turno a pacientes
+        <br></br>-Consultar listados de usuarios y de citas medicas
       </p>
 
       <br />
@@ -44,8 +53,7 @@ const AboutUs = () => {
         style={{
           display: "flex",
           justifyContent: "center",
-          fontStyle: "italic",
-          fontFamily: "Helvetica",
+          
         }}
       >
         Quienes desarrollaron la app?

@@ -76,10 +76,10 @@ const NotificationsNavbar = () => {
                 )
             )}
           <hr />
-          <li>
-            <Link onClick={() => handleNotification(store.patient.id)}>
+          <li className="text-center text-black">
+            <h5 onClick={() => handleNotification(store.patient.id)}>
               Ver todas mis notificaciones
-            </Link>
+            </h5>
           </li>
         </>
       ) : (

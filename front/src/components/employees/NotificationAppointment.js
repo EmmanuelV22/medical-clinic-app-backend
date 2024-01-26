@@ -59,9 +59,9 @@ const NotificationAppointment = () => {
             )}
 
           <hr />
-          <Link onClick={() => handleNotificationEmployee(store.employee.id)}>
+          <h5 className="text-center" onClick={() => handleNotificationEmployee(store.employee.id)}>
             Ver todas mis notificaciones
-          </Link>
+          </h5>
         </>
       ) : (
         <>

@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import AppointmentScheduler from "./AppointmentScheduler";
+import Navbar from "./Navbar";
 
 const SpecialistPicker = () => {
   const { store, actions } = useContext(Context);
@@ -36,12 +37,15 @@ const SpecialistPicker = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="container-fluid ">
       {store.patient || store.employee.specialist === "admin" ? (
         <>
           <div className="container-fluid  bg-white ">
+            <h1>Agendar un turno:</h1>
             <select
-              className="form-select"
+              className="form-select mt-3"
               aria-label="Select a specialty"
               onChange={handleSpecialistChange}
               value={selectedSpecialist}
@@ -59,7 +63,7 @@ const SpecialistPicker = () => {
           {choiceSpecialist && (
             <div className="container-fluid">
               <select
-                className="form-select"
+                className="form-select mt-3"
                 aria-label="Select a doctor"
                 onChange={handleDoctorChange}
                 value={selectedDoctor}
@@ -112,6 +116,7 @@ const SpecialistPicker = () => {
         <h1>denegado</h1>
       )}
     </div>
+    </>
   );
 };
 

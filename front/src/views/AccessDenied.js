@@ -17,7 +17,7 @@ const AccessDenied = () => {
   return (
     <div className="d-flex align-items-center justify-content-center ">
       {isLoading ? (
-        <div className="text-center">
+        <div className="text-center mt-5">
           <div>
             <h1>Cargando...</h1>
           </div>

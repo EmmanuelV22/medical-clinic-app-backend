@@ -25,7 +25,7 @@ const DashboardDoctor = () => {
               {store.employee?.sex === "h" ? "Bienvenido" : "Bienvenida"}{" "}
               {store.employee?.firstname} {store.employee?.lastname}
             </h1>
-            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4">
+            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4 mb-5">
               <CardMyPatients />
               <CardAllPatients />
               <CardAppointments />

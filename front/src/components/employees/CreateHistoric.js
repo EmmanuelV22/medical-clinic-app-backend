@@ -43,10 +43,11 @@ const CreateHistoric = ({ id }) => {
 
     <>
       {store.employee && store.employee.specialist !== "admin" ? (
-        <div>
+        <div className="text-center mx-auto mb-3">
           <form onSubmit={handleSubmit}>
             <label htmlFor="description">Descripción</label>{" "}
             <input
+            className="me-2"
               type="text"
               value={description}
               id="description"
@@ -54,12 +55,13 @@ const CreateHistoric = ({ id }) => {
             />
             <label htmlFor="date">Fecha</label>{" "}
             <input
+            className="me-2"
               id="date"
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
-            <button>crear historia</button>
+            <button className="button1 w-25 text-black">crear historia</button>
           </form>
         </div>
       ) : (

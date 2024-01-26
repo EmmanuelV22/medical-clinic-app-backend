@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../../store/appContext";
 import { useNavigate, useParams } from "react-router";
 import DoctorInfo from "../../components/DoctorInfo ";
+import Navbar from "../../components/Navbar";
 
 const MyTtreatments = () => {
   const { actions, store } = useContext(Context);
@@ -32,13 +33,14 @@ const MyTtreatments = () => {
 
   return (
     <>
+    <Navbar />
       {isAuthorized ? (
         <div className="mb-3">
           <h1>
             Lista de Tratamientos de {store.patient.firstname}{" "}
             {store.patient.lastname}
           </h1>
-          <table className="table">
+          <table className="table mb-5">
             <thead>
               <tr>
                 <th>Resumen</th>
@@ -108,7 +110,7 @@ const MyTtreatments = () => {
                   </tr>
                 ))}
             </tbody>
-          </table>z
+          </table>
         </div>
       ) : (
         <h1>Acceso denegado</h1>

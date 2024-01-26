@@ -263,7 +263,7 @@ const AdminAllPatients = () => {
               </p>
             )}
             <div
-              className="table-responsive "
+              className="table-responsive mb-5 "
               style={{ width: "100%", margin: "0 auto" }}
             >
               <SortingTable

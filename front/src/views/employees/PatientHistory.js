@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 import HistoryByPatient from "../../components/HistoryByPatient";
 import CreateHistoric from "../../components/employees/CreateHistoric";
+import Navbar from "../../components/Navbar";
 const PatientHistory = () => {
   const { id } = useParams();
   const { store, actions } = useContext(Context);
@@ -50,14 +51,15 @@ const PatientHistory = () => {
 
   return (
     <>
+    <Navbar />
       {store.patientData && store.patientData.patientData && (
-        <div className="container-fluid"  key={store.patientData.patientData.id}>
+        <div className="container-fluid d-flex mx-auto row justify-content-center text-center"  key={store.patientData.patientData.id}>
           <h2>
             Ficha personal de {store.patientData.patientData.firstname}{" "}
             {store.patientData.patientData.lastname}
           </h2>
           <button
-            className="btn btn-success"
+            className="btn button1 text-black m-3 w-50"
             onClick={() => handlePatientTreatments(id)}
           >
             Ver tratamientos
@@ -65,14 +67,14 @@ const PatientHistory = () => {
           <div>{createHistoric && <CreateHistoric id={id} />}</div>
           {!createHistoric && ["enfermero", "enfermera"].includes(store.employee.specialist)
  ? (
-            <button className="btn btn-danger" onClick={isCreating}>
+            <button className="button1 text-black w-50" onClick={isCreating}>
               Crear nueva historia
             </button>
           ) : (
             null
           )}
-          <p>
-            Sexo: <span>{store.patientData.patientData.sex === 'M' ? "Masculino" : "Femenino"}</span>{" "}
+           <p>
+            Sexo: <span>{store.patientData.patientData.sex.toUpperCase() === 'H' ? "Masculino" : "Femenino"}</span>{" "}
           </p>
           <p>
             Telefono: <span>{store.patientData.patientData.phone}</span>{" "}
@@ -95,9 +97,9 @@ const PatientHistory = () => {
               {store.patientData.patientData.blood_group.toUpperCase()}
             </span>{" "}
           </p>
-          <div className="border border-dark rounded pb-1 mb-5">
+          <div className="rounded pb-1 mb-5">
             <h3>Historia Clinica: </h3>
-            <button onClick={handleShow} className="btn btn-secondary">
+            <button onClick={handleShow} className="button1 text-black w-50 mb-3">
               {show ? "Ocultar" : "Ver"}
             </button>
             {show && <HistoryByPatient />}
