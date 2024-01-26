@@ -36,7 +36,7 @@ const MyTtreatments = () => {
     <Navbar />
       {isAuthorized ? (
         <div className="mb-3">
-          <h1>
+          <h1 className="text-center">
             Lista de Tratamientos de {store.patient.firstname}{" "}
             {store.patient.lastname}
           </h1>

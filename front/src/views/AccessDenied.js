@@ -25,7 +25,7 @@ const AccessDenied = () => {
         </div>
       ) : (
         <div className="denied-container">
-          <h1 className="denied-title">ACCESO DENEGADO</h1>
+          <h1 className="denied-title mt-3">ACCESO DENEGADO</h1>
           <img className="denied-image" src={denied} alt="Acceso denegado" />
         </div>
       )}

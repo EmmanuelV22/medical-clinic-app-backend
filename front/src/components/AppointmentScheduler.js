@@ -124,7 +124,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   };
   return (
     <div>
-      <h1>Planificador de turnos</h1>
+      <h1 className="mt-3">Planificador de turnos</h1>
       <div>
         <h3>Seleccione una fecha y hora:</h3>
         <DatePicker

@@ -17,7 +17,7 @@ const AboutUs = () => {
 
       <p
         className="m-5 mx-auto"
-        style={{ maxWidth: "400px" }}
+        style={{ maxWidth: "700px" }}
       >
         <h5 style={{display:"inline"}}>Clinic'app</h5> es una app web desarrollada para facilitar las
         conexiones y gestion de informacion entre los pacientes y el personal

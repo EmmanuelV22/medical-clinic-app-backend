@@ -21,6 +21,9 @@ h1,h5{
   color:var(--color-3)
 }
 
+.homeHover:hover{
+transform: scale(120%);
+}
 
 body{
   background-color: var(--color-1);
@@ -75,8 +78,6 @@ body.dark-mode li{
 .react-datepicker__header {
   text-align: center;
   background-color: var(--color-3)!important;
-  box-shadow: 0 3px 18px 0 rgba(0, 0, 0, 0.25)!important;
-  border: 1px solid #000000!important;
   border-top-left-radius: 0.8rem!important;
   border-top-right-radius: 0.8rem!important;
   padding: 8px 0;

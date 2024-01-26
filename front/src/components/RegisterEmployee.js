@@ -97,8 +97,8 @@ const RegisterEmployee = () => {
 
   return (
     <>
-      <div className="w-full max-w-xs">
-        <h2>Formulario empleado:</h2>
+      <div className="w-full max-w-xs text-center">
+        <h2>Nuevo funcionario:</h2>
         <form
           onSubmit={handleSubmit}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -340,7 +340,7 @@ const RegisterEmployee = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               aria-label="start_time"
               aria-describedby="employee-start-time"
-              placeholder="start_time"
+              placeholder="08"
               value={start_time}
               onChange={(e) => setStart_time(e.target.value)}
               required
@@ -358,7 +358,7 @@ const RegisterEmployee = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               aria-label="end-time"
               aria-describedby="employee-end-time"
-              placeholder="end_time"
+              placeholder="16"
               value={end_time}
               onChange={(e) => setEnd_time(e.target.value)}
               required
@@ -388,11 +388,11 @@ const RegisterEmployee = () => {
             )}
           </div>
           <div className="flex items-center justify-between">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button className="text-black button1 w-50 m-2">
               Crear cuenta
             </button>
             <button
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+              className="text-black button3 w-50 m-2"
               onClick={handleClear}
             >
               Cancelar

@@ -249,7 +249,7 @@ const AdminAllPatients = () => {
       {store?.employee && store.employee?.specialist ? (
         <>
           <Navbar />
-          <div className="admin-patient-content">
+          <div className="admin-patient-content mb-5">
             <h1
               className="text-center font-bold my-4"
               style={{ fontSize: "2.5rem" }}
