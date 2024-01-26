@@ -20,15 +20,17 @@ const DashboardDoctor = () => {
       store.employee?.specialist !== "enfermera" ? (
         <>
           <Navbar />
-          <h1>
-            {store.employee?.sex === "h" ? "Bienvenido" : "Bienvenida"}{" "}
-            {store.employee?.firstname} {store.employee?.lastname}
-          </h1>
-          <div className="d-flex justify-content-evenly flex-wrap ">
-            <CardMyPatients />
-            <CardAllPatients />
-            <CardAppointments />
-            <CardMap />
+          <div className="mt-4">
+            <h1 className="text-center">
+              {store.employee?.sex === "h" ? "Bienvenido" : "Bienvenida"}{" "}
+              {store.employee?.firstname} {store.employee?.lastname}
+            </h1>
+            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4">
+              <CardMyPatients />
+              <CardAllPatients />
+              <CardAppointments />
+              <CardMap />
+            </div>
           </div>
         </>
       ) : (

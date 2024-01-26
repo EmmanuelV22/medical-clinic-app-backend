@@ -16,13 +16,7 @@ const DarkMode = () => {
   }, [isDarkMode]);
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "20px",
-        right: "50px",
-      }}
-    >
+    <div>
       <button className="btn-dark-content" onClick={toggleDarkMode}>
         {isDarkMode ? (
           <svg

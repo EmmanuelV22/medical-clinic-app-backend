@@ -15,26 +15,28 @@ const DashboardAdmin = () => {
   const { store } = useContext(Context);
 
   return (
-    <>
+    <div>
       {store?.employee && store.employee?.specialist === "admin" ? (
         <>
           <Navbar />
-          <h1>
-            {store.employee?.sex === "H" ? "Bienvenido" : "Bienvenida"}{" "}
-            {store.employee?.firstname} {store.employee?.lastname}
-          </h1>
-          <div className="d-flex justify-content-evenly flex-wrap ">
-            <CardAllPatients />
-            <CardAllEmployees />
-            <CardRegister />
-            <CardAllAppointments />
-            <CardMap />
+          <div className="mt-4">
+            <h1 className="text-center pb-4">
+              {store.employee?.sex === "H" ? "Bienvenido" : "Bienvenida"}{" "}
+              {store.employee?.firstname} {store.employee?.lastname}
+            </h1>
+            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4">
+              <CardAllPatients />
+              <CardAllEmployees />
+              <CardRegister />
+              <CardAllAppointments />
+              <CardMap />
+            </div>
           </div>
         </>
       ) : (
         <AccessDenied />
       )}
-    </>
+    </div>
   );
 };
 

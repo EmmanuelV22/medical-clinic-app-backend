@@ -26,24 +26,26 @@ const DashboardPatient = () => {
       {store?.patient && store.patient?.id ? (
         <>
           <Navbar />
-          <h1>
-            {store.patientData?.patientData?.sex.toUpperCase() === "H"
-              ? "Bienvenido"
-              : "Bienvenida"}{" "}
-            {store.patientData?.patientData?.firstname}{" "}
-            {store.patientData?.patientData?.lastname}
-          </h1>
-          <div className="d-flex justify-content-evenly flex-wrap ">
-            {store.patient && (
-              <>
-                <CardAppointment />
-                <CardGetAppointment />
-                <CardTreatments />
-                <CardMyHistory />
-                <CardSettings />
-                <CardMap />
-              </>
-            )}
+          <div className="mt-4">
+            <h1 className="text-center">
+              {store.patientData?.patientData?.sex.toUpperCase() === "H"
+                ? "Bienvenido"
+                : "Bienvenida"}{" "}
+              {store.patientData?.patientData?.firstname}{" "}
+              {store.patientData?.patientData?.lastname}
+            </h1>
+            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4">
+              {store.patient && (
+                <>
+                  <CardAppointment />
+                  <CardGetAppointment />
+                  <CardTreatments />
+                  <CardMyHistory />
+                  <CardSettings />
+                  <CardMap />
+                </>
+              )}
+            </div>
           </div>
         </>
       ) : (

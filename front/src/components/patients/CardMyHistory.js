@@ -8,16 +8,24 @@ const CardMyHistory = () => {
   return (
     <div>
       {store.patient ? (
-        <div className="card" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title">Historia</h5>
-            <p className="card-text">Aqui puedes ver tu Historia medica</p>
-            <Link
+        <div
+          className="card-dashboard"
+          style={{
+            background: `url(
+      "https://img.freepik.com/vector-gratis/hombre-leyendo-traves-ilustracion-vector-plano-lupa_778687-1174.jpg?w=360&t=st=1706236206~exp=1706236806~hmac=25c24504e91b4de37f7bfdb3afbc7b51b5d1e1edc03f64cd27d393b71aba97d2"
+    )`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
+        >
+          <div className="card-details">
+            <button
               to={`/patient-history/${store.patient.id}`}
-              className="card-link"
+              className="card-button"
             >
               Historia
-            </Link>
+            </button>
           </div>
         </div>
       ) : (

@@ -1,20 +1,31 @@
 import React, { useContext } from "react";
 import { Context } from "../../store/appContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CardAppointment = () => {
   const { store } = useContext(Context);
-
+  let navigate = useNavigate();
   return (
     <div>
       {store.patient ? (
-        <div className="card" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title">Agendarse</h5>
-            <p className="card-text">¡Acá puedes sacar un turno!</p>
-            <Link to="/planificar-turno" className="card-link">
-              turnos
-            </Link>
+        <div
+          className="card-dashboard"
+          style={{
+            background: `url(
+      "https://img.freepik.com/vector-gratis/mujer-reservando-cita-calendario_23-2148562875.jpg?w=740&t=st=1706236013~exp=1706236613~hmac=48d6a39bd8a30942b951c159f98ab4a281dec753d43b1b04b0a7a873ece188c7"
+    )`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+          }}
+        >
+          <div className="card-details">
+            <button
+              onClick={() => navigate("/planificar-turno")}
+              className="card-button"
+            >
+              Agendar un turno
+            </button>
           </div>
         </div>
       ) : (
