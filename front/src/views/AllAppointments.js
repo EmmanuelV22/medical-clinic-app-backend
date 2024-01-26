@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { Context } from "../store/appContext";
 import SearchBar from "../components/SearchBar";
 import AccessDenied from "../../src/views/AccessDenied";
+import Navbar from "../components/Navbar";
 
 const AllAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -65,6 +66,7 @@ const AllAppointments = () => {
 
   return (
     <>
+    <Navbar />
       {store?.employee && store.employee?.specialist === "admin" ? (
         <div className="admin-employee-content">
           <h1
@@ -80,7 +82,7 @@ const AllAppointments = () => {
             </p>
           )}
           <div
-            className="table-responsive "
+            className="table mb-5 "
             style={{ width: "100%", margin: "0 auto" }}
           >
             <table className="table">

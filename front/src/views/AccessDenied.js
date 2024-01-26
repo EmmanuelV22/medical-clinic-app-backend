@@ -17,7 +17,7 @@ const AccessDenied = () => {
   return (
     <div className="d-flex align-items-center justify-content-center ">
       {isLoading ? (
-        <div className="text-center">
+        <div className="text-center mt-5">
           <div>
             <h1>Cargando...</h1>
           </div>
@@ -25,7 +25,7 @@ const AccessDenied = () => {
         </div>
       ) : (
         <div className="denied-container">
-          <h1 className="denied-title">ACCESO DENEGADO</h1>
+          <h1 className="denied-title mt-3">ACCESO DENEGADO</h1>
           <img className="denied-image" src={denied} alt="Acceso denegado" />
         </div>
       )}

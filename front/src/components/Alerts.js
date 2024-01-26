@@ -14,7 +14,7 @@ const Alerts = () => {
 
       const timeout = setTimeout(() => {
         setIsVisible(false);
-      }, 3000);
+      }, 1500);
 
       return () => clearTimeout(timeout);
     }

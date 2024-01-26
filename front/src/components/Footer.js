@@ -5,19 +5,19 @@ const Footer = () => {
   return (
     <footer
       style={{ "--bs-gutter-x": " 0", backgroundColor: "black" }}
-      className="row  text-light p-2"
+      className="row footer text-light p-2"
     >
       <div className="col d-flex ">
         <div className="container-fluid align-items-center d-flex justify-content-around ">
           <span className="text-white">© 2024</span>
           <span className="text-white">
             <Link className="nav-link  text-white" to="clinic/aboutUs">
-              About us
+              Nosotros
             </Link>
           </span>
           <span className="text-white">
             <Link className="nav-link  text-white " to="/">
-              Home
+              Inicio
             </Link>
           </span>
           <div>

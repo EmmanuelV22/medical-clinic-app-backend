@@ -482,13 +482,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (response.status === 200) {
             const data = await response.data;
             actions.showNotification(
-              "Datos de la agenda cargados con exito",
+              "Citas de la agenda obtenidas correctamente",
               "success"
             );
             return data;
           }
         } catch (error) {
-          actions.showNotification("Error cargando agenda", "danger");
+          actions.showNotification("No hay citas en la agenda", "danger");
         }
       },
       loadMedicalAppointmentsForDr: async (medical_id) => {

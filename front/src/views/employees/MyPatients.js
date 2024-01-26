@@ -6,6 +6,7 @@ import SortingTable from "../../components/SortingTable";
 import SearchBar from "../../components/SearchBar";
 import { useNavigate } from "react-router-dom";
 import AccessDenied from "../../views/AccessDenied";
+import Navbar from "../../components/Navbar";
 
 const MyPatients = () => {
   const { store, actions } = useContext(Context);
@@ -126,6 +127,7 @@ const MyPatients = () => {
 
   return (
     <>
+    <Navbar />
       {store.employee &&
       store.employee?.specialist &&
       store?.employee?.specialist !== "admin" ? (
@@ -143,7 +145,7 @@ const MyPatients = () => {
             </p>
           )}
           <div
-            className="table-responsive"
+            className="table-responsive mb-5"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable

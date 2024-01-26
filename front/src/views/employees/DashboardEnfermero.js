@@ -15,11 +15,11 @@ const DashboardEnfermero = () => {
       ["enfermero", "enfermera"].includes(store.employee.specialist) ? (
         <>
           <Navbar />
-          <h1>
+          <h1 className="text-center">
             {store.employee?.sex === "m" ? "Bienvenido" : "Bienvenida"}{" "}
             {store.employee?.firstname} {store.employee?.lastname}
           </h1>
-          <div className="d-flex justify-content-evenly flex-wrap  ">
+          <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4 mb-5">
             <CardAllPatients />
             <CardMap />
           </div>

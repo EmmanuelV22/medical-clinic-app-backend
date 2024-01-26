@@ -34,7 +34,7 @@ const DashboardPatient = () => {
               {store.patientData?.patientData?.firstname}{" "}
               {store.patientData?.patientData?.lastname}
             </h1>
-            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4">
+            <div className="content-cards d-flex justify-content-evenly px-4 mt-4 flex-wrap gap-4 mb-5 ">
               {store.patient && (
                 <>
                   <CardAppointment />

@@ -5,6 +5,8 @@ import { Context } from "../../store/appContext";
 import { useParams } from "react-router";
 import NotifcationsDelete from "./NotifcationsDelete";
 import NotificationsButtonsRead from "../NotificationsButtonsRead";
+import Navbar from "../Navbar";
+import AccessDenied from "../../views/AccessDenied";
 
 const MyNotifications = () => {
   const { store, actions } = useContext(Context);
@@ -56,10 +58,12 @@ const MyNotifications = () => {
 
   return (
     <>
-      {store.patient.id ? (
-        <div>
+      <Navbar />
+      {store?.patient?.id ? (
+        <div className="text-center row mb-5 d-flex justify-content-center ">
+          <h1>Lista de notificaciones:</h1>
           {treatmentMessages.map((notification) => (
-            <li key={notification.id} className="d-flex">
+            <li key={notification.id}>
               {notification.treatment_message}
               <NotifcationsDelete notification={notification} />
               <NotificationsButtonsRead notification={notification} />
@@ -69,7 +73,7 @@ const MyNotifications = () => {
           {appointmentMessages.map(
             (notification) =>
               notification.appointment_message_patient !== null && (
-                <li key={notification.id} className="d-flex">
+                <li key={notification.id}>
                   {notification.appointment_message_patient}
                   <NotifcationsDelete notification={notification} />
                   <NotificationsButtonsRead notification={notification} />
@@ -78,11 +82,13 @@ const MyNotifications = () => {
           )}
         </div>
       ) : store.employee.id ? (
-        <div>
+        <div className="text-center row mb-5 d-flex justify-content-center ">
+          <h1>Lista de notificaciones:</h1>
+
           {appointmentMessages.map(
             (notification) =>
               notification.appointment_message_employee !== null && (
-                <li key={notification.id} className="d-flex">
+                <li key={notification.id} >
                   {notification.appointment_message_employee}
                   <NotifcationsDelete notification={notification} />
                   <NotificationsButtonsRead notification={notification} />
@@ -91,7 +97,7 @@ const MyNotifications = () => {
           )}
         </div>
       ) : (
-        <h1>denegado</h1>
+        <AccessDenied />
       )}
     </>
   );

@@ -7,6 +7,7 @@ import SearchBar from "../../components/SearchBar";
 import ConfirmDeleteAppointment from "../../components/patients/ConfirmDeleteAppointment";
 import { useNavigate, useParams } from "react-router";
 import AccessDenied from "../../views/AccessDenied";
+import Navbar from "../../components/Navbar";
 
 const PatientAppointments = () => {
   const { store, actions } = useContext(Context);
@@ -103,7 +104,7 @@ const PatientAppointments = () => {
                   <td>{employee.specialist}</td>
                 </React.Fragment>
               ))}
-          <td style={{ margin: "auto" }}>
+          <td className="text-center" style={{ margin: "auto" }}>
             <button
               style={{
                 border: "none",
@@ -117,7 +118,7 @@ const PatientAppointments = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-trash"
+                className="icon icon-tabler icon-tabler-trash "
                 width="28"
                 height="28"
                 viewBox="0 0 24 24"
@@ -165,8 +166,9 @@ const PatientAppointments = () => {
 
   return (
     <>
+    <Navbar />
       {store.patient || store.employee.specialist === "admin" ? (
-        <div className="admin-appointments-content">
+        <div className="admin-appointments-content d-flex justify-content-center row">
           <h1
             className="text-center font-bold my-4"
             style={{ fontSize: "2.5rem" }}
@@ -183,9 +185,10 @@ const PatientAppointments = () => {
             title="planificar turno"
             onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
           >
+            <div className=" text-center m-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-calendar-plus"
+              className="icon icon-tabler icon-tabler-calendar-plus "
               width="28"
               height="28"
               viewBox="0 0 24 24"
@@ -203,14 +206,15 @@ const PatientAppointments = () => {
               <path d="M16 19h6" />
               <path d="M19 16v6" />
             </svg>
+            </div>
           </button>
           {searchError && (
             <p className="text-center text-danger">
               No se encontraron citas médicas.
             </p>
           )}
-          <div
-            className="table-responsive "
+          {store.appointmentsPatient.length > 0 ?<div
+            className="table-responsive mb-5"
             style={{ width: "100%", margin: "0 auto" }}
           >
             <SortingTable
@@ -222,7 +226,9 @@ const PatientAppointments = () => {
               }
               renderRow={renderRow}
             />
-          </div>
+          </div> : <h5 className="text-center">No existen citas medicas para el paciente seleccionado</h5>
+          
+          }
         </div>
       ) : (
         <AccessDenied />

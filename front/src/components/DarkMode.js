@@ -21,7 +21,7 @@ const DarkMode = () => {
         {isDarkMode ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icon-tabler-sun"
+            className="icon icon-tabler icon-tabler-sun m-2"
             width="40"
             height="40"
             viewBox="0 0 24 24"
@@ -38,7 +38,7 @@ const DarkMode = () => {
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icon-tabler-moon-stars"
+            className="icon icon-tabler icon-tabler-moon-stars m-2"
             width="40"
             height="40"
             viewBox="0 0 24 24"

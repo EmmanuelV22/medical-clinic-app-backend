@@ -57,8 +57,8 @@ const RegisterPatient = () => {
   };
   return (
     <>
-      <div className="w-full max-w-xs">
-        <h2>Formulario paciente:</h2>
+      <div className="w-full max-w-xs text-center d-flex row justify-content-center">
+        <h2>Nuevo paciente:</h2>
         <form
           onSubmit={handleSubmitPatient}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -247,11 +247,11 @@ const RegisterPatient = () => {
             )}
           </div>
           <div className="flex items-center justify-between">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button className="button1 w-50 m-2">
               Crear cuenta
             </button>
             <button
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+              className="button3 w-50 m-2"
               onClick={handleClear}
             >
               Cancelar

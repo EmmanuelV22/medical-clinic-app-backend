@@ -190,7 +190,7 @@ const AdminAllEmployees = () => {
       {store?.employee && store.employee?.specialist === "admin" ? (
         <>
           <Navbar />
-          <div className="admin-employee-content">
+          <div className="admin-employee-content mb-5">
             <h1
               className="text-center font-bold my-4"
               style={{ fontSize: "2.5rem" }}

@@ -2,6 +2,14 @@
   background-color: var(--color -dark);
 }
 
+.icon-tabler-sun:hover{
+  transform: scale(120%);
+}
+
+.icon-tabler-moon-stars:hover{
+  transform: scale(120%);
+}
+
 .icon-tabler-moon-stars{
   background-color: transparent;
 }

@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { Context } from "../../store/appContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const CardMyHistory = () => {
   const { store } = useContext(Context);
+  const navigate = useNavigate()
 
   return (
     <div>
@@ -21,7 +22,7 @@ const CardMyHistory = () => {
         >
           <div className="card-details">
             <button
-              to={`/patient-history/${store.patient.id}`}
+              onClick={()=> navigate(`/patient-history/${store.patient.id}`)}
               className="card-button"
             >
               Historia

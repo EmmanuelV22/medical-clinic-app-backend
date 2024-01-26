@@ -124,9 +124,9 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   };
   return (
     <div>
-      <h1>Planificador de turnos</h1>
+      <h1 className="mt-3">Planificador de turnos</h1>
       <div>
-        <label>Seleccione una fecha y hora:</label>
+        <h3>Seleccione una fecha y hora:</h3>
         <DatePicker
           inline
           locale={es}
@@ -146,7 +146,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
         />
       </div>
       <div>
-        <button className="btn button2" onClick={handleScheduleAppointment}>Planificar turno</button>
+        <button className="btn mt-3 mb-5 button2" onClick={handleScheduleAppointment}>Planificar turno</button>
       </div>
     </div>
   );
