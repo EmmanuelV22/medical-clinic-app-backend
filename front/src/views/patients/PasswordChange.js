@@ -15,14 +15,10 @@ const PasswordChange = () => {
     try {
       const response = await actions.saveNewPassword(dni, password, token);
 
-      if (response.status === 201) {
-        return alert(response.message);
-      } else {
-        return alert(response.message);
-      }
+      return response
     } catch (error) {
-      alert(
-        "Error intentando cambiar contraseña, Acceso denegado: parametros incorrectos"
+      console.log(
+        "Error intentando cambiar contraseña, Acceso denegado: parametros incorrectos",error
       );
     }
   };
