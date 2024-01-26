@@ -146,7 +146,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
         />
       </div>
       <div>
-        <button onClick={handleScheduleAppointment}>Planificar turno</button>
+        <button className="btn button2" onClick={handleScheduleAppointment}>Planificar turno</button>
       </div>
     </div>
   );

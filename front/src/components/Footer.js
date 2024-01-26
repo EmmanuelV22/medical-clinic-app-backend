@@ -4,24 +4,22 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer
-      style={{ "--bs-gutter-x": " 0" }}
-      className="row bg-dark text-light p-2"
+      style={{ "--bs-gutter-x": " 0", backgroundColor: "black" }}
+      className="row  text-light p-2"
     >
-      <div className="col">
-        <ul className="nav flex-row listaFooter justify-content-center">
-          <li className="nav-item mb-2">
-            <Link className="nav-link  text-white " to="/">
-              Home
-            </Link>
-          </li>
-          <li className="nav-item mb-2">
+      <div className="col d-flex ">
+        <div className="container-fluid align-items-center d-flex justify-content-around ">
+          <span className="text-white">© 2024</span>
+          <span className="text-white">
             <Link className="nav-link  text-white" to="clinic/aboutUs">
               About us
             </Link>
-          </li>
-        </ul>
-        <div className="container-fluid d-flex justify-content-around ">
-          <span className="text-white">© 2024</span>
+          </span>
+          <span className="text-white">
+            <Link className="nav-link  text-white " to="/">
+              Home
+            </Link>
+          </span>
           <div>
             <div className="list-unstyled m-0">
               <a
