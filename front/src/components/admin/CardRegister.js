@@ -6,17 +6,23 @@ const CardRegister = () => {
   const { store } = useContext(Context);
   let navigate = useNavigate();
   return (
-    <div>
+    <>
       {store.employee && store.employee.specialist === "admin" ? (
         <div
-          className="card employee-card position-relative container-fluid"
-          style={{ width: "18rem", height: "10rem", textAlign: "center" }}
+          className="card-dashboard mb-3"
+          style={{
+            background: `url(
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuMLc2CeufoyW0R0tZDrq4DpbTdbdkkAcUbw&usqp=CAU"
+            )`,
+            backgroundPosition: "right",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
         >
-          <div className="card-body d-flex align-items-center justify-content-center">
-            <p className="card-text pt-4">¡Acá puedes crear las cuentas!</p>
+          <div className="card-details">
             <button
               onClick={() => navigate("/register")}
-              className="card-link link-access-employees"
+              className="card-button"
             >
               Crear una cuenta
             </button>
@@ -25,7 +31,7 @@ const CardRegister = () => {
       ) : (
         <h1>Espacio resevado a los administradores!</h1>
       )}
-    </div>
+    </>
   );
 };
 

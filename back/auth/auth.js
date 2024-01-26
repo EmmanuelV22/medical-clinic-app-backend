@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer");
  **********************************************************/
 
 exports.getEmployeeById = async (req, res, next) => {
-  const id = req.params.id; 
+  const id = req.params.id;
 
   const query = "SELECT * FROM employees WHERE id = ?";
   const values = [id];
@@ -33,7 +33,7 @@ exports.getEmployeeById = async (req, res, next) => {
 ////////////////////////////////////////////////
 
 exports.getAllEmployees = (req, res, next) => {
-  const query = "SELECT * FROM employees"; 
+  const query = "SELECT * FROM employees";
 
   connectDB.query(query, (error, results, fields) => {
     if (error) {
@@ -43,7 +43,7 @@ exports.getAllEmployees = (req, res, next) => {
       return;
     }
 
-    res.status(200).json(results); 
+    res.status(200).json(results);
   });
 };
 
@@ -103,7 +103,6 @@ exports.register = async (req, res, next) => {
       hash,
     ];
 
-
     connectDB.query(query, values, async (error, results, fields) => {
       if (error) {
         return res.status(400).json({
@@ -112,7 +111,6 @@ exports.register = async (req, res, next) => {
         });
       }
 
-     
       sendConfirmationEmail(email, firstname, lastname);
 
       const maxAge = 3 * 60 * 60;
@@ -155,8 +153,8 @@ exports.register = async (req, res, next) => {
 //////////////////////////////////////////////////
 
 const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
-  const EMAIL = process.env.USERMAIL; 
-  const PASSWORD = process.env.PASSMAIL; 
+  const EMAIL = process.env.USERMAIL;
+  const PASSWORD = process.env.PASSMAIL;
 
   let config = {
     service: "gmail",
@@ -289,8 +287,6 @@ exports.update = async (req, res, next) => {
     });
   }
 
-
-
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
       return res.status(500).json({ message: "Error hasheando password" });
@@ -315,9 +311,10 @@ exports.update = async (req, res, next) => {
 
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
-        return res
-          .status(400)
-          .json({ message: "Error actualizando datos del empleado", error: error.message });
+        return res.status(400).json({
+          message: "Error actualizando datos del empleado",
+          error: error.message,
+        });
       }
     });
 
@@ -477,15 +474,18 @@ exports.loginPatient = async (req, res, next) => {
 
   connectDB.query(query, values, (error, results, fields) => {
     if (error) {
-      return results
-        .status(400)
-        .json({ message: "Datos incorrectos, paciente no encontrado", error: error.message });
+      return results.status(400).json({
+        message: "Datos incorrectos, paciente no encontrado",
+        error: error.message,
+      });
     }
 
     const patient = results[0];
 
     if (!patient) {
-      return res.status(500).json({ message: "Datos incorrectos, paciente no encontrado" });
+      return res
+        .status(500)
+        .json({ message: "Datos incorrectos, paciente no encontrado" });
     }
 
     bcrypt.compare(password, patient.password, (err, result) => {
@@ -554,9 +554,10 @@ exports.updatePatient = async (req, res, next) => {
     ];
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
-        return res
-          .status(400)
-          .json({ message: "Error actualizando datos del paciente ", error: error.message });
+        return res.status(400).json({
+          message: "Error actualizando datos del paciente ",
+          error: error.message,
+        });
       }
 
       return res
@@ -586,7 +587,6 @@ exports.deletePatient = async (req, res, next) => {
 exports.updatePasswordPatient = async (req, res, next) => {
   const { password } = req.body;
   const dni = req.params.dni;
-
 
   const updatedAt = new Date();
 
@@ -676,7 +676,7 @@ const changePasswordEmail = (dni, res) => {
                   <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
                   <p>No te preocupes es rapido y sencillo!</p>
                   <p>Estimado paciente de Clinic'app: Para obtener una nueva contraseña debes hacer click en el siguiente boton que te llevara a una nueva pestaña donde podras ingresar tu nueva contraseña</p>
-                  <button class="btn btn-primary rounded"><a href="http://localhost:3000/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
+                  <button className="btn btn-primary rounded"><a href="http://localhost:3000/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
                   <p>Si este mail no es para ti ignoralo por favor</p>
                   <h2>Gracias por confiar en Clinic'app</h2>
                 </div>
@@ -780,8 +780,8 @@ exports.validateTokenPatient = async (req, res, next) => {
 };
 
 exports.sendNotificationEmail = (id, msg, medical_id, res) => {
-  const EMAIL = process.env.USERMAIL; 
-  const PASSWORD = process.env.PASSMAIL; 
+  const EMAIL = process.env.USERMAIL;
+  const PASSWORD = process.env.PASSMAIL;
 
   let config = {
     service: "gmail",

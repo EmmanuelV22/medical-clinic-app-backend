@@ -7,20 +7,23 @@ const CardAllEmployees = () => {
   let navigate = useNavigate();
 
   return (
-    <div>
+    <>
       {store.employee && store.employee.specialist === "admin" ? (
         <div
-          className="card employee-card position-relative container-fluid"
-          style={{ width: "18rem", height: "10rem", textAlign: "center" }}
+          className="card-dashboard mb-3"
+          style={{
+            background: `url(
+            "https://img.freepik.com/fotos-premium/equipo-trabajadores-salud-doctor-enfermera-cirujano-cirujano-cirujano-ilustracion-vectorial-dibujos-animados-st_941097-8571.jpg?size=626&ext=jpg&ga=GA1.1.1803636316.1700611200&semt=ais"
+          )`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
         >
-          <div className="card-body d-flex align-items-center justify-content-center">
-            <p className="card-text pt-4">
-              ¡Acá puedes ver todos los empleados, actualizar los datos y
-              eliminar un empleado!
-            </p>
+          <div className="card-details">
             <button
               onClick={() => navigate("/empleados")}
-              className="card-link link-access-employees"
+              className="card-button"
             >
               Lista de empleados
             </button>
@@ -29,7 +32,7 @@ const CardAllEmployees = () => {
       ) : (
         <h1>Espacio resevado a los administradores!</h1>
       )}
-    </div>
+    </>
   );
 };
 

@@ -16,10 +16,15 @@ const EmployeeDetail = ({ employeeData }) => {
   const [specialist, setSpecialist] = useState(employeeData.specialist);
   const [address, setAddress] = useState(employeeData.address);
   const [password, setPassword] = useState(employeeData.password);
-  const [days_off1, setDays_off1] = useState("");
-  const [days_off2, setDays_off2] = useState("");
+  const [days_off1, setDays_off1] = useState(employeeData.days_off[1]);
+  const [days_off2, setDays_off2] = useState(employeeData.days_off[3]);
   const [start_time, setStart_time] = useState(employeeData.start_time);
   const [end_time, setEnd_time] = useState(employeeData.end_time);
+  const [birthday, setBirthday] = useState(employeeData.birthday);
+  const [sex, setSex] = useState(employeeData.sex);
+  const [dni, setDNI] = useState(employeeData.dni);
+  const [createdAt, setCreated] = useState(employeeData.createdAt);
+  const [updatedAt, setUpdated] = useState(employeeData.updatedAt);
 
   const dayNameToNumber = {
     domingo: 0,
@@ -29,6 +34,18 @@ const EmployeeDetail = ({ employeeData }) => {
     jueves: 4,
     viernes: 5,
     sábado: 6,
+  };
+
+  const numberToDay = () => {
+    return {
+      0: "domingo",
+      1: "lunes",
+      2: "martes",
+      3: "miércoles",
+      4: "jueves",
+      5: "viernes",
+      6: "sábado",
+    };
   };
 
   useEffect(() => {}, [employeeData]);
@@ -54,7 +71,6 @@ const EmployeeDetail = ({ employeeData }) => {
         daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
 
       try {
-
         const updatedData = await actions.updateEmployee(
           firstname,
           lastname,
@@ -94,8 +110,11 @@ const EmployeeDetail = ({ employeeData }) => {
             className="modal fade"
             id={"employeeModal-" + employeeData?.id}
           >
-            <div className="modal-dialog">
-              <div className="modal-content">
+            <div className="modal-dialog mx-auto ">
+              <div
+                className="modal-content "
+                // style={{ width: "800px", transformOrigin: "left" }}
+              >
                 <div className="modal-header">
                   <h1 className="modal-title fs-5" id="staticBackdropLabel">
                     Ficha de {employeeData && firstname}
@@ -110,36 +129,74 @@ const EmployeeDetail = ({ employeeData }) => {
                 </div>
                 <div className="modal-body">
                   {employeeData && (
-                    <form className="mx-auto w-75">
-                      <div className="input-group mb-3">
+                    <form className="row g-3 needs-validation">
+                      <div className="col-md-6">
                         <label>Nombre</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="firstname"
                           aria-describedby="employee-firstname"
                           placeholder="firstname"
                           value={firstname}
                           onChange={(e) => setFirstname(e.target.value)}
-                          required
+                          readOnly
+                          disabled
                         />
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6">
                         <label>Apellido</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="lastname"
                           aria-describedby="employee-lastname"
                           placeholder="lastname"
                           value={lastname}
                           onChange={(e) => setLastname(e.target.value)}
-                          required
+                          readOnly
+                          disabled
                         />
                       </div>
-                      <div className="mb-4">
+                      <div className="col-md-6">
+                        <label>DNI</label>
+                        <input
+                          type="text"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          aria-label="dni"
+                          aria-describedby="patient-lastname"
+                          value={dni}
+                          readOnly
+                          disabled
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label>Sexo</label>
+                        <input
+                          type="text"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          aria-label="sex"
+                          aria-describedby="patient-lastname"
+                          value={sex}
+                          readOnly
+                          disabled
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label>Fecha de nacimiento</label>
+                        <input
+                          type="text"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          aria-label="birthday"
+                          aria-describedby="patient-lastname"
+                          value={actions.dateFormater(birthday)}
+                          readOnly
+                          disabled
+                        />
+                      </div>
+                      <div className="col-md-6">
                         <label
-                          className="block text-gray-700 text-sm font-bold mb-2"
+                          className="block text-gray-700 text-sm font-bold "
                           // htmlFor="PhoneEmployee"
                         >
                           Telefono
@@ -153,11 +210,11 @@ const EmployeeDetail = ({ employeeData }) => {
                           onChange={(e) => setPhone(e.target.value)}
                         />
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6">
                         <label>ID personal</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="Username"
                           aria-describedby="employee-personalID"
                           placeholder="personalID"
@@ -166,11 +223,11 @@ const EmployeeDetail = ({ employeeData }) => {
                           required
                         />
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6">
                         <label>E-mail</label>
                         <input
                           type="email"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="email"
                           aria-describedby="employee-email"
                           placeholder="email"
@@ -179,11 +236,11 @@ const EmployeeDetail = ({ employeeData }) => {
                           required
                         />
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6">
                         <label>Especialidad</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="specialist"
                           aria-describedby="employee-specialist"
                           placeholder="specialist"
@@ -192,11 +249,11 @@ const EmployeeDetail = ({ employeeData }) => {
                           required
                         />
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6">
                         <label>Dirección</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="address"
                           aria-describedby="employee-address"
                           placeholder="address"
@@ -205,17 +262,25 @@ const EmployeeDetail = ({ employeeData }) => {
                           required
                         />
                       </div>
-                      <div className="mb-4">
-                        <label
-                          className="block text-gray-700 text-sm font-bold mb-2"
-                          htmlFor="daysOffSelect1"
-                        >
-                          Día 1
-                        </label>
+                      <div className="col-md-6">
+                        <label>Contraseña</label>
+                        <input
+                          type="password"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          aria-label="password"
+                          aria-describedby="employee-password"
+                          placeholder="Contraseña"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label>Día 1</label>
                         <select
-                          id="daysOffSelect1"
+                          type="text"
                           className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          value={days_off1}
+                          value={numberToDay()[days_off1]}
                           onChange={(e) => setDays_off1(e.target.value)}
                           required
                         >
@@ -229,17 +294,12 @@ const EmployeeDetail = ({ employeeData }) => {
                           <option value="sábado">6: Sábado</option>
                         </select>
                       </div>
-                      <div className="mb-4">
-                        <label
-                          className="block text-gray-700 text-sm font-bold mb-2"
-                          htmlFor="daysOffSelect2"
-                        >
-                          Día 2
-                        </label>
+                      <div className="col-md-6">
+                        <label>Día 2</label>
                         <select
-                          id="daysOffSelect2"
+                          type="text"
                           className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          value={days_off2}
+                          value={numberToDay()[days_off2]}
                           onChange={(e) => setDays_off2(e.target.value)}
                           required
                         >
@@ -253,11 +313,11 @@ const EmployeeDetail = ({ employeeData }) => {
                           <option value="sábado">6: Sábado</option>
                         </select>
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6 ">
                         <label>Hora de inicio</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="start_time"
                           aria-describedby="employee-start-time"
                           placeholder="start_time"
@@ -266,11 +326,11 @@ const EmployeeDetail = ({ employeeData }) => {
                           required
                         />
                       </div>
-                      <div className="input-group mb-3">
+                      <div className="col-md-6">
                         <label>Hora de salida</label>
                         <input
                           type="text"
-                          className="form-control border-l-0"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="end-time"
                           aria-describedby="employee-end-time"
                           placeholder="end_time"
@@ -279,18 +339,28 @@ const EmployeeDetail = ({ employeeData }) => {
                           required
                         />
                       </div>
-
-                      <div className="input-group mb-3">
-                        <label>Contraseña</label>
+                      <div className="col-md-6">
+                        <label>Cuenta creada</label>
                         <input
-                          type="password"
-                          className="form-control border-l-0"
-                          aria-label="password"
-                          aria-describedby="employee-password"
-                          placeholder="Contraseña"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
+                          type="text"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          aria-label="created"
+                          aria-describedby="patient-lastname"
+                          value={actions.dateFormater(createdAt)}
+                          readOnly
+                          disabled
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <label>Cuenta actualizada</label>
+                        <input
+                          type="text"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          aria-label="created"
+                          aria-describedby="patient-lastname"
+                          value={actions.dateFormater(updatedAt)}
+                          readOnly
+                          disabled
                         />
                       </div>
                     </form>

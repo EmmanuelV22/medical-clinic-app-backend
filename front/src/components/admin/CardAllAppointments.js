@@ -6,18 +6,21 @@ const CardAllAppointments = () => {
   const { store } = useContext(Context);
   let navigate = useNavigate();
   return (
-    <div>
+    <>
       {store.employee && store.employee.specialist === "admin" ? (
         <div
-          className="card employee-card position-relative container-fluid"
-          style={{ width: "18rem", height: "10rem", textAlign: "center" }}
+          className="card-dashboard mb-3"
+          style={{
+            background: `url(
+              "https://img.freepik.com/vector-gratis/empleado-que-marca-dia-limite-hombre-lapiz-senalando-fecha-evento-tomando-nota-calendario-ilustracion-vector-horario-agenda-gestion-tiempo_74855-8347.jpg?w=740&t=st=1706235104~exp=1706235704~hmac=9b168c82561c03f5efaa2e23ce8bea3e3d740a1e6fea3ea9bfbaed192def5d05"
+            )`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+          }}
         >
-          <div className="card-body d-flex align-items-center justify-content-center">
-            <p className="card-text pt-4">¡Acá puedes ver todos los turnos!</p>
-            <button
-              onClick={() => navigate("/turnos")}
-              className="card-link link-access-employees"
-            >
+          <div className="card-details">
+            <button onClick={() => navigate("/turnos")} className="card-button">
               Lista de turnos
             </button>
           </div>
@@ -25,7 +28,7 @@ const CardAllAppointments = () => {
       ) : (
         <h1>Espacio resevado a los administradores!</h1>
       )}
-    </div>
+    </>
   );
 };
 
