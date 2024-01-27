@@ -11,7 +11,7 @@ import DarkMode from "./DarkMode";
 
 const Navbar = () => {
   const { store, actions } = useContext(Context);
-  const [homeType,setHomeType] = useState("")
+  const [homeType, setHomeType] = useState("");
 
   let navigate = useNavigate();
   function logout() {
@@ -21,22 +21,25 @@ const Navbar = () => {
 
   useEffect(() => {
     if (store?.patient?.id) {
-      setHomeType("patient")
-      }
-      if (store?.employee?.specialist === "admin") {
-        setHomeType("admin")
-        }
-        if (store?.employee?.specialist === "nurse") {
-          setHomeType("nurse")
-          }
-          if (store?.employee?.specialist !== "admin" && store?.employee?.specialist !== "nurse" && !store.patient.id) {
-            setHomeType("doctor")
-            }
-    
+      setHomeType("patient");
+    }
+    if (store?.employee?.specialist === "admin") {
+      setHomeType("admin");
+    }
+    if (store?.employee?.specialist === "nurse") {
+      setHomeType("nurse");
+    }
+    if (
+      store?.employee?.specialist !== "admin" &&
+      store?.employee?.specialist !== "nurse" &&
+      !store.patient.id
+    ) {
+      setHomeType("doctor");
+    }
   }, [store.patient, store.employee]);
 
   return (
-    <nav className="navbar navbar-expand-md ">
+    <nav className="navbar navbar-expand-md m-0 p-0">
       <div className="container-fluid">
         <img
           src="../clinic-logo-removebg.png"
@@ -58,26 +61,29 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse " id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end">
-          <li onClick={()=>navigate(`/dashboard-${homeType}`)} role="button">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-home"
-                        className="homeHover m-2"
-                        width="44"
-                        height="44"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="#000000"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                      </svg>
-                    </li>
+            <li
+              onClick={() => navigate(`/dashboard-${homeType}`)}
+              role="button"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-home"
+                className="homeHover m-2"
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="#000000"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+              </svg>
+            </li>
             <li className="nav-item">
               <DarkMode />
             </li>

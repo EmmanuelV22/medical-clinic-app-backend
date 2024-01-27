@@ -50,102 +50,106 @@ import { FloatingWhatsApp } from "react-floating-whatsapp";
 const Layout = () => {
   const basename = process.env.BASENAME || "";
   return (
-
     <div>
+      <BrowserRouter basename={basename}>
+        <Alerts />
+        <Routes>
+          {/*RUTAS PUBLICAS */}
+          <Route path="/acceso-denegado" element={<AccessDenied />} />
+          <Route path="/" element={<Home />} />
+          <Route path="clinic/aboutUs" element={<AboutUs />} />
 
-    <BrowserRouter basename={basename}>
-      <Alerts />
-      <Routes>
-        {/*RUTAS PUBLICAS */}
-        <Route path="/acceso-denegado" element={<AccessDenied />} />
-        <Route path="/" element={<Home />} />
-        <Route path="clinic/aboutUs" element={<AboutUs />} />
+          {/*RUTAS PRIVADAS */}
+          <Route path="/planificar-turno" element={<SpecialistPicker />} />
+          <Route path="/history/:id" element={<HistoryByPatient />} />
+          <Route path="/patient-history/:id" element={<PatientHistory />} />
+          <Route
+            path="/patient-treatments/:patient_id"
+            element={<PatientTreatements />}
+          />
+          <Route
+            path="/patients/update-password/:dni/:token"
+            element={<PasswordChange />}
+          />
+          <Route path="/clinc/maps" element={<MapView />} />
 
-        {/*RUTAS PRIVADAS */}
-        <Route path="/planificar-turno" element={<SpecialistPicker />} />
-        <Route path="/history/:id" element={<HistoryByPatient />} />
-        <Route path="/patient-history/:id" element={<PatientHistory />} />
-        <Route
-          path="/patient-treatments/:patient_id"
-          element={<PatientTreatements />}
-        />
-        <Route
-          path="/patients/update-password/:dni/:token"
-          element={<PasswordChange />}
-        />
-        <Route path="/clinc/maps" element={<MapView />} />
+          {/*RUTAS ADMINS */}
+          <Route
+            path="/planificar-turno/:patient_id_params"
+            element={<SpecialistPicker />}
+          />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+          <Route path="/empleados" element={<AdminAllEmployees />} />
+          <Route path="/employees/:id" element={<EmployeeDetail />} />
 
-        {/*RUTAS ADMINS */}
-        <Route
-          path="/planificar-turno/:patient_id_params"
-          element={<SpecialistPicker />}
-        />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard-admin" element={<DashboardAdmin />} />
-        <Route path="/empleados" element={<AdminAllEmployees />} />
-        <Route path="/employees/:id" element={<EmployeeDetail />} />
+          {/*RUTAS DOCTORES */}
+          <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
+          <Route
+            path="/dashboard-nurse"
+            element={<DashboardEnfermero />}
+          ></Route>
+          <Route path="/mis-pacientes" element={<MyPatients />} />
+          <Route path="/patients/:id" element={<PatientData />} />
+          <Route path="/new-treatment" element={<CreateTreatment />} />
+          <Route path="/create-history/:id" element={<CreateHistoric />} />
+          <Route
+            path="/editTreatment/:treatment_id"
+            element={<EditTreatment />}
+          />
+          <Route
+            path="/createTreatment/patient/:patient_id"
+            element={<CreateTreatment />}
+          />
 
-        {/*RUTAS DOCTORES */}
-        <Route path="/dashboard-doctor" element={<DashboardDoctor />}></Route>
-        <Route path="/dashboard-nurse" element={<DashboardEnfermero />}></Route>
-        <Route path="/mis-pacientes" element={<MyPatients />} />
-        <Route path="/patients/:id" element={<PatientData />} />
-        <Route path="/new-treatment" element={<CreateTreatment />} />
-        <Route path="/create-history/:id" element={<CreateHistoric />} />
-        <Route
-          path="/editTreatment/:treatment_id"
-          element={<EditTreatment />}
-        />
-        <Route
-          path="/createTreatment/patient/:patient_id"
-          element={<CreateTreatment />}
-        />
+          {/*RUTAS EMPLEADO */}
+          <Route path="/pacientes" element={<AdminAllPatients />} />
+          <Route path="/mis-turnos" element={<MyAppointments />} />
+          <Route path="/turnos" element={<AllAppointments />} />
 
-        {/*RUTAS EMPLEADO */}
-        <Route path="/pacientes" element={<AdminAllPatients />} />
-        <Route path="/mis-turnos" element={<MyAppointments />} />
-        <Route path="/turnos" element={<AllAppointments />} />
+          {/*RUTAS PACIENTES */}
+          <Route path="/patient/update/:id" element={<PatientModal />}></Route>
+          <Route path="/dashboard-patient" element={<DashboardPatient />} />
+          <Route
+            path="/patient-appointment/:appointment_id"
+            element={<AppointmentById />}
+          />
+          <Route
+            path="/turnos-paciente/:patient_id"
+            element={<PatientAppointments />}
+          />
+          <Route
+            path="/mi-tratamiento/:patient_id"
+            element={<MyTtreatments />}
+          />
+          <Route
+            path="/patient-treatment/:treatment_id"
+            element={<TreatmentById />}
+          />
+          <Route
+            path="/notifications/:patient_id"
+            element={<MyNotifications />}
+          />
+        </Routes>
+        <Footer />
 
-        {/*RUTAS PACIENTES */}
-        <Route path="/patient/update/:id" element={<PatientModal />}></Route>
-        <Route path="/dashboard-patient" element={<DashboardPatient />} />
-        <Route
-          path="/patient-appointment/:appointment_id"
-          element={<AppointmentById />}
+        <FloatingWhatsApp
+          phoneNumber="+54 11 23278365"
+          accountName="Clinic'App"
+          chatMessage="Bienvenido/a a Clinic'App! Cómo podemos ayudarte?"
+          placeholder="Envia tu mensaje para ir a Whatsapp"
+          messageDelay={0}
+          statusMessage="Responde en menos de 5 minutos"
+          darkMode={false}
+          buttonStyle={{ position: "fixed", bottom: "4rem", right: "20px" }}
+          avatar={clinic}
+          style={{ height: "auto", width: "auto" }}
+          allowEsc
+          allowClickAway
+          notification
+          notificationSound
         />
-        <Route
-          path="/turnos-paciente/:patient_id"
-          element={<PatientAppointments />}
-        />
-        <Route path="/mi-tratamiento/:patient_id" element={<MyTtreatments />} />
-        <Route
-          path="/patient-treatment/:treatment_id"
-          element={<TreatmentById />}
-        />
-        <Route
-          path="/notifications/:patient_id"
-          element={<MyNotifications />}
-        />
-      </Routes>
-      <Footer />
-
-      <FloatingWhatsApp
-        phoneNumber="+54 11 23278365"
-        accountName="Clinic'App"
-        chatMessage="Bienvenido/a a Clinic'App! Cómo podemos ayudarte?"
-        placeholder="Envia tu mensaje para ir a Whatsapp"
-        messageDelay={0}
-        statusMessage="Responde en menos de 5 minutos"
-        darkMode={false}
-        buttonStyle={{ position: "fixed", bottom: "1rem", right: "20px" }}
-        avatar={clinic}
-        style={{ height: "auto", width: "auto" }}
-        allowEsc
-        allowClickAway
-        notification
-        notificationSound
-      />
-    </BrowserRouter>
+      </BrowserRouter>
     </div>
   );
 };

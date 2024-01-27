@@ -8,6 +8,8 @@
   border: 2px solid #c3c6ce;
   transition: 0.5s ease-out;
   overflow: visible;
+  margin:30px;
+  -webkit-box-reflect: below -130px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.5)));
  }
  
  .card-details {
