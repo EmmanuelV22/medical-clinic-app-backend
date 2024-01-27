@@ -62,9 +62,15 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div
-          style={isOpen ? { 
-          top: "85px",
-          right: "20px", marginRight:"05px" } : {}}
+          style={
+            isOpen
+              ? {
+                  top: "85px",
+                  right: "20px",
+                  marginRight: "05px",
+                }
+              : {}
+          }
           className="collapse navbar-collapse position-absolute  end-0"
           id="navbarSupportedContent"
         >
@@ -108,34 +114,40 @@ const Navbar = () => {
               </button>
             </div>
             {store.employee.specialist !== "admin" && (
-              <>
+              <div className="dropleft">
                 {store.patient.id && (
-                  <li
-                    className="nav-item dropdown nav-link"
-                    id="navbarDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <Notifications />
-                    <NotificationsNavbar />
-                  </li>
-                )}
-                {store.employee.id && (
-                  <div>
+                  <div className="dropleft ">
                     <li
-                      className="nav-item dropdown nav-link"
-                      id="navbarDrop"
+                      className="nav-item mt-3 m-3 dropdown-toggle "
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      id="navbarDropdown"
                       role="button"
                       data-bs-toggle="dropdown"
+                    >
+                      <Notifications />
+                      <NotificationsNavbar />
+                    </li>
+                  </div>
+                )}
+                {store.employee.id && (
+                  <div className="dropleft">
+                    <li
+                      className="nav-item mt-3 m-3 dropdown-toggle "
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
                       aria-expanded="false"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
                     >
                       <Notifications />
                       <NotificationAppointment />
                     </li>
                   </div>
                 )}
-              </>
+              </div>
             )}
           </ul>
         </div>

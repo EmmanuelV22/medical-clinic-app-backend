@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import clinic from "../../src/clinic-logo-removebg.png";
+import Navbar from "../components/Navbar"
+import { Context } from "../store/appContext";
 
 const AboutUs = () => {
-  return (
+const {store} = useContext(Context)
+
+  return (<>
+  {store.patient.id || store.employee.id ? <Navbar /> : null}
     <div className=" container-fluid pt-2 pb-5" style={{ minHeight: "100vh" }}>
       <br />
       <h1
@@ -145,6 +150,7 @@ const AboutUs = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -85,7 +85,7 @@ const AllAppointments = () => {
             className="table mb-5 "
             style={{ width: "100%", margin: "0 auto" }}
           >
-            <table className="table">
+            <table className="">
               <thead>
                 <tr>
                   <th>Nombre paciente</th>

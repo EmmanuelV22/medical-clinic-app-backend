@@ -72,7 +72,7 @@ const PatientModal = () => {
           </div>
           <div className="text-center d-flex justify-content-center row">
             <form className="">
-              <div className="form">
+              <div className="form m-3">
                 <label htmlFor="Phone">Telefono</label>
                 <input
                   className=" w-50"
@@ -83,7 +83,7 @@ const PatientModal = () => {
                   onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
-              <div className="">
+              <div className="m-3">
                 <label>E-mail</label>
                 <input
                   type="email"
@@ -96,7 +96,7 @@ const PatientModal = () => {
                   required
                 />
               </div>
-              <div className="">
+              <div className="m-3">
                 <label>Dirección</label>
                 <input
                   type="text"

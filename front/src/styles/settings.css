@@ -22,8 +22,8 @@ h1,h5{
 }
 
 .homeHover:hover{
-transform: scale(120%);
-transition: .4s ease-in-out;
+transform: scale(90%);
+transition: .3s ease-in-out;
 
 }
 
@@ -140,4 +140,11 @@ body.dark-mode li{
   background-color: var(--color-3)!important;
   color: white;
   font-weight: bold;
+}
+
+
+.dropdown-toggle::after {
+  
+  content: unset;
+  
 }
