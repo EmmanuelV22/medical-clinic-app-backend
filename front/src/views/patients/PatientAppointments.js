@@ -166,7 +166,7 @@ const PatientAppointments = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {store.patient || store.employee.specialist === "admin" ? (
         <div className="admin-appointments-content d-flex justify-content-center row">
           <h1
@@ -186,26 +186,26 @@ const PatientAppointments = () => {
             onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
           >
             <div className=" text-center m-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-calendar-plus "
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#ff2825"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-              <path d="M16 3v4" />
-              <path d="M8 3v4" />
-              <path d="M4 11h16" />
-              <path d="M16 19h6" />
-              <path d="M19 16v6" />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-calendar-plus "
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="#ff2825"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                <path d="M16 3v4" />
+                <path d="M8 3v4" />
+                <path d="M4 11h16" />
+                <path d="M16 19h6" />
+                <path d="M19 16v6" />
+              </svg>
             </div>
           </button>
           {searchError && (
@@ -213,22 +213,26 @@ const PatientAppointments = () => {
               No se encontraron citas médicas.
             </p>
           )}
-          {store.appointmentsPatient.length > 0 ?<div
-            className="table-responsive mb-5"
-            style={{ width: "100%", margin: "0 auto" }}
-          >
-            <SortingTable
-              headers={headers}
-              data={
-                filteredAppointments.length > 0
-                  ? filteredAppointments
-                  : sortedAppointments
-              }
-              renderRow={renderRow}
-            />
-          </div> : <h5 className="text-center">No existen citas medicas para el paciente seleccionado</h5>
-          
-          }
+          {sortedAppointments.length > 0 ? (
+            <div
+              className="table-responsive mb-5"
+              style={{ width: "100%", margin: "0 auto" }}
+            >
+              <SortingTable
+                headers={headers}
+                data={
+                  filteredAppointments.length > 0
+                    ? filteredAppointments
+                    : sortedAppointments
+                }
+                renderRow={renderRow}
+              />
+            </div>
+          ) : (
+            <h5 className="text-center">
+              No existen citas medicas para el paciente seleccionado
+            </h5>
+          )}
         </div>
       ) : (
         <AccessDenied />

@@ -12,13 +12,13 @@
 
 .table {
   width: 90%;
-  margin: auto;
-  border-radius: 10px!important;
+  margin:0 auto;
+  border: 1px solid #000;
+  border-radius: 50px!important;
 }
 
 
 td, th{
   text-align: center;
   text-wrap: nowrap;
-  border: 1px solid #000;
 }

@@ -7,9 +7,9 @@ const Footer = () => {
       style={{ "--bs-gutter-x": " 0", backgroundColor: "black" }}
       className="row footer text-light p-2"
     >
-      <div className="col d-flex ">
-        <div className="container-fluid align-items-center d-flex justify-content-around ">
-          <span className="text-white">© 2024</span>
+      <div className="col d-flex  ">
+        <div className=" container-fluid content-footer align-items-center d-flex justify-content-around ">
+          <span className="text-white date-footer">© 2024</span>
           <span className="text-white">
             <Link className="nav-link  text-white" to="clinic/aboutUs">
               Nosotros
@@ -31,8 +31,8 @@ const Footer = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   style={{ marginRight: "20px" }}
                   className="icon icon-tabler icon-tabler-brand-instagram"
-                  width="44"
-                  height="44"
+                  width="35"
+                  height="35"
                   viewBox="0 0 24 24"
                   strokeWidth="1"
                   stroke="#a905b6"
@@ -55,8 +55,8 @@ const Footer = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   style={{ marginRight: "20px" }}
                   className="icon icon-tabler icon-tabler-brand-x"
-                  width="44"
-                  height="44"
+                  width="35"
+                  height="35"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="#ffffff"
@@ -76,10 +76,10 @@ const Footer = () => {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  style={{ marginRight: "20px" }}
+                  // style={{ marginRight: "20px" }}
                   className="icon icon-tabler icon-tabler-brand-facebook"
-                  width="44"
-                  height="44"
+                  width="35"
+                  height="35"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="#597e8d"

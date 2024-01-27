@@ -1,0 +1,9 @@
+@media screen and (max-width: 355px) {
+  
+  .icon-tabler-brand-facebook,
+  .icon-tabler-brand-x,
+  .icon-tabler-brand-instagram{
+    padding: 0!important;
+    margin: 0 0 0 0!important;
+  }
+}
