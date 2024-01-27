@@ -20,4 +20,13 @@
 td, th{
   text-align: center;
   text-wrap: nowrap;
+  border-right: 0px;
+}
+
+.separate-table-appointment{
+  border-right: 1px solid #000;
+}
+
+.separate-table-dr{
+  border-left: 1px solid #000;
 }

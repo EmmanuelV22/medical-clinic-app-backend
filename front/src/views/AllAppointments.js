@@ -66,7 +66,7 @@ const AllAppointments = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {store?.employee && store.employee?.specialist === "admin" ? (
         <div className="admin-employee-content">
           <h1
@@ -81,10 +81,7 @@ const AllAppointments = () => {
               ¡No se encontraron turnos!
             </p>
           )}
-          <div
-            className="table mb-5 "
-            style={{ width: "100%", margin: "0 auto" }}
-          >
+          <div className="table mb-5 " style={{ margin: "0 auto" }}>
             <table className="table">
               <thead>
                 <tr>
@@ -92,11 +89,11 @@ const AllAppointments = () => {
                   <th>Apellido paciente</th>
                   <th>DNI paciente</th>
                   <th>Teléfono paciente</th>
-                  <th>Nombre Dr</th>
+                  <th className="separate-table-dr">Nombre Dr</th>
                   <th>Apellido Dr</th>
-                  <th>Especialidad Dr</th>
+                  <th className="separate-table-appointment">Especialidad</th>
                   <th>Fecha del turno</th>
-                  <th>Hora del turno</th>
+                  <th className="w-100">Hora del turno</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,9 +104,13 @@ const AllAppointments = () => {
                       <td>{data.patient?.lastname}</td>
                       <td>{data.patient?.dni}</td>
                       <td>{data.patient?.phone}</td>
-                      <td>{data.employee?.firstname}</td>
+                      <td className="separate-table-dr">
+                        {data.employee?.firstname}
+                      </td>
                       <td>{data.employee?.lastname}</td>
-                      <td>{data.employee?.specialist}</td>
+                      <td className="separate-table-appointment">
+                        {data.employee?.specialist}
+                      </td>
                       <td>
                         {data.date}/{data.month}/{data.year}
                       </td>
