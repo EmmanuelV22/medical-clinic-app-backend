@@ -30,3 +30,7 @@ td, th{
 .separate-table-dr{
   border-left: 1px solid #000;
 }
+
+.table>:not(caption)>*>* {
+  border-bottom: 0px;
+}

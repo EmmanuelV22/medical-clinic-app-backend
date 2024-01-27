@@ -81,7 +81,7 @@ const AllAppointments = () => {
               ¡No se encontraron turnos!
             </p>
           )}
-          <div className="table mb-5 " style={{ margin: "0 auto" }}>
+          <div className="mb-5 " style={{ margin: "0 auto" }}>
             <table className="table">
               <thead>
                 <tr>
