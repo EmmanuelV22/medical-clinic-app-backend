@@ -61,10 +61,12 @@ const PatientAppointments = () => {
           const appointmentDate = new Date(
             `${appointment.year}-${appointment.month}-${appointment.date} ${appointment.time}`
           );
-
           return appointmentDate >= currentDate;
         }
+        
       );
+
+
 
       const sortedAppointments = filteredAppointments.sort((a, b) => {
         const dateA = new Date(`${a.year}-${a.month}-${a.date} ${a.time}`);
@@ -75,6 +77,7 @@ const PatientAppointments = () => {
 
       setSortedAppointments(sortedAppointments);
     }
+   
   };
 
   const handleDelete = async (id) => {
@@ -213,7 +216,8 @@ const PatientAppointments = () => {
               No se encontraron citas médicas.
             </p>
           )}
-          {store.appointmentsPatient.length > 0 ?<div
+          {sortedAppointments.length > 0 ?
+          <div
             className="table-responsive mb-5"
             style={{ width: "100%", margin: "0 auto" }}
           >

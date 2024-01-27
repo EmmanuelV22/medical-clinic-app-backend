@@ -78,15 +78,15 @@ const LoginPatient = () => {
           />
         </div>
         <div className="btnn">
-          <button className="button1">
+          <button className="button1 homeHover shadow">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar (Paciente)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </button>
         </div>
       </form>
-      <button onClick={() => window.location.reload()} className="button2 mb-2">
+      <button onClick={() => window.location.reload()} className="button2 shadow homeHover mb-2">
         Cambiar a funcionario
       </button>
-      <button className="button3" onClick={handlePassword}>
+      <button className="button3 shadow homeHover" onClick={handlePassword}>
         Olvidaste la contraseña?
       </button>
     </>

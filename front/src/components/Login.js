@@ -97,13 +97,13 @@ const Login = () => {
                 />
               </div>
               <div className="btnn">
-                <button className="button1">
+                <button className="button1 shadow homeHover">
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar (Funcionario)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </button>
               </div>
               {!isPatient && (
         <div className="">
-          <span onClick={() => setIsPatient(!isPatient)} className=" btn button1">
+          <span onClick={() => setIsPatient(!isPatient)} className=" btn shadow button1 homeHover">
             Cambiar a Paciente
           </span>
         </div>
