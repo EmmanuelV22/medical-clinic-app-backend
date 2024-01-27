@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Kalam', cursive;
+  font-family: 'Kalam', cursive, serif;
 
 }
 
@@ -23,6 +23,12 @@ h1,h5{
 
 .homeHover:hover{
 transform: scale(120%);
+}
+
+html{
+  overflow-x: hidden;
+  min-height: 100vh!important;
+  position: relative;
 }
 
 body{
@@ -127,8 +133,3 @@ body.dark-mode li{
   color: white;
   font-weight: bold;
 }
-
-.card-dashboard {
-  margin:30px;
-  -webkit-box-reflect: below -130px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.5)));
- }
