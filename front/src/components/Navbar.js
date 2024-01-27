@@ -46,12 +46,12 @@ const Navbar = () => {
           src="../clinic-logo-removebg.png"
           alt="logo app clinic"
           className="homeHover m-2"
-          style={{ width: "5rem" }}
+          style={{ width: "8rem" }}
           onClick={() => navigate("/")}
         />
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="navbar-toggler"
+          className="navbar-toggler "
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -62,10 +62,9 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div
-          style={isOpen ? { flexBasis: "100%",
-          flexGrow: "1",
-          top: "70px",
-          right: "20px", marginRight:"10px" } : {}}
+          style={isOpen ? { 
+          top: "85px",
+          right: "20px", marginRight:"05px" } : {}}
           className="collapse navbar-collapse position-absolute  end-0"
           id="navbarSupportedContent"
         >
@@ -77,9 +76,9 @@ const Navbar = () => {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon icon-tabler icon-tabler-home"
-                className="homeHover m-2 "
-                width="44"
-                height="44"
+                className="homeHover m-2 ms-2 mt-3 "
+                width="35"
+                height="35"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="#000000"
@@ -93,10 +92,10 @@ const Navbar = () => {
                 <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
               </svg>
             </li>
-            <li className="nav-item">
+            <li className="nav-item m-2 mt-4">
               <DarkMode />
             </li>
-            <div style={{ marginTop: "7px" }}>
+            <div style={{ marginTop: "11px" }}>
               <button onClick={logout} className="Btn m-2 bg-danger">
                 <div className="sign">
                   <svg viewBox="0 0 512 512">
