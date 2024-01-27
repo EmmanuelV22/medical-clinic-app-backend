@@ -23,7 +23,15 @@ h1,h5{
 
 .homeHover:hover{
 transform: scale(120%);
+transition: .4s ease-in-out;
+
 }
+
+.homeHover{
+  
+  transition: .4s ease-in-out;
+  
+  }
 
 html{
   overflow-x: hidden;

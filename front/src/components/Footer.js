@@ -30,7 +30,7 @@ const Footer = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   style={{ marginRight: "20px" }}
-                  className="icon icon-tabler icon-tabler-brand-instagram"
+                  className="icon icon-tabler icon-tabler-brand-instagram homeHover"
                   width="35"
                   height="35"
                   viewBox="0 0 24 24"
@@ -54,7 +54,7 @@ const Footer = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   style={{ marginRight: "20px" }}
-                  className="icon icon-tabler icon-tabler-brand-x"
+                  className="icon icon-tabler icon-tabler-brand-x homeHover"
                   width="35"
                   height="35"
                   viewBox="0 0 24 24"
@@ -77,7 +77,7 @@ const Footer = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   // style={{ marginRight: "20px" }}
-                  className="icon icon-tabler icon-tabler-brand-facebook"
+                  className="icon icon-tabler icon-tabler-brand-facebook homeHover"
                   width="35"
                   height="35"
                   viewBox="0 0 24 24"

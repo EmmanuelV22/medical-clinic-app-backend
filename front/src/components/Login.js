@@ -107,9 +107,8 @@ const Login = () => {
               </div>
               <div className="btnn">
                 <button className="button1 shadow homeHover">
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar (Funcionario)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Entrar (Funcionario)
                 </button>
-                <button className="button1">Entrar (Funcionario)</button>
               </div>
               {!isPatient && (
                 <div className="">
