@@ -86,7 +86,7 @@ const LoginPatient = () => {
           />
         </div>
         <div className="btnn">
-          <button className="button1">Entrar (Paciente)</button>
+          <button style={{width:"100%"}} className="button1  shadow  homeHover">Entrar (Paciente)</button>
         </div>
       </form>
       <button onClick={() => window.location.reload()} className="button2 shadow homeHover mb-2">

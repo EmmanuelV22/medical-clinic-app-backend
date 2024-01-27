@@ -12,6 +12,7 @@ import DarkMode from "./DarkMode";
 const Navbar = () => {
   const { store, actions } = useContext(Context);
   const [homeType, setHomeType] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   let navigate = useNavigate();
   function logout() {
@@ -40,7 +41,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-md m-0 p-0">
-      <div className="container-fluid">
+      <div className="container-fluid ">
         <img
           src="../clinic-logo-removebg.png"
           alt="logo app clinic"
@@ -49,6 +50,7 @@ const Navbar = () => {
           onClick={() => navigate("/")}
         />
         <button
+          onClick={() => setIsOpen(!isOpen)}
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -59,8 +61,15 @@ const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse " id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end">
+        <div
+          style={isOpen ? { flexBasis: "100%",
+          flexGrow: "1",
+          top: "70px",
+          right: "20px", marginRight:"10px" } : {}}
+          className="collapse navbar-collapse position-absolute  end-0"
+          id="navbarSupportedContent"
+        >
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li
               onClick={() => navigate(`/dashboard-${homeType}`)}
               role="button"
@@ -68,7 +77,7 @@ const Navbar = () => {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon icon-tabler icon-tabler-home"
-                className="homeHover m-2"
+                className="homeHover m-2 "
                 width="44"
                 height="44"
                 viewBox="0 0 24 24"

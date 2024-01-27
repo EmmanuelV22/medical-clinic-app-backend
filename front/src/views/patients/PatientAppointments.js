@@ -179,7 +179,34 @@ const PatientAppointments = () => {
             Lista de Citas Médicas:
           </h1>
           <SearchBar onSearch={handleSearch} />
-          <button
+          
+          {searchError && (
+            <p className="text-center text-danger">
+              No se encontraron citas médicas.
+            </p>
+          )}
+          {sortedAppointments.length > 0 ? (
+            <div
+              className="table-responsive mb-5"
+              style={{ width: "100%", margin: "0 auto" }}
+            >
+              <SortingTable
+                headers={headers}
+                data={
+                  filteredAppointments.length > 0
+                    ? filteredAppointments
+                    : sortedAppointments
+                }
+                renderRow={renderRow}
+              />
+            </div>
+          ) : (
+            <div>
+            <h5 className="text-center">
+              No existen citas medicas para el paciente seleccionado
+            </h5>
+            <h5 className="text-center">
+              Para agendar una nueva cita haz click aqui <button
             style={{
               border: "none",
               background: "transparent",
@@ -211,30 +238,10 @@ const PatientAppointments = () => {
               </svg>
             </div>
           </button>
-          {searchError && (
-            <p className="text-center text-danger">
-              No se encontraron citas médicas.
-            </p>
-          )}
-          {sortedAppointments.length > 0 ? (
-            <div
-              className="table-responsive mb-5"
-              style={{ width: "100%", margin: "0 auto" }}
-            >
-              <SortingTable
-                headers={headers}
-                data={
-                  filteredAppointments.length > 0
-                    ? filteredAppointments
-                    : sortedAppointments
-                }
-                renderRow={renderRow}
-              />
-            </div>
-          ) : (
-            <h5 className="text-center">
-              No existen citas medicas para el paciente seleccionado
             </h5>
+            </div>
+            
+            
           )}
         </div>
       ) : (
