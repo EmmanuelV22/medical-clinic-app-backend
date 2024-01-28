@@ -20,15 +20,54 @@ const AdminAllPatients = () => {
   }, []);
 
   const headers = [
-    { field: "firstname", label: "Nombre", sortable: true },
-    { field: "lastname", label: "Apellido", sortable: true },
-    { field: "dni", label: "DNI", sortable: true },
-    { field: "address", label: "Dirección", sortable: true },
-    { field: "birthday", label: "Fecha de nacimiento", sortable: true },
-    { field: "email", label: "Email", sortable: true },
-    { field: "phone", label: "Teléfono", sortable: true },
-    { field: "updatedAt", label: "Actualizado", sortable: true },
-    { field: "actions", label: "Acciones" },
+    {
+      field: "firstname",
+      label: "Nombre",
+      sortable: true,
+      className: "table-name-sorting",
+    },
+    {
+      field: "lastname",
+      label: "Apellido",
+      sortable: true,
+      className: "table-lastname-sorting",
+    },
+    { field: "dni", label: "DNI", sortable: true, class: "table-dni" },
+    {
+      field: "address",
+      label: "Dirección",
+      sortable: true,
+      className: "table-address-sorting",
+    },
+    {
+      field: "birthday",
+      label: "Fecha de nacimiento",
+      sortable: true,
+      className: "table-birthday-sorting",
+    },
+    {
+      field: "email",
+      label: "Email",
+      sortable: true,
+      className: "table-email-sorting",
+    },
+    {
+      field: "phone",
+      label: "Teléfono",
+      sortable: true,
+      className: "table-phone-sorting",
+    },
+    {
+      field: "updatedAt",
+      label: "Actualizado",
+      sortable: true,
+      className: "table-updated-sorting",
+    },
+    {
+      field: "actions",
+      label: "Acciones",
+      className: "table-action-sorting",
+    },
   ];
 
   const handleDelete = async (id) => {
@@ -47,27 +86,32 @@ const AdminAllPatients = () => {
           index % 2 === 0 ? "table-row-even" : "table-row-odd"
         }`}
       >
-        <td>{patient.firstname}</td>
-        <td>{patient.lastname}</td>
-        <td>{patient.dni}</td>
-        <td>{patient.address}</td>
-        <td>{actions.dateFormater(patient.birthday)}</td>
-        <td>{patient.email}</td>
-        <td>{patient.phone}</td>
-        <td>
+        <td className="table-name-sorting">{patient.firstname}</td>
+        <td className="table-lastname-sorting">{patient.lastname}</td>
+        <td className="table-dni-sorting">{patient.dni}</td>
+        <td className="table-address-sorting">{patient.address}</td>
+        <td className="table-birthday-sorting">
+          {actions.dateFormater(patient.birthday)}
+        </td>
+        <td className="table-email-sorting">{patient.email}</td>
+        <td className="table-phone-sorting">{patient.phone}</td>
+        <td className="table-updated-sorting">
           {patient.updatedAt !== null
             ? actions.dateFormater(patient.updatedAt)
             : null}
         </td>
         {store.employee && store.employee.specialist === "admin" ? (
-          <td className="text-center d-flex justitfy-content-center align-items-center">
+          <td
+            className="table-action-sorting mx-auto text-center d-flex justitfy-content-center align-items-center"
+            style={{ marginLeft: "5px" }}
+          >
             <button
               title="ver y editar datos"
               className="btn-edit"
               style={{
                 color: "white",
                 border: " 2px solid white",
-                padding: "0px 4px",
+                padding: "0px 3px",
                 borderRadius: "6px",
               }}
               data-bs-toggle="modal"
@@ -75,8 +119,8 @@ const AdminAllPatients = () => {
             >
               <span style={{ fontSize: "18px", verticalAlign: "middle" }}>
                 {" "}
-                <span> &#9998;</span>
-              </span>
+                &#9998;
+              </span>{" "}
             </button>
             <button
               title="eliminar cuenta"
@@ -84,8 +128,7 @@ const AdminAllPatients = () => {
                 color: "white",
                 border: " 2px solid white",
                 borderRadius: "6px",
-                padding: "2px 6px",
-                marginRight: "2px",
+                padding: "0px 0px",
               }}
               data-bs-toggle="modal"
               data-bs-target={"#deletePatient-" + patient.id}
@@ -136,9 +179,8 @@ const AdminAllPatients = () => {
                 background: "white",
                 color: "white",
                 border: " 2px solid white",
-                padding: "0px 3px",
+                padding: "1px 2px",
                 borderRadius: "6px",
-                marginRight: "2px",
               }}
             >
               <svg
@@ -171,8 +213,9 @@ const AdminAllPatients = () => {
                 background: "grey",
                 color: "white",
                 border: " 2px solid white",
-                padding: "0px 3px",
+                padding: "1px 2px",
                 borderRadius: "6px",
+                margin: "0",
               }}
             >
               <svg

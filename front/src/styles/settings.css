@@ -23,7 +23,9 @@ h1,h5{
 
 .homeHover:hover{
 transform: scale(90%);
+
 transition: .3s ease-in-out;
+
 
 }
 
@@ -74,17 +76,18 @@ body.dark-mode li{
   background-color: var(--color-3);
 }
 
+
 .btn-eliminar{
   background-color: var(--color-4)!important;
 }
 
 .btn-turno svg{
-  transform: translateY(-10%);
+  transform: translateY(-3%);
 }
 
 .btn-edit span {
   display: block;
-  transform: translateY(-5%)!important;
+  transform: translateY(5%)!important;
 }
 
 
