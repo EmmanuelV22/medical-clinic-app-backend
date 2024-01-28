@@ -36,11 +36,11 @@ const SortingTable = ({ headers, data, renderRow }) => {
   return (
     <>
       {/* Tabla con encabezados */}
-      <table className="table">
+      <table className="table table-sm table-user">
         <thead className="table-header">
           <tr>
             {headers.map((header) => (
-              <th key={header.field}>
+              <th className={header.className} key={header.field}>
                 {header.sortable ? (
                   <span onClick={() => handleSort(header.field)}>
                     {header.label}
