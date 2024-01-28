@@ -1,5 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState  } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router";
+
 
 const RegisterEmployee = () => {
   const [firstname, setFirstname] = useState("");
@@ -18,6 +20,7 @@ const RegisterEmployee = () => {
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
   const { actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const dayNameToNumber = {
     domingo: 0,
@@ -393,7 +396,7 @@ const RegisterEmployee = () => {
             </button>
             <button
               className="text-black button3 w-50 m-2"
-              onClick={handleClear}
+              onClick={()=> navigate("/dashboard-admin")}
             >
               Cancelar
             </button>

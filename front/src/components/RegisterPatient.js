@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router";
+
 
 const RegisterPatient = () => {
   const { actions } = useContext(Context);
@@ -14,6 +16,8 @@ const RegisterPatient = () => {
   const [birthday, setBirthDay] = useState("");
   const [password, setPassword] = useState("");
   const [bloodGroup, setBloodGroop] = useState("");
+  const navigate = useNavigate();
+
 
   const handleSubmitPatient = async (e) => {
     e.preventDefault();
@@ -252,7 +256,7 @@ const RegisterPatient = () => {
             </button>
             <button
               className="button3 w-50 m-2"
-              onClick={handleClear}
+              onClick={()=> navigate("/dashboard-admin")}
             >
               Cancelar
             </button>
