@@ -48,28 +48,73 @@ const MyPatients = () => {
   };
 
   const headers = [
-    { field: "firstname", label: "Nombre", sortable: true },
-    { field: "lastname", label: "Apellido", sortable: true },
-    { field: "dni", label: "DNI", sortable: true },
-    { field: "address", label: "Dirección", sortable: true },
-    { field: "birthday", label: "Fecha de nacimiento", sortable: true },
-    { field: "email", label: "Email", sortable: true },
-    { field: "createdAt", label: "Creado", sortable: true },
-    { field: "updatedAt", label: "Actualizado", sortable: true },
+    {
+      field: "firstname",
+      label: "Nombre",
+      sortable: true,
+      className: "table-name-sorting",
+    },
+    {
+      field: "lastname",
+      label: "Apellido",
+      sortable: true,
+      className: "table-lastname-sorting",
+    },
+    { field: "dni", label: "DNI", sortable: true, className: "table-dni" },
+    {
+      field: "address",
+      label: "Dirección",
+      sortable: true,
+      className: "table-address-sorting",
+    },
+    {
+      field: "birthday",
+      label: "Fecha de nacimiento",
+      sortable: true,
+      className: "table-birthday-sorting",
+    },
+    {
+      field: "email",
+      label: "Email",
+      sortable: true,
+      className: "table-email-sorting",
+    },
+    {
+      field: "phone",
+      label: "Teléfono",
+      sortable: true,
+    },
+    {
+      field: "createdAt",
+      label: "Creado",
+      sortable: true,
+      className: "table-updated-sorting",
+    },
+    {
+      field: "updatedAt",
+      label: "Actualizado",
+      sortable: true,
+      className: "table-updated-sorting",
+    },
     { field: "actions", label: "Acciones" },
   ];
 
   const renderRow = (patient) => (
     <React.Fragment key={patient.id}>
       <tr className="infos-contain">
-        <td>{patient.firstname}</td>
-        <td>{patient.lastname}</td>
-        <td>{patient.dni}</td>
-        <td>{patient.address}</td>
-        <td>{actions.dateFormater(patient.birthday)}</td>
-        <td>{patient.email}</td>
-        <td>{actions.dateFormater(patient.createdAt)}</td>
-        <td>
+        <td className="table-name-sorting">{patient.firstname}</td>
+        <td className="table-lastname-sorting">{patient.lastname}</td>
+        <td className="table-dni">{patient.dni}</td>
+        <td className="table-address-sorting">{patient.address}</td>
+        <td className="table-birthday-sorting">
+          {actions.dateFormater(patient.birthday)}
+        </td>
+        <td className="table-email-sorting">{patient.email}</td>
+        <td className="table-updated-sorting">
+          {actions.dateFormater(patient.createdAt)}
+        </td>
+        <td className="table-phone-sorting">{patient.phone}</td>
+        <td className="table-updated-sorting">
           {patient.updatedAt !== null
             ? actions.dateFormater(patient.updatedAt)
             : null}
@@ -127,7 +172,7 @@ const MyPatients = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {store.employee &&
       store.employee?.specialist &&
       store?.employee?.specialist !== "admin" ? (

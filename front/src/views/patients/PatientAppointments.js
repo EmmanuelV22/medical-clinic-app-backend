@@ -37,6 +37,7 @@ const PatientAppointments = () => {
       field: "employee.firstname",
       label: "Nombre del doctor",
       sortable: false,
+      className: "table-nameDr-sorting",
     },
     {
       field: "employee.lastname",
@@ -63,10 +64,7 @@ const PatientAppointments = () => {
           );
           return appointmentDate >= currentDate;
         }
-        
       );
-
-
 
       const sortedAppointments = filteredAppointments.sort((a, b) => {
         const dateA = new Date(`${a.year}-${a.month}-${a.date} ${a.time}`);
@@ -77,7 +75,6 @@ const PatientAppointments = () => {
 
       setSortedAppointments(sortedAppointments);
     }
-   
   };
 
   const handleDelete = async (id) => {
@@ -102,7 +99,7 @@ const PatientAppointments = () => {
               .filter((employee) => appointment.medical_id === employee.id)
               .map((employee) => (
                 <React.Fragment key={employee.id}>
-                  <td>{employee.firstname}</td>
+                  <td className="table-nameDr-sorting">{employee.firstname}</td>
                   <td>{employee.lastname}</td>
                   <td>{employee.specialist}</td>
                 </React.Fragment>
@@ -179,7 +176,7 @@ const PatientAppointments = () => {
             Lista de Citas Médicas:
           </h1>
           <SearchBar onSearch={handleSearch} />
-          
+
           {searchError && (
             <p className="text-center text-danger">
               No se encontraron citas médicas.
@@ -202,46 +199,45 @@ const PatientAppointments = () => {
             </div>
           ) : (
             <div>
-            <h5 className="text-center">
-              No existen citas medicas para el paciente seleccionado
-            </h5>
-            <h5 className="text-center">
-              Para agendar una nueva cita haz click aqui <button
-            style={{
-              border: "none",
-              background: "transparent",
-              color: "green",
-            }}
-            title="planificar turno"
-            onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
-          >
-            <div className=" text-center m-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-calendar-plus "
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="#ff2825"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-                <path d="M16 3v4" />
-                <path d="M8 3v4" />
-                <path d="M4 11h16" />
-                <path d="M16 19h6" />
-                <path d="M19 16v6" />
-              </svg>
+              <h5 className="text-center">
+                No existen citas medicas para el paciente seleccionado
+              </h5>
+              <h5 className="text-center">
+                Para agendar una nueva cita haz click aqui{" "}
+                <button
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    color: "green",
+                  }}
+                  title="planificar turno"
+                  onClick={() => navgiate(`/planificar-turno/${patient_id}`)}
+                >
+                  <div className=" text-center m-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="icon icon-tabler icon-tabler-calendar-plus "
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="#ff2825"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                      <path d="M16 3v4" />
+                      <path d="M8 3v4" />
+                      <path d="M4 11h16" />
+                      <path d="M16 19h6" />
+                      <path d="M19 16v6" />
+                    </svg>
+                  </div>
+                </button>
+              </h5>
             </div>
-          </button>
-            </h5>
-            </div>
-            
-            
           )}
         </div>
       ) : (

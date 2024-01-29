@@ -38,57 +38,6 @@ td, th{
   border-bottom: 0px;
 }
 
-@media screen and (min-width: 658px) and (max-width: 1024px){
-  .table-name,.table-phone,.separate-table-dr{
-    display: none;
-  }
-  .separate-table-appointment{
-    border: none;
-  }
-}
-
-
-@media screen and (max-width: 658px) and (min-width: 440px){
-  .table-name,
-  .table-lastname,
-  .table-phone,
-  .separate-table-dr,
-  .table-name-dr,
-  .table-address-sorting,
-  .table-birthday-sorting,
-  .table-updated-sorting,
-  .table-name-sorting{
-    display: none;
-  }
-  .separate-table-appointment{
-    border: none;
-  }
-
-  .table-user{
-    font-size: .9rem;
-  }
-}
-
-@media screen and (min-width: 658px) and (max-width: 956px){
-  .table-address-sorting,
-  .table-birthday-sorting,
-  .table-updated-sorting{
-    display: none;
-  }
-}
-
-@media screen and (max-width: 460px) and (min-width: 405px){
-  .table-user{
-    font-size: .7rem;
-  }
-  .table-address-sorting,
-  .table-birthday-sorting,
-  .table-updated-sorting,
-  .table-name-sorting{
-    display: none;
-  }
-}
-
 @media screen and (max-width: 405px){
   .table-name,
   .table-lastname,
@@ -96,12 +45,28 @@ td, th{
   .separate-table-dr,
   .table-name-dr,
   .table-address-sorting,
+  .table-dni-sorting,
   .table-birthday-sorting,
   .table-updated-sorting,
   .table-name-sorting,
+  .table-namePat-sorting,
   .table-action-sorting,
-  .table-action-sorting button {
+  .table-action-sorting button,
+  .table-dniDr-sorting,
+  .table-daysoff-sorting,
+  .table-start-sorting,
+  .table-end-sorting,
+  .table-emailDr-sorting,
+  .table-nameDr-sorting,
+  .table-email-sorting,
+  .table-finished-sorting,
+  .table-surgey-sorting {
+    
     display: none;
+  }
+
+  .table-treatment{
+    font-size: 0.7rem;
   }
 
   .table-action-sorting,
@@ -117,3 +82,95 @@ td, th{
     font-size: 0.75rem;
   }
 }
+
+@media screen and (max-width: 460px) and (min-width: 405px){
+  .table-user{
+    font-size: .8rem;
+  }
+  .table-address-sorting,
+  .table-namePat-sorting,
+  .table-birthday-sorting,
+  .table-updated-sorting,
+  .table-dni-sorting,
+  .table-name-sorting,
+  .table-dniDr-sorting,
+  .table-daysoff-sorting,
+  .table-email-sorting,
+  .table-start-sorting,
+  .table-end-sorting,
+  .table-nameDr-sorting,
+  .table-finished-sorting,
+  .table-surgey-sorting{
+    display: none;
+  }
+
+  .table-treatment{
+    font-size: 0.7rem;
+  }
+}
+
+@media screen and (max-width: 658px) and (min-width: 460px){
+  .table-name,
+  .table-lastname,
+  .table-phone,
+  .separate-table-dr,
+  .table-namePat-sorting,
+  .table-email-sorting,
+  .table-name-dr,
+  .table-address-sorting,
+  .table-birthday-sorting,
+  .table-updated-sorting,
+  .table-name-sorting,
+  .table-dniDr-sorting,
+  .table-daysoff-sorting,
+  .table-start-sorting,
+  .table-end-sorting,
+  .table-finished-sorting,
+  .table-surgey-sorting{
+    
+    display: none;
+  }
+  .separate-table-appointment{
+    border: none;
+  }
+
+  .table-user{
+    font-size: .9rem;
+  }
+}
+
+@media screen and (min-width: 658px) and (max-width: 956px){
+  .table-address-sorting,
+  .table-birthday-sorting,
+  .table-namePat-sorting,
+  .table-updated-sorting,
+  .table-dniDr-sorting{
+    display: none;
+  }
+}
+
+@media screen and (min-width: 658px) and (max-width: 906px){
+  .table-daysoff-sorting,
+  .table-start-sorting,
+  .table-end-sorting{
+    
+    display: none;
+  }
+}
+
+@media screen and (min-width: 906px) and (max-width: 1066px){
+  .table-dniDr-sorting{
+    display: none;
+  }
+}
+
+@media screen and (min-width: 658px) and (max-width: 1024px){
+  .table-name,.table-phone,.separate-table-dr{
+    display: none;
+  }
+  .separate-table-appointment{
+    border: none;
+  }
+}
+
+
