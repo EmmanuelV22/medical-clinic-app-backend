@@ -20,7 +20,7 @@ const MyNotifications = () => {
         }
       } catch (error) {
         console.error(
-          "Erreur lors de la récupération des détails du patient",
+          "Error recuperando info del paciente",
           error
         );
       }
@@ -31,7 +31,7 @@ const MyNotifications = () => {
         }
       } catch (error) {
         console.error(
-          "Erreur lors de la récupération des détails du dr",
+          "Error recuperando info del doctor",
           error
         );
       }
@@ -63,7 +63,7 @@ const MyNotifications = () => {
         <div className="text-center row mb-5 d-flex justify-content-center ">
           <h1>Lista de notificaciones:</h1>
           {treatmentMessages.map((notification) => (
-            <li key={notification.id}>
+            <li className="list-unstyled d-flex column justify-content-center m-2" key={notification.id}>
               {notification.treatment_message}
               <NotifcationsDelete notification={notification} />
               <NotificationsButtonsRead notification={notification} />
@@ -73,7 +73,7 @@ const MyNotifications = () => {
           {appointmentMessages.map(
             (notification) =>
               notification.appointment_message_patient !== null && (
-                <li key={notification.id}>
+                <li className="list-unstyled d-flex column justify-content-center m-2" key={notification.id}>
                   {notification.appointment_message_patient}
                   <NotifcationsDelete notification={notification} />
                   <NotificationsButtonsRead notification={notification} />
@@ -88,7 +88,7 @@ const MyNotifications = () => {
           {appointmentMessages.map(
             (notification) =>
               notification.appointment_message_employee !== null && (
-                <li key={notification.id} >
+                <li className="list-unstyled d-flex column justify-content-center m-2" key={notification.id} >
                   {notification.appointment_message_employee}
                   <NotifcationsDelete notification={notification} />
                   <NotificationsButtonsRead notification={notification} />

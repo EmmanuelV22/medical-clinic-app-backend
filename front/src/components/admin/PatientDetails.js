@@ -11,7 +11,7 @@ const PatientDetails = ({ patientData }) => {
   const [firstname, setFirstname] = useState(patientData.firstname);
   const [lastname, setLastname] = useState(patientData.lastname);
   const [email, setEmail] = useState(patientData.email);
-  const [password, setPassword] = useState(patientData.password);
+  const [password, setPassword] = useState("11111");
   const [address, setAddress] = useState(patientData.address);
   const [id, setId] = useState(patientData.id);
   const [phone, setPhone] = useState(patientData.phone);
@@ -23,9 +23,8 @@ const PatientDetails = ({ patientData }) => {
   const [updatedAt, setUpdated] = useState(patientData.updatedAt);
 
   const handleUpdatePatient = async () => {
-
-    if (password.length >= 3) {
-
+    const verifyPass = password.length >= 8 || password === "11111";
+    if (phone && email && address && verifyPass) {
       try {
         const response = await actions.updatePatient(
           firstname,
@@ -41,11 +40,10 @@ const PatientDetails = ({ patientData }) => {
 
         window.location.reload();
       } catch (error) {
-        return error
+        return error;
       }
     } else {
       actions.showNotification("Verifica los datos ingresados", "danger");
-
     }
   };
 
@@ -191,7 +189,7 @@ const PatientDetails = ({ patientData }) => {
                     aria-label="password"
                     aria-describedby="patient-password"
                     placeholder="Contraseña"
-                    value={""}
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
@@ -225,7 +223,7 @@ const PatientDetails = ({ patientData }) => {
             <div className="modal-footer m-auto">
               <button
                 type="button"
-                className="btn btn-primary"
+                className=" button1 w-100"
                 data-bs-toggle="modal"
                 data-bs-target={"#updatePatient-" + patientData.id}
               >

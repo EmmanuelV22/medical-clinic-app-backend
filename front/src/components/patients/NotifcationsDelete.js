@@ -10,7 +10,7 @@ const NotifcationsDelete = ({ notification }) => {
   };
 
   return (
-    <div>
+    <div role="button">
       <svg
         onClick={() => handleDelete(notification.id)}
         xmlns="http://www.w3.org/2000/svg"

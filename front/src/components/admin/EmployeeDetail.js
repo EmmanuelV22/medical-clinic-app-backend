@@ -15,9 +15,10 @@ const EmployeeDetail = ({ employeeData }) => {
   const [email, setEmail] = useState(employeeData.email);
   const [specialist, setSpecialist] = useState(employeeData.specialist);
   const [address, setAddress] = useState(employeeData.address);
-  const [password, setPassword] = useState(employeeData.password);
-  const [days_off1, setDays_off1] = useState(employeeData.days_off[1]);
-  const [days_off2, setDays_off2] = useState(employeeData.days_off[3]);
+  const [password, setPassword] = useState("11111");
+  const daysOffArray = employeeData.days_off;
+  const [days_off1, setDays_off1] = useState(daysOffArray[1]);
+  const [days_off2, setDays_off2] = useState(daysOffArray[3]);
   const [start_time, setStart_time] = useState(employeeData.start_time);
   const [end_time, setEnd_time] = useState(employeeData.end_time);
   const [birthday, setBirthday] = useState(employeeData.birthday);
@@ -25,6 +26,16 @@ const EmployeeDetail = ({ employeeData }) => {
   const [dni, setDNI] = useState(employeeData.dni);
   const [createdAt, setCreated] = useState(employeeData.createdAt);
   const [updatedAt, setUpdated] = useState(employeeData.updatedAt);
+
+  const numberToDay = {
+    0: "domingo",
+    1: "lunes",
+    2: "martes",
+    3: "miércoles",
+    4: "jueves",
+    5: "viernes",
+    6: "sábado",
+  };
 
   const dayNameToNumber = {
     domingo: 0,
@@ -36,23 +47,11 @@ const EmployeeDetail = ({ employeeData }) => {
     sábado: 6,
   };
 
-  const numberToDay = () => {
-    return {
-      0: "domingo",
-      1: "lunes",
-      2: "martes",
-      3: "miércoles",
-      4: "jueves",
-      5: "viernes",
-      6: "sábado",
-    };
-  };
-
   useEffect(() => {}, [employeeData]);
 
   const editEmployeeData = async () => {
     if (
-      password.length >= 3 &&
+      (password.length >= 8 || password === "11111") &&
       days_off1 &&
       days_off2 &&
       firstname &&
@@ -65,10 +64,22 @@ const EmployeeDetail = ({ employeeData }) => {
       start_time &&
       end_time
     ) {
-      const daysOfToArray = [days_off1, days_off2];
+      const numberToDay = {
+        0: "domingo",
+        1: "lunes",
+        2: "martes",
+        3: "miércoles",
+        4: "jueves",
+        5: "viernes",
+        6: "sábado",
+      };
 
-      const daysOffArray =
-        daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
+      const day1 = days_off1.length > 1 ? days_off1 : numberToDay[days_off1];
+      const day2 = days_off2.length > 1 ? days_off2 : numberToDay[days_off2];
+
+      const daysOffToArray = [day1, day2];
+
+      const daysOffArray = daysOffToArray.map((day) => dayNameToNumber[day]);
 
       try {
         const updatedData = await actions.updateEmployee(
@@ -280,7 +291,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         <select
                           type="text"
                           className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          value={numberToDay()[days_off1]}
+                          value={numberToDay[days_off1]}
                           onChange={(e) => setDays_off1(e.target.value)}
                           required
                         >
@@ -299,7 +310,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         <select
                           type="text"
                           className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          value={numberToDay()[days_off2]}
+                          value={numberToDay[days_off2]}
                           onChange={(e) => setDays_off2(e.target.value)}
                           required
                         >
@@ -369,14 +380,14 @@ const EmployeeDetail = ({ employeeData }) => {
                 <div className="modal-footer">
                   <button
                     type="button"
-                    className="btn btn-secondary"
+                    className=" button3 w-100"
                     data-bs-dismiss="modal"
                   >
                     CERRAR
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className=" button1 w-100"
                     data-bs-toggle="modal"
                     data-bs-target={"#updateEmployee-" + employeeData.id}
                   >

@@ -43,7 +43,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-md m-0 p-0">
       <div className="container-fluid ">
         <img
-          src="../clinic-logo-removebg.png"
+          src="../../clinic-logo-removebg.png"
           alt="logo app clinic"
           className="homeHover m-2"
           style={{ width: "8rem" }}
@@ -81,8 +81,7 @@ const Navbar = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-home"
-                className="homeHover m-2 ms-2 mt-3 "
+                className="icon icon-tabler icon-tabler-home homeHover m-2 ms-2 mt-3"
                 width="35"
                 height="35"
                 viewBox="0 0 24 24"

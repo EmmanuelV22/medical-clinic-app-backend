@@ -22,14 +22,14 @@ const ConfirmUpdateEmployee = ({ employeeData, editEmployeeData }) => {
           <div className="modal-footer">
             <button
               type="button"
-              className="btn btn-secondary"
+              className=" button3 w-100"
               data-bs-dismiss="modal"
             >
               No
             </button>
             <button
               type="button"
-              className="btn btn-danger"
+              className=" button1 w-100"
               onClick={editEmployeeData}
             >
               Sí

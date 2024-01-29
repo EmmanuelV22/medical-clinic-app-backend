@@ -14,32 +14,41 @@ const PatientModal = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("11111");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(0);
+  const [sex,setSex] = useState("");
+  const [bloodGropu,setBloodGroup] = useState("");
+  const [dni,setDni] = useState("");
 
-  const funcioncita = async () => {
+  const getPatientData = async () => {
     if (id) {
       await actions.getPatientById(id);
       const patientData = store.patientData?.patientData;
+      
       if (patientData) {
+        const isSex = patientData.sex 
         setFirstname(patientData.firstname || "");
         setLastname(patientData.lastname || "");
         setPhone(patientData.phone || "");
         setEmail(patientData.email || "");
         setAddress(patientData.address || "");
+        setSex((isSex.toUpperCase() === "H" ? "Hombre" : "Mujer") || "");
+        setDni(patientData.dni || "");
+        setBloodGroup(patientData.blood_group || "")
       }
     }
   };
 
   useEffect(() => {
     if (id) {
-      funcioncita();
+      getPatientData();
     }
   }, [id]);
 
   const handleUpdatePatient = async () => {
-    if (password.length >= 3) {
+    const verifyPass = (password.length >= 8 || password === "11111");
+    if (phone && email && address && verifyPass) {
       try {
         const response = await actions.updatePatient(
           firstname,
@@ -57,7 +66,7 @@ const PatientModal = () => {
         return error;
       }
     } else {
-      actions.showNotification("Password incorrecto", "danger");
+      actions.showNotification("Verifica los datos ingresados", "danger");
     }
   };
 
@@ -66,16 +75,71 @@ const PatientModal = () => {
       <Navbar />
       {store.patient?.id === store.patientData?.patientData?.id &&
       store.patientData ? (
-        <>
+        <div className="text-center d-flex justify-content-center row">
           <div className="text-center d-flex row justify-content-center mb-5">
-            <h1 className="mt-3"> {firstname} {lastname}, edita tu informacion:</h1>
+            <h1 className=""> {firstname} {lastname}, edita tu informacion:</h1>
           </div>
-          <div className="text-center d-flex justify-content-center row">
-            <form className="">
+          <div className="text-center d-flex justify-content-center row  border border-dark w-75 mb-5 rounded">
+            <form className=" text-start ">
+            <div className="form m-3">
+                <label htmlFor="dni">DNI</label>
+                <input
+                  className=" m-2 w-100"
+                  id="dni"
+                  type="number"
+                  placeholder="DNI"
+                  value={dni}
+                  disabled
+                />
+              </div>
+            <div className="form m-3">
+                <label htmlFor="Phone">Nombre</label>
+                <input
+                  className="w-100  m-2"
+                  id="name"
+                  type="text"
+                  placeholder="Nombre"
+                  value={firstname}
+                  disabled
+                />
+              </div>
+            <div className="form m-3">
+                <label htmlFor="Phone">Apellido</label>
+                <input
+                  className="w-100  m-2"
+                  id="lastname"
+                  type="text"
+                  placeholder="Apellido"
+                  value={lastname}
+                  disabled
+                />
+              </div>
+              <div className="form m-3">
+                <label htmlFor="Phone">Sexo</label>
+                <input
+                  className="w-100  m-2"
+                  id="sex"
+                  type="text"
+                  placeholder="Sexo"
+                  value={sex}
+                  disabled
+                />
+              </div>
+              <div className="form m-3">
+                <label htmlFor="Phone">Grupo Sanguineo</label>
+                <input
+                  className="w-100  m-2"
+                  id="blood"
+                  type="text"
+                  placeholder="Grupo Sanguineo"
+                  value={bloodGropu}
+                  disabled
+                />
+              </div>
               <div className="form m-3">
                 <label htmlFor="Phone">Telefono</label>
                 <input
-                  className=" w-50"
+                  className="w-100  m-2"
                   id="Phone"
                   type="number"
                   placeholder="Telefono"
@@ -83,11 +147,11 @@ const PatientModal = () => {
                   onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
-              <div className="m-3">
+              <div className="form m-3">
                 <label>E-mail</label>
                 <input
                   type="email"
-                  className="w-50"
+                  className="w-100 m-2"
                   aria-label="email"
                   aria-describedby="patient-email"
                   placeholder="email"
@@ -96,11 +160,11 @@ const PatientModal = () => {
                   required
                 />
               </div>
-              <div className="m-3">
+              <div className="form m-3">
                 <label>Dirección</label>
                 <input
                   type="text"
-                  className="w-50"
+                  className="w-100 m-2"
                   aria-label="address"
                   aria-describedby="patient-address"
                   placeholder="address"
@@ -109,11 +173,11 @@ const PatientModal = () => {
                   required
                 />
               </div>
-              <div className="">
+              <div className="form m-3">
                 <label>Contraseña</label>
                 <input
                   type="password"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                  className="w-100 m-2" 
                   aria-label="password"
                   aria-describedby="patient-password"
                   placeholder="Contraseña"
@@ -122,24 +186,26 @@ const PatientModal = () => {
                   required
                 />
               </div>
+              <div className="text-center d-flex justify-content-center">
               <button
                 type="button"
-                className="button3 text-black w-50 mt-3 w-50"
+                className="button3 text-center text-black   m-2 h-100 "
                 onClick={() => navigate("/dashboard-patient")}
               >
                 VOLVER
               </button>
               <button
                 type="button"
-                className="button1 text-black mb-5 w-50"
+                className="button1 text-center text-black h-100   m-2"
                 onClick={handleUpdatePatient} // Se corrigió el manejo del evento onClick
               >
                 GUARDAR CAMBIOS
               </button>
+              </div>
             </form>
           </div>
           <ConfirmUpdateMyInfo editPatientData={handleUpdatePatient} />
-        </>
+        </div>
       ) : (
         <AccessDenied />
       )}

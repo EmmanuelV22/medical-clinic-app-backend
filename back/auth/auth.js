@@ -287,12 +287,49 @@ exports.update = async (req, res, next) => {
     });
   }
 
-  bcrypt.hash(password, 10, async (err, hash) => {
-    if (err) {
-      return res.status(500).json({ message: "Error hasheando password" });
-    }
+  const isPasswordEmpty = !password || password === "11111";
+  const isDaysOffEmpty = days_off === "";
+
+  if (!isPasswordEmpty && !isDaysOffEmpty) {
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return res.status(500).json({ message: "Error hasheando password" });
+      }
+      const query =
+        "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+      const values = [
+        firstname,
+        lastname,
+        phone,
+        personalID,
+        email,
+        specialist,
+        address,
+        updatedAt,
+        JSON.stringify(days_off),
+        start_time,
+        end_time,
+        hash,
+        id,
+      ];
+
+      connectDB.query(query, values, (error, results, fields) => {
+        if (error) {
+          return res.status(400).json({
+            message: "Error actualizando datos del empleado",
+            error: error.message,
+          });
+        }
+      });
+
+      return res.status(201).json({
+        message: "Datos del empleado actualizado con éxito",
+        employee: id,
+      });
+    });
+  } else if (!isDaysOffEmpty && isPasswordEmpty) {
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?,days_off = ?, start_time = ?, end_time = ? WHERE id = ?";
     const values = [
       firstname,
       lastname,
@@ -305,7 +342,6 @@ exports.update = async (req, res, next) => {
       JSON.stringify(days_off),
       start_time,
       end_time,
-      hash,
       id,
     ];
 
@@ -319,10 +355,45 @@ exports.update = async (req, res, next) => {
     });
 
     return res.status(201).json({
-      message: "Datos del empleado actualizado con exito",
+      message: "Datos del empleado actualizado con éxito",
       employee: id,
     });
-  });
+  } else {
+    const query =
+      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return res.status(500).json({ message: "Error hasheando password" });
+      }
+      const values = [
+        firstname,
+        lastname,
+        phone,
+        personalID,
+        email,
+        specialist,
+        address,
+        updatedAt,
+        start_time,
+        end_time,
+        hash,
+        id,
+      ];
+
+      connectDB.query(query, values, (error, results, fields) => {
+        if (error) {
+          return res.status(400).json({
+            message: "Error actualizando datos del empleado",
+            error: error.message,
+          });
+        }
+      });
+    });
+    return res.status(201).json({
+      message: "Datos del empleado actualizado con éxito",
+      employee: id,
+    });
+  }
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -535,23 +606,43 @@ exports.updatePatient = async (req, res, next) => {
   const { firstname, lastname, phone, email, address, password, id } = req.body;
   const updatedAt = new Date();
 
-  bcrypt.hash(password, 10, async (err, hash) => {
-    if (err) {
-      return res.status(500).json({ message: "Error hasehando password" });
-    }
+  const isPasswordEmpty = !password || password === "11111";
 
+  if (!isPasswordEmpty) {
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return res.status(500).json({ message: "Error hasehando password" });
+      }
+
+      const query =
+        "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
+      const values = [
+        firstname,
+        lastname,
+        phone,
+        email,
+        address,
+        hash,
+        updatedAt,
+        id,
+      ];
+      connectDB.query(query, values, (error, results, fields) => {
+        if (error) {
+          return res.status(400).json({
+            message: "Error actualizando datos del paciente ",
+            error: error.message,
+          });
+        }
+
+        return res
+          .status(201)
+          .json({ message: "Paciente actualizado correctamente", patient: id });
+      });
+    });
+  } else {
     const query =
-      "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
-    const values = [
-      firstname,
-      lastname,
-      phone,
-      email,
-      address,
-      hash,
-      updatedAt,
-      id,
-    ];
+      "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ? , updatedAt = ? WHERE id = ?";
+    const values = [firstname, lastname, phone, email, address, updatedAt, id];
     connectDB.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
@@ -564,7 +655,7 @@ exports.updatePatient = async (req, res, next) => {
         .status(201)
         .json({ message: "Paciente actualizado correctamente", patient: id });
     });
-  });
+  }
 };
 
 exports.deletePatient = async (req, res, next) => {

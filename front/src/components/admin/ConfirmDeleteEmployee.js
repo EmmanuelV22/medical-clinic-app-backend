@@ -20,17 +20,17 @@ const ConfirmDeleteEmployee = ({ employeeData, handleDeleteEmployee }) => {
             {employeeData && employeeData.lastname} con el id personal{" "}
             {employeeData && employeeData.personalID}?
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer d-flex align-items-center">
             <button
               type="button"
-              className="btn btn-secondary"
+              className=" button3 w-100"
               data-bs-dismiss="modal"
             >
               No
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className=" button1"
               onClick={() => handleDeleteEmployee(employeeData.id)}
             >
               Sí

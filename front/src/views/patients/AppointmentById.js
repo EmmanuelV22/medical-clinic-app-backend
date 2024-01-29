@@ -41,7 +41,7 @@ const AppointmentById = () => {
   }, [store.appointment?.medical_id]);
 
   return (
-    <div className="">
+    <div className="text-center">
       <Navbar />
       <h1>Detalles de turno confirmado:</h1>
       <h3>Fecha Reservada:</h3>
