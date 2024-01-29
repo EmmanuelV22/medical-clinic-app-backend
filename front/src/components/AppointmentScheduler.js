@@ -83,7 +83,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
     fetchAppointments();
   }, [doctorId]);
 
-    
+ 
 
   const handleScheduleAppointment = async () => {
     if((selectedDate && store.patient.id) || (selectedDate && patient_id_params)) {
@@ -94,7 +94,11 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       const time = selectedDate.toLocaleTimeString().substring(0, 5);
       const state = "confirmado";
       const medical_id = doctorId;
+      const noTime = selectedDate.toLocaleTimeString()
       const patient_id = store.patient.id ? store.patient.id : patient_id_params
+      if ( noTime === "0:00:00" ){
+        return actions.showNotification("Debe seleccionar un horario","danger")
+      }else{
       await actions
         .postAppointment(
           date,
@@ -117,15 +121,15 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
         }else {
           navigate(`/turnos-paciente/${store.patient.id}`);
 
-        }
+        }}
     } else {
       console.warn("Seleccione una fecha y hora para planificar el turno.");
     }
   };
   return (
-    <div>
+    <div className="text-center">
       <h1 className="mt-3">Planificador de turnos</h1>
-      <div>
+      <div className="d-flex row justify-content-center mb-5">
         <h3>Seleccione una fecha y hora:</h3>
         <DatePicker
           inline
@@ -145,9 +149,9 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           excludeDates={disabledDates}
         />
       </div>
-      <div>
-        <button className="btn mt-3 mb-5 button2" onClick={handleScheduleAppointment}>Planificar turno</button>
-      </div>
+      {selectedDate ?<div>
+        <button className=" mt-3  mb-5 w-50 button1" onClick={handleScheduleAppointment}>Planificar turno</button>
+      </div> : false}
     </div>
   );
 };
