@@ -96,7 +96,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       const medical_id = doctorId;
       const noTime = selectedDate.toLocaleTimeString()
       const patient_id = store.patient.id ? store.patient.id : patient_id_params
-      if ( noTime === "0:00:00" ){
+      if ( noTime === "0:00:00" || noTime === "00:00:00" ){
         return actions.showNotification("Debe seleccionar un horario","danger")
       }else{
       await actions
@@ -130,7 +130,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
 
 
 
-  
+
   return (
     <div className="text-center">
       <h1 className="mt-3">Planificador de turnos</h1>
