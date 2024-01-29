@@ -34,14 +34,31 @@ const MyAppointments = () => {
       field: "patient.firstname",
       label: "Nombre del Paciente",
       sortable: false,
+      className: "table-namePat-sorting",
     },
     {
       field: "patient.lastname",
       label: "Apellido del Paciente",
       sortable: false,
     },
-    { field: "patient.dni", label: "DNI del Paciente", sortable: false },
-    { field: "patient.email", label: "Email del Paciente", sortable: false },
+    {
+      field: "patient.dni",
+      label: "DNI del Paciente",
+      sortable: false,
+      className: "table-dni-sorting",
+    },
+    {
+      field: "phone",
+      label: "Teléfono",
+      sortable: true,
+      className: "table-phone-sorting",
+    },
+    {
+      field: "patient.email",
+      label: "Email del Paciente",
+      sortable: false,
+      className: "table-email-sorting",
+    },
     { field: "actions", label: "Estado", sortable: false },
   ];
 
@@ -112,10 +129,11 @@ const MyAppointments = () => {
             .filter((patient) => appointment.patient_id === patient.id)
             .map((patient) => (
               <React.Fragment key={patient.id}>
-                <td>{patient.firstname}</td>
+                <td className="table-namePat-sorting">{patient.firstname}</td>
                 <td>{patient.lastname}</td>
-                <td>{patient.dni}</td>
-                <td>{patient.email}</td>
+                <td className="table-dni-sorting">{patient.dni}</td>
+                <td className="table-phone-sorting">{patient.phone}</td>
+                <td className="table-email-sorting">{patient.email}</td>
                 {appointment.state === "asistido" && <td>Asistido</td>}
                 {appointment.state === "no asistido" && <td>No asistido</td>}
                 {appointment.state !== "asistido" &&
@@ -173,7 +191,7 @@ const MyAppointments = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {store.employee &&
       store.employee.specialist &&
       (store.employee.specialist !== "enfermera" ||
