@@ -130,7 +130,9 @@ const Navbar = () => {
                     </li>
                   </div>
                 )}
-                {store.employee.id && (
+                {store.employee.id && !["enfermero", "enfermera"].includes(
+                  store.employee.specialist
+                ) && (
                   <div className="dropleft">
                     <li
                       className="nav-item mt-3 m-3 dropdown-toggle "

@@ -82,7 +82,7 @@ const PatientTreatement = () => {
                   store.employee.specialist
                 ) && (
                   <td>
-                    {treatment.finish_treatment ? (
+                    {treatment.finish_treatment || store.employee.id != treatment.medical_id ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="icon icon-tabler icon-tabler-pencil-x"

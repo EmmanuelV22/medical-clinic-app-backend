@@ -44,6 +44,7 @@ import AllAppointments from "./views/AllAppointments";
 import MapView from "./views/MapView";
 import Footer from "./components/Footer";
 import AboutUs from "./views/AboutUs";
+import ScrollToTopOnMount from "./ScrollToTopOnMount"
 
 import { FloatingWhatsApp } from "react-floating-whatsapp";
 
@@ -53,7 +54,9 @@ const Layout = () => {
     <div>
       <BrowserRouter basename={basename}>
         <Alerts />
+        <ScrollToTopOnMount />
         <Routes>
+          
           {/*RUTAS PUBLICAS */}
           <Route path="/acceso-denegado" element={<AccessDenied />} />
           <Route path="/" element={<Home />} />

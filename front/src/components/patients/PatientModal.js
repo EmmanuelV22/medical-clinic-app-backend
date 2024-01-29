@@ -17,17 +17,17 @@ const PatientModal = () => {
   const [password, setPassword] = useState("11111");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(0);
-  const [sex,setSex] = useState("");
-  const [bloodGropu,setBloodGroup] = useState("");
-  const [dni,setDni] = useState("");
+  const [sex, setSex] = useState("");
+  const [bloodGropu, setBloodGroup] = useState("");
+  const [dni, setDni] = useState("");
 
   const getPatientData = async () => {
     if (id) {
       await actions.getPatientById(id);
       const patientData = store.patientData?.patientData;
-      
+
       if (patientData) {
-        const isSex = patientData.sex 
+        const isSex = patientData.sex;
         setFirstname(patientData.firstname || "");
         setLastname(patientData.lastname || "");
         setPhone(patientData.phone || "");
@@ -35,7 +35,7 @@ const PatientModal = () => {
         setAddress(patientData.address || "");
         setSex((isSex.toUpperCase() === "H" ? "Hombre" : "Mujer") || "");
         setDni(patientData.dni || "");
-        setBloodGroup(patientData.blood_group || "")
+        setBloodGroup(patientData.blood_group || "");
       }
     }
   };
@@ -47,7 +47,7 @@ const PatientModal = () => {
   }, [id]);
 
   const handleUpdatePatient = async () => {
-    const verifyPass = (password.length >= 8 || password === "11111");
+    const verifyPass = password.length >= 8 || password === "11111";
     if (phone && email && address && verifyPass) {
       try {
         const response = await actions.updatePatient(
@@ -76,12 +76,15 @@ const PatientModal = () => {
       {store.patient?.id === store.patientData?.patientData?.id &&
       store.patientData ? (
         <div className="text-center d-flex justify-content-center row">
-          <div className="text-center d-flex row justify-content-center mb-5">
-            <h1 className=""> {firstname} {lastname}, edita tu informacion:</h1>
+          <div className="text-center d-flex row justify-content-center ">
+            <h1 className="">
+              {" "}
+              {firstname} {lastname}, edita tu informacion:
+            </h1>
           </div>
-          <div className="text-center d-flex justify-content-center row  border border-dark w-75 mb-5 rounded">
+          <div className="text-center d-flex justify-content-center row   w-75 mb-5 rounded">
             <form className=" text-start ">
-            <div className="form m-3">
+              <div className="form m-3">
                 <label htmlFor="dni">DNI</label>
                 <input
                   className=" m-2 w-100"
@@ -92,7 +95,7 @@ const PatientModal = () => {
                   disabled
                 />
               </div>
-            <div className="form m-3">
+              <div className="form m-3">
                 <label htmlFor="Phone">Nombre</label>
                 <input
                   className="w-100  m-2"
@@ -103,7 +106,7 @@ const PatientModal = () => {
                   disabled
                 />
               </div>
-            <div className="form m-3">
+              <div className="form m-3">
                 <label htmlFor="Phone">Apellido</label>
                 <input
                   className="w-100  m-2"
@@ -177,7 +180,7 @@ const PatientModal = () => {
                 <label>Contraseña</label>
                 <input
                   type="password"
-                  className="w-100 m-2" 
+                  className="w-100 m-2"
                   aria-label="password"
                   aria-describedby="patient-password"
                   placeholder="Contraseña"
@@ -187,20 +190,20 @@ const PatientModal = () => {
                 />
               </div>
               <div className="text-center d-flex justify-content-center">
-              <button
-                type="button"
-                className="button3 text-center text-black   m-2 h-100 "
-                onClick={() => navigate("/dashboard-patient")}
-              >
-                VOLVER
-              </button>
-              <button
-                type="button"
-                className="button1 text-center text-black h-100   m-2"
-                onClick={handleUpdatePatient} // Se corrigió el manejo del evento onClick
-              >
-                GUARDAR CAMBIOS
-              </button>
+                <button
+                  type="button"
+                  className="button3 text-center text-black   m-2 h-100 "
+                  onClick={() => navigate("/dashboard-patient")}
+                >
+                  VOLVER
+                </button>
+                <button
+                  type="button"
+                  className="button1 text-center text-black h-100   m-2"
+                  onClick={handleUpdatePatient} // Se corrigió el manejo del evento onClick
+                >
+                  GUARDAR CAMBIOS
+                </button>
               </div>
             </form>
           </div>

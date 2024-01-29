@@ -62,7 +62,7 @@ const TreatmentById = () => {
                     </svg>
                     {medicine.medicine_name}
                   </div>
-                  <div className="mb-5">Quantity: {medicine.quantity}</div>
+                  <div className="mb-5">Cantidad: {medicine.quantity}</div>
                 </div>
               )
             )}
