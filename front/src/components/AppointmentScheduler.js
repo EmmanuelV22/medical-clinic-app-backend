@@ -126,6 +126,11 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       console.warn("Seleccione una fecha y hora para planificar el turno.");
     }
   };
+
+
+
+
+  
   return (
     <div className="text-center">
       <h1 className="mt-3">Planificador de turnos</h1>
