@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 // import '../styles/datepicker.scss';
 const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
-  const {patient_id_params} = useParams()
+  const { patient_id_params } = useParams();
   const { actions, store } = useContext(Context);
   const [selectedDate, setSelectedDate] = useState(null);
   const [available, setAvailable] = useState(1);
@@ -19,29 +19,25 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
   );
   const disabledDates = [];
   let navigate = useNavigate();
-    
-  function agregarFechaDeshabilitada(dia ,mes, año) {
+
+  function agregarFechaDeshabilitada(dia, mes, año) {
     disabledDates.push(new Date(año, mes - 1, dia));
   }
-
- 
-
 
   function deshabilitarFechaEnRango(fechaInicio, fechaFin) {
     let currentDate = new Date(fechaInicio);
     const array = JSON.parse(daysOff);
     while (currentDate <= fechaFin) {
-        
-          array.map((e) => {
-            if (currentDate.getDay() === e) {
-              agregarFechaDeshabilitada(
-                currentDate.getDate(),
-                currentDate.getMonth() + 1,
-                currentDate.getFullYear()
-              );
-            }
-          });
-        
+      array.map((e) => {
+        if (currentDate.getDay() === e) {
+          agregarFechaDeshabilitada(
+            currentDate.getDate(),
+            currentDate.getMonth() + 1,
+            currentDate.getFullYear()
+          );
+        }
+      });
+
       currentDate.setDate(currentDate.getDate() + 1);
     }
   }
@@ -83,10 +79,11 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
     fetchAppointments();
   }, [doctorId]);
 
- 
-
   const handleScheduleAppointment = async () => {
-    if((selectedDate && store.patient.id) || (selectedDate && patient_id_params)) {
+    if (
+      (selectedDate && store.patient.id) ||
+      (selectedDate && patient_id_params)
+    ) {
       const date = selectedDate.getDate();
       const month = selectedDate.getMonth() + 1;
       const year = selectedDate.getFullYear();
@@ -94,43 +91,43 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       const time = selectedDate.toLocaleTimeString().substring(0, 5);
       const state = "confirmado";
       const medical_id = doctorId;
-      const noTime = selectedDate.toLocaleTimeString()
-      const patient_id = store.patient.id ? store.patient.id : patient_id_params
-      if ( noTime === "0:00:00" ){
-        return actions.showNotification("Debe seleccionar un horario","danger")
-      }else{
-      await actions
-        .postAppointment(
-          date,
-          month,
-          year,
-          day,
-          time,
-          state,
-          patient_id,
-          medical_id,
-          available
-        )
+      const noTime = selectedDate.toLocaleTimeString();
+      const patient_id = store.patient.id
+        ? store.patient.id
+        : patient_id_params;
+      if (noTime === "0:00:00") {
+        return actions.showNotification(
+          "Debe seleccionar un horario",
+          "danger"
+        );
+      } else {
+        await actions
+          .postAppointment(
+            date,
+            month,
+            year,
+            day,
+            time,
+            state,
+            patient_id,
+            medical_id,
+            available
+          )
 
-        .catch((error) => {
-          console.error("Error al planificar el turno", error.message);
-        });
-        if (store.employee.specialist){
+          .catch((error) => {
+            console.error("Error al planificar el turno", error.message);
+          });
+        if (store.employee.specialist) {
           navigate(`/turnos-paciente/${patient_id}`);
-
-        }else {
+        } else {
           navigate(`/turnos-paciente/${store.patient.id}`);
-
-        }}
+        }
+      }
     } else {
       console.warn("Seleccione una fecha y hora para planificar el turno.");
     }
   };
 
-
-
-
-  
   return (
     <div className="text-center">
       <h1 className="mt-3">Planificador de turnos</h1>
@@ -154,9 +151,18 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
           excludeDates={disabledDates}
         />
       </div>
-      {selectedDate ?<div>
-        <button className=" mt-3  mb-5 w-50 button1" onClick={handleScheduleAppointment}>Planificar turno</button>
-      </div> : false}
+      {selectedDate ? (
+        <div>
+          <button
+            className=" mt-3  mb-5 w-50 button1"
+            onClick={handleScheduleAppointment}
+          >
+            Planificar turno
+          </button>
+        </div>
+      ) : (
+        false
+      )}
     </div>
   );
 };
