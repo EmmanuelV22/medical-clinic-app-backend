@@ -95,7 +95,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       const patient_id = store.patient.id
         ? store.patient.id
         : patient_id_params;
-      if (noTime === "0:00:00") {
+      if (noTime === "0:00:00" || noTime === "00:00:00") {
         return actions.showNotification(
           "Debe seleccionar un horario",
           "danger"
