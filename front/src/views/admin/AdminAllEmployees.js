@@ -57,17 +57,71 @@ const AdminAllEmployees = () => {
   }, []);
 
   const headers = [
-    { field: "firstname", label: "Nombre", sortable: true },
-    { field: "lastname", label: "Apellido", sortable: true },
-    { field: "dni", label: "DNI", sortable: true },
-    { field: "personalID", label: "ID personal", sortable: true },
-    { field: "especialidad", label: "Especialidad", sortable: true },
-    { field: "email", label: "Email", sortable: true },
-    { field: "days_off", label: "Dias Libres", sortable: false },
-    { field: "start_time", label: "Hora de inicio", sortable: false },
-    { field: "end_time", label: "Hora de finalizacion", sortable: false },
-    { field: "updatedAt", label: "Actualizado", sortable: false },
-    { field: "actions", label: "Acciones" },
+    {
+      field: "firstname",
+      label: "Nombre",
+      sortable: true,
+      className: "table-name-sorting",
+    },
+    {
+      field: "lastname",
+      label: "Apellido",
+      sortable: true,
+      className: "table-lastname-sorting ",
+    },
+    {
+      field: "dni",
+      label: "DNI",
+      sortable: true,
+      className: "table-dniDr-sorting ",
+    },
+    {
+      field: "personalID",
+      label: "ID personal",
+      sortable: true,
+      className: "table-personal-sorting ",
+    },
+    {
+      field: "especialidad",
+      label: "Especialidad",
+      sortable: true,
+      className: "table-specialist-sorting ",
+    },
+    {
+      field: "email",
+      label: "Email",
+      sortable: true,
+      className: "table-emailDr-sorting ",
+    },
+    {
+      field: "days_off",
+      label: "Dias Libres",
+      sortable: false,
+      className: "table-daysoff-sorting ",
+    },
+    {
+      field: "start_time",
+      label: "Hora de inicio",
+      sortable: false,
+      className: "table-start-sorting ",
+    },
+    {
+      field: "end_time",
+      label: "Hora de finalizacion",
+      sortable: false,
+      className: "table-end-sorting ",
+    },
+    {
+      field: "updatedAt",
+      label: "Actualizado",
+      sortable: false,
+      className: "table-updated-sorting ",
+    },
+    {
+      field: "actions",
+      label: "Acciones",
+      className: "table-actionDr-sorting",
+    },
   ];
 
   const handleDeleteEmployee = async (id) => {
@@ -83,22 +137,26 @@ const AdminAllEmployees = () => {
     return (
       <React.Fragment key={employee.id}>
         <tr className="infos-contain">
-          <td>{employee.firstname}</td>
-          <td>{employee.lastname}</td>
-          <td>{employee.dni}</td>
-          <td>{employee.personalID}</td>
-          <td>{employee.specialist}</td>
-          <td>{employee.email}</td>
-          <td>{convertNumberToDay(employee.days_off)}</td>
-          <td>{formatTime(employee.start_time)}</td>
-          <td>{formatTime(employee.end_time)}</td>
-          <td>
+          <td className="table-name-sorting">{employee.firstname}</td>
+          <td className="table-lastname-sorting">{employee.lastname}</td>
+          <td className="table-dniDr-sorting">{employee.dni}</td>
+          <td className="table-personal-sorting">{employee.personalID}</td>
+          <td className="table-specialist-sorting">{employee.specialist}</td>
+          <td className="table-emailDr-sorting">{employee.email}</td>
+          <td className="table-daysoff-sorting">
+            {convertNumberToDay(employee.days_off)}
+          </td>
+          <td className="table-start-sorting">
+            {formatTime(employee.start_time)}
+          </td>
+          <td className="table-end-sorting">{formatTime(employee.end_time)}</td>
+          <td className="table-updated-sorting">
             {employee.updatedAt !== null
               ? actions.dateFormater(employee.updatedAt)
               : null}
           </td>
 
-          <td className="text-center d-flex justitfy-content-center align-items-center">
+          <td className="table-actionDr-sorting text-center d-flex justitfy-content-center align-items-center">
             <button
               title="ver y editar datos"
               className="btn-edit"
@@ -180,7 +238,7 @@ const AdminAllEmployees = () => {
         employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
         employee.dni.toString().includes(query)
     );
-    // Set searchError to true if no employees found
+    // Set searchError to className: table-name-sorting if no employees found
     setSearchError(filtered.length === 0);
     setFilteredEmployees(filtered);
   };

@@ -33,23 +33,23 @@ const MyTtreatments = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {isAuthorized ? (
         <div className="mb-3">
           <h1 className="text-center">
             Lista de Tratamientos de {store.patient.firstname}{" "}
             {store.patient.lastname}
           </h1>
-          <table className="table mb-5">
+          <table className="table table-treatment mb-5">
             <thead>
               <tr>
                 <th>Resumen</th>
                 <th>Fecha de inicio</th>
                 <th>Fecha de finalización</th>
-                <th>Cirugía</th>
-                <th>Doctor</th>
-                <th>Terminado</th>
-                <th>Actualizado</th>
+                <th className="table-surgey-sorting">Cirugía</th>
+                <th className="table-nameDr-sorting">Doctor</th>
+                <th className="table-finished-sorting">Terminado</th>
+                <th className="table-updated-sorting">Actualizado</th>
                 <th>Acción</th>
               </tr>
             </thead>
@@ -62,17 +62,19 @@ const MyTtreatments = () => {
                       <td>{treatment.resume}</td>
                       <td>{actions.dateFormater(treatment.initial_date)}</td>
                       <td>{actions.dateFormater(treatment.exp_date)}</td>
-                      <td>
+                      <td className="table-surgey-sorting">
                         {treatment.surgey === "" ? "NO" : treatment.surgey}
                       </td>
-                      <td>
+                      <td className="table-nameDr-sorting">
                         <DoctorInfo
                           medicalId={treatment.medical_id}
                           getDoctorData={getDoctorData}
                         />
                       </td>
-                      <td>{treatment.finish_treatment ? "SI" : "NO"}</td>
-                      <td>
+                      <td className="table-finished-sorting">
+                        {treatment.finish_treatment ? "SI" : "NO"}
+                      </td>
+                      <td className="table-updated-sorting">
                         {treatment.updatedAt !== null
                           ? actions.dateFormater(treatment.updatedAt)
                           : "NO"}
