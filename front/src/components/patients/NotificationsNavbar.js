@@ -51,17 +51,6 @@ const NotificationsNavbar = () => {
               .slice(0, 10)
               .map((notification, index) => (
                 <>
-                  {/* {notification.treatment_id !== null && (
-                    <span
-                      onClick={() =>
-                        navigate(
-                          `/patient-treatment/${notification.treatment_id}`
-                        )
-                      }
-                    >
-                      {notification.treatment_message}
-                    </span>
-                  )} */}
                   {(notification !== null)  && (
                     <li
                       key={notification.id}
