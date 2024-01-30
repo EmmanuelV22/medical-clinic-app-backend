@@ -18,6 +18,7 @@ const NotificationsNavbar = () => {
       navigate(`/notifications/${patientId}`);
     } catch (error) {
       return error;
+      return error;
     }
   };
 

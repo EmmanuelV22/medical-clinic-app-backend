@@ -101,10 +101,7 @@ const AdminAllPatients = () => {
             : null}
         </td>
         {store.employee && store.employee.specialist === "admin" ? (
-          <td
-            className="table-action-sorting mx-auto text-center d-flex justitfy-content-center align-items-center"
-            style={{ marginLeft: "5px" }}
-          >
+          <td className="table-action-sorting ms-2 text-center d-flex justitfy-content-center align-items-center">
             <button
               title="ver y editar datos"
               className="btn-edit bg-black"

@@ -21,27 +21,22 @@ const PatientHistory = () => {
     setShow(!show);
   };
 
-
   const handlePatientTreatments = async () => {
     try {
       const PatientTreatements = await actions.getTreatmentsPatient(id);
-      store.employee.id ? (navigate(`/patient-treatments/${id}`)) : (navigate(`/mi-tratamiento/${id}`));
+      store.employee.id
+        ? navigate(`/patient-treatments/${id}`)
+        : navigate(`/mi-tratamiento/${id}`);
     } catch (error) {
-      console.error(
-        error
-      );
+      console.error(error);
     }
   };
 
   const getPatientData = async () => {
     try {
       const patientDetails = await actions.getPatientById(id);
-      
     } catch (error) {
-      console.error(
-        
-        error
-      );
+      console.error(error);
     }
   };
 
@@ -51,30 +46,36 @@ const PatientHistory = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {store.patientData && store.patientData.patientData && (
-        <div className="container-fluid d-flex mx-auto row justify-content-center text-center"  key={store.patientData.patientData.id}>
+        <div
+          className="container-fluid d-flex mx-auto row justify-content-center text-center"
+          key={store.patientData.patientData.id}
+        >
           <h2>
             Ficha personal de {store.patientData.patientData.firstname}{" "}
             {store.patientData.patientData.lastname}
           </h2>
           <button
-            className="btn button1 text-black m-3 w-50"
+            className="btn button1 btn-dark text-black m-3 w-50"
             onClick={() => handlePatientTreatments(id)}
           >
             Ver tratamientos
           </button>
           <div>{createHistoric && <CreateHistoric id={id} />}</div>
-          {!createHistoric && ["enfermero", "enfermera"].includes(store.employee.specialist)
- ? (
+          {!createHistoric &&
+          ["enfermero", "enfermera"].includes(store.employee.specialist) ? (
             <button className="button1 text-black w-50" onClick={isCreating}>
               Crear nueva historia
             </button>
-          ) : (
-            null
-          )}
-           <p>
-            Sexo: <span>{store.patientData.patientData.sex.toUpperCase() === 'H' ? "Masculino" : "Femenino"}</span>{" "}
+          ) : null}
+          <p>
+            Sexo:{" "}
+            <span>
+              {store.patientData.patientData.sex.toUpperCase() === "H"
+                ? "Masculino"
+                : "Femenino"}
+            </span>{" "}
           </p>
           <p>
             Telefono: <span>{store.patientData.patientData.phone}</span>{" "}
@@ -99,7 +100,10 @@ const PatientHistory = () => {
           </p>
           <div className="rounded pb-1 mb-5">
             <h3>Historia Clinica: </h3>
-            <button onClick={handleShow} className="button1 text-black w-50 mb-3">
+            <button
+              onClick={handleShow}
+              className="button1 btn-dark text-black w-50 mb-3"
+            >
               {show ? "Ocultar" : "Ver"}
             </button>
             {show && <HistoryByPatient />}

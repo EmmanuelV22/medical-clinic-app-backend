@@ -63,8 +63,7 @@ footer{
 }
 
 body.dark-mode,
-body.dark-mode input,
-body.dark-mode button
+body.dark-mode input
 {
   background-color: var(--color-dark);
   color: var(--color-1);
@@ -75,7 +74,14 @@ body.dark-mode table,
 body.dark-mode a,
 body.dark-mode li{
   color: var(--text-dark);
+}
 
+body.dark-mode .btn-dark {
+  background-color: var(--color-3);
+}
+
+body.dark-mode .btn-dark:hover, body.dark-mode .ul {
+background-color: #19484a;
 }
 
 .btn-edit {
