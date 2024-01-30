@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router";
 
-
 const RegisterPatient = () => {
   const { actions } = useContext(Context);
 
@@ -17,7 +16,6 @@ const RegisterPatient = () => {
   const [password, setPassword] = useState("");
   const [bloodGroup, setBloodGroop] = useState("");
   const navigate = useNavigate();
-
 
   const handleSubmitPatient = async (e) => {
     e.preventDefault();
@@ -44,7 +42,7 @@ const RegisterPatient = () => {
       setPassword("");
       setBirthDay("");
       setBloodGroop("");
-    } 
+    }
   };
 
   const handleClear = (e) => {
@@ -65,7 +63,7 @@ const RegisterPatient = () => {
         <h2>Nuevo paciente:</h2>
         <form
           onSubmit={handleSubmitPatient}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className=" shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
           <div className="mb-4">
             <label
@@ -251,12 +249,10 @@ const RegisterPatient = () => {
             )}
           </div>
           <div className="flex items-center justify-between">
-            <button className="button1 w-50 m-2">
-              Crear cuenta
-            </button>
+            <button className="button1 w-50 m-2">Crear cuenta</button>
             <button
               className="button3 w-50 m-2"
-              onClick={()=> navigate("/dashboard-admin")}
+              onClick={() => navigate("/dashboard-admin")}
             >
               Cancelar
             </button>

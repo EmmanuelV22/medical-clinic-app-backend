@@ -15,7 +15,7 @@ const NotificationsNavbar = () => {
       const patientDetails = await actions.getPatientById(patientId);
       navigate(`/notifications/${patientId}`);
     } catch (error) {
-      return error
+      return error;
     }
   };
 
@@ -36,7 +36,7 @@ const NotificationsNavbar = () => {
   );
 
   return (
-    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+    <ul className="dropdown-menu ul" aria-labelledby="navbarDropdown">
       {unreadNotifications.length > 0 ? (
         <>
           {unreadNotifications

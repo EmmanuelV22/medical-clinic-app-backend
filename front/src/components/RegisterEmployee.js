@@ -1,7 +1,6 @@
-import React, { useContext, useState  } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router";
-
 
 const RegisterEmployee = () => {
   const [firstname, setFirstname] = useState("");
@@ -41,7 +40,6 @@ const RegisterEmployee = () => {
       const daysOffArray =
         daysOfToArray && daysOfToArray.map((day) => dayNameToNumber[day]);
 
-
       const request = await actions.registerEmployee(
         firstname,
         lastname,
@@ -58,7 +56,6 @@ const RegisterEmployee = () => {
         end_time,
         password
       );
-
 
       if (request) {
         setFirstname("");
@@ -104,7 +101,7 @@ const RegisterEmployee = () => {
         <h2>Nuevo funcionario:</h2>
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className=" shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
           <div className="mb-4">
             <label
@@ -162,7 +159,7 @@ const RegisterEmployee = () => {
               Sexo
             </label>
             <div className="flex">
-              <label className="mr-2">
+              <label className="me-3">
                 <input
                   type="radio"
                   id="MalePatient"
@@ -396,7 +393,7 @@ const RegisterEmployee = () => {
             </button>
             <button
               className="text-black button3 w-50 m-2"
-              onClick={()=> navigate("/dashboard-admin")}
+              onClick={() => navigate("/dashboard-admin")}
             >
               Cancelar
             </button>
