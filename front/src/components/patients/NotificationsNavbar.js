@@ -42,7 +42,7 @@ const NotificationsNavbar = () => {
     <div className="">
       <ul
       style={{width:"350px", overflow:"scroll"}}
-        className="dropdown-menu dropdown dropdown-toggle-split"
+        className="dropdown-menu dropdown dropdown-toggle-split ul"
         aria-labelledby="navbarDropdown"
       >
         {unreadNotifications.length > 0 ? (
