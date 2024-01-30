@@ -17,7 +17,10 @@ const Register = () => {
       {store?.employee && store.employee?.specialist === "admin" ? (
         <div className="d-flex justify-content-center row">
           <Navbar />
-          <button className="text-black button1 w-50 m-3" onClick={changeEmployee}>
+          <button
+            className="text-black button1 w-50 m-3"
+            onClick={changeEmployee}
+          >
             Cambia de Formulario
           </button>
           {!changeForm ? <RegisterEmployee /> : <RegisterPatient />}

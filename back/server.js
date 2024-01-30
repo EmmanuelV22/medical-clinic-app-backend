@@ -28,16 +28,14 @@ module.exports = connectDB;
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use("/api/auth", require("./auth/route")); 
+app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
-
 
 app.get("/api/private", private, (req, res) =>
   res.json({
     user: req.user,
   })
 );
-
 
 app.listen(port, () => {
   console.log("Server OK on port: ", port);

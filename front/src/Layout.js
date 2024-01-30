@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./views/home";
 import injectContext from "./store/appContext";
@@ -44,11 +44,18 @@ import AllAppointments from "./views/AllAppointments";
 import MapView from "./views/MapView";
 import Footer from "./components/Footer";
 import AboutUs from "./views/AboutUs";
-import ScrollToTopOnMount from "./ScrollToTopOnMount"
+import ScrollToTopOnMount from "./ScrollToTopOnMount";
 
 import { FloatingWhatsApp } from "react-floating-whatsapp";
 
 const Layout = () => {
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
+  useEffect(() => {
+    localStorage.setItem("darkMode", isDarkMode);
+  }, [isDarkMode]);
+
   const basename = process.env.BASENAME || "";
   return (
     <div>
@@ -56,7 +63,6 @@ const Layout = () => {
         <Alerts />
         <ScrollToTopOnMount />
         <Routes>
-          
           {/*RUTAS PUBLICAS */}
           <Route path="/acceso-denegado" element={<AccessDenied />} />
           <Route path="/" element={<Home />} />
@@ -135,7 +141,6 @@ const Layout = () => {
           />
         </Routes>
         <Footer />
-
         <FloatingWhatsApp
           phoneNumber="+54 11 23278365"
           accountName="Clinic'App"
@@ -143,7 +148,7 @@ const Layout = () => {
           placeholder="Envia tu mensaje para ir a Whatsapp"
           messageDelay={0}
           statusMessage="Responde en menos de 5 minutos"
-          darkMode={false}
+          darkMode={isDarkMode}
           buttonStyle={{ position: "fixed", bottom: "4rem", right: "20px" }}
           avatar={clinic}
           style={{ height: "auto", width: "auto" }}
