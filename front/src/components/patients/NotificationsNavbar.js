@@ -8,6 +8,8 @@ import NotificationsButtonsRead from "../NotificationsButtonsRead";
 
 const NotificationsNavbar = () => {
   const { store, actions } = useContext(Context);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+
   let navigate = useNavigate();
 
   const handleNotification = async (patientId) => {
@@ -15,42 +17,41 @@ const NotificationsNavbar = () => {
       const patientDetails = await actions.getPatientById(patientId);
       navigate(`/notifications/${patientId}`);
     } catch (error) {
-      return error
+      return error;
     }
   };
 
   const getNotifications = async () => {
     await actions.getNotifications();
+    const filteredNotifications = store.notifications.filter(
+      (notification) =>
+        notification.state === "no leído" &&
+        notification.patient_id === store.patient.id &&
+        notification.appointment_message_employee === null &&
+        store.patient
+    );
+    setUnreadNotifications(filteredNotifications);
   };
 
   useEffect(() => {
     getNotifications();
   }, []);
 
-  const unreadNotifications = store.notifications.filter(
-    (notification) =>
-      notification.state === "no leído" &&
-      notification.patient_id === store.patient.id &&
-      notification.appointment_message_employee === null &&
-      store.patient
-  );
-
   return (
-    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-      {unreadNotifications.length > 0 ? (
-        <>
-          {unreadNotifications
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .slice(0, 10)
-            .map(
-              (notification, index) =>
-                // Check if appointment_message_patient is not null or treatment_message is present
-                notification.appointment_message_patient !== null && (
-                  <li
-                    key={notification.id}
-                    className="dropdown-item d-flex"
-                    style={{ cursor: "pointer" }}
-                  >
+    <div className="">
+      <ul
+      style={{width:"350px", overflow:"scroll"}}
+        className="dropdown-menu dropdown dropdown-toggle-split"
+        aria-labelledby="navbarDropdown"
+      >
+        {unreadNotifications.length > 0 ? (
+          <>
+            {unreadNotifications
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .slice(0, 10)
+              .map((notification, index) => (
+                <>
+                  {/* {notification.treatment_id !== null && (
                     <span
                       onClick={() =>
                         navigate(
@@ -60,39 +61,57 @@ const NotificationsNavbar = () => {
                     >
                       {notification.treatment_message}
                     </span>
-                    {notification.appointment_message_patient && (
-                      <span
+                  )} */}
+                  {(notification !== null)  && (
+                    <li
+                      key={notification.id}
+                      className="dropdown-item d-flex"
+                      style={{ cursor: "pointer" }}
+                    >
+                      {notification.treatment_message &&<span
                         onClick={() =>
                           navigate(
-                            `/patient-appointment/${notification.agenda_id}`
+                            `/patient-treatment/${notification.treatment_id}`
                           )
                         }
                       >
-                        {notification.appointment_message_patient}
-                      </span>
-                    )}
-                    <NotificationsButtonsRead notification={notification} />
-                  </li>
-                )
-            )}
-          <hr />
-          <li className="text-center text-black">
-            <h5 onClick={() => handleNotification(store.patient.id)}>
-              Ver todas mis notificaciones
-            </h5>
-          </li>
-        </>
-      ) : (
-        <>
-          <li>¡No tienes notificaciones!</li>
-          <li>
-            <Link onClick={() => handleNotification(store.patient.id)}>
-              Ver todas mis notificaciones
-            </Link>
-          </li>
-        </>
-      )}
-    </ul>
+                        {notification.treatment_message}
+                      </span>}
+                      {notification.appointment_message_patient && (
+                        <span
+                          onClick={() =>
+                            navigate(
+                              `/patient-appointment/${notification.agenda_id}`
+                            )
+                          }
+                        >
+                          {notification.appointment_message_patient}
+                        </span>
+                      )}
+                      <NotificationsButtonsRead notification={notification} />
+                    </li>
+                  )}
+                </>
+              ))}
+            <hr />
+            <li className="text-center text-black">
+              <h5 onClick={() => handleNotification(store.patient.id)}>
+                Ver todas mis notificaciones
+              </h5>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>¡No tienes notificaciones!</li>
+            <li>
+              <Link onClick={() => handleNotification(store.patient.id)}>
+                Ver todas mis notificaciones
+              </Link>
+            </li>
+          </>
+        )}
+      </ul>
+    </div>
   );
 };
 

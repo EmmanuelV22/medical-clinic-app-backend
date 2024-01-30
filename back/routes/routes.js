@@ -60,7 +60,7 @@ router
 
 router
   .route("/notifications/delete/:id")
-  .delete(privatePatient, deleteNotifications);
+  .delete(private, deleteNotifications);
 
 /////////////////turnos rutas////////////////////
 router.route("/appointments").get(privateEmployees, getAllAppointment);

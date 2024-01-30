@@ -58,7 +58,28 @@ exports.createTreatment = async (req, res, next) => {
           });
         }
 
-        const msg =  `Nuevo tratamiento creado. Inicia el dia:  ${initial_date}, con las siguientes instrucciones:  ${resume} ,para tratar la siguiente patologia:  ${patologies}.  
+    const query2 = `SELECT specialist FROM employees WHERE id = ? `;
+    const values2 = [medical_id];
+
+    connectDB.query(query2, values2, (error, results) => {
+      if (error) {
+        return res.status(500).json({
+          status: "error",
+          message: "Error en la consulta a la base de datos",
+          error: error.message,
+        });
+      }
+
+      if (results.length == 0) {
+        return res.status(500).json({ message: "Datos incorrectos" });
+      }
+
+      
+      
+      const specialistType = results[0].specialist;
+
+
+        const msg =  `Tienes un nuevo tratamiento, para tratar la siguiente patologia:  ${patologies}. Inicia el dia:  ${initial_date}, con el siguiente detalle:  ${resume} .  
         Saludos cordiales`
 
          
@@ -74,11 +95,11 @@ exports.createTreatment = async (req, res, next) => {
           patient_id,
           medical_id,
           treatmentId,
-          `Nuevo tratamiento creado por el Dr. ${req.user.firstname} ${req.user.lastname}.`,
+          `Nuevo tratamiento creado por el ${specialistType} ${req.user.firstname} ${req.user.lastname} para el dia ${initial_date}.`,
         ];
 
         try {
-          await connectDB.query(notificationQuery, notificationValues);
+          connectDB.query(notificationQuery, notificationValues);
 
           
 
@@ -94,6 +115,7 @@ exports.createTreatment = async (req, res, next) => {
         }
       }
     );
+  });
   } catch (error) {
     return res.status(500).json({
       message: "Error creando tratamiento",

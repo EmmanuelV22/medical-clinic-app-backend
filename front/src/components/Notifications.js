@@ -2,19 +2,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router";
 
 const Notifications = () => {
   const { store, actions } = useContext(Context);
-  let navigate = useNavigate();
 
   const unreadNotifications = store.notifications.filter((notification) => {
     if (notification.state === "no leído") {
       if (
         (notification.patient_id === store.patient.id &&
-          notification.appointment_message_patient) ||
+          (notification.appointment_message_patient || notification.treatment_message)) ||
         (notification.medical_id === store.employee.id &&
-          notification.appointment_message_employee)
+          (notification.appointment_message_employee))
       ) {
         return true;
       }

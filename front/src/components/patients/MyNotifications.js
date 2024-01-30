@@ -56,6 +56,8 @@ const MyNotifications = () => {
       )
     : [];
 
+    console.log(appointmentMessages)
+
   return (
     <>
       <Navbar />
@@ -87,7 +89,7 @@ const MyNotifications = () => {
 
           {appointmentMessages.map(
             (notification) =>
-              notification.appointment_message_employee !== null && (
+              notification.appointment_message_employee != null  && (
                 <li className="list-unstyled d-flex column justify-content-center m-2" key={notification.id} >
                   {notification.appointment_message_employee}
                   <NotifcationsDelete notification={notification} />

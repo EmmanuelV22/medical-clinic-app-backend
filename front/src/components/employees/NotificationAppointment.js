@@ -17,7 +17,7 @@ const NotificationAppointment = () => {
       navigate(`/notifications/${patientId}`);
     } catch (error) {
       console.error(
-        "Erreur lors de la récupération des détails du patient",
+        "Error recupernado la informacion del paciente",
         error
       );
     }
@@ -29,7 +29,7 @@ const NotificationAppointment = () => {
       (notification) =>
         notification.state === "no leído" &&
         notification.medical_id === store.employee.id &&
-        notification.appointment_message_patient === null &&
+        notification.appointment_message_employee !== null &&
         store.employee
     );
     setUnreadNotifications(filteredNotifications);
@@ -39,7 +39,8 @@ const NotificationAppointment = () => {
   }, []);
 
   return (
-    <ul className="dropdown-menu" aria-labelledby="navbarDrop">
+  <div className=" dropdown dropdown-toggle-split">
+    <ul style={{width:"350px", overflow:"scroll"}}  className="dropdown-menu dropdown dropdown-toggle-split" aria-labelledby="navbarDrop">
       {unreadNotifications && unreadNotifications.length > 0 ? (
         <>
           {unreadNotifications
@@ -47,10 +48,9 @@ const NotificationAppointment = () => {
             .slice(0, 10)
             .map(
               (notification, index) =>
-                // Added parentheses around the conditional rendering block
-                notification.appointment_message_employee !== null && (
-                  <li key={notification.id} className="dropdown-item d-flex">
-                    <span style={{ cursor: "default" }}>
+                notification.appointment_message_employee  && (
+                  <li key={notification.id} className="dropdown-item ">
+                    <span  style={{ cursor: "default"}}>
                       {notification.appointment_message_employee}
                     </span>
                     <NotificationsButtonsRead notification={notification} />
@@ -74,6 +74,7 @@ const NotificationAppointment = () => {
         </>
       )}
     </ul>
+    </div>
   );
 };
 

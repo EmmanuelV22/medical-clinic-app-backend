@@ -42,13 +42,54 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-md m-0 p-0">
       <div className="container-fluid ">
-        <img
-          src="../../clinic-logo-removebg.png"
-          alt="logo app clinic"
-          className="homeHover m-2"
-          style={{ width: "8rem" }}
-          onClick={() => navigate("/")}
-        />
+        <div className="d-flex align-items-center">
+          <img
+            src="../../clinic-logo-removebg.png"
+            alt="logo app clinic"
+            className="homeHover m-2"
+            style={{ width: "8rem" }}
+            onClick={() => navigate("/")}
+          />
+          {store.employee.specialist !== "admin" && (
+            <div className="">
+              {store.patient.id && (
+                <div className=" ">
+                  <div
+                    className="nav-item mt-3 m-3 dropdown-toggle "
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <Notifications />
+                    <NotificationsNavbar />
+                  </div>
+                </div>
+              )}
+              {store.employee.id &&
+                !["enfermero", "enfermera"].includes(
+                  store.employee.specialist
+                ) && (
+                  <div className="">
+                    <div
+                      className="nav-item mt-3 m-3 dropdown-toggle "
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                    >
+                      <Notifications />
+                      <NotificationAppointment />
+                    </div>
+                  </div>
+                )}
+            </div>
+          )}
+        </div>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="navbar-toggler "
@@ -112,44 +153,6 @@ const Navbar = () => {
                 </div>
               </button>
             </div>
-            {store.employee.specialist !== "admin" && (
-              <div className="dropleft">
-                {store.patient.id && (
-                  <div className="dropleft ">
-                    <li
-                      className="nav-item mt-3 m-3 dropdown-toggle "
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      id="navbarDropdown"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                    >
-                      <Notifications />
-                      <NotificationsNavbar />
-                    </li>
-                  </div>
-                )}
-                {store.employee.id && !["enfermero", "enfermera"].includes(
-                  store.employee.specialist
-                ) && (
-                  <div className="dropleft">
-                    <li
-                      className="nav-item mt-3 m-3 dropdown-toggle "
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      id="navbarDropdown"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                    >
-                      <Notifications />
-                      <NotificationAppointment />
-                    </li>
-                  </div>
-                )}
-              </div>
-            )}
           </ul>
         </div>
       </div>

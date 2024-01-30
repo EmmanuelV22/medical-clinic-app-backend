@@ -8,11 +8,14 @@ const Home = () => {
       style={{
         backgroundImage: `url("../clinic-logo-removebg.png")`,
         backgroundRepeat: "no-repeat",
-        objectFit: "cover",
+        backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundSize: "70%",
+        minHeight: "93.1vh", 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
       }}
-      className="d-flex flex-column align-items-center justify-content-center pt-4 pb-5"
+      className="w-100 h-100" 
     >
       <Login />
     </div>

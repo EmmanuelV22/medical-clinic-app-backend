@@ -107,7 +107,7 @@ const AdminAllPatients = () => {
           >
             <button
               title="ver y editar datos"
-              className="btn-edit"
+              className="btn-edit bg-black"
               style={{
                 color: "white",
                 border: " 2px solid white",
@@ -174,7 +174,7 @@ const AdminAllPatients = () => {
             </button>
             <button
               title="agendar turno"
-              className="bg-warning btn-turno"
+              className="bg-black btn-turno"
               style={{
                 background: "white",
                 color: "white",
@@ -192,7 +192,7 @@ const AdminAllPatients = () => {
                 height="22"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke="#ff2825"
+                stroke="#ffffff"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -210,7 +210,7 @@ const AdminAllPatients = () => {
               title="ver turnos del paciente"
               className="btn-turno"
               style={{
-                background: "grey",
+                background: "black",
                 color: "white",
                 border: " 2px solid white",
                 padding: "1px 2px",
@@ -227,7 +227,7 @@ const AdminAllPatients = () => {
                 height="22"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke="#ff2825"
+                stroke="#ffffff"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"

@@ -22,7 +22,7 @@ const EmployeeDetail = ({ employeeData }) => {
   const [start_time, setStart_time] = useState(employeeData.start_time);
   const [end_time, setEnd_time] = useState(employeeData.end_time);
   const [birthday, setBirthday] = useState(employeeData.birthday);
-  const [sex, setSex] = useState(employeeData.sex);
+  const [sex, setSex] = useState(employeeData.sex.toUpperCase() === "H" ? "Hombre" : "Mujer");
   const [dni, setDNI] = useState(employeeData.dni);
   const [createdAt, setCreated] = useState(employeeData.createdAt);
   const [updatedAt, setUpdated] = useState(employeeData.updatedAt);

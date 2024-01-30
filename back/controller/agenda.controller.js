@@ -113,6 +113,30 @@ exports.createAppointment = async (req, res, next) => {
 
     sendNotificationEmail(patient_id, msg, medical_id, res);
 
+    const querySpecialist = `SELECT firstname , lastname , specialist FROM employees WHERE id = ? `;
+    const valuesSpecialist = [medical_id];
+
+    connectDB.query(querySpecialist, valuesSpecialist, (error, results) => {
+      if (error) {
+        return res.status(500).json({
+          status: "error",
+          message: "Error en la consulta a la base de datos",
+          error: error.message,
+        });
+      }
+
+      if (results.length == 0) {
+        return res.status(500).json({ message: "Datos incorrectos" });
+      }
+
+      
+      
+      const specialistType = results[0].specialist;
+      const medicalFirstName = results[0].firstname;
+      const medicalLastName = results[0].lastname;
+
+
+
     const notificationQueryPatient =
       "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
 
@@ -120,11 +144,11 @@ exports.createAppointment = async (req, res, next) => {
       patient_id,
       medical_id,
       appointmentId,
-      `¡Turno confirmado para el dia ${date}/${month}/${year} a las ${time} horas!`,
+      `¡Turno confirmado con el ${specialistType} ${medicalFirstName} ${medicalLastName} para el dia ${date}/${month}/${year} a las ${time} horas!`,
     ];
 
     try {
-      await connectDB.query(
+      connectDB.query(
         notificationQueryPatient,
         notificationValuesPatient
       );
@@ -134,6 +158,26 @@ exports.createAppointment = async (req, res, next) => {
         error: notificationError.message,
       });
     }
+    const query2 = `SELECT firstname , lastname FROM patients WHERE id = ? `;
+    const values2 = [patient_id];
+
+    connectDB.query(query2, values2, (error, results) => {
+      if (error) {
+        return res.status(500).json({
+          status: "error",
+          message: "Error en la consulta a la base de datos",
+          error: error.message,
+        });
+      }
+
+      if (results.length == 0) {
+        return res.status(500).json({ message: "Datos incorrectos" });
+      }
+
+      
+      const userFirstName = results[0].firstname;
+      const userLastName = results[0].lastname;
+
 
     
     const doctorNotificationQuery =
@@ -143,11 +187,12 @@ exports.createAppointment = async (req, res, next) => {
       patient_id,
       medical_id,
       appointmentId,
-      `¡Nuevo turno agendado por el paciente ${patient_id} el dia ${date}/${month}/${year} a las ${time} horas!`,
+      `¡Nuevo turno agendado por el paciente ${userFirstName} ${userLastName} el dia ${date}/${month}/${year} a las ${time} horas!`,
     ];
+  
 
     try {
-      await connectDB.query(doctorNotificationQuery, doctorNotificationValues);
+      connectDB.query(doctorNotificationQuery, doctorNotificationValues);
 
       return res.status(201).json({
         message: "Cita creada con exito",
@@ -160,7 +205,8 @@ exports.createAppointment = async (req, res, next) => {
         error: doctorNotificationError.message,
       });
     }
-  });
+  });        });
+});
 };
 
 ////////////////////////////////////
