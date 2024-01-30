@@ -1,5 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const bcrypt = require("bcryptjs");
+
 dotenv.config();
 
 const mysql = require("mysql");
@@ -24,7 +26,62 @@ connectDB.connect((err) => {
     return;
   }
   console.log("Connected to database");
+  checkAndCreateDefaultEmployee();
+
 });
+
+function checkAndCreateDefaultEmployee() {
+  const query = "SELECT COUNT(*) AS total FROM employees";
+  connectDB.query(query, (error, results, fields) => {
+    if (error) {
+      console.error("Error checking employees count:", error);
+      return;
+    }
+
+    const totalEmployees = results[0].total;
+    if (totalEmployees === 0) {
+      createDefaultAdmin();
+    }else{
+      console.log("All ok: Default admin allready exist")
+    }
+  });
+}
+
+function createDefaultAdmin() {
+const password = "admin"
+  bcrypt.hash(password, 10, async (err, hash) => {
+    if (err) {
+      return res.status(500).json({ message: "Error hasheando password" });
+    }
+  const createdAt = new Date().toISOString().split("T")[0];
+
+  const defaultAdmin = {
+    firstname: "admin",
+    lastname: "admin",
+    phone: 11111111,
+    sex: "H",
+    email: "admin@admin.com",
+    address: "admin 123",
+    birthday: "2024/01/01",
+    dni: "789456123",
+    specialist: "admin",
+    personalID: "admin",
+    days_off: "[0,0]",
+    createdAt: createdAt,
+    start_time : 9,
+    end_time: 17,
+    password: hash
+    };
+
+  const query = "INSERT INTO employees SET ?";
+  connectDB.query(query, defaultAdmin, (error, results, fields) => {
+    if (error) {
+      console.error("Error creating default admin:", error);
+      return;
+    }
+    console.log("Default admin created successfully");
+  });});
+}
 
 module.exports = connectDB;
 
