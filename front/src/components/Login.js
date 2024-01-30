@@ -18,7 +18,7 @@ const Login = () => {
     } else {
       const data = await actions.login(personalID, password);
 
-      if (data.status === 201) {
+      if (data?.status && data?.status === 201) {
         actions.showNotification("Inicio de sesion exitoso", "success");
 
         const loggedInEmployee = data.employees[0];
@@ -45,7 +45,14 @@ const Login = () => {
           window.location.reload();
         }
       } else {
-        actions.showNotification("Datos incorrectos", "danger");
+        if (data === undefined) {
+          actions.showNotification(
+            "Fallo la conexion con el servidor",
+            "danger"
+          );
+        } else {
+          actions.showNotification("Datos incorrectos", "danger");
+        }
       }
     }
   }

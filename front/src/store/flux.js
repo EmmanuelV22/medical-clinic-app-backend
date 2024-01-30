@@ -51,7 +51,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const actions = getActions();
           const response = await axios.get(`${API_AUTH}/patients`, config);
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const responseData = response.data;
             setStore({ patients: responseData.results });
             actions.showNotification(
@@ -64,14 +64,22 @@ const getState = ({ getStore, getActions, setStore }) => {
             return [];
           }
         } catch (error) {
-          return [];
+          const actions = getActions();
+          if (error.response) {
+            return error.response.data.message;
+          } else {
+            actions.showNotification(
+              "No se pudo conectar al servidor",
+              "danger"
+            );
+          }
         }
       },
       getAllEmployees: async () => {
         const actions = getActions();
         try {
           const response = await axios.get(`${API_AUTH}/employees`, config);
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = response.data;
             const store = getStore();
             setStore({ ...store, employees: data });
@@ -86,7 +94,15 @@ const getState = ({ getStore, getActions, setStore }) => {
             return [];
           }
         } catch (error) {
-          return [];
+          const actions = getActions();
+          if (error.response) {
+            return error.response.data.message;
+          } else {
+            actions.showNotification(
+              "No se pudo conectar al servidor",
+              "danger"
+            );
+          }
         }
       },
       getEmployeeById: async (id) => {
@@ -96,7 +112,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/employees/${id}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = response.data;
             const store = getStore();
             setStore({ ...store, docData: { docData: data.employee } });
@@ -117,7 +133,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/patients/${id}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = response.data;
             const store = getStore();
             setStore({
@@ -138,8 +154,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Error obteniendo datos del paciente",
             "danger"
           );
-
-          // return [];
         }
       },
       registerPatient: async (
@@ -157,7 +171,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const actions = getActions();
         const blood_group = bloodGroup;
         try {
-          const res = await axios.post(
+          const response = await axios.post(
             `${API_AUTH}/register-patient`,
             {
               firstname,
@@ -174,7 +188,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             config
           );
 
-          if (res.status === 201) {
+          if (response.status && response.status === 201) {
             actions.showNotification("Registro exitoso", "success");
             return true;
           }
@@ -205,7 +219,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       ) => {
         try {
           const actions = getActions();
-          const res = await axios.post(
+          const response = await axios.post(
             `${API_AUTH}/register`,
             {
               firstname,
@@ -229,7 +243,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-          if (res.status === 201) {
+          if (response.status && response.status === 201) {
             actions.showNotification("Registro exitoso", "success");
             return true;
           }
@@ -250,7 +264,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             personalID: personalID,
             password: password,
           });
-          if (response.status === 201) {
+          if (response.status && response.status === 201) {
             const data = response.data;
 
             const store = getStore();
@@ -259,7 +273,15 @@ const getState = ({ getStore, getActions, setStore }) => {
             return data;
           }
         } catch (error) {
-          return error;
+          const actions = getActions();
+          if (error.response) {
+            return error.response.data.message;
+          } else {
+            actions.showNotification(
+              "No se pudo conectar al servidor",
+              "danger"
+            );
+          }
         }
       },
       loginPatient: async (dni, password) => {
@@ -268,7 +290,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             dni: dni,
             password: password,
           });
-          if (response.status === 201) {
+          if (response.status && response.status === 201) {
             const data = response.data;
 
             const store = getStore();
@@ -279,7 +301,15 @@ const getState = ({ getStore, getActions, setStore }) => {
             return response;
           }
         } catch (error) {
-          return error.response.data.message;
+          const actions = getActions();
+          if (error.response) {
+            return error.response.data.message;
+          } else {
+            actions.showNotification(
+              "No se pudo conectar al servidor",
+              "danger"
+            );
+          }
         }
       },
       isAuth: async () => {
@@ -289,7 +319,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             const response = await axios.get(`${API}/private`, {
               headers: { Authorization: `${token}` },
             });
-            if (response.status === 200) {
+            if (response.status && response.status === 200) {
               const data = await response.data;
               const store = getStore();
               if (data.user.specialist) {
@@ -299,7 +329,15 @@ const getState = ({ getStore, getActions, setStore }) => {
               }
             }
           } catch (error) {
-            return error
+            const actions = getActions();
+            if (error.response) {
+              return error.response.data.message;
+            } else {
+              actions.showNotification(
+                "No se pudo conectar al servidor",
+                "danger"
+              );
+            }
           }
         }
       },
@@ -320,7 +358,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/delete/${employeeId}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             setStore((prevStore) => {
               const updatedEmployees = prevStore.employees.filter(
                 (employee) => employee.id !== employeeId
@@ -344,7 +382,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API_AUTH}/delete-patient/${patientID}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             setStore((prevStore) => {
               const updatedPatient = prevStore.patients.filter(
                 (patient) => patient.id !== patientID
@@ -479,7 +517,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API}/appointments-medical/${medical_id}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = await response.data;
             actions.showNotification(
               "Citas de la agenda obtenidas correctamente",
@@ -498,7 +536,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API}/appointments-medical/${medical_id}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = await response.data;
             const store = getStore();
             setStore({ ...store, myAppointments: data.agenda });
@@ -516,7 +554,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API}/appointments-patient/${patient_id}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = await response.data;
             const store = getStore();
             setStore({
@@ -540,7 +578,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             `${API}/appointment-id-patient/${patient_id}`,
             config
           );
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = await response.data;
             const store = getStore();
             setStore({
@@ -564,7 +602,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const actions = getActions();
         try {
           const response = await axios.get(`${API}/appointments`, config);
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const data = response.data;
             setStore({ allAppointments: data.results });
             actions.showNotification("Citas obtenidas con exito", "success");
@@ -713,7 +751,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         const actions = getActions();
         try {
           const response = await axios.get(`${API}/treatments`, config);
-          if (response.status === 200) {
+          if (response.status && response.status === 200) {
             const responseData = response.data;
             setStore({ treatments: responseData });
             actions.showNotification(
@@ -758,7 +796,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             config
           );
-          
+
           actions.showNotification(
             "Tratamiento actualizado con exito",
             "success"
@@ -908,7 +946,15 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           return response;
         } catch (error) {
-          return error.response.data.message;
+          const actions = getActions();
+          if (error.response) {
+            return error.response.data.message;
+          } else {
+            actions.showNotification(
+              "No se pudo conectar al servidor",
+              "danger"
+            );
+          }
         }
       },
       saveNewPassword: async (dni, password, token) => {

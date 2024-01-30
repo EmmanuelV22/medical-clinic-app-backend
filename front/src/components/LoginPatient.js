@@ -13,10 +13,14 @@ const LoginPatient = () => {
     e.preventDefault();
 
     const response = await actions.sendChangePassword(dni);
-    if (response?.status === 200) {
+    if (response?.status && response?.status === 200) {
       actions.showNotification(response.data.message, "success");
     } else {
-      actions.showNotification(response, "danger");
+      if (response === undefined) {
+        actions.showNotification("Fallo la conexion con el servidor", "danger");
+      } else {
+        actions.showNotification(response, "danger");
+      }
     }
   }
 
@@ -24,12 +28,16 @@ const LoginPatient = () => {
     e.preventDefault();
 
     const response = await actions.loginPatient(dni, password);
-    if (response.status === 201) {
+    if (response?.status && response?.status === 201) {
       actions.showNotification(response.data.message, "success");
       navigate(`/dashboard-patient`);
       window.location.reload();
     } else {
-      actions.showNotification(response, "danger");
+      if (response === undefined) {
+        actions.showNotification("Fallo la conexion con el servidor", "danger");
+      } else {
+        actions.showNotification(response, "danger");
+      }
     }
   }
 
@@ -86,10 +94,18 @@ const LoginPatient = () => {
           />
         </div>
         <div className="btnn">
-          <button style={{width:"100%"}} className="button1  shadow  homeHover">Entrar (Paciente)</button>
+          <button
+            style={{ width: "100%" }}
+            className="button1  shadow  homeHover"
+          >
+            Entrar (Paciente)
+          </button>
         </div>
       </form>
-      <button onClick={() => window.location.reload()} className="button2 shadow homeHover mb-2">
+      <button
+        onClick={() => window.location.reload()}
+        className="button2 shadow homeHover mb-2"
+      >
         Cambiar a funcionario
       </button>
       <button className="button3 shadow homeHover" onClick={handlePassword}>
