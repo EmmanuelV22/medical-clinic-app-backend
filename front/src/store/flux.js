@@ -8,8 +8,8 @@ const config = {
 };
 
 const getState = ({ getStore, getActions, setStore }) => {
-  const API_AUTH = "http://localhost:5000/api/auth";
-  const API = "http://localhost:5000/api";
+  const API_AUTH = "179.24.4.131:5000/api/auth";
+  const API ="179.24.4.131:5000/api";
   return {
     store: {
       patients: [],
