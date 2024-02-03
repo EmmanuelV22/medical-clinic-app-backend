@@ -6,12 +6,14 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const { connectToDB } = require("./models");
 const { Pool } = require('pg');
+const { private } = require("./middleware/auth");
+
 
 
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.DB_API_PORT || 5432;
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -33,8 +35,18 @@ app.use(
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
+app.get("/api/private", private, (req, res) =>
+  res.json({
+    user: req.user,
+  })
+);
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
-});
+})
+
+var http = require('http')
+
+http.createServer(app).listen(80); 
 
 module.exports = { pool };
+

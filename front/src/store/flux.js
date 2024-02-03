@@ -7,10 +7,12 @@ const config = {
   },
 };
 
+const port = process.env.DB_API_PORT
+
 const getState = ({ getStore, getActions, setStore }) => {
 
-const API_AUTH = "http://localhost:5000/api/auth";
-const API = "http://localhost:5000/api";
+const API_AUTH = `http://localhost:${port}/api/auth`;
+const API = `http://localhost:${port}/api`;
 
   return {
     store: {
