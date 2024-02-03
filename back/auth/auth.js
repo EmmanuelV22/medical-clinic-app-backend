@@ -1,7 +1,7 @@
-const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const connectDB = require("../server");
+const pool = require("../server.js");
 const nodemailer = require("nodemailer");
 
 /*************************************************************
@@ -11,10 +11,10 @@ const nodemailer = require("nodemailer");
 exports.getEmployeeById = async (req, res, next) => {
   const id = req.params.id;
 
-  const query = "SELECT * FROM employees WHERE id = ?";
+  const query = "SELECT * FROM clinic.employees WHERE id = ?";
   const values = [id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -33,9 +33,9 @@ exports.getEmployeeById = async (req, res, next) => {
 ////////////////////////////////////////////////
 
 exports.getAllEmployees = (req, res, next) => {
-  const query = "SELECT * FROM employees";
+  const query = "SELECT * FROM clinic.employees";
 
-  connectDB.query(query, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       res
         .status(400)
@@ -84,7 +84,7 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO clinic.employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
@@ -103,7 +103,7 @@ exports.register = async (req, res, next) => {
       hash,
     ];
 
-    connectDB.query(query, values, async (error, results, fields) => {
+    pool.query(query, values, async (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error crando empleado",
@@ -203,10 +203,10 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
 
 exports.login = async (req, res, next) => {
   const { personalID, password } = req.body;
-  const query = "SELECT * FROM employees WHERE personalID = ?";
+  const query = "SELECT * FROM clinic.employees WHERE personalID = ?";
   const values = [personalID];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -296,7 +296,7 @@ exports.update = async (req, res, next) => {
         return res.status(500).json({ message: "Error hasheando password" });
       }
       const query =
-        "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+        "UPDATE clinic.employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
       const values = [
         firstname,
         lastname,
@@ -313,7 +313,7 @@ exports.update = async (req, res, next) => {
         id,
       ];
 
-      connectDB.query(query, values, (error, results, fields) => {
+      pool.query(query, values, (error, results, fields) => {
         if (error) {
           return res.status(400).json({
             message: "Error actualizando datos del empleado",
@@ -329,7 +329,7 @@ exports.update = async (req, res, next) => {
     });
   } else if (!isDaysOffEmpty && isPasswordEmpty) {
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?,days_off = ?, start_time = ?, end_time = ? WHERE id = ?";
+      "UPDATE clinic.employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?,days_off = ?, start_time = ?, end_time = ? WHERE id = ?";
     const values = [
       firstname,
       lastname,
@@ -345,7 +345,7 @@ exports.update = async (req, res, next) => {
       id,
     ];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error actualizando datos del empleado",
@@ -360,7 +360,7 @@ exports.update = async (req, res, next) => {
     });
   } else {
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+      "UPDATE clinic.employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
     bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
         return res.status(500).json({ message: "Error hasheando password" });
@@ -380,7 +380,7 @@ exports.update = async (req, res, next) => {
         id,
       ];
 
-      connectDB.query(query, values, (error, results, fields) => {
+      pool.query(query, values, (error, results, fields) => {
         if (error) {
           return res.status(400).json({
             message: "Error actualizando datos del empleado",
@@ -400,9 +400,9 @@ exports.update = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   const id = req.params.id;
-  const query = "DELETE FROM employees WHERE id = ?";
+  const query = "DELETE FROM clinic.employees WHERE id = ?";
   const values = [id];
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -421,10 +421,10 @@ exports.deleteUser = async (req, res, next) => {
 exports.getPatientById = async (req, res, next) => {
   const { id } = req.params; // Je suppose que l'ID est dans les paramètres de l'URL
 
-  const query = "SELECT * FROM patients WHERE id = ?";
+  const query = "SELECT * FROM clinic.patients WHERE id = ?";
   const values = [id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -438,8 +438,8 @@ exports.getPatientById = async (req, res, next) => {
 
 ////////////////////////////////////////////////////////
 exports.getAllPatients = async (req, res, next) => {
-  const query = "SELECT * FROM patients";
-  connectDB.query(query, (error, results, fields) => {
+  const query = "SELECT * FROM clinic.patients";
+  pool.query(query, (error, results, fields) => {
     if (error) {
       res
         .status(400)
@@ -479,7 +479,7 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO clinic.patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       firstname,
       lastname,
@@ -494,7 +494,7 @@ exports.registerPatient = async (req, res, next) => {
       createdAt,
     ];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res
           .status(400)
@@ -540,10 +540,10 @@ exports.registerPatient = async (req, res, next) => {
 exports.loginPatient = async (req, res, next) => {
   const { dni, password } = req.body;
 
-  const query = "SELECT * FROM patients WHERE dni = ?";
+  const query = "SELECT * FROM clinic.patients WHERE dni = ?";
   const values = [dni];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return results.status(400).json({
         message: "Datos incorrectos, paciente no encontrado",
@@ -556,7 +556,7 @@ exports.loginPatient = async (req, res, next) => {
     if (!patient) {
       return res
         .status(500)
-        .json({ message: "Datos incorrectos, paciente no encontrado" });
+        .json({ message: "Datos incorrectos" });
     }
 
     bcrypt.compare(password, patient.password, (err, result) => {
@@ -594,7 +594,7 @@ exports.loginPatient = async (req, res, next) => {
       } else {
         return res
           .status(400)
-          .json({ message: "Contraseña incorrecta", error });
+          .json({ message: "Datos incorrectos", error });
       }
     });
   });
@@ -626,7 +626,7 @@ exports.updatePatient = async (req, res, next) => {
         updatedAt,
         id,
       ];
-      connectDB.query(query, values, (error, results, fields) => {
+      pool.query(query, values, (error, results, fields) => {
         if (error) {
           return res.status(400).json({
             message: "Error actualizando datos del paciente ",
@@ -641,9 +641,9 @@ exports.updatePatient = async (req, res, next) => {
     });
   } else {
     const query =
-      "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ? , updatedAt = ? WHERE id = ?";
+      "UPDATE clinic.patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ? , updatedAt = ? WHERE id = ?";
     const values = [firstname, lastname, phone, email, address, updatedAt, id];
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error actualizando datos del paciente ",
@@ -661,9 +661,9 @@ exports.updatePatient = async (req, res, next) => {
 exports.deletePatient = async (req, res, next) => {
   const id = req.params.id;
 
-  const query = "DELETE FROM patients WHERE id = ?";
+  const query = "DELETE FROM clinic.patients WHERE id = ?";
   const values = [id];
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -687,11 +687,11 @@ exports.updatePasswordPatient = async (req, res, next) => {
     }
 
     const query =
-      "UPDATE patients SET password = ?, updatedAt = ? WHERE dni = ?";
+      "UPDATE clinic.patients SET password = ?, updatedAt = ? WHERE dni = ?";
 
     const values = [hash, updatedAt, dni];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error actualizando password",
@@ -719,13 +719,13 @@ const changePasswordEmail = (dni, res) => {
     },
   };
 
-  const query2 = `UPDATE patients SET temporalToken = ?  WHERE dni = ? `;
+  const query2 = `UPDATE clinic.patients SET temporalToken = ?  WHERE dni = ? `;
   generateToken()
     .then((result) => {
       let temporalToken = result.token;
       const values2 = [temporalToken, dni];
 
-      connectDB.query(query2, values2, (error, results) => {
+      pool.query(query2, values2, (error, results) => {
         if (error) {
           return res.status(500).json({
             status: "error",
@@ -736,10 +736,10 @@ const changePasswordEmail = (dni, res) => {
 
         let transporter = nodemailer.createTransport(config);
 
-        const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
+        const query = `SELECT email , firstname FROM clinic.patients WHERE dni = ? `;
         const values = [dni];
 
-        connectDB.query(query, values, (error, results) => {
+        pool.query(query, values, (error, results) => {
           if (error) {
             return res.status(500).json({
               status: "error",
@@ -838,10 +838,10 @@ exports.validateTokenPatient = async (req, res, next) => {
   const token = req.params.token;
 
   try {
-    const query = `SELECT temporalToken FROM patients WHERE dni = ? `;
+    const query = `SELECT temporalToken FROM clinic.patients WHERE dni = ? `;
     const values = [dni];
 
-    connectDB.query(query, values, (error, results) => {
+    pool.query(query, values, (error, results) => {
       if (error) {
         return res.status(500).json({
           status: "error",
@@ -884,14 +884,14 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
 
   let transporter = nodemailer.createTransport(config);
 
-  const query = `SELECT email , firstname , lastname FROM patients WHERE id = ? `;
+  const query = `SELECT email , firstname , lastname FROM clinic.patients WHERE id = ? `;
   const values = [id];
 
   const queryEmployee =
-    "SELECT firstname, lastname, specialist FROM employees WHERE id = ?";
+    "SELECT firstname, lastname, specialist FROM clinic.employees WHERE id = ?";
   const valuesEmployee = [medical_id];
 
-  connectDB.query(queryEmployee, valuesEmployee, (error, results) => {
+  pool.query(queryEmployee, valuesEmployee, (error, results) => {
     if (error) {
       return res.status(500).json({
         status: "error",
@@ -903,7 +903,7 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
     const medicallastname = results[0].lastname;
     const specialist = results[0].specialist;
 
-    connectDB.query(query, values, (error, results) => {
+    pool.query(query, values, (error, results) => {
       if (error) {
         return res.status(500).json({
           status: "error",

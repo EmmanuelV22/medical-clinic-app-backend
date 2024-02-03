@@ -17,7 +17,7 @@ const CardAllPatients = () => {
         )`,
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
+            backgroundSize: "cover",
           }}
         >
           <div className="card-details">

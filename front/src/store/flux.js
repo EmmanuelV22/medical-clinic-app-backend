@@ -8,8 +8,10 @@ const config = {
 };
 
 const getState = ({ getStore, getActions, setStore }) => {
-  const API_AUTH = "208.67.222.222:5000/api/auth";
-  const API ="208.67.222.222:5000/api";
+
+const API_AUTH = "http://localhost:5000/api/auth";
+const API = "http://localhost:5000/api";
+
   return {
     store: {
       patients: [],
