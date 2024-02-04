@@ -1,8 +1,18 @@
 const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const connectDB = require("../server");
+console.log("pool importado correctamente en auth.js");
 const nodemailer = require("nodemailer");
+const { Pool } = require("pg");
+
+
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************
@@ -14,7 +24,7 @@ exports.getEmployeeById = async (req, res, next) => {
   const query = "SELECT * FROM employees WHERE id = ?";
   const values = [id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+ const resp = await pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -22,11 +32,11 @@ exports.getEmployeeById = async (req, res, next) => {
     }
 
     if (results.length === 0) {
-      return res.status(404).json({ message: "Empleado no encontrado" });
+      return res.status(404).json({ message: "Empleado no encontrado" , resp});
     }
 
     const employee = results[0];
-    return res.status(200).json({ employee });
+    return res.status(200).json({ employee, resp });
   });
 };
 
@@ -35,7 +45,7 @@ exports.getEmployeeById = async (req, res, next) => {
 exports.getAllEmployees = (req, res, next) => {
   const query = "SELECT * FROM employees";
 
-  connectDB.query(query, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       res
         .status(400)
@@ -103,7 +113,7 @@ exports.register = async (req, res, next) => {
       hash,
     ];
 
-    connectDB.query(query, values, async (error, results, fields) => {
+    pool.query(query, values, async (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error crando empleado",
@@ -202,62 +212,69 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
 ///////////////////////////////////////////////////
 
 exports.login = async (req, res, next) => {
-  const { personalID, password } = req.body;
-  const query = "SELECT * FROM employees WHERE personalID = ?";
-  const values = [personalID];
+  // const { personalID, password } = req.body;
+  const query = "SELECT * FROM clinic.employees";
+  // const values = [personalID];
 
-  connectDB.query(query, values, (error, results, fields) => {
-    if (error) {
-      return res
-        .status(400)
-        .json({ message: "Error al iniciar sesion", error: error.message });
+  try {
+    const { rows: employees, rowCount } = await pool.query(query);
+    
+    if (rowCount === 0) {
+      return res.status(400).json({ message: "No hay empleados en la base de datos" });
     }
 
-    const employee = results[0];
+    const employee = employees[0]; // Tomamos el primer empleado de la lista
 
-    if (!employee) {
-      return res.status(500).json({ message: "Datos incorrectos" });
+    // Aquí puedes realizar la comparación de contraseñas si es necesario
+    // bcrypt.compare(password, employee.password, (err, result) => {
+    //   if (err) {
+    //     return res.status(500).json({ message: "Contraseña invalida" });
+    //   }
+    //   if (result) {
+    //     const maxAge = 3 * 60 * 60;
+    //     const token = jwt.sign(
+    //       {
+    //         id: employee.id,
+    //         dni: employee.dni,
+    //         email: employee.email,
+    //         sex: employee.sex,
+    //         firstname: employee.firstname,
+    //         lastname: employee.lastname,
+    //         specialist: employee.specialist,
+    //         address: employee.address,
+    //         personalID: employee.personalID,
+    //       },
+    //       process.env.jwtSecret,
+    //       {
+    //         expiresIn: maxAge,
+    //       }
+    //     );
+    //     res.cookie("jwt", token, {
+    //       httpOnly: true,
+    //       maxAge: maxAge * 1000,
+    //     });
+    //   } else {
+    //     return res.status(400).json({ message: "Datos incorrectos" });
+    //   }
+    // });
+
+    // Si la comparación de contraseñas se realiza en este punto, puedes devolver una respuesta exitosa
+    return res.status(200).json({ message: "Inicio de sesion exitoso", status: 200, employee });
+  } catch (error) {
+    console.error("Error al intentar iniciar sesión:", error);
+    return res.status(500).json({ message: "Error al iniciar sesion", error: error.message });
+  }
+}
+
+exports.resp = async () => {
+  try {
+    const result = await pool.query("SELECT * FROM clinic.employees");
+    if (result){
+      console.log("SIII DESDE AUTH",result.rows)
     }
-
-    bcrypt.compare(password, employee.password, (err, result) => {
-      if (err) {
-        return res.status(500).json({ message: "Contraseña invalida" });
-      }
-
-      if (result) {
-        const maxAge = 3 * 60 * 60;
-        const token = jwt.sign(
-          {
-            id: employee.id,
-            dni: employee.dni,
-            email: employee.email,
-            sex: employee.sex,
-            firstname: employee.firstname,
-            lastname: employee.lastname,
-            specialist: employee.specialist,
-            address: employee.address,
-            personalID: employee.personalID,
-          },
-          process.env.jwtSecret,
-          {
-            expiresIn: maxAge,
-          }
-        );
-        res.cookie("jwt", token, {
-          httpOnly: true,
-          maxAge: maxAge * 1000,
-        });
-        return res.status(201).json({
-          message: "Inicio de sesion exitoso",
-          status: 201,
-          employees: results,
-          token: token,
-        });
-      } else {
-        return res.status(400).json({ message: "Datos incorrectos" });
-      }
-    });
-  });
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+  }
 };
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -313,7 +330,7 @@ exports.update = async (req, res, next) => {
         id,
       ];
 
-      connectDB.query(query, values, (error, results, fields) => {
+      pool.query(query, values, (error, results, fields) => {
         if (error) {
           return res.status(400).json({
             message: "Error actualizando datos del empleado",
@@ -345,7 +362,7 @@ exports.update = async (req, res, next) => {
       id,
     ];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error actualizando datos del empleado",
@@ -380,7 +397,7 @@ exports.update = async (req, res, next) => {
         id,
       ];
 
-      connectDB.query(query, values, (error, results, fields) => {
+      pool.query(query, values, (error, results, fields) => {
         if (error) {
           return res.status(400).json({
             message: "Error actualizando datos del empleado",
@@ -402,7 +419,7 @@ exports.deleteUser = async (req, res, next) => {
   const id = req.params.id;
   const query = "DELETE FROM employees WHERE id = ?";
   const values = [id];
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -421,10 +438,10 @@ exports.deleteUser = async (req, res, next) => {
 exports.getPatientById = async (req, res, next) => {
   const { id } = req.params; // Je suppose que l'ID est dans les paramètres de l'URL
 
-  const query = "SELECT * FROM patients WHERE id = ?";
+  const query = `SELECT * FROM patients WHERE id ='${id}'`;
   const values = [id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -439,7 +456,7 @@ exports.getPatientById = async (req, res, next) => {
 ////////////////////////////////////////////////////////
 exports.getAllPatients = async (req, res, next) => {
   const query = "SELECT * FROM patients";
-  connectDB.query(query, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       res
         .status(400)
@@ -494,7 +511,7 @@ exports.registerPatient = async (req, res, next) => {
       createdAt,
     ];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res
           .status(400)
@@ -536,14 +553,18 @@ exports.registerPatient = async (req, res, next) => {
 };
 
 ///////////////////////////////////////////////
+// var pool = require("./dbHandler").pool;
 
 exports.loginPatient = async (req, res, next) => {
   const { dni, password } = req.body;
 
-  const query = "SELECT * FROM patients WHERE dni = ?";
+  const query = "SELECT * FROM patients WHERE dni='" + dni + "';";
+
+  // console.log(query, "ACAAAAAAAAAAAAAAAA");
+
   const values = [dni];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       return results.status(400).json({
         message: "Datos incorrectos, paciente no encontrado",
@@ -626,7 +647,7 @@ exports.updatePatient = async (req, res, next) => {
         updatedAt,
         id,
       ];
-      connectDB.query(query, values, (error, results, fields) => {
+      pool.query(query, values, (error, results, fields) => {
         if (error) {
           return res.status(400).json({
             message: "Error actualizando datos del paciente ",
@@ -643,7 +664,7 @@ exports.updatePatient = async (req, res, next) => {
     const query =
       "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ? , updatedAt = ? WHERE id = ?";
     const values = [firstname, lastname, phone, email, address, updatedAt, id];
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error actualizando datos del paciente ",
@@ -663,7 +684,7 @@ exports.deletePatient = async (req, res, next) => {
 
   const query = "DELETE FROM patients WHERE id = ?";
   const values = [id];
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -691,7 +712,7 @@ exports.updatePasswordPatient = async (req, res, next) => {
 
     const values = [hash, updatedAt, dni];
 
-    connectDB.query(query, values, (error, results, fields) => {
+    pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
           message: "Error actualizando password",
@@ -725,7 +746,7 @@ const changePasswordEmail = (dni, res) => {
       let temporalToken = result.token;
       const values2 = [temporalToken, dni];
 
-      connectDB.query(query2, values2, (error, results) => {
+      pool.query(query2, values2, (error, results) => {
         if (error) {
           return res.status(500).json({
             status: "error",
@@ -739,7 +760,7 @@ const changePasswordEmail = (dni, res) => {
         const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
         const values = [dni];
 
-        connectDB.query(query, values, (error, results) => {
+        pool.query(query, values, (error, results) => {
           if (error) {
             return res.status(500).json({
               status: "error",
@@ -841,7 +862,7 @@ exports.validateTokenPatient = async (req, res, next) => {
     const query = `SELECT temporalToken FROM patients WHERE dni = ? `;
     const values = [dni];
 
-    connectDB.query(query, values, (error, results) => {
+    pool.query(query, values, (error, results) => {
       if (error) {
         return res.status(500).json({
           status: "error",
@@ -891,7 +912,7 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
     "SELECT firstname, lastname, specialist FROM employees WHERE id = ?";
   const valuesEmployee = [medical_id];
 
-  connectDB.query(queryEmployee, valuesEmployee, (error, results) => {
+  pool.query(queryEmployee, valuesEmployee, (error, results) => {
     if (error) {
       return res.status(500).json({
         status: "error",
@@ -903,7 +924,7 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
     const medicallastname = results[0].lastname;
     const specialist = results[0].specialist;
 
-    connectDB.query(query, values, (error, results) => {
+    pool.query(query, values, (error, results) => {
       if (error) {
         return res.status(500).json({
           status: "error",

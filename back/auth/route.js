@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   register,
-  login,
+  resp,
   update,
   deleteUser,
   getAllEmployees,
@@ -30,7 +30,7 @@ const router = express.Router();
 
 //////////////EMPLOYEES ROUTES///////////
 router.route("/register").post(privateAdmin, register);
-router.route("/login").post(login);
+router.route("/login").get(resp);
 router.route("/update/:id").put(privateAdmin, update);
 router.route("/delete/:id").delete(privateAdmin, deleteUser);
 router.route("/employees").get(private, getAllEmployees);
