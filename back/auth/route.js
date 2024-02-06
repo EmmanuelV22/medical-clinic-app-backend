@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   register,
-  resp,
+  login,
   update,
   deleteUser,
   getAllEmployees,
@@ -30,14 +30,14 @@ const router = express.Router();
 
 //////////////EMPLOYEES ROUTES///////////
 router.route("/register").post(privateAdmin, register);
-router.route("/login").get(resp);
+router.route("/login").post(login);
 router.route("/update/:id").put(privateAdmin, update);
 router.route("/delete/:id").delete(privateAdmin, deleteUser);
 router.route("/employees").get(private, getAllEmployees);
 router.route("/employees/:id").get(private, getEmployeeById);
 
 //////////////PATIENS ROUTES///////////
-router.route("/register-patient").post(privateAdmin, registerPatient);
+router.route("/register-patient").post( registerPatient);
 router.route("/login-patient").post(loginPatient);
 router.route("/update-patient/:id").put(private, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);

@@ -46,19 +46,7 @@ app.listen(port, () => {
 });
 
 
-const resp = async () => {
-  try {
-    const result = await pool.query("SELECT * FROM clinic.employees");
-    if (result){
-      console.log("SUCCCESSSS",result.rows)
-    }
-  } catch (error) {
-    console.error("Error al ejecutar la consulta:", error);
-  }
-};
 
-// Invoca la función para ejecutar la consulta
-resp();
 
 module.exports = pool;
-console.log("pool exportado correctamente");
+

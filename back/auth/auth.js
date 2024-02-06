@@ -1,7 +1,6 @@
 const dotenv = require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-console.log("pool importado correctamente en auth.js");
 const nodemailer = require("nodemailer");
 const { Pool } = require("pg");
 
@@ -94,7 +93,7 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)";
     const values = [
       firstname,
       lastname,
@@ -211,70 +210,64 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
 
 ///////////////////////////////////////////////////
 
+
 exports.login = async (req, res, next) => {
-  // const { personalID, password } = req.body;
-  const query = "SELECT * FROM clinic.employees";
-  // const values = [personalID];
+  const { personalID, password } = req.body;
+  const query = "SELECT * FROM clinic.employees WHERE personalID = $1";
+  const values = [personalID];
 
-  try {
-    const { rows: employees, rowCount } = await pool.query(query);
+ pool.query(query, values, (error, results, fields) => {
+    if (error) {
+      return res
+        .status(400)
+        .json({ message: "Error al iniciar sesion", error: error.message });
+    }
+
+    const employee = results.rows[0];
     
-    if (rowCount === 0) {
-      return res.status(400).json({ message: "No hay empleados en la base de datos" });
+
+    if (!employee) {
+      return res.status(500).json({ message: "Datos incorrectos" });
     }
 
-    const employee = employees[0]; // Tomamos el primer empleado de la lista
-
-    // Aquí puedes realizar la comparación de contraseñas si es necesario
-    // bcrypt.compare(password, employee.password, (err, result) => {
-    //   if (err) {
-    //     return res.status(500).json({ message: "Contraseña invalida" });
-    //   }
-    //   if (result) {
-    //     const maxAge = 3 * 60 * 60;
-    //     const token = jwt.sign(
-    //       {
-    //         id: employee.id,
-    //         dni: employee.dni,
-    //         email: employee.email,
-    //         sex: employee.sex,
-    //         firstname: employee.firstname,
-    //         lastname: employee.lastname,
-    //         specialist: employee.specialist,
-    //         address: employee.address,
-    //         personalID: employee.personalID,
-    //       },
-    //       process.env.jwtSecret,
-    //       {
-    //         expiresIn: maxAge,
-    //       }
-    //     );
-    //     res.cookie("jwt", token, {
-    //       httpOnly: true,
-    //       maxAge: maxAge * 1000,
-    //     });
-    //   } else {
-    //     return res.status(400).json({ message: "Datos incorrectos" });
-    //   }
-    // });
-
-    // Si la comparación de contraseñas se realiza en este punto, puedes devolver una respuesta exitosa
-    return res.status(200).json({ message: "Inicio de sesion exitoso", status: 200, employee });
-  } catch (error) {
-    console.error("Error al intentar iniciar sesión:", error);
-    return res.status(500).json({ message: "Error al iniciar sesion", error: error.message });
-  }
-}
-
-exports.resp = async () => {
-  try {
-    const result = await pool.query("SELECT * FROM clinic.employees");
-    if (result){
-      console.log("SIII DESDE AUTH",result.rows)
-    }
-  } catch (error) {
-    console.error("Error al ejecutar la consulta:", error);
-  }
+    bcrypt.compare(password, employee.password, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Contraseña invalida" });
+      }
+      if (result) {
+        const maxAge = 3 * 60 * 60;
+        const token = jwt.sign(
+          {
+            id: employee.id,
+            dni: employee.dni,
+            email: employee.email,
+            sex: employee.sex,
+            firstname: employee.firstname,
+            lastname: employee.lastname,
+            specialist: employee.specialist,
+            address: employee.address,
+            personalID: employee.personalID,
+          },
+          process.env.jwtSecret,
+          {
+            expiresIn: maxAge,
+          }
+        );
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: maxAge * 1000,
+        });
+        return res.status(201).json({
+          message: "Inicio de sesion exitoso",
+          status: 201,
+          employees: results.rows,
+          token: token,
+        });
+      } else {
+        return res.status(400).json({ message: "Datos incorrectos" });
+      }
+    });
+  });
 };
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -496,7 +489,7 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO clinic.patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, created_at) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11)";
     const values = [
       firstname,
       lastname,
