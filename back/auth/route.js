@@ -37,7 +37,7 @@ router.route("/employees").get(private, getAllEmployees);
 router.route("/employees/:id").get(private, getEmployeeById);
 
 //////////////PATIENS ROUTES///////////
-router.route("/register-patient").post( registerPatient);
+router.route("/register-patient").post(privateAdmin, registerPatient);
 router.route("/login-patient").post(loginPatient);
 router.route("/update-patient/:id").put(private, updatePatient);
 router.route("/delete-patient/:id").delete(privateAdmin, deletePatient);

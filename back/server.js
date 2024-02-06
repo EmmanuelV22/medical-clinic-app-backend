@@ -8,7 +8,7 @@ const { Pool } = require("pg");
 const { connectToDB } = require("./models");
 
 const app = express();
-const port = 5000; // Usar el puerto definido en el entorno o 5000 por defecto
+const port = process.env.DB_API_PORT || 5000;
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { private } = require("./middleware/auth");
@@ -34,7 +34,6 @@ app.use(
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
-
 app.get("/api/private", private, (req, res) =>
   res.json({
     user: req.user,
@@ -45,8 +44,19 @@ app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
 
-
-
-
 module.exports = pool;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
