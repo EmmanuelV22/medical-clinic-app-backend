@@ -3,7 +3,7 @@ const connectDB = require("../server");
 exports.getNotifications = async (req, res, next) => {
   const query = "SELECT * FROM notifications";
 
-  connectDB.query(query, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Notificaciones no encontradas",
@@ -20,7 +20,7 @@ exports.getNotificationsById = async (req, res, next) => {
   const query = "SELECT * FROM notifications WHERE patient_id = ?";
   const values = [patient_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Error cargando notificaciones",
@@ -39,7 +39,7 @@ exports.getNotificationsByIdForEmployee = async (req, res, next) => {
   const query = "SELECT * FROM notifications WHERE medical_id = ?";
   const values = [medical_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Notificaciones no encontradas",
@@ -60,7 +60,7 @@ exports.stateNotifications = async (req, res, next) => {
   const query = "UPDATE notifications SET state = ? WHERE id = ?";
   const values = [newState, notificationsId];
 
-  connectDB.query(query, values, (error, results) => {
+  pool.query(query, values, (error, results) => {
     if (error) {
       return res.status(400).json({
         message: "Error actualizando estado de notificacion",
@@ -70,7 +70,10 @@ exports.stateNotifications = async (req, res, next) => {
 
     return res
       .status(200)
-      .json({ message: "Estado de notificacion actualizada con exito", results });
+      .json({
+        message: "Estado de notificacion actualizada con exito",
+        results,
+      });
   });
 };
 
@@ -78,13 +81,15 @@ exports.deleteNotifications = async (req, res, next) => {
   const id = req.params.id;
   const query = "DELETE FROM notifications WHERE id=?";
   const values = [id];
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Error eliminando notificacion",
         error: error.message,
       });
     }
-    return res.status(200).json({ message: "Notificacion eliminada con exito" });
+    return res
+      .status(200)
+      .json({ message: "Notificacion eliminada con exito" });
   });
 };
