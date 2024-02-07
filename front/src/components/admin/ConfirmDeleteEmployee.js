@@ -18,7 +18,7 @@ const ConfirmDeleteEmployee = ({ employeeData, handleDeleteEmployee }) => {
             ¿Está seguro de querer eliminar el empleado &nbsp;
             {employeeData && employeeData.firstname}{" "}
             {employeeData && employeeData.lastname} con el id personal{" "}
-            {employeeData && employeeData.personalID}?
+            {employeeData && employeeData.personal_id}?
           </div>
           <div className="modal-footer d-flex align-items-center">
             <button

@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { Pool } = require("pg");
 
-
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -20,21 +19,21 @@ const pool = new Pool({
 exports.getEmployeeById = async (req, res, next) => {
   const id = req.params.id;
 
-  const query = "SELECT * FROM employees WHERE id = ?";
+  const query = "SELECT * FROM clinic.employees WHERE id = ?";
   const values = [id];
 
- const resp = await pool.query(query, values, (error, results, fields) => {
+  const resp = await pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
         .json({ message: "Error obteniendo paciente", error: error.message });
     }
 
-    if (results.length === 0) {
-      return res.status(404).json({ message: "Empleado no encontrado" , resp});
+    if (results.rows.length === 0) {
+      return res.status(404).json({ message: "Empleado no encontrado", resp });
     }
 
-    const employee = results[0];
+    const employee = results.rows[0];
     return res.status(200).json({ employee, resp });
   });
 };
@@ -42,7 +41,7 @@ exports.getEmployeeById = async (req, res, next) => {
 ////////////////////////////////////////////////
 
 exports.getAllEmployees = (req, res, next) => {
-  const query = "SELECT * FROM employees";
+  const query = "SELECT * FROM clinic.employees";
 
   pool.query(query, (error, results, fields) => {
     if (error) {
@@ -52,7 +51,7 @@ exports.getAllEmployees = (req, res, next) => {
       return;
     }
 
-    res.status(200).json(results);
+    res.status(200).json(results.rows);
   });
 };
 
@@ -69,7 +68,7 @@ exports.register = async (req, res, next) => {
     birthday,
     dni,
     specialist,
-    personalID,
+    personal_id,
     days_off,
     start_time,
     end_time,
@@ -85,7 +84,7 @@ exports.register = async (req, res, next) => {
 
   const daysOffArray = days_off.map((dayNumber, index) => dayNumber);
   const formattedBirthday = new Date(birthday).toISOString().split("T")[0];
-  const createdAt = new Date().toISOString().split("T")[0];
+  const created_at = new Date().toISOString().split("T")[0];
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
@@ -93,7 +92,7 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personalID, createdAt, days_off, start_time, end_time, password ) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)";
+      "INSERT INTO clinic.employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personal_id, created_at, days_off, start_time, end_time, password ) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING id";
     const values = [
       firstname,
       lastname,
@@ -104,8 +103,8 @@ exports.register = async (req, res, next) => {
       formattedBirthday,
       dni,
       specialist,
-      personalID,
-      createdAt,
+      personal_id,
+      created_at,
       JSON.stringify(daysOffArray),
       start_time,
       end_time,
@@ -134,7 +133,7 @@ exports.register = async (req, res, next) => {
           birthday,
           dni,
           specialist,
-          personalID,
+          personal_id,
           days_off: daysOffArray,
           start_time,
           end_time,
@@ -150,10 +149,9 @@ exports.register = async (req, res, next) => {
         httpOnly: true,
         maxAge: maxAge * 1000,
       });
-
       res.status(201).json({
         message: "Empleado creado con exito",
-        employee: results.insertId,
+        employee: results.rows[0].id,
       });
     });
   });
@@ -210,13 +208,12 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
 
 ///////////////////////////////////////////////////
 
-
 exports.login = async (req, res, next) => {
-  const { personalID, password } = req.body;
-  const query = "SELECT * FROM clinic.employees WHERE personalID = $1";
-  const values = [personalID];
+  const { personal_id, password } = req.body;
+  const query = "SELECT * FROM clinic.employees WHERE personal_id = $1";
+  const values = [personal_id];
 
- pool.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -224,7 +221,6 @@ exports.login = async (req, res, next) => {
     }
 
     const employee = results.rows[0];
-    
 
     if (!employee) {
       return res.status(500).json({ message: "Datos incorrectos" });
@@ -246,7 +242,7 @@ exports.login = async (req, res, next) => {
             lastname: employee.lastname,
             specialist: employee.specialist,
             address: employee.address,
-            personalID: employee.personalID,
+            personal_id: employee.personal_id,
           },
           process.env.jwtSecret,
           {
@@ -277,7 +273,7 @@ exports.update = async (req, res, next) => {
     firstname,
     lastname,
     phone,
-    personalID,
+    personal_id,
     email,
     specialist,
     address,
@@ -306,12 +302,12 @@ exports.update = async (req, res, next) => {
         return res.status(500).json({ message: "Error hasheando password" });
       }
       const query =
-        "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, days_off = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+        "UPDATE clinic.employees SET firstname = $1, lastname = $2, phone = $3, personal_id = $4, email = $5, specialist = $6, address = $7, updatedAt = $8, days_off = $9, start_time = $10, end_time = $11, password = $12 WHERE id = $13";
       const values = [
         firstname,
         lastname,
         phone,
-        personalID,
+        personal_id,
         email,
         specialist,
         address,
@@ -339,12 +335,12 @@ exports.update = async (req, res, next) => {
     });
   } else if (!isDaysOffEmpty && isPasswordEmpty) {
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?,days_off = ?, start_time = ?, end_time = ? WHERE id = ?";
+      "UPDATE clinic.employees SET firstname = $1, lastname = $2, phone = $3, personal_id = $4, email = $5, specialist = $6, address = $7, updatedAt = $8, days_off = $9, start_time = $10, end_time = $11 WHERE id = $12";
     const values = [
       firstname,
       lastname,
       phone,
-      personalID,
+      personal_id,
       email,
       specialist,
       address,
@@ -370,7 +366,7 @@ exports.update = async (req, res, next) => {
     });
   } else {
     const query =
-      "UPDATE employees SET firstname = ?, lastname = ?, phone = ?, personalID = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
+      "UPDATE clinic.employees SET firstname = ?, lastname = ?, phone = ?, personal_id = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
     bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
         return res.status(500).json({ message: "Error hasheando password" });
@@ -379,7 +375,7 @@ exports.update = async (req, res, next) => {
         firstname,
         lastname,
         phone,
-        personalID,
+        personal_id,
         email,
         specialist,
         address,
@@ -410,7 +406,7 @@ exports.update = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   const id = req.params.id;
-  const query = "DELETE FROM employees WHERE id = ?";
+  const query = "DELETE FROM clinic.employees WHERE id = $1";
   const values = [id];
   pool.query(query, values, (error, results, fields) => {
     if (error) {
@@ -418,9 +414,10 @@ exports.deleteUser = async (req, res, next) => {
         .status(400)
         .json({ message: "Error borrando empleado", error: error.message });
     }
-    return res
-      .status(200)
-      .json({ message: "Empleado borrado con exito", id: results.insertId });
+    return res.status(200).json({
+      message: "Empleado borrado con exito",
+       id: id
+    });
   });
 };
 
@@ -429,26 +426,26 @@ exports.deleteUser = async (req, res, next) => {
  **********************************************************/
 
 exports.getPatientById = async (req, res, next) => {
-  const { id } = req.params; // Je suppose que l'ID est dans les paramètres de l'URL
+  const { id } = req.params;
 
-  const query = `SELECT * FROM patients WHERE id ='${id}'`;
+  const query = `SELECT * FROM clinic.patients WHERE id = $1`;
   const values = [id];
 
-  pool.query(query, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
         .json({ message: "Paciente no encontrado", error: error.message });
     }
 
-    const patient = results[0];
+    const patient = results.rows[0];
     return res.status(200).json({ patient });
   });
 };
 
 ////////////////////////////////////////////////////////
 exports.getAllPatients = async (req, res, next) => {
-  const query = "SELECT * FROM patients";
+  const query = "SELECT * FROM clinic.patients";
   pool.query(query, (error, results, fields) => {
     if (error) {
       res
@@ -456,7 +453,7 @@ exports.getAllPatients = async (req, res, next) => {
         .json({ message: "Pacientes no encontrados", error: error.message });
       return;
     }
-    res.status(200).json({ results });
+    res.status(200).json(results.rows);
   });
 };
 //////////////////////////////////////////////////////////
@@ -474,7 +471,7 @@ exports.registerPatient = async (req, res, next) => {
     password,
     blood_group,
   } = req.body;
-  const createdAt = new Date().toISOString().split("T")[0];
+  const created_at = new Date().toISOString().split("T")[0];
   const birthdayDate = new Date(birthday);
 
   if (isNaN(birthdayDate.getTime())) {
@@ -489,7 +486,7 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO clinic.patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, created_at) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11)";
+      "INSERT INTO clinic.patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, created_at) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
     const values = [
       firstname,
       lastname,
@@ -501,7 +498,7 @@ exports.registerPatient = async (req, res, next) => {
       formattedBirthday,
       hash,
       blood_group,
-      createdAt,
+      created_at,
     ];
 
     pool.query(query, values, (error, results, fields) => {
@@ -524,7 +521,7 @@ exports.registerPatient = async (req, res, next) => {
           address,
           dni,
           birthday,
-          createdAt,
+          created_at,
         },
         process.env.jwtSecret,
         {
@@ -539,33 +536,30 @@ exports.registerPatient = async (req, res, next) => {
 
       res.status(201).json({
         message: "Paciente creado exitosamente",
-        patient: results.insertId,
+        patient: results.rows[0].id,
       });
     });
   });
 };
 
 ///////////////////////////////////////////////
-// var pool = require("./dbHandler").pool;
 
 exports.loginPatient = async (req, res, next) => {
   const { dni, password } = req.body;
 
-  const query = "SELECT * FROM patients WHERE dni='" + dni + "';";
-
-  // console.log(query, "ACAAAAAAAAAAAAAAAA");
+  const query = "SELECT * FROM clinic.patients WHERE dni= $1";
 
   const values = [dni];
 
-  pool.query(query, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return results.status(400).json({
+      return res.status(400).json({
         message: "Datos incorrectos, paciente no encontrado",
         error: error.message,
       });
     }
 
-    const patient = results[0];
+    const patient = results.rows[0];
 
     if (!patient) {
       return res
@@ -589,7 +583,7 @@ exports.loginPatient = async (req, res, next) => {
             email: patient.email,
             address: patient.address,
             birthday: patient.birthday,
-            createdAt: patient.createdAt,
+            created_at: patient.created_at,
           },
           process.env.jwtSecret,
           {
@@ -602,7 +596,7 @@ exports.loginPatient = async (req, res, next) => {
         });
         return res.status(201).json({
           message: "Inicio de sesion exitoso",
-          patients: results,
+          patients: patient,
           token: token,
         });
       } else {
@@ -629,7 +623,7 @@ exports.updatePatient = async (req, res, next) => {
       }
 
       const query =
-        "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ?, password = ?, updatedAt = ? WHERE id = ?";
+        "UPDATE clinic.patients SET firstname = $1, lastname = $2, phone= $3, email = $4, address = $5, password = $6, updatedAt = $7 WHERE id = $8";
       const values = [
         firstname,
         lastname,
@@ -655,7 +649,7 @@ exports.updatePatient = async (req, res, next) => {
     });
   } else {
     const query =
-      "UPDATE patients SET firstname = ?, lastname = ?, phone=?, email = ?, address = ? , updatedAt = ? WHERE id = ?";
+      "UPDATE clinic.patients SET firstname = $1, lastname = $2, phone= $3, email = $4, address = $5 , updatedAt = $6 WHERE id = $7";
     const values = [firstname, lastname, phone, email, address, updatedAt, id];
     pool.query(query, values, (error, results, fields) => {
       if (error) {
@@ -675,7 +669,7 @@ exports.updatePatient = async (req, res, next) => {
 exports.deletePatient = async (req, res, next) => {
   const id = req.params.id;
 
-  const query = "DELETE FROM patients WHERE id = ?";
+  const query = "DELETE FROM clinic.patients WHERE id = $1";
   const values = [id];
   pool.query(query, values, (error, results, fields) => {
     if (error) {
@@ -701,7 +695,7 @@ exports.updatePasswordPatient = async (req, res, next) => {
     }
 
     const query =
-      "UPDATE patients SET password = ?, updatedAt = ? WHERE dni = ?";
+      "UPDATE clinic.patients SET password = $1, updatedAt = $2 WHERE dni = $3";
 
     const values = [hash, updatedAt, dni];
 
@@ -733,7 +727,7 @@ const changePasswordEmail = (dni, res) => {
     },
   };
 
-  const query2 = `UPDATE patients SET temporalToken = ?  WHERE dni = ? `;
+  const query2 = `UPDATE clinic.patients SET temporalToken = $1  WHERE dni = $2 `;
   generateToken()
     .then((result) => {
       let temporalToken = result.token;
@@ -750,7 +744,7 @@ const changePasswordEmail = (dni, res) => {
 
         let transporter = nodemailer.createTransport(config);
 
-        const query = `SELECT email , firstname FROM patients WHERE dni = ? `;
+        const query = `SELECT email , firstname FROM clinic.patients WHERE dni = $1 `;
         const values = [dni];
 
         pool.query(query, values, (error, results) => {
@@ -762,12 +756,12 @@ const changePasswordEmail = (dni, res) => {
             });
           }
 
-          if (results.length == 0) {
+          if (results.rows.length == 0) {
             return res.status(500).json({ message: "Datos incorrectos" });
           }
 
-          const userEmail = results[0].email;
-          const userName = results[0].firstname;
+          const userEmail = results.rows[0].email;
+          const userName = results.rows[0].firstname;
 
           const htmlContent = `
             <html>
@@ -852,7 +846,7 @@ exports.validateTokenPatient = async (req, res, next) => {
   const token = req.params.token;
 
   try {
-    const query = `SELECT temporalToken FROM patients WHERE dni = ? `;
+    const query = `SELECT temporalToken FROM clinic.patients WHERE dni = $1 `;
     const values = [dni];
 
     pool.query(query, values, (error, results) => {
@@ -864,7 +858,9 @@ exports.validateTokenPatient = async (req, res, next) => {
         });
       }
 
-      const temporalToken = results[0] ? results[0].temporalToken : null;
+      const temporalToken = results.rows[0]
+        ? results.rows[0].temporalToken
+        : null;
 
       if (token !== temporalToken) {
         return res.status(400).json({
@@ -898,11 +894,11 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
 
   let transporter = nodemailer.createTransport(config);
 
-  const query = `SELECT email , firstname , lastname FROM patients WHERE id = ? `;
+  const query = `SELECT email , firstname , lastname FROM clinic.patients WHERE id = $1 `;
   const values = [id];
 
   const queryEmployee =
-    "SELECT firstname, lastname, specialist FROM employees WHERE id = ?";
+    "SELECT firstname, lastname, specialist FROM clinic.employees WHERE id = $1";
   const valuesEmployee = [medical_id];
 
   pool.query(queryEmployee, valuesEmployee, (error, results) => {
@@ -913,9 +909,9 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
         error: error.message,
       });
     }
-    const medicalname = results[0].firstname;
-    const medicallastname = results[0].lastname;
-    const specialist = results[0].specialist;
+    const medicalname = results.rows[0].firstname;
+    const medicallastname = results.rows[0].lastname;
+    const specialist = results.rows[0].specialist;
 
     pool.query(query, values, (error, results) => {
       if (error) {
@@ -926,9 +922,9 @@ exports.sendNotificationEmail = (id, msg, medical_id, res) => {
         });
       }
 
-      const userEmail = results[0].email;
-      const userName = results[0].firstname;
-      const userLastName = results[0].lastname;
+      const userEmail = results.rows[0].email;
+      const userName = results.rows[0].firstname;
+      const userLastName = results.rows[0].lastname;
 
       const htmlContent = `
     <html>

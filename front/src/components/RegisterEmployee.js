@@ -11,7 +11,7 @@ const RegisterEmployee = () => {
   const [address, setAddress] = useState("");
   const [specialist, setSpecialist] = useState("");
   const [password, setPassword] = useState("");
-  const [personalID, setPersonalID] = useState("");
+  const [personal_id, setpersonal_id] = useState("");
   const [sex, setSex] = useState("");
   const [birthday, setBirthDay] = useState("");
   const [days_off1, setDays_off1] = useState("");
@@ -50,7 +50,7 @@ const RegisterEmployee = () => {
         birthday,
         DNI,
         specialist,
-        personalID,
+        personal_id,
         daysOffArray,
         start_time,
         end_time,
@@ -67,7 +67,7 @@ const RegisterEmployee = () => {
         setAddress("");
         setBirthDay("");
         setPassword("");
-        setPersonalID("");
+        setpersonal_id("");
         setSpecialist("");
         setDays_off1("");
         setDays_off2("");
@@ -89,7 +89,7 @@ const RegisterEmployee = () => {
     setDNI("");
     setAddress("");
     setPassword("");
-    setPersonalID("");
+    setpersonal_id("");
     setSpecialist("");
     setDays_off1("");
     setDays_off2("");
@@ -267,17 +267,17 @@ const RegisterEmployee = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="PersonalID"
+              htmlFor="personal_id"
             >
               ID personal
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="PersonalID"
+              id="personal_id"
               type="text"
               placeholder="DENT0001"
-              value={personalID}
-              onChange={(e) => setPersonalID(e.target.value)}
+              value={personal_id}
+              onChange={(e) => setpersonal_id(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -331,7 +331,7 @@ const RegisterEmployee = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="PersonalID"
+              htmlFor="personal_id"
             >
               Hora de inicio
             </label>
@@ -349,7 +349,7 @@ const RegisterEmployee = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="PersonalID"
+              htmlFor="personal_id"
             >
               Hora de finalizacion
             </label>

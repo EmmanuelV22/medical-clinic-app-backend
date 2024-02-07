@@ -17,9 +17,11 @@ const PatientDetails = ({ patientData }) => {
   const [phone, setPhone] = useState(patientData.phone);
   const [dni, setDNI] = useState(patientData.dni);
   const [birthday, setBirthday] = useState(patientData.birthday);
-  const [sex, setSex] = useState(patientData.sex.toUpperCase() === "H" ? "Hombre" : "Mujer");
+  const [sex, setSex] = useState(
+    patientData.sex.toUpperCase() === "H" ? "Hombre" : "Mujer"
+  );
   const [blood, setBlood] = useState(patientData.blood_group);
-  const [createdAt, setCreated] = useState(patientData.createdAt);
+  const [created_at, setCreated] = useState(patientData.created_at);
   const [updatedAt, setUpdated] = useState(patientData.updatedAt);
 
   const handleUpdatePatient = async () => {
@@ -201,7 +203,7 @@ const PatientDetails = ({ patientData }) => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="created"
                     aria-describedby="patient-lastname"
-                    value={actions.dateFormater(createdAt)}
+                    value={actions.dateFormater(created_at)}
                     readOnly
                     disabled
                   />

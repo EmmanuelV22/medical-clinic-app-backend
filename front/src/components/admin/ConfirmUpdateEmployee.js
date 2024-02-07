@@ -17,7 +17,7 @@ const ConfirmUpdateEmployee = ({ employeeData, editEmployeeData }) => {
             ¿Está seguro de querer modificar los datos del empleado &nbsp;
             {employeeData && employeeData.firstname}{" "}
             {employeeData && employeeData.lastname} con el id personal{" "}
-            {employeeData && employeeData.personalID}?
+            {employeeData && employeeData.personal_id}?
           </div>
           <div className="modal-footer">
             <button

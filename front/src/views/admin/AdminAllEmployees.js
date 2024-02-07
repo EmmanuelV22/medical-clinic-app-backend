@@ -76,7 +76,7 @@ const AdminAllEmployees = () => {
       className: "table-dniDr-sorting ",
     },
     {
-      field: "personalID",
+      field: "personal_id",
       label: "ID personal",
       sortable: true,
       className: "table-personal-sorting ",
@@ -140,7 +140,7 @@ const AdminAllEmployees = () => {
           <td className="table-name-sorting">{employee.firstname}</td>
           <td className="table-lastname-sorting">{employee.lastname}</td>
           <td className="table-dniDr-sorting">{employee.dni}</td>
-          <td className="table-personal-sorting">{employee.personalID}</td>
+          <td className="table-personal-sorting">{employee.personal_id}</td>
           <td className="table-specialist-sorting">{employee.specialist}</td>
           <td className="table-emailDr-sorting">{employee.email}</td>
           <td className="table-daysoff-sorting">
