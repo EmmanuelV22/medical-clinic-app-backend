@@ -4,38 +4,26 @@ const bcrypt = require("bcryptjs");
 
 dotenv.config();
 
-const mysql = require("mysql");
+const { Pool } = require("pg");
+const { connectToDB } = require("./models");
+
 const app = express();
-const port = process.env.PORT || 5000; // Usar el puerto definido en el entorno o 5000 por defecto
+const port = process.env.DB_API_PORT || 5000;
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { private } = require("./middleware/auth");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-const connectDB = require("./models");
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
-//////////// this code below runs when you dont use models js ////////
-
-// const connectDB = mysql.createConnection({
-//   host: process.env.HOST,
-//   user: process.env.user,
-//   password: process.env.password,
-//   database: process.env.database,
-// });
-
-// connectDB.connect((err) => {
-//   if (err) {
-//     console.error("Error connecting to database: ", err);
-//     return;
-//   }
-//   console.log("Connectedddddddd to database");
-
-// });
-
-////////////////////////////////////////////////////////////////
-
-module.exports = connectDB;
+connectToDB(pool);
 
 app.use(express.json());
 app.use(
@@ -46,7 +34,6 @@ app.use(
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
-
 app.get("/api/private", private, (req, res) =>
   res.json({
     user: req.user,
@@ -56,3 +43,20 @@ app.get("/api/private", private, (req, res) =>
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
+
+module.exports = pool;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
