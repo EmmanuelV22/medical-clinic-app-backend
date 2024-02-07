@@ -10,11 +10,14 @@ exports.getAppointmentPatients = async (req, res, next) => {
 
   const values = [patient_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error , no hay resultados de la busqueda", error: error.message });
+        .json({
+          message: "Error , no hay resultados de la busqueda",
+          error: error.message,
+        });
     }
 
     const agenda = results;
@@ -31,11 +34,14 @@ exports.getAppointmenByIdPatient = async (req, res, next) => {
 
   const values = [patient_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error , no hay resultados de citas en la busqueda", error: error.message });
+        .json({
+          message: "Error , no hay resultados de citas en la busqueda",
+          error: error.message,
+        });
     }
     const agenda = results[0];
     return res.status(200).json({ message: "Cita obtenida con exito", agenda });
@@ -49,11 +55,14 @@ exports.getAppointmentById = async (req, res, next) => {
 
   const values = [id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error, no hay resultados de la busqueda", error: error.message });
+        .json({
+          message: "Error, no hay resultados de la busqueda",
+          error: error.message,
+        });
     }
 
     const agenda = results[0];
@@ -65,11 +74,14 @@ exports.getAppointmentById = async (req, res, next) => {
 exports.getAllAppointment = async (req, res, next) => {
   const query = "SELECT * FROM agenda";
 
-  connectDB.query(query, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error obteniendo todas la citas", error: error.message });
+        .json({
+          message: "Error obteniendo todas la citas",
+          error: error.message,
+        });
     }
 
     return res
@@ -99,7 +111,7 @@ exports.createAppointment = async (req, res, next) => {
     available,
   ];
 
-  connectDB.query(query, values, async (error, results, fields) => {
+  pool.query(query, values, async (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -116,7 +128,7 @@ exports.createAppointment = async (req, res, next) => {
     const querySpecialist = `SELECT firstname , lastname , specialist FROM employees WHERE id = ? `;
     const valuesSpecialist = [medical_id];
 
-    connectDB.query(querySpecialist, valuesSpecialist, (error, results) => {
+    pool.query(querySpecialist, valuesSpecialist, (error, results) => {
       if (error) {
         return res.status(500).json({
           status: "error",
@@ -129,84 +141,73 @@ exports.createAppointment = async (req, res, next) => {
         return res.status(500).json({ message: "Datos incorrectos" });
       }
 
-      
-      
       const specialistType = results[0].specialist;
       const medicalFirstName = results[0].firstname;
       const medicalLastName = results[0].lastname;
 
+      const notificationQueryPatient =
+        "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
 
+      const notificationValuesPatient = [
+        patient_id,
+        medical_id,
+        appointmentId,
+        `¡Turno confirmado con el ${specialistType} ${medicalFirstName} ${medicalLastName} para el dia ${date}/${month}/${year} a las ${time} horas!`,
+      ];
 
-    const notificationQueryPatient =
-      "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
-
-    const notificationValuesPatient = [
-      patient_id,
-      medical_id,
-      appointmentId,
-      `¡Turno confirmado con el ${specialistType} ${medicalFirstName} ${medicalLastName} para el dia ${date}/${month}/${year} a las ${time} horas!`,
-    ];
-
-    try {
-      connectDB.query(
-        notificationQueryPatient,
-        notificationValuesPatient
-      );
-    } catch (notificationError) {
-      return res.status(500).json({
-        message: "Error creando cita",
-        error: notificationError.message,
-      });
-    }
-    const query2 = `SELECT firstname , lastname FROM patients WHERE id = ? `;
-    const values2 = [patient_id];
-
-    connectDB.query(query2, values2, (error, results) => {
-      if (error) {
+      try {
+        pool.query(notificationQueryPatient, notificationValuesPatient);
+      } catch (notificationError) {
         return res.status(500).json({
-          status: "error",
-          message: "Error en la consulta a la base de datos",
-          error: error.message,
+          message: "Error creando cita",
+          error: notificationError.message,
         });
       }
+      const query2 = `SELECT firstname , lastname FROM patients WHERE id = ? `;
+      const values2 = [patient_id];
 
-      if (results.length == 0) {
-        return res.status(500).json({ message: "Datos incorrectos" });
-      }
+      pool.query(query2, values2, (error, results) => {
+        if (error) {
+          return res.status(500).json({
+            status: "error",
+            message: "Error en la consulta a la base de datos",
+            error: error.message,
+          });
+        }
 
-      
-      const userFirstName = results[0].firstname;
-      const userLastName = results[0].lastname;
+        if (results.length == 0) {
+          return res.status(500).json({ message: "Datos incorrectos" });
+        }
 
+        const userFirstName = results[0].firstname;
+        const userLastName = results[0].lastname;
 
-    
-    const doctorNotificationQuery =
-      "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_employee) VALUES (?, ?, ?, ?)";
+        const doctorNotificationQuery =
+          "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_employee) VALUES (?, ?, ?, ?)";
 
-    const doctorNotificationValues = [
-      patient_id,
-      medical_id,
-      appointmentId,
-      `¡Nuevo turno agendado por el paciente ${userFirstName} ${userLastName} el dia ${date}/${month}/${year} a las ${time} horas!`,
-    ];
-  
+        const doctorNotificationValues = [
+          patient_id,
+          medical_id,
+          appointmentId,
+          `¡Nuevo turno agendado por el paciente ${userFirstName} ${userLastName} el dia ${date}/${month}/${year} a las ${time} horas!`,
+        ];
 
-    try {
-      connectDB.query(doctorNotificationQuery, doctorNotificationValues);
+        try {
+          pool.query(doctorNotificationQuery, doctorNotificationValues);
 
-      return res.status(201).json({
-        message: "Cita creada con exito",
-        appointment: appointmentId,
+          return res.status(201).json({
+            message: "Cita creada con exito",
+            appointment: appointmentId,
+          });
+        } catch (doctorNotificationError) {
+          return res.status(500).json({
+            message: "Error creando cita",
+            error: doctorNotificationError.message,
+          });
+        }
       });
-    } catch (doctorNotificationError) {
-     
-      return res.status(500).json({
-        message: "Error creando cita",
-        error: doctorNotificationError.message,
-      });
-    }
-  });        });
-});
+    });
+  });
 };
 
 ////////////////////////////////////
@@ -233,7 +234,7 @@ exports.createAppointment = async (req, res, next) => {
     id,
   ];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
@@ -246,10 +247,10 @@ exports.createAppointment = async (req, res, next) => {
 }),
   ////////////////////////////////////
 
-  exports.deleteAppointment = async (req, res, next) => {
+  (exports.deleteAppointment = async (req, res, next) => {
     const id = req.params.id;
 
-    connectDB.beginTransaction((err) => {
+    pool.beginTransaction((err) => {
       if (err) {
         return res
           .status(500)
@@ -260,12 +261,12 @@ exports.createAppointment = async (req, res, next) => {
         "DELETE FROM notifications WHERE agenda_id = ?";
       const notificationsValues = [id];
 
-      connectDB.query(
+      pool.query(
         deleteNotificationsQuery,
         notificationsValues,
         (error, results, fields) => {
           if (error) {
-            connectDB.rollback(() => {
+            pool.rollback(() => {
               return res.status(400).json({
                 message: "Error eliminando notificaciones",
                 error: error.message,
@@ -276,12 +277,12 @@ exports.createAppointment = async (req, res, next) => {
           const deleteAgendaQuery = "DELETE FROM agenda WHERE id = ?";
           const agendaValues = [id];
 
-          connectDB.query(
+          pool.query(
             deleteAgendaQuery,
             agendaValues,
             (error, results, fields) => {
               if (error) {
-                connectDB.rollback(() => {
+                pool.rollback(() => {
                   return res.status(400).json({
                     message: "Error eliminando cita",
                     error: error.message,
@@ -289,9 +290,9 @@ exports.createAppointment = async (req, res, next) => {
                 });
               }
 
-              connectDB.commit((err) => {
+              pool.commit((err) => {
                 if (err) {
-                  connectDB.rollback(() => {
+                  pool.rollback(() => {
                     return res.status(500).json({
                       message: "Error haciendo comentario en la bd",
                       error: err.message,
@@ -306,7 +307,7 @@ exports.createAppointment = async (req, res, next) => {
         }
       );
     });
-  };
+  });
 
 /////////////////////////////////////////
 
@@ -315,17 +316,22 @@ exports.getMedicalAppointments = async (req, res, next) => {
   const query = "SELECT * FROM agenda WHERE medical_id = ?";
   const values = [medical_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res
         .status(400)
-        .json({ message: "Error obteniendo agenda del especialista", error: error.message });
+        .json({
+          message: "Error obteniendo agenda del especialista",
+          error: error.message,
+        });
     }
     if (results.length === 0) {
       return res.status(404).json({ message: "Agenda no encontrada" });
     }
     const agenda = results;
-    return res.status(200).json({ message: "Agenda obtenida con exito", agenda });
+    return res
+      .status(200)
+      .json({ message: "Agenda obtenida con exito", agenda });
   });
 };
 
@@ -333,11 +339,11 @@ exports.getMedicalAppointments = async (req, res, next) => {
 
 exports.ConfirmationAgendaById = async (req, res, next) => {
   const appointmentId = req.params.appointmentId;
-  const newState = req.body.state; 
+  const newState = req.body.state;
   const query = "UPDATE agenda SET state = ? WHERE id = ?";
   const values = [newState, appointmentId];
 
-  connectDB.query(query, values, (error, results) => {
+  pool.query(query, values, (error, results) => {
     if (error) {
       return res.status(400).json({
         message: "Error al actualizar el estado de la cita",
