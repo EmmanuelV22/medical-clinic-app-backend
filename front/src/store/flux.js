@@ -9,7 +9,6 @@ const config = {
 const port = process.env.DB_API_PORT || 5000;
 
 const getState = ({ getStore, getActions, setStore }) => {
-
   const API_AUTH = `http://localhost:${port}/api/auth`;
   const API = `http://localhost:${port}/api`;
 
@@ -214,7 +213,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         birthday,
         dni,
         specialist,
-        personalID,
+        personal_id,
         days_off,
         start_time,
         end_time,
@@ -234,7 +233,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               birthday,
               dni,
               specialist,
-              personalID,
+              personal_id,
               days_off,
               start_time,
               end_time,
@@ -261,10 +260,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
       },
-      login: async (personalID, password) => {
+      login: async (personal_id, password) => {
         try {
           const response = await axios.post(`${API_AUTH}/login`, {
-            personalID: personalID,
+            personal_id: personal_id,
             password: password,
           });
           if (response.status && response.status === 201) {
@@ -408,7 +407,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         firstname,
         lastname,
         phone,
-        personalID,
+        personal_id,
         email,
         specialist,
         address,
@@ -426,7 +425,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               firstname,
               lastname,
               phone,
-              personalID,
+              personal_id,
               email,
               specialist,
               address,

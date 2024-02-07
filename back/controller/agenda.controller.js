@@ -12,12 +12,10 @@ exports.getAppointmentPatients = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error , no hay resultados de la busqueda",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error , no hay resultados de la busqueda",
+        error: error.message,
+      });
     }
 
     const agenda = results;
@@ -36,14 +34,12 @@ exports.getAppointmenByIdPatient = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error , no hay resultados de citas en la busqueda",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error , no hay resultados de citas en la busqueda",
+        error: error.message,
+      });
     }
-    const agenda = results[0];
+    const agenda = results.rows[0];
     return res.status(200).json({ message: "Cita obtenida con exito", agenda });
   });
 };
@@ -57,15 +53,13 @@ exports.getAppointmentById = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error, no hay resultados de la busqueda",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error, no hay resultados de la busqueda",
+        error: error.message,
+      });
     }
 
-    const agenda = results[0];
+    const agenda = results.rows[0];
     return res.status(200).json({ message: "Cita obtenida con exito", agenda });
   });
 };
@@ -76,12 +70,10 @@ exports.getAllAppointment = async (req, res, next) => {
 
   pool.query(query, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error obteniendo todas la citas",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error obteniendo todas la citas",
+        error: error.message,
+      });
     }
 
     return res
@@ -141,9 +133,9 @@ exports.createAppointment = async (req, res, next) => {
         return res.status(500).json({ message: "Datos incorrectos" });
       }
 
-      const specialistType = results[0].specialist;
-      const medicalFirstName = results[0].firstname;
-      const medicalLastName = results[0].lastname;
+      const specialistType = results.rows[0].specialist;
+      const medicalFirstName = results.rows[0].firstname;
+      const medicalLastName = results.rows[0].lastname;
 
       const notificationQueryPatient =
         "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_patient) VALUES (?, ?, ?, ?)";
@@ -179,8 +171,8 @@ exports.createAppointment = async (req, res, next) => {
           return res.status(500).json({ message: "Datos incorrectos" });
         }
 
-        const userFirstName = results[0].firstname;
-        const userLastName = results[0].lastname;
+        const userFirstName = results.rows[0].firstname;
+        const userLastName = results.rows[0].lastname;
 
         const doctorNotificationQuery =
           "INSERT INTO notifications (patient_id, medical_id, agenda_id, appointment_message_employee) VALUES (?, ?, ?, ?)";
@@ -318,12 +310,10 @@ exports.getMedicalAppointments = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error obteniendo agenda del especialista",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error obteniendo agenda del especialista",
+        error: error.message,
+      });
     }
     if (results.length === 0) {
       return res.status(404).json({ message: "Agenda no encontrada" });

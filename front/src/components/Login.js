@@ -6,7 +6,7 @@ import LoginPatient from "./LoginPatient";
 
 const Login = () => {
   const { store, actions } = useContext(Context);
-  const [personalID, setPersonalID] = useState("");
+  const [personal_id, setpersonal_id] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
   const [isPatient, setIsPatient] = useState(false);
@@ -16,7 +16,7 @@ const Login = () => {
     if (password === "") {
       return actions.showNotification("Datos incorrectos", "danger");
     } else {
-      const data = await actions.login(personalID, password);
+      const data = await actions.login(personal_id, password);
 
       if (data?.status && data?.status === 201) {
         actions.showNotification("Inicio de sesion exitoso", "success");
@@ -89,8 +89,8 @@ const Login = () => {
                   className="input-field"
                   placeholder="ID"
                   autoComplete="off"
-                  value={personalID}
-                  onChange={(e) => setPersonalID(e.target.value)}
+                  value={personal_id}
+                  onChange={(e) => setpersonal_id(e.target.value)}
                 />
               </div>
               <div className="field">

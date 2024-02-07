@@ -73,7 +73,7 @@ exports.createTreatment = async (req, res, next) => {
             return res.status(500).json({ message: "Datos incorrectos" });
           }
 
-          const specialistType = results[0].specialist;
+          const specialistType = results.rows[0].specialist;
 
           const msg = `Tienes un nuevo tratamiento, para tratar la siguiente patologia:  ${patologies}. Inicia el dia:  ${initial_date}, con el siguiente detalle:  ${resume} .  
         Saludos cordiales`;
@@ -166,12 +166,10 @@ exports.updateTreatment = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error actualizando tratamiento",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error actualizando tratamiento",
+        error: error.message,
+      });
     }
     return res
       .status(200)
@@ -227,14 +225,12 @@ exports.getTreatmentById = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error obteniendo tratamiento",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error obteniendo tratamiento",
+        error: error.message,
+      });
     }
-    const treatment = results[0];
+    const treatment = results.rows[0];
     return res
       .status(200)
       .json({ message: "Tratamiento obtenido con exito", treatment });
@@ -246,12 +242,10 @@ exports.getTreatments = async (req, res, next) => {
 
   pool.query(query, (error, results, fields) => {
     if (error) {
-      return res
-        .status(400)
-        .json({
-          message: "Error obteniendo tratamientos",
-          error: error.message,
-        });
+      return res.status(400).json({
+        message: "Error obteniendo tratamientos",
+        error: error.message,
+      });
     }
     return res.status(200).json(results);
   });

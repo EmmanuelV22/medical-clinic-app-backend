@@ -85,7 +85,7 @@ const MyPatients = () => {
       sortable: true,
     },
     {
-      field: "createdAt",
+      field: "created_at",
       label: "Creado",
       sortable: true,
       className: "table-updated-sorting",
@@ -111,7 +111,7 @@ const MyPatients = () => {
         </td>
         <td className="table-email-sorting">{patient.email}</td>
         <td className="table-updated-sorting">
-          {actions.dateFormater(patient.createdAt)}
+          {actions.dateFormater(patient.created_at)}
         </td>
         <td className="table-phone-sorting">{patient.phone}</td>
         <td className="table-updated-sorting">

@@ -11,7 +11,7 @@ const EmployeeDetail = ({ employeeData }) => {
   const [firstname, setFirstname] = useState(employeeData.firstname);
   const [lastname, setLastname] = useState(employeeData.lastname);
   const [phone, setPhone] = useState(employeeData.phone);
-  const [personalID, setPersonalID] = useState(employeeData.personalID);
+  const [personal_id, setpersonal_id] = useState(employeeData.personal_id);
   const [email, setEmail] = useState(employeeData.email);
   const [specialist, setSpecialist] = useState(employeeData.specialist);
   const [address, setAddress] = useState(employeeData.address);
@@ -22,9 +22,11 @@ const EmployeeDetail = ({ employeeData }) => {
   const [start_time, setStart_time] = useState(employeeData.start_time);
   const [end_time, setEnd_time] = useState(employeeData.end_time);
   const [birthday, setBirthday] = useState(employeeData.birthday);
-  const [sex, setSex] = useState(employeeData.sex.toUpperCase() === "H" ? "Hombre" : "Mujer");
+  const [sex, setSex] = useState(
+    employeeData.sex.toUpperCase() === "H" ? "Hombre" : "Mujer"
+  );
   const [dni, setDNI] = useState(employeeData.dni);
-  const [createdAt, setCreated] = useState(employeeData.createdAt);
+  const [created_at, setCreated] = useState(employeeData.created_at);
   const [updatedAt, setUpdated] = useState(employeeData.updatedAt);
 
   const numberToDay = {
@@ -57,7 +59,7 @@ const EmployeeDetail = ({ employeeData }) => {
       firstname &&
       lastname &&
       phone &&
-      personalID &&
+      personal_id &&
       email &&
       address &&
       specialist &&
@@ -86,7 +88,7 @@ const EmployeeDetail = ({ employeeData }) => {
           firstname,
           lastname,
           phone,
-          personalID,
+          personal_id,
           email,
           specialist,
           address,
@@ -227,10 +229,10 @@ const EmployeeDetail = ({ employeeData }) => {
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="Username"
-                          aria-describedby="employee-personalID"
-                          placeholder="personalID"
-                          value={personalID}
-                          onChange={(e) => setPersonalID(e.target.value)}
+                          aria-describedby="employee-personal_id"
+                          placeholder="personal_id"
+                          value={personal_id}
+                          onChange={(e) => setpersonal_id(e.target.value)}
                           required
                         />
                       </div>
@@ -357,7 +359,7 @@ const EmployeeDetail = ({ employeeData }) => {
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="created"
                           aria-describedby="patient-lastname"
-                          value={actions.dateFormater(createdAt)}
+                          value={actions.dateFormater(created_at)}
                           readOnly
                           disabled
                         />
