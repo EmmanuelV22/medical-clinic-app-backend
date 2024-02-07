@@ -92,7 +92,7 @@ exports.register = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO clinic.employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personal_id, created_at, days_off, start_time, end_time, password ) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)";
+      "INSERT INTO clinic.employees (firstname, lastname, phone, sex, email, address, birthday, dni, specialist, personal_id, created_at, days_off, start_time, end_time, password ) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING id";
     const values = [
       firstname,
       lastname,
@@ -151,7 +151,7 @@ exports.register = async (req, res, next) => {
       });
       res.status(201).json({
         message: "Empleado creado con exito",
-        // employee: results.insertId,
+        employee: results.rows[0].id,
       });
     });
   });
@@ -416,7 +416,7 @@ exports.deleteUser = async (req, res, next) => {
     }
     return res.status(200).json({
       message: "Empleado borrado con exito",
-      // , id: results.insertId
+       id: id
     });
   });
 };
@@ -486,7 +486,7 @@ exports.registerPatient = async (req, res, next) => {
     }
 
     const query =
-      "INSERT INTO clinic.patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, created_at) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11)";
+      "INSERT INTO clinic.patients (firstname, lastname, phone, sex,  email, address, dni, birthday, password, blood_group, created_at) VALUES ($1, $2, $3 , $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id";
     const values = [
       firstname,
       lastname,
@@ -536,7 +536,7 @@ exports.registerPatient = async (req, res, next) => {
 
       res.status(201).json({
         message: "Paciente creado exitosamente",
-        // patient: results.insertId,
+        patient: results.rows[0].id,
       });
     });
   });
@@ -553,7 +553,7 @@ exports.loginPatient = async (req, res, next) => {
 
   pool.query(query, values, (error, results, fields) => {
     if (error) {
-      return results.status(400).json({
+      return res.status(400).json({
         message: "Datos incorrectos, paciente no encontrado",
         error: error.message,
       });
