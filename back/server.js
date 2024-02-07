@@ -38,9 +38,11 @@ const connectDB = require("./models");
 module.exports = connectDB;
 
 app.use(express.json());
-app.use(cors({
-  origin: '*' 
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
