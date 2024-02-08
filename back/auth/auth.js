@@ -453,7 +453,8 @@ exports.getAllPatients = async (req, res, next) => {
         .json({ message: "Pacientes no encontrados", error: error.message });
       return;
     }
-    res.status(200).json(results.rows);
+    const resp = results.rows
+    res.status(200).json({resp});
   });
 };
 //////////////////////////////////////////////////////////

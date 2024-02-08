@@ -1,4 +1,4 @@
-const connectDB = require("../server");
+const pool = require("../server");
 
 exports.getNotifications = async (req, res, next) => {
   const query = "SELECT * FROM notifications";
