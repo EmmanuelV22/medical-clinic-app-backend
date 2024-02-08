@@ -9,7 +9,7 @@ const pool = new Pool({
 });
 
 exports.getNotifications = async (req, res, next) => {
-  const query = "SELECT * FROM clicnic.notifications";
+  const query = "SELECT * FROM clinic.notifications";
 
   pool.query(query, (error, results, fields) => {
     if (error) {
@@ -18,8 +18,9 @@ exports.getNotifications = async (req, res, next) => {
         error: error.message,
       });
     }
+    const notifications = results.rows;
 
-    return res.status(200).json(results);
+    return res.status(200).json(notifications);
   });
 };
 
@@ -35,7 +36,7 @@ exports.getNotificationsById = async (req, res, next) => {
         error: error.message,
       });
     }
-    const notifications = results;
+    const notifications = results.rows;
     return res
       .status(200)
       .json({ message: "Notificaciones obtenidas con exito", notifications });
@@ -54,7 +55,7 @@ exports.getNotificationsByIdForEmployee = async (req, res, next) => {
         error: error.message,
       });
     }
-    const notifications = results;
+    const notifications = results.rows;
     return res
       .status(200)
       .json({ message: "Notificaciones obtenidas con exito", notifications });
@@ -78,14 +79,14 @@ exports.stateNotifications = async (req, res, next) => {
 
     return res.status(200).json({
       message: "Estado de notificacion actualizada con exito",
-      results,
+      results: results.rows,
     });
   });
 };
 
 exports.deleteNotifications = async (req, res, next) => {
   const id = req.params.id;
-  const query = "DELETE FROM clinic.notifications WHERE id=$1";
+  const query = "DELETE FROM clinic.notifications WHERE id= $1";
   const values = [id];
   pool.query(query, values, (error, results, fields) => {
     if (error) {

@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           const actions = getActions();
           const response = await axios.get(`${API_AUTH}/patients`, config);
           if (response.status && response.status === 200) {
-            const responseData = response.data;
+            const responseData = response.data.results;
             setStore({ patients: responseData });
             actions.showNotification(
               "Pacientes obtenidos correctamente",
@@ -509,7 +509,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           const actions = getActions();
 
           actions.showNotification("Error reserva fallida", "danger");
-          console.error("Error creando cita", error.message);
         }
       },
       loadMedicalAppointments: async (medical_id) => {
@@ -606,8 +605,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(`${API}/appointments`, config);
           if (response.status && response.status === 200) {
             const data = response.data;
-            console.log(data);
-            setStore({ allAppointments: data.resp });
+            // console.log(data);
+            setStore({ allAppointments: data.agenda });
             actions.showNotification("Citas obtenidas con exito", "success");
             return true;
           } else return [];

@@ -80,7 +80,7 @@ const AdminAllPatients = () => {
   };
 
   const renderRow = (patient, index) => {
-    console.log(patient);
+    // console.log(patient);
     return (
       <React.Fragment key={patient.id}>
         <tr

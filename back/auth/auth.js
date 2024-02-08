@@ -19,7 +19,7 @@ const pool = new Pool({
 exports.getEmployeeById = async (req, res, next) => {
   const id = req.params.id;
 
-  const query = "SELECT * FROM clinic.employees WHERE id = ?";
+  const query = "SELECT * FROM clinic.employees WHERE id = $1";
   const values = [id];
 
   const resp = await pool.query(query, values, (error, results, fields) => {
@@ -179,11 +179,11 @@ const sendConfirmationEmail = (userEmail, userFirstname, userLastname) => {
       </head>
       <body>
         <div>
-          <h1>Bienvenido a Clínic'app</h1>
+          <h1>Bienvenido a Clinic'app</h1>
           <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
-          <p>¡Te damos la bienvenida a nuestra clínica!</p>
-          <p>Hola ${userFirstname} ${userLastname}, ahora que tenés tu cuenta vas a poder agendar turnos con nuestros médicos, ver los tratamientos, tu historial clínica y mucho más.</p>
-          <p>Otra vez te damos la bienvenida =) </p>
+          <h2>¡Te damos la bienvenida a nuestra clínica!</h2>
+          <p>Hola ${userFirstname} ${userLastname}, ahora que tenés tu cuenta vas a poder agendar turnos, ver los tratamientos, historial clínico y mucho más.</p>
+          <h2>Gracias por confiar en Clinic'app </h2>
         </div>
       </body>
     </html>
@@ -401,8 +401,7 @@ exports.getAllPatients = async (req, res, next) => {
         .json({ message: "Pacientes no encontrados", error: error.message });
       return;
     }
-    const resp = results.rows
-    res.status(200).json({resp});
+    res.status(200).json({results: results.rows});
   });
 };
 //////////////////////////////////////////////////////////
@@ -806,9 +805,8 @@ exports.validateTokenPatient = async (req, res, next) => {
           error: error.message,
         });
       }
-
       const temporalToken = results.rows[0]
-        ? results.rows[0].temporalToken
+        ? results.rows[0].temporaltoken
         : null;
 
       if (token !== temporalToken) {

@@ -1,5 +1,13 @@
 const { sendNotificationEmail } = require("../auth/auth");
-const connectDB = require("../server");
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 exports.createTreatment = async (req, res, next) => {
   try {
@@ -32,7 +40,7 @@ exports.createTreatment = async (req, res, next) => {
     const medicineDataString = JSON.stringify(medicineDataArray);
 
     const query =
-      "INSERT INTO treatment (patient_id, resume, initial_date, exp_date, medical_id, patologies, surgey, finish_treatment, medicine_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO clinic.treatment (patient_id, resume, initial_date, exp_date, medical_id, patologies, surgey, finish_treatment, medicine_data) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id";
 
     const values = [
       patient_id,
@@ -57,7 +65,7 @@ exports.createTreatment = async (req, res, next) => {
           });
         }
 
-        const query2 = `SELECT specialist FROM employees WHERE id = ? `;
+        const query2 = `SELECT specialist FROM clinic.employees WHERE id = $1 `;
         const values2 = [medical_id];
 
         pool.query(query2, values2, (error, results) => {
@@ -69,7 +77,7 @@ exports.createTreatment = async (req, res, next) => {
             });
           }
 
-          if (results.length == 0) {
+          if (results.rows.length == 0) {
             return res.status(500).json({ message: "Datos incorrectos" });
           }
 
@@ -80,10 +88,10 @@ exports.createTreatment = async (req, res, next) => {
 
           sendNotificationEmail(patient_id, msg, medical_id, res);
 
-          const treatmentId = createTreatmentResults.insertId;
+          const treatmentId = createTreatmentResults.rows[0].id;
 
           const notificationQuery =
-            "INSERT INTO notifications (patient_id, medical_id, treatment_id, treatment_message) VALUES (?, ?, ?, ?)";
+            "INSERT INTO clinic.notifications (patient_id, medical_id, treatment_id, treatment_message) VALUES ($1, $2, $3, $4)";
 
           const notificationValues = [
             patient_id,
@@ -148,7 +156,7 @@ exports.updateTreatment = async (req, res, next) => {
   const updated_at = new Date();
 
   const query =
-    "UPDATE treatment SET patient_id=?, resume=?, initial_date=?, exp_date=?, medical_id=?, patologies=?, surgey=?, finish_treatment=?, medicine_data=?, updated_at=? WHERE id=?";
+    "UPDATE clinic.treatment SET patient_id= $1, resume= $2, initial_date= $3, exp_date= $4, medical_id= $5, patologies= $6, surgey= $7, finish_treatment= $8, medicine_data= $9, updated_at= $10 WHERE id= $11";
 
   const values = [
     patient_id,
@@ -179,7 +187,7 @@ exports.updateTreatment = async (req, res, next) => {
 
 exports.getTreatmentsMedical = async (req, res, next) => {
   const medical_id = req.params.medical_id;
-  const query = "SELECT * FROM treatment WHERE medical_id = ?";
+  const query = "SELECT * FROM clinic.treatment WHERE medical_id = $1";
   const values = [medical_id];
 
   pool.query(query, values, (error, results, fields) => {
@@ -189,10 +197,10 @@ exports.getTreatmentsMedical = async (req, res, next) => {
         error: error.message,
       });
     }
-    if (results.length === 0) {
+    if (results.rows.length === 0) {
       return res.status(404).json({ message: "Tratamientos no encontrados" });
     }
-    const treatments = results;
+    const treatments = results.rows;
     return res
       .status(200)
       .json({ message: "Tratamientos obtenidos con exito", treatments });
@@ -201,7 +209,7 @@ exports.getTreatmentsMedical = async (req, res, next) => {
 
 exports.getTreatmentsPatient = async (req, res, next) => {
   const patient_id = req.params.patient_id;
-  const query = "SELECT * FROM treatment WHERE patient_id = ?";
+  const query = "SELECT * FROM clinic.treatment WHERE patient_id = $1";
   const values = [patient_id];
 
   pool.query(query, values, (error, results, fields) => {
@@ -211,7 +219,7 @@ exports.getTreatmentsPatient = async (req, res, next) => {
         error: error.message,
       });
     }
-    const treatments = results;
+    const treatments = results.rows;
     return res
       .status(200)
       .json({ message: "Tratamientos obtenidos con exito", treatments });
@@ -220,7 +228,7 @@ exports.getTreatmentsPatient = async (req, res, next) => {
 
 exports.getTreatmentById = async (req, res, next) => {
   const id = req.params.id;
-  const query = "SELECT * FROM treatment WHERE id = ?";
+  const query = "SELECT * FROM clinic.treatment WHERE id = $1";
   const values = [id];
 
   pool.query(query, values, (error, results, fields) => {
@@ -238,7 +246,7 @@ exports.getTreatmentById = async (req, res, next) => {
 };
 
 exports.getTreatments = async (req, res, next) => {
-  const query = "SELECT * FROM treatment";
+  const query = "SELECT * FROM clinic.treatment";
 
   pool.query(query, (error, results, fields) => {
     if (error) {
@@ -247,6 +255,6 @@ exports.getTreatments = async (req, res, next) => {
         error: error.message,
       });
     }
-    return res.status(200).json(results);
+    return res.status(200).json({results: results.rows});
   });
 };

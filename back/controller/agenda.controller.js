@@ -83,8 +83,8 @@ exports.getAllAppointment = async (req, res, next) => {
         error: error.message,
       });
     }
-    const resp = results.rows;
-    return res.status(200).json({ message: "Citas obtenidas con exito", resp });
+    const agenda = results.rows;
+    return res.status(200).json({ message: "Citas obtenidas con exito", agenda });
   });
 };
 
@@ -161,7 +161,7 @@ exports.createAppointment = async (req, res, next) => {
           error: notificationError.message,
         });
       }
-      const query2 = `SELECT firstname , lastname FROM clinic.patients WHEREid = $1 `;
+      const query2 = `SELECT firstname , lastname FROM clinic.patients WHERE id = $1 `;
       const values2 = [patient_id];
 
       pool.query(query2, values2, (error, results) => {
@@ -291,10 +291,10 @@ exports.getMedicalAppointments = async (req, res, next) => {
         error: error.message,
       });
     }
-    if (results.length === 0) {
+    if (results.rows.length === 0) {
       return res.status(404).json({ message: "Agenda no encontrada" });
     }
-    const agenda = results;
+    const agenda = results.rows;
     return res
       .status(200)
       .json({ message: "Agenda obtenida con exito", agenda });
@@ -306,7 +306,7 @@ exports.getMedicalAppointments = async (req, res, next) => {
 exports.ConfirmationAgendaById = async (req, res, next) => {
   const appointmentId = req.params.appointmentId;
   const newState = req.body.state;
-  const query = "UPDATE clinic.agenda SET state =$1 WHEREid = $2";
+  const query = "UPDATE clinic.agenda SET state = $1 WHERE id = $2";
   const values = [newState, appointmentId];
 
   pool.query(query, values, (error, results) => {
@@ -318,6 +318,6 @@ exports.ConfirmationAgendaById = async (req, res, next) => {
     }
     return res
       .status(200)
-      .json({ message: "Estado de la cita actualizado con exito", results });
+      .json({ message: "Estado de la cita actualizado con exito", results: results.rows[0] });
   });
 };
