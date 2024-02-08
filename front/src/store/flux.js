@@ -55,7 +55,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(`${API_AUTH}/patients`, config);
           if (response.status && response.status === 200) {
             const responseData = response.data;
-            setStore({ patients: responseData.results });
+            setStore({ patients: responseData });
             actions.showNotification(
               "Pacientes obtenidos correctamente",
               "success"
@@ -606,7 +606,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.get(`${API}/appointments`, config);
           if (response.status && response.status === 200) {
             const data = response.data;
-            setStore({ allAppointments: data.results });
+            console.log(data);
+            setStore({ allAppointments: data.resp });
             actions.showNotification("Citas obtenidas con exito", "success");
             return true;
           } else return [];

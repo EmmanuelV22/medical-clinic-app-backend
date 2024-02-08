@@ -75,8 +75,8 @@ const MyTtreatments = () => {
                         {treatment.finish_treatment ? "SI" : "NO"}
                       </td>
                       <td className="table-updated-sorting">
-                        {treatment.updatedAt !== null
-                          ? actions.dateFormater(treatment.updatedAt)
+                        {treatment.updated_at !== null
+                          ? actions.dateFormater(treatment.updated_at)
                           : "NO"}
                       </td>
                       <td>

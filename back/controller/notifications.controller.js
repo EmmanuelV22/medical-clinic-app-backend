@@ -1,7 +1,15 @@
-const connectDB = require("../server");
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 exports.getNotifications = async (req, res, next) => {
-  const query = "SELECT * FROM notifications";
+  const query = "SELECT * FROM clicnic.notifications";
 
   pool.query(query, (error, results, fields) => {
     if (error) {
@@ -17,7 +25,7 @@ exports.getNotifications = async (req, res, next) => {
 
 exports.getNotificationsById = async (req, res, next) => {
   const patient_id = req.params.patient_id;
-  const query = "SELECT * FROM notifications WHERE patient_id = ?";
+  const query = "SELECT * FROM clinic.notifications WHERE patient_id = $1";
   const values = [patient_id];
 
   pool.query(query, values, (error, results, fields) => {
@@ -36,7 +44,7 @@ exports.getNotificationsById = async (req, res, next) => {
 
 exports.getNotificationsByIdForEmployee = async (req, res, next) => {
   const medical_id = req.params.medical_id;
-  const query = "SELECT * FROM notifications WHERE medical_id = ?";
+  const query = "SELECT * FROM clinic.notifications WHERE medical_id = $1";
   const values = [medical_id];
 
   pool.query(query, values, (error, results, fields) => {
@@ -57,7 +65,7 @@ exports.stateNotifications = async (req, res, next) => {
   const notificationsId = req.params.notificationsId;
   const newState = req.body.state;
 
-  const query = "UPDATE notifications SET state = ? WHERE id = ?";
+  const query = "UPDATE clinic.notifications SET state = $1 WHERE id = $2";
   const values = [newState, notificationsId];
 
   pool.query(query, values, (error, results) => {
@@ -68,18 +76,16 @@ exports.stateNotifications = async (req, res, next) => {
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: "Estado de notificacion actualizada con exito",
-        results,
-      });
+    return res.status(200).json({
+      message: "Estado de notificacion actualizada con exito",
+      results,
+    });
   });
 };
 
 exports.deleteNotifications = async (req, res, next) => {
   const id = req.params.id;
-  const query = "DELETE FROM notifications WHERE id=?";
+  const query = "DELETE FROM clinic.notifications WHERE id=$1";
   const values = [id];
   pool.query(query, values, (error, results, fields) => {
     if (error) {
