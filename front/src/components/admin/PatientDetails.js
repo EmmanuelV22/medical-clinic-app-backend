@@ -22,7 +22,7 @@ const PatientDetails = ({ patientData }) => {
   );
   const [blood, setBlood] = useState(patientData.blood_group);
   const [created_at, setCreated] = useState(patientData.created_at);
-  const [updatedAt, setUpdated] = useState(patientData.updatedAt);
+  const [updated_at, setUpdated] = useState(patientData.updated_at);
 
   const handleUpdatePatient = async () => {
     const verifyPass = password.length >= 8 || password === "11111";
@@ -215,7 +215,7 @@ const PatientDetails = ({ patientData }) => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     aria-label="created"
                     aria-describedby="patient-lastname"
-                    value={actions.dateFormater(updatedAt)}
+                    value={actions.dateFormater(updated_at)}
                     readOnly
                     disabled
                   />

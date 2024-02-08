@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS clinic.employees (
     dni INT NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at DATE DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATE DEFAULT NULL,
     personal_id VARCHAR(50) NOT NULL,
     start_time VARCHAR(255) NULL DEFAULT NULL,
     end_time VARCHAR(255) NULL DEFAULT NULL,
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS clinic.patients (
     dni INT NOT NULL,
     email VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at DATE DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATE DEFAULT NULL,
     blood_group VARCHAR(10) NOT NULL,
     birthday DATE NOT NULL,
     address VARCHAR(250) NULL DEFAULT NULL,
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS clinic.agenda (
     state VARCHAR(20) DEFAULT NULL,
     medical_id INT REFERENCES clinic.employees(id),
     patient_id INT REFERENCES clinic.patients(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at DATE DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATE DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS clinic.treatment (
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS clinic.treatment (
     surgey VARCHAR(500) DEFAULT '',
     medical_id INT REFERENCES clinic.employees(id),
     finish_treatment BOOLEAN DEFAULT FALSE,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATE DEFAULT NULL,
     medicine_data VARCHAR(1000) DEFAULT NULL
 );
 
@@ -73,8 +73,8 @@ CREATE TABLE IF NOT EXISTS clinic.history (
     date DATE NOT NULL,
     treatment_id INT REFERENCES clinic.treatment(id),
     agenda_id INT REFERENCES clinic.agenda(id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at DATE DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATE DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS clinic.notifications (
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS clinic.notifications (
     patient_id INT REFERENCES clinic.patients(id),
     medical_id INT REFERENCES clinic.employees(id),
     treatment_message VARCHAR(500) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at DATE DEFAULT CURRENT_TIMESTAMP,
     state VARCHAR(20) DEFAULT 'unread',
     appointment_message_patient VARCHAR(500) DEFAULT NULL,
     treatment_id INT REFERENCES clinic.treatment(id),

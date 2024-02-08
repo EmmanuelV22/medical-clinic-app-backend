@@ -27,7 +27,7 @@ const EmployeeDetail = ({ employeeData }) => {
   );
   const [dni, setDNI] = useState(employeeData.dni);
   const [created_at, setCreated] = useState(employeeData.created_at);
-  const [updatedAt, setUpdated] = useState(employeeData.updatedAt);
+  const [updated_at, setUpdated] = useState(employeeData.updated_at);
 
   const numberToDay = {
     0: "domingo",
@@ -371,7 +371,7 @@ const EmployeeDetail = ({ employeeData }) => {
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                           aria-label="created"
                           aria-describedby="patient-lastname"
-                          value={actions.dateFormater(updatedAt)}
+                          value={actions.dateFormater(updated_at)}
                           readOnly
                           disabled
                         />

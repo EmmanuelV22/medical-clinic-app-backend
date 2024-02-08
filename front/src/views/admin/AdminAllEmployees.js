@@ -112,7 +112,7 @@ const AdminAllEmployees = () => {
       className: "table-end-sorting ",
     },
     {
-      field: "updatedAt",
+      field: "updated_at",
       label: "Actualizado",
       sortable: false,
       className: "table-updated-sorting ",
@@ -151,8 +151,8 @@ const AdminAllEmployees = () => {
           </td>
           <td className="table-end-sorting">{formatTime(employee.end_time)}</td>
           <td className="table-updated-sorting">
-            {employee.updatedAt !== null
-              ? actions.dateFormater(employee.updatedAt)
+            {employee.updated_at !== null
+              ? actions.dateFormater(employee.updated_at)
               : null}
           </td>
 
