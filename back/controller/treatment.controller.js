@@ -145,10 +145,10 @@ exports.updateTreatment = async (req, res, next) => {
 
   const medicineDataString = JSON.stringify(medicineDataArray);
 
-  const updatedAt = new Date();
+  const updated_at = new Date();
 
   const query =
-    "UPDATE treatment SET patient_id=?, resume=?, initial_date=?, exp_date=?, medical_id=?, patologies=?, surgey=?, finish_treatment=?, medicine_data=?, updatedAt=? WHERE id=?";
+    "UPDATE treatment SET patient_id=?, resume=?, initial_date=?, exp_date=?, medical_id=?, patologies=?, surgey=?, finish_treatment=?, medicine_data=?, updated_at=? WHERE id=?";
 
   const values = [
     patient_id,
@@ -160,7 +160,7 @@ exports.updateTreatment = async (req, res, next) => {
     surgey,
     finish_treatment,
     medicineDataString,
-    updatedAt,
+    updated_at,
     id,
   ];
 

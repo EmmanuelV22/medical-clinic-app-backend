@@ -91,7 +91,7 @@ const MyPatients = () => {
       className: "table-updated-sorting",
     },
     {
-      field: "updatedAt",
+      field: "updated_at",
       label: "Actualizado",
       sortable: true,
       className: "table-updated-sorting",
@@ -115,8 +115,8 @@ const MyPatients = () => {
         </td>
         <td className="table-phone-sorting">{patient.phone}</td>
         <td className="table-updated-sorting">
-          {patient.updatedAt !== null
-            ? actions.dateFormater(patient.updatedAt)
+          {patient.updated_at !== null
+            ? actions.dateFormater(patient.updated_at)
             : null}
         </td>
         <td>

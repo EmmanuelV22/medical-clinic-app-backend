@@ -283,27 +283,26 @@ exports.update = async (req, res, next) => {
     password,
     id,
   } = req.body;
-  const updatedAt = new Date();
+  const updated_at = new Date();
 
   if (!Array.isArray(days_off)) {
-    console.error("Error: days_off is not an array");
     return res.status(400).json({
       message: "Error actualizando datos del empleado",
       error: "days_off is not an array",
     });
   }
 
-  const isPasswordEmpty = !password || password === "11111";
-  const isDaysOffEmpty = days_off === "";
+  try {
+    let hash;
+    if (password && password !== "11111") {
+      hash = await bcrypt.hash(password, 10);
+    }
 
-  if (!isPasswordEmpty && !isDaysOffEmpty) {
-    bcrypt.hash(password, 10, async (err, hash) => {
-      if (err) {
-        return res.status(500).json({ message: "Error hasheando password" });
-      }
-      const query =
-        "UPDATE clinic.employees SET firstname = $1, lastname = $2, phone = $3, personal_id = $4, email = $5, specialist = $6, address = $7, updatedAt = $8, days_off = $9, start_time = $10, end_time = $11, password = $12 WHERE id = $13";
-      const values = [
+    let query, values;
+    if (hash) {
+      query =
+        "UPDATE clinic.employees SET firstname = $1, lastname = $2, phone = $3, personal_id = $4, email = $5, specialist = $6, address = $7, updated_at = $8, days_off = $9, start_time = $10, end_time = $11, password = $12 WHERE id = $13";
+      values = [
         firstname,
         lastname,
         phone,
@@ -311,67 +310,17 @@ exports.update = async (req, res, next) => {
         email,
         specialist,
         address,
-        updatedAt,
+        updated_at,
         JSON.stringify(days_off),
         start_time,
         end_time,
         hash,
         id,
       ];
-
-      pool.query(query, values, (error, results, fields) => {
-        if (error) {
-          return res.status(400).json({
-            message: "Error actualizando datos del empleado",
-            error: error.message,
-          });
-        }
-      });
-
-      return res.status(201).json({
-        message: "Datos del empleado actualizado con éxito",
-        employee: id,
-      });
-    });
-  } else if (!isDaysOffEmpty && isPasswordEmpty) {
-    const query =
-      "UPDATE clinic.employees SET firstname = $1, lastname = $2, phone = $3, personal_id = $4, email = $5, specialist = $6, address = $7, updatedAt = $8, days_off = $9, start_time = $10, end_time = $11 WHERE id = $12";
-    const values = [
-      firstname,
-      lastname,
-      phone,
-      personal_id,
-      email,
-      specialist,
-      address,
-      updatedAt,
-      JSON.stringify(days_off),
-      start_time,
-      end_time,
-      id,
-    ];
-
-    pool.query(query, values, (error, results, fields) => {
-      if (error) {
-        return res.status(400).json({
-          message: "Error actualizando datos del empleado",
-          error: error.message,
-        });
-      }
-    });
-
-    return res.status(201).json({
-      message: "Datos del empleado actualizado con éxito",
-      employee: id,
-    });
-  } else {
-    const query =
-      "UPDATE clinic.employees SET firstname = ?, lastname = ?, phone = ?, personal_id = ?, email = ?, specialist = ?, address = ?, updatedAt = ?, start_time = ?, end_time = ?, password = ? WHERE id = ?";
-    bcrypt.hash(password, 10, async (err, hash) => {
-      if (err) {
-        return res.status(500).json({ message: "Error hasheando password" });
-      }
-      const values = [
+    } else {
+      query =
+        "UPDATE clinic.employees SET firstname = $1, lastname = $2, phone = $3, personal_id = $4, email = $5, specialist = $6, address = $7, updated_at = $8, days_off = $9, start_time = $10, end_time = $11 WHERE id = $12";
+      values = [
         firstname,
         lastname,
         phone,
@@ -379,25 +328,24 @@ exports.update = async (req, res, next) => {
         email,
         specialist,
         address,
-        updatedAt,
+        updated_at,
+        JSON.stringify(days_off),
         start_time,
         end_time,
-        hash,
         id,
       ];
+    }
 
-      pool.query(query, values, (error, results, fields) => {
-        if (error) {
-          return res.status(400).json({
-            message: "Error actualizando datos del empleado",
-            error: error.message,
-          });
-        }
-      });
-    });
+    await pool.query(query, values);
     return res.status(201).json({
       message: "Datos del empleado actualizado con éxito",
       employee: id,
+    });
+  } catch (error) {
+    console.error("Error actualizando datos del empleado:", error.message);
+    return res.status(500).json({
+      message: "Error actualizando datos del empleado",
+      error: error.message,
     });
   }
 };
@@ -416,7 +364,7 @@ exports.deleteUser = async (req, res, next) => {
     }
     return res.status(200).json({
       message: "Empleado borrado con exito",
-       id: id
+      id: id,
     });
   });
 };
@@ -613,7 +561,7 @@ exports.loginPatient = async (req, res, next) => {
 
 exports.updatePatient = async (req, res, next) => {
   const { firstname, lastname, phone, email, address, password, id } = req.body;
-  const updatedAt = new Date();
+  const updated_at = new Date();
 
   const isPasswordEmpty = !password || password === "11111";
 
@@ -624,7 +572,7 @@ exports.updatePatient = async (req, res, next) => {
       }
 
       const query =
-        "UPDATE clinic.patients SET firstname = $1, lastname = $2, phone= $3, email = $4, address = $5, password = $6, updatedAt = $7 WHERE id = $8";
+        "UPDATE clinic.patients SET firstname = $1, lastname = $2, phone= $3, email = $4, address = $5, password = $6, updated_at = $7 WHERE id = $8";
       const values = [
         firstname,
         lastname,
@@ -632,7 +580,7 @@ exports.updatePatient = async (req, res, next) => {
         email,
         address,
         hash,
-        updatedAt,
+        updated_at,
         id,
       ];
       pool.query(query, values, (error, results, fields) => {
@@ -650,8 +598,8 @@ exports.updatePatient = async (req, res, next) => {
     });
   } else {
     const query =
-      "UPDATE clinic.patients SET firstname = $1, lastname = $2, phone= $3, email = $4, address = $5 , updatedAt = $6 WHERE id = $7";
-    const values = [firstname, lastname, phone, email, address, updatedAt, id];
+      "UPDATE clinic.patients SET firstname = $1, lastname = $2, phone= $3, email = $4, address = $5 , updated_at = $6 WHERE id = $7";
+    const values = [firstname, lastname, phone, email, address, updated_at, id];
     pool.query(query, values, (error, results, fields) => {
       if (error) {
         return res.status(400).json({
@@ -688,7 +636,7 @@ exports.updatePasswordPatient = async (req, res, next) => {
   const { password } = req.body;
   const dni = req.params.dni;
 
-  const updatedAt = new Date();
+  const updated_at = new Date();
 
   bcrypt.hash(password, 10, async (err, hash) => {
     if (err) {
@@ -696,9 +644,9 @@ exports.updatePasswordPatient = async (req, res, next) => {
     }
 
     const query =
-      "UPDATE clinic.patients SET password = $1, updatedAt = $2 WHERE dni = $3";
+      "UPDATE clinic.patients SET password = $1, updated_at = $2 WHERE dni = $3";
 
-    const values = [hash, updatedAt, dni];
+    const values = [hash, updated_at, dni];
 
     pool.query(query, values, (error, results, fields) => {
       if (error) {
