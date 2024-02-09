@@ -127,7 +127,7 @@ const RegisterPatient = () => {
                   id="MalePatient"
                   name="sex"
                   value="M"
-                  checked={sex === "M"}
+                  checked={sex === "H"}
                   onChange={(e) => setSex(e.target.value)}
                 />
                 Hombre
@@ -138,7 +138,7 @@ const RegisterPatient = () => {
                   id="FemalePatient"
                   name="sex"
                   value="F"
-                  checked={sex === "F"}
+                  checked={sex === "M"}
                   onChange={(e) => setSex(e.target.value)}
                 />
                 Mujer
