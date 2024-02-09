@@ -135,7 +135,7 @@ td, th{
   }
 
   .table-user{
-    font-size: .9rem;
+    font-size: .8rem;
   }
 }
 
@@ -146,6 +146,10 @@ td, th{
   .table-updated-sorting,
   .table-dniDr-sorting{
     display: none;
+  }
+
+  .table-appointment{
+    font-size: .9rem;
   }
 }
 
