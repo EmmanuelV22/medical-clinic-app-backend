@@ -144,7 +144,7 @@ const EmployeeDetail = ({ employeeData }) => {
                   {employeeData && (
                     <form className="row g-3 needs-validation">
                       <div className="col-md-6">
-                        <label>Nombre</label>
+                        <label className="label-detail">Nombre</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -158,7 +158,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Apellido</label>
+                        <label className="label-detail">Apellido</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -172,7 +172,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>DNI</label>
+                        <label className="label-detail">DNI</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -184,7 +184,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Sexo</label>
+                        <label className="label-detail">Sexo</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -196,7 +196,9 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Fecha de nacimiento</label>
+                        <label className="label-detail">
+                          Fecha de nacimiento
+                        </label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -209,7 +211,7 @@ const EmployeeDetail = ({ employeeData }) => {
                       </div>
                       <div className="col-md-6">
                         <label
-                          className="block text-gray-700 text-sm font-bold "
+                          className="block text-gray-700 text-sm font-bold label-detail "
                           // htmlFor="PhoneEmployee"
                         >
                           Telefono
@@ -224,7 +226,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>ID personal</label>
+                        <label className="label-detail">ID personal</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -237,7 +239,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>E-mail</label>
+                        <label className="label-detail">E-mail</label>
                         <input
                           type="email"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -250,7 +252,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Especialidad</label>
+                        <label className="label-detail">Especialidad</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -263,7 +265,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Dirección</label>
+                        <label className="label-detail">Dirección</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -276,7 +278,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Contraseña</label>
+                        <label className="label-detail">Contraseña</label>
                         <input
                           type="password"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -289,7 +291,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Día 1</label>
+                        <label className="label-detail">Día 1</label>
                         <select
                           type="text"
                           className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -308,7 +310,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         </select>
                       </div>
                       <div className="col-md-6">
-                        <label>Día 2</label>
+                        <label className="label-detail">Día 2</label>
                         <select
                           type="text"
                           className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -327,7 +329,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         </select>
                       </div>
                       <div className="col-md-6 ">
-                        <label>Hora de inicio</label>
+                        <label className="label-detail">Hora de inicio</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -340,7 +342,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Hora de salida</label>
+                        <label className="label-detail">Hora de salida</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -353,7 +355,7 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Cuenta creada</label>
+                        <label className="label-detail">Cuenta creada</label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -365,7 +367,9 @@ const EmployeeDetail = ({ employeeData }) => {
                         />
                       </div>
                       <div className="col-md-6">
-                        <label>Cuenta actualizada</label>
+                        <label className="label-detail">
+                          Cuenta actualizada
+                        </label>
                         <input
                           type="text"
                           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

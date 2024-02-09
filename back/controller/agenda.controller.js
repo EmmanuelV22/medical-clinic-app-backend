@@ -84,7 +84,9 @@ exports.getAllAppointment = async (req, res, next) => {
       });
     }
     const agenda = results.rows;
-    return res.status(200).json({ message: "Citas obtenidas con exito", agenda });
+    return res
+      .status(200)
+      .json({ message: "Citas obtenidas con exito", agenda });
   });
 };
 
@@ -318,6 +320,9 @@ exports.ConfirmationAgendaById = async (req, res, next) => {
     }
     return res
       .status(200)
-      .json({ message: "Estado de la cita actualizado con exito", results: results.rows[0] });
+      .json({
+        message: "Estado de la cita actualizado con exito",
+        results: results.rows[0],
+      });
   });
 };
