@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS clinic.notifications (
     medical_id INT REFERENCES clinic.employees(id),
     treatment_message VARCHAR(500) DEFAULT NULL,
     created_at DATE DEFAULT CURRENT_TIMESTAMP,
-    "state" VARCHAR(8) DEFAULT 'no leído' CHECK (state IN ('leído', 'no leído'));
+    "state" VARCHAR(8) DEFAULT 'no leído' CHECK ("state" IN ('leído', 'no leído')),
     appointment_message_patient VARCHAR(500) DEFAULT NULL,
     treatment_id INT REFERENCES clinic.treatment(id),
     agenda_id INT REFERENCES clinic.agenda(id),

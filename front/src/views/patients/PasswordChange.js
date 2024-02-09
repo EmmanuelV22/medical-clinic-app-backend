@@ -1,39 +1,50 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Context } from "../../store/appContext";
 
 const PasswordChange = () => {
   const { actions } = useContext(Context);
   const { dni } = useParams();
   const { token } = useParams();
-
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await actions.saveNewPassword(dni, password, token);
 
-      return response
-    } catch (error) {
-      console.log(
-        "Error intentando cambiar contraseña, Acceso denegado: parametros incorrectos",error
-      );
+    if (password && password.length > 7) {
+      try {
+        const response = await actions.saveNewPassword(dni, password, token);
+
+        return response;
+      } catch (error) {
+        console.log(
+          "Error intentando cambiar contraseña, Acceso denegado: parametros incorrectos",
+          error
+        );
+      }
+    } else {
+      actions.showNotification("Denegado: Valores incorrectos", "danger");
     }
   };
 
-  const handleClear = (e) => {
-    e.preventDefault();
-    setPassword("");
-  };
-
   return (
-    <>
+    <div className="text-center d-flex align-items-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded m-auto px-8 pt-6 pb-8  mb-4"
       >
+        <div>
+          <img
+            src="../../../clinic-logo-removebg.png"
+            alt="logo app clinic"
+            className="homeHover m-2"
+            style={{ width: "12rem" }}
+            onClick={() => navigate("/")}
+          />
+        </div>
+        <h1>Cambia tu contraseña aqui!</h1>
         <label
           className="block text-gray-700 text-sm font-bold mb-2"
           htmlFor="password"
@@ -49,26 +60,27 @@ const PasswordChange = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         {password === "" ? (
-          <p className="text-red-500 text-xs italic">
-            Por favor ingrese la contraseña para continuar.
+          <p className="text-red-500 text-xs italic text-danger">
+            Por favor ingrese una contraseña con almenos 8 caracteres para
+            continuar.
           </p>
         ) : (
           <></>
         )}
 
-        <div className="flex items-center justify-between">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        <div className="mx-auto">
+          <button className="button1 w-75 m-3 text-black">
             Cambiar Contraseña
           </button>
           <button
-            className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-            onClick={handleClear}
+            className="button3 w-75 m-3 text-black"
+            onClick={() => navigate("/")}
           >
             Cancelar
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
