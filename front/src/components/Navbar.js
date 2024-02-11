@@ -13,6 +13,9 @@ const Navbar = () => {
   const { store, actions } = useContext(Context);
   const [homeType, setHomeType] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [darkHome, setDarkHome] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
 
   let navigate = useNavigate();
   function logout() {
@@ -127,7 +130,7 @@ const Navbar = () => {
                 height="35"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke="#000000"
+                stroke={darkHome ? "#fbfdfd" : "#000000"}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -139,7 +142,7 @@ const Navbar = () => {
               </svg>
             </li>
             <li className="nav-item m-2 mt-4">
-              <DarkMode />
+              <DarkMode onDarkModeToggle={setDarkHome} />
             </li>
             <div style={{ marginTop: "11px" }}>
               <button onClick={logout} className="Btn m-2 bg-danger">

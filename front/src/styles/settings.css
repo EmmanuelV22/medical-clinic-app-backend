@@ -73,6 +73,10 @@ body.dark-mode .label-detail{
   color: var(--color-dark)!important;
 }
 
+body.dark-mode .homeHover{
+  color: var(--text-dark)!important;
+}
+
 body.dark-mode p,
 body.dark-mode table,
 body.dark-mode a,

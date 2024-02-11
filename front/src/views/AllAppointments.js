@@ -13,6 +13,7 @@ const AllAppointments = () => {
   const [searchError, setSearchError] = useState(false);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const [allFilter, setAllFilter] = useState([]);
 
   useEffect(() => {
     if (store.employee || store.patient) {
@@ -62,6 +63,7 @@ const AllAppointments = () => {
 
     setFilteredEmployees(filteredEmployees);
     setFilteredPatients(filteredPatients);
+    setAllFilter([...filteredEmployees, ...filteredPatients]);
   };
 
   return (
@@ -119,7 +121,7 @@ const AllAppointments = () => {
                       <td className="table-turno">
                         {data.date}/{data.month}/{data.year}
                       </td>
-                      <td table-hour>{data.time}</td>
+                      <td className="table-hour">{data.time}</td>
                     </tr>
                   ))}
                 </tbody>
