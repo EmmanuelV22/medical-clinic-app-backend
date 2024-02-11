@@ -126,7 +126,7 @@ const RegisterPatient = () => {
                   type="radio"
                   id="MalePatient"
                   name="sex"
-                  value="M"
+                  value={sex}
                   checked={sex === "H"}
                   onChange={(e) => setSex(e.target.value)}
                 />
@@ -137,7 +137,7 @@ const RegisterPatient = () => {
                   type="radio"
                   id="FemalePatient"
                   name="sex"
-                  value="F"
+                  value={sex}
                   checked={sex === "M"}
                   onChange={(e) => setSex(e.target.value)}
                 />

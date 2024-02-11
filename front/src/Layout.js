@@ -148,7 +148,7 @@ const Layout = () => {
           placeholder="Envia tu mensaje para ir a Whatsapp"
           messageDelay={0}
           statusMessage="Responde en menos de 5 minutos"
-          darkMode={isDarkMode}
+          darkMode={isDarkMode ? true : false}
           buttonStyle={{ position: "fixed", bottom: "4rem", right: "20px" }}
           avatar={clinic}
           style={{ height: "auto", width: "auto" }}
