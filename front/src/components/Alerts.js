@@ -47,7 +47,7 @@ const Alerts = () => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="icon icon-tabler icon-tabler-info-circle-filled text-${store.response.type}"
+          className={`icon icon-tabler icon-tabler-info-circle-filled text-${store.response.type}`}
           width="44"
           height="44"
           viewBox="0 0 24 24"
@@ -64,7 +64,7 @@ const Alerts = () => {
             fill="currentColor"
           />
         </svg>
-        <p className="m-0">{store.response.message}</p>
+        <span className="m-0">{store.response.message}</span>
         <button
           type="button"
           className="btn-close justify-self-end"
