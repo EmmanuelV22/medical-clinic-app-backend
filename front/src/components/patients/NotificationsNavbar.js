@@ -40,7 +40,6 @@ const NotificationsNavbar = () => {
   return (
     <div className="">
       <ul
-      style={{width:"350px", overflow:"scroll"}}
         className="dropdown-menu dropdown dropdown-toggle-split ul"
         aria-labelledby="navbarDropdown"
       >
@@ -51,21 +50,23 @@ const NotificationsNavbar = () => {
               .slice(0, 10)
               .map((notification, index) => (
                 <>
-                  {(notification !== null)  && (
+                  {notification !== null && (
                     <li
                       key={notification.id}
                       className="dropdown-item d-flex"
                       style={{ cursor: "pointer" }}
                     >
-                      {notification.treatment_message &&<span
-                        onClick={() =>
-                          navigate(
-                            `/patient-treatment/${notification.treatment_id}`
-                          )
-                        }
-                      >
-                        {notification.treatment_message}
-                      </span>}
+                      {notification.treatment_message && (
+                        <span
+                          onClick={() =>
+                            navigate(
+                              `/patient-treatment/${notification.treatment_id}`
+                            )
+                          }
+                        >
+                          {notification.treatment_message}
+                        </span>
+                      )}
                       {notification.appointment_message_patient && (
                         <span
                           onClick={() =>
@@ -83,7 +84,7 @@ const NotificationsNavbar = () => {
                 </>
               ))}
             <hr />
-            <li className="text-center text-black">
+            <li className="text-center dropdown-item">
               <h5 onClick={() => handleNotification(store.patient.id)}>
                 Ver todas mis notificaciones
               </h5>
@@ -91,8 +92,8 @@ const NotificationsNavbar = () => {
           </>
         ) : (
           <>
-            <li>¡No tienes notificaciones!</li>
-            <li>
+            <li className="dropdown-item">¡No tienes notificaciones!</li>
+            <li className="dropdown-item">
               <Link onClick={() => handleNotification(store.patient.id)}>
                 Ver todas mis notificaciones
               </Link>

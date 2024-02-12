@@ -56,7 +56,6 @@ const MyNotifications = () => {
       )
     : [];
 
-    console.log(appointmentMessages)
 
   return (
     <>

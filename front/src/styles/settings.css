@@ -174,3 +174,6 @@ background-color: #19484a;
 }
 
 
+.dropdown-item{
+  white-space: pre-wrap!important
+}

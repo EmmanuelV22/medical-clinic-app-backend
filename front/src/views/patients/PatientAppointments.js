@@ -165,7 +165,7 @@ const PatientAppointments = () => {
         appointment.employee.lastname
           .toLowerCase()
           .includes(query.toLowerCase()) ||
-        appointment.employee.specialist.toString().includes(query)
+        appointment.employee.specialist.toLowerCase().includes(query)
     );
 
     setSearchError(filtered.length === 0);
