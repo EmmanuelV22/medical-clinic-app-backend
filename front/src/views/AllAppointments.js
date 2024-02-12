@@ -11,8 +11,6 @@ const AllAppointments = () => {
   const { store, actions } = useContext(Context);
   let navigate = useNavigate();
   const [searchError, setSearchError] = useState(false);
-  const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [filteredPatients, setFilteredPatients] = useState([]);
   const [allFilter, setAllFilter] = useState([]);
 
   useEffect(() => {
@@ -43,22 +41,19 @@ const AllAppointments = () => {
   });
 
   const handleSearch = (query) => {
-    console.log(combinedData);
-    const filteredEmployees = combinedData.filter(
-      (user) =>
-        user.date.toString().includes(query) ||
-        user.employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        user.employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
-        user.employee.specialist.toLowerCase().includes(query.toLowerCase()) ||
-        user.patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        user.patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
-        user.patient.dni.toString().includes(query)
+    const filterOn = combinedData.filter(
+      (person) =>
+        person.employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
+        person.employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
+        person.employee.specialist
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        person.patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
+        person.patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
+        person.patient.dni.toString().includes(query)
     );
-    console.log(filteredEmployees);
-
-    setSearchError(filteredEmployees.length === 0);
-
-    setFilteredEmployees(filteredEmployees);
+    setSearchError(filterOn.length === 0);
+    setAllFilter(filterOn);
   };
 
   return (
@@ -92,33 +87,61 @@ const AllAppointments = () => {
                     <th className="table-name-dr">Apellido Dr</th>
                     <th className="separate-table-appointment">Especialidad</th>
                     <th className="table-turno">Fecha del turno</th>
-                    <th className=" table-hour">Hora del turno</th>
+                    <th className="table-hour">Hora del turno</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {combinedData.map((data) => (
-                    <tr key={data.id}>
-                      <td className="table-name">{data.patient?.firstname}</td>
-                      <td className="table-lastname">
-                        {data.patient?.lastname}
-                      </td>
-                      <td className="table-dni">{data.patient?.dni}</td>
-                      <td className="table-phone">{data.patient?.phone}</td>
-                      <td className="separate-table-dr">
-                        {data.employee?.firstname}
-                      </td>
-                      <td className="table-name-dr">
-                        {data.employee?.lastname}
-                      </td>
-                      <td className="separate-table-appointment">
-                        {data.employee?.specialist}
-                      </td>
-                      <td className="table-turno">
-                        {data.date}/{data.month}/{data.year}
-                      </td>
-                      <td className="table-hour">{data.time}</td>
-                    </tr>
-                  ))}
+                  {allFilter.length > 0
+                    ? allFilter.map((data) => (
+                        <tr key={data.id}>
+                          <td className="table-name">
+                            {data.patient?.firstname}
+                          </td>
+                          <td className="table-lastname">
+                            {data.patient?.lastname}
+                          </td>
+                          <td className="table-dni">{data.patient?.dni}</td>
+                          <td className="table-phone">{data.patient?.phone}</td>
+                          <td className="separate-table-dr">
+                            {data.employee?.firstname}
+                          </td>
+                          <td className="table-name-dr">
+                            {data.employee?.lastname}
+                          </td>
+                          <td className="separate-table-appointment">
+                            {data.employee?.specialist}
+                          </td>
+                          <td className="table-turno">
+                            {data.date}/{data.month}/{data.year}
+                          </td>
+                          <td className="table-hour">{data.time}</td>
+                        </tr>
+                      ))
+                    : combinedData.map((data) => (
+                        <tr key={data.id}>
+                          <td className="table-name">
+                            {data.patient?.firstname}
+                          </td>
+                          <td className="table-lastname">
+                            {data.patient?.lastname}
+                          </td>
+                          <td className="table-dni">{data.patient?.dni}</td>
+                          <td className="table-phone">{data.patient?.phone}</td>
+                          <td className="separate-table-dr">
+                            {data.employee?.firstname}
+                          </td>
+                          <td className="table-name-dr">
+                            {data.employee?.lastname}
+                          </td>
+                          <td className="separate-table-appointment">
+                            {data.employee?.specialist}
+                          </td>
+                          <td className="table-turno">
+                            {data.date}/{data.month}/{data.year}
+                          </td>
+                          <td className="table-hour">{data.time}</td>
+                        </tr>
+                      ))}
                 </tbody>
               </table>
             ) : (

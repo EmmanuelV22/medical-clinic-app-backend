@@ -238,7 +238,6 @@ const AdminAllEmployees = () => {
         employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
         employee.dni.toString().includes(query)
     );
-    // Set searchError to className: table-name-sorting if no employees found
     setSearchError(filtered.length === 0);
     setFilteredEmployees(filtered);
   };

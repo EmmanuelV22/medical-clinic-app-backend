@@ -110,10 +110,10 @@ const MyPatients = () => {
           {actions.dateFormater(patient.birthday)}
         </td>
         <td className="table-email-sorting">{patient.email}</td>
+        <td className="table-phone-sorting">{patient.phone}</td>
         <td className="table-updated-sorting">
           {actions.dateFormater(patient.created_at)}
         </td>
-        <td className="table-phone-sorting">{patient.phone}</td>
         <td className="table-updated-sorting">
           {patient.updated_at !== null
             ? actions.dateFormater(patient.updated_at)

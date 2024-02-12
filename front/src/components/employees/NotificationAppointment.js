@@ -16,10 +16,7 @@ const NotificationAppointment = () => {
       const patientDetails = await actions.getEmployeeById(patientId);
       navigate(`/notifications/${patientId}`);
     } catch (error) {
-      console.error(
-        "Error recupernado la informacion del paciente",
-        error
-      );
+      console.error("Error recupernado la informacion del paciente", error);
     }
   };
 
@@ -39,41 +36,52 @@ const NotificationAppointment = () => {
   }, []);
 
   return (
-  <div className=" dropdown dropdown-toggle-split">
-    <ul style={{width:"350px", overflow:"scroll"}}  className="dropdown-menu dropdown dropdown-toggle-split" aria-labelledby="navbarDrop">
-      {unreadNotifications && unreadNotifications.length > 0 ? (
-        <>
-          {unreadNotifications
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .slice(0, 10)
-            .map(
-              (notification, index) =>
-                notification.appointment_message_employee  && (
-                  <li key={notification.id} className="dropdown-item ">
-                    <span  style={{ cursor: "default"}}>
-                      {notification.appointment_message_employee}
-                    </span>
-                    <NotificationsButtonsRead notification={notification} />
-                  </li>
-                )
-            )}
+    <div className=" ">
+      <ul
+        className="dropdown-menu dropdown dropdown-toggle-split ul"
+        aria-labelledby="navbarDropdown"
+      >
+        {unreadNotifications && unreadNotifications.length > 0 ? (
+          <>
+            {unreadNotifications
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .slice(0, 10)
+              .map(
+                (notification, index) =>
+                  notification.appointment_message_employee && (
+                    <li key={notification.id} className="dropdown-item d-flex">
+                      <span style={{ cursor: "default" }}>
+                        {notification.appointment_message_employee}
+                      </span>
+                      <NotificationsButtonsRead notification={notification} />
+                    </li>
+                  )
+              )}
 
-          <hr />
-          <h5 className="text-center" onClick={() => handleNotificationEmployee(store.employee.id)}>
-            Ver todas mis notificaciones
-          </h5>
-        </>
-      ) : (
-        <>
-          <li>¡No tienes notificaciones!</li>
-          <div>
-            <Link onClick={() => handleNotificationEmployee(store.employee.id)}>
-              Ver todas mis notificaciones
-            </Link>
-          </div>
-        </>
-      )}
-    </ul>
+            <hr />
+            <li
+              className="text-center dropdown-item"
+              onClick={() => handleNotificationEmployee(store.employee.id)}
+            >
+              <h5>Ver todas mis notificaciones</h5>
+            </li>
+          </>
+        ) : (
+          <>
+            <li className="dropdown-item">¡No tienes notificaciones!</li>
+            <div>
+              <li>
+                {" "}
+                <Link
+                  onClick={() => handleNotificationEmployee(store.employee.id)}
+                >
+                  Ver todas mis notificaciones
+                </Link>
+              </li>
+            </div>
+          </>
+        )}
+      </ul>
     </div>
   );
 };
