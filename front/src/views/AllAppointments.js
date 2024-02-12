@@ -43,27 +43,22 @@ const AllAppointments = () => {
   });
 
   const handleSearch = (query) => {
-    const filteredEmployees = store.employees.filter(
-      (employee) =>
-        employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
-        employee.specialist.toLowerCase().includes(query.toLowerCase())
+    console.log(combinedData);
+    const filteredEmployees = combinedData.filter(
+      (user) =>
+        user.date.toString().includes(query) ||
+        user.employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
+        user.employee.lastname.toLowerCase().includes(query.toLowerCase()) ||
+        user.employee.specialist.toLowerCase().includes(query.toLowerCase()) ||
+        user.patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
+        user.patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
+        user.patient.dni.toString().includes(query)
     );
+    console.log(filteredEmployees);
 
-    const filteredPatients = store.patients.filter(
-      (patient) =>
-        patient.firstname.toLowerCase().includes(query.toLowerCase()) ||
-        patient.lastname.toLowerCase().includes(query.toLowerCase()) ||
-        patient.dni.toString().includes(query)
-    );
-
-    setSearchError(
-      filteredEmployees.length === 0 && filteredPatients.length === 0
-    );
+    setSearchError(filteredEmployees.length === 0);
 
     setFilteredEmployees(filteredEmployees);
-    setFilteredPatients(filteredPatients);
-    setAllFilter([...filteredEmployees, ...filteredPatients]);
   };
 
   return (
