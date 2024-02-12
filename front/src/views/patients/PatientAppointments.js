@@ -147,21 +147,29 @@ const PatientAppointments = () => {
   };
 
   const handleSearch = (query) => {
-    const filteredAppointments = store.myAppointments.filter((appointment) => {
-      // Trouver le patient correspondant dans store.patients
-      const employee = store.employees.find(
-        (p) => p.id === appointment.medical_id
+    const filteredTotal = store.appointmentsPatient.map((appointment) => {
+      const correspondingEmployee = store.employees.find(
+        (employee) => employee.id === appointment.medical_id
       );
-
-      return (
-        employee &&
-        (employee.firstname.toLowerCase().includes(query.toLowerCase()) ||
-          employee.lastname.toLowerCase().includes(query.toLowerCase()))
-      );
+      return {
+        ...appointment,
+        employee: correspondingEmployee,
+      };
     });
 
-    setSearchError(filteredAppointments.length === 0);
-    setFilteredAppointments(filteredAppointments);
+    const filtered = filteredTotal.filter(
+      (appointment) =>
+        appointment.employee.firstname
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        appointment.employee.lastname
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        appointment.employee.specialist.toString().includes(query)
+    );
+
+    setSearchError(filtered.length === 0);
+    setFilteredAppointments(filtered);
   };
 
   return (

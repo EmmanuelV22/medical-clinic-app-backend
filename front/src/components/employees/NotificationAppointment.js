@@ -40,7 +40,7 @@ const NotificationAppointment = () => {
 
   return (
   <div className=" dropdown dropdown-toggle-split">
-    <ul style={{width:"350px", overflow:"scroll"}}  className="dropdown-menu dropdown dropdown-toggle-split" aria-labelledby="navbarDrop">
+    <ul style={{width:"350px", height:"350px"}}  className="dropdown-menu dropdown dropdown-toggle-split" aria-labelledby="navbarDrop">
       {unreadNotifications && unreadNotifications.length > 0 ? (
         <>
           {unreadNotifications
