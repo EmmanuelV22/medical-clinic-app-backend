@@ -165,6 +165,7 @@ const AdminAllEmployees = () => {
                 border: " 2px solid white",
                 padding: "0px 4px",
                 borderRadius: "6px",
+                backgroundColor:"black",
               }}
               data-bs-toggle="modal"
               data-bs-target={"#employeeModal-" + employee.id}

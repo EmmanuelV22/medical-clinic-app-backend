@@ -125,7 +125,7 @@ const EmployeeDetail = ({ employeeData }) => {
           >
             <div className="modal-dialog mx-auto ">
               <div
-                className="modal-content "
+                className="modal-content modal-dark"
                 // style={{ width: "800px", transformOrigin: "left" }}
               >
                 <div className="modal-header">

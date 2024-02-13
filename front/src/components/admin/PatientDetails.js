@@ -59,7 +59,7 @@ const PatientDetails = ({ patientData }) => {
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <div className="modal-content">
+          <div className="modal-content modal-dark">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Ficha de {firstname} {lastname}
