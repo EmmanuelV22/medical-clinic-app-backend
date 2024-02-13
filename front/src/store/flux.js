@@ -7,7 +7,7 @@ const config = {
   },
 };
 const port = process.env.DB_API_PORT || 5000;
-const host = process.env.DB_HOST_EXTERNAL || 5000;
+const host = process.env.DB_HOST;
 
 
 const getState = ({ getStore, getActions, setStore }) => {

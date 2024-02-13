@@ -14,6 +14,8 @@ const pool = new Pool({
 });
 
 const url = process.env.DB_HOST_EXTERNAL
+const port = process.env.DB_PORT
+
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************
  **********************************************************/
@@ -725,7 +727,7 @@ const changePasswordEmail = (dni, res) => {
                   <a href="https://ibb.co/BPfRjjk"><img src="https://i.ibb.co/BPfRjjk/Cli-NIC-APP.png" alt="Cli-NIC-APP" border="0"></a>
                   <p>No te preocupes es rapido y sencillo!</p>
                   <p>Estimado paciente de Clinic'app: Para obtener una nueva contraseña debes hacer click en el siguiente boton que te llevara a una nueva pestaña donde podras ingresar tu nueva contraseña</p>
-                  <button className="btn btn-primary rounded"><a href="${url}/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
+                  <button className="btn btn-primary rounded"><a href="${url}:${port}/patients/update-password/${dni}/${temporalToken}">CLICK AQUI</a></button>
                   <p>Si este mail no es para ti ignoralo por favor</p>
                   <h2>Gracias por confiar en Clinic'app</h2>
                 </div>
