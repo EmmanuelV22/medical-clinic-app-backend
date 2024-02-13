@@ -6,11 +6,13 @@ const config = {
     Authorization: `${token}`,
   },
 };
-const port = process.env.DB_HOST || 5000;
+const port = process.env.DB_API_PORT || 5000;
+const host = process.env.DB_HOST || 5000;
+
 
 const getState = ({ getStore, getActions, setStore }) => {
-  const API_AUTH = `${port}:5000/api/auth`;
-  const API = `${port}:5000/api`;
+  const API_AUTH = `${host}:${port}/api/auth`;
+  const API = `${host}:${port}/api`;
 
   return {
     store: {
