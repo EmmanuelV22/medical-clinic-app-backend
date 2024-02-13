@@ -45,14 +45,24 @@ const CreateHistoric = ({ id }) => {
       {store.employee && store.employee.specialist !== "admin" ? (
         <div className="text-center mx-auto mb-3">
           <form onSubmit={handleSubmit}>
-            <label htmlFor="description">Descripción</label>{" "}
-            <input
-            className="me-2"
+           <div className="mb-4 d-flex flex-column justify-content-center
+">
+           <label htmlFor="description">Descripción</label>{" "}
+            <textarea
+              className="shadow area-resume appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+              rows="7"
+              cols="80"
+              style={{
+                maxWidth: "100%",
+                resize: "both",
+                margin: "auto",
+              }}
               type="text"
               value={description}
               id="description"
               onChange={(e) => setDescription(e.target.value)}
             />
+           </div>
             <label htmlFor="date">Fecha</label>{" "}
             <input
             className="me-2"

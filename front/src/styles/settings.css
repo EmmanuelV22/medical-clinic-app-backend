@@ -79,6 +79,7 @@ body.dark-mode .label-detail,
 body.dark-mode .search-input{
   color: var(--color-dark)!important;
 }
+
 body.dark-mode .label-detail{
   color: white!important;
   margin: 5px;
@@ -204,3 +205,11 @@ body.dark-mode .modal-dark{
 background-color: var(--color-dark);
 }
 
+body.dark-mode .button1,.button3{
+  color: 100%;
+}
+
+body.dark-mode select{
+  background: #102e2f;
+  color: #fff;
+}

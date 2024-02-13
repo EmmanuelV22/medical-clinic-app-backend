@@ -18,7 +18,7 @@ const Register = () => {
         <div className="d-flex justify-content-center row">
           <Navbar />
           <button
-            className="text-black button1 w-50 m-3"
+            className="text-black button1 btn-dark w-50 m-3"
             onClick={changeEmployee}
           >
             Cambia de Formulario
