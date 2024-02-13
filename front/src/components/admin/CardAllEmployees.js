@@ -23,7 +23,7 @@ const CardAllEmployees = () => {
           <div className="card-details">
             <button
               onClick={() => navigate("/empleados")}
-              className="card-button"
+              className="card-button btn-employees"
             >
               Lista de empleados
             </button>
