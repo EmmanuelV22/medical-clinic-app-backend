@@ -38,16 +38,16 @@ const PatientTreatement = () => {
           Lista de Tratamientos de {store.patientData?.patientData?.firstname}{" "}
           {store.patientData?.patientData?.lastname}
         </h1>
-        <table className="table mb-5">
+        <table className="table table-user table-sm-size table-treatment mb-5">
           <thead>
             <tr>
-              <th>Resumen</th>
-              <th>Fecha de inicio</th>
-              <th>Fecha de finalización</th>
-              <th>Cirugia</th>
-              <th>Doctor</th>
-              <th>Terminado</th>
-              <th>Actualizado</th>
+              <th className="">Resumen</th>
+              <th className="table-initiate">Fecha de inicio</th>
+              <th className="table-date">Fecha de finalización</th>
+              <th className="table-surgey">Cirugia</th>
+              <th className="">Doctor</th>
+              <th className="table-surgey">Terminado</th>
+              <th className="table-surgey">Actualizado</th>
               {!["enfermero", "enfermera"].includes(
                 store.employee.specialist
               ) && <th>Editable</th>}
@@ -60,11 +60,21 @@ const PatientTreatement = () => {
             store.employee.specialist !== "admin" ? (
               store.patientData.treatments.map((treatment, index) => (
                 <tr key={index}>
-                  <td>{treatment.resume}</td>
-                  <td>{actions.dateFormater(treatment.initial_date)}</td>
-                  <td>{actions.dateFormater(treatment.exp_date)}</td>
-                  <td>{treatment.surgey === "" ? "NO" : treatment.surgey}</td>
-                  <td>
+                  <td className="">
+                    {treatment.resume.length > 20
+                      ? `${treatment.resume.substring(0, 20)}...`
+                      : treatment.resume}
+                  </td>
+                  <td className="table-initiate">
+                    {actions.dateFormater(treatment.initial_date)}
+                  </td>
+                  <td className="table-date">
+                    {actions.dateFormater(treatment.exp_date)}
+                  </td>
+                  <td className="table-surgey">
+                    {treatment.surgey === "" ? "NO" : treatment.surgey}
+                  </td>
+                  <td className="">
                     {patient_id && (
                       <DoctorInfo
                         medicalId={treatment.medical_id}
@@ -72,8 +82,10 @@ const PatientTreatement = () => {
                       />
                     )}
                   </td>
-                  <td>{treatment.finish_treatment ? "SI" : "NO"}</td>
-                  <td>
+                  <td className="table-surgey">
+                    {treatment.finish_treatment ? "SI" : "NO"}
+                  </td>
+                  <td className="table-surgey">
                     {treatment.updated_at !== null
                       ? actions.dateFormater(treatment.updated_at)
                       : "NO"}
@@ -81,14 +93,14 @@ const PatientTreatement = () => {
                   {!["enfermero", "enfermera"].includes(
                     store.employee.specialist
                   ) && (
-                    <td>
+                    <td className="icon-treatment">
                       {treatment.finish_treatment ||
-                      store.employee.id != treatment.medical_id ? (
+                      store.employee.id !== treatment.medical_id ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="icon icon-tabler icon-tabler-pencil-x"
-                          width="44"
-                          height="44"
+                          width="28"
+                          height="28"
                           viewBox="0 0 24 24"
                           strokeWidth="1.5"
                           stroke="#ff2825"
@@ -109,8 +121,8 @@ const PatientTreatement = () => {
                           }
                           xmlns="http://www.w3.org/2000/svg"
                           className="icon icon-tabler icon-tabler-pencil"
-                          width="44"
-                          height="44"
+                          width="28"
+                          height="28"
                           cursor="pointer"
                           viewBox="0 0 24 24"
                           strokeWidth="1.5"
@@ -126,7 +138,7 @@ const PatientTreatement = () => {
                       )}
                     </td>
                   )}
-                  <td>
+                  <td className="icon-treatment">
                     {" "}
                     <svg
                       onClick={() =>

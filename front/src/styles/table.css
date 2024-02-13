@@ -60,9 +60,24 @@ td, th{
   .table-nameDr-sorting,
   .table-email-sorting,
   .table-finished-sorting,
-  .table-surgey-sorting {
+  .table-surgey-sorting,
+  .table-surgey,
+  .table-date,
+  .table-initiate {
     
     display: none;
+  }
+
+  .icon-treatment svg{
+    width: 25px;
+  }
+
+  .icon-treatment{
+    padding-bottom: 10px!important;
+  }
+
+  .table-sm-size{
+    font-size: .6rem!important;
   }
 
   .table-treatment{
@@ -100,7 +115,10 @@ td, th{
   .table-end-sorting,
   .table-nameDr-sorting,
   .table-finished-sorting,
-  .table-surgey-sorting{
+  .table-surgey-sorting,
+  .table-initiate,
+  .table-date,
+  .table-surgey{
     display: none;
   }
 
@@ -126,7 +144,9 @@ td, th{
   .table-start-sorting,
   .table-end-sorting,
   .table-finished-sorting,
-  .table-surgey-sorting{
+  .table-surgey-sorting,
+  .table-date,
+  .table-surgey{
     
     display: none;
   }
@@ -156,14 +176,18 @@ td, th{
 @media screen and (min-width: 658px) and (max-width: 906px){
   .table-daysoff-sorting,
   .table-start-sorting,
-  .table-end-sorting{
+  .table-end-sorting,
+  .table-surgey,
+  .table-date{
     
     display: none;
   }
 }
 
 @media screen and (min-width: 906px) and (max-width: 1066px){
-  .table-daysoff-sorting,.table-dniDr-sorting{
+  .table-daysoff-sorting,
+  .table-dniDr-sorting,
+  .table-surgey{
     display: none;
   }
 }

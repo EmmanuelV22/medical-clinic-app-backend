@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar"
+import Navbar from "../../components/Navbar";
 
 import { Context } from "../../store/appContext";
 
@@ -119,7 +119,7 @@ const EditTreatment = () => {
         navigate(`/patient-treatments/${patient_id}`);
       })
       .catch((error) => {
-        return error
+        return error;
       });
   };
 
@@ -145,7 +145,7 @@ const EditTreatment = () => {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {isDoctor ? (
         <div className="text-center d-flex justify-content-center row">
           <h1>
@@ -158,7 +158,7 @@ const EditTreatment = () => {
           <div className="w-full max-w-xs">
             <form
               onSubmit={handleSubmit}
-              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 form-treatment"
             >
               <div className="mb-4">
                 <label
@@ -276,7 +276,7 @@ const EditTreatment = () => {
                   Cirugia:
                 </label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow select-treatment appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="surgey"
                   value={surgey}
                   onChange={(e) => setSurgey(e.target.value)}
@@ -293,7 +293,7 @@ const EditTreatment = () => {
                   ¿Finalizar tratamiento?
                 </label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow select-treatment appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="finish_treatment"
                   value={finish_treatment}
                   onChange={(e) => setFinishTreatment(e.target.value)}
@@ -309,7 +309,9 @@ const EditTreatment = () => {
                 </button>
                 <button
                   className="button3 w-50 text-black"
-                  onClick={() => navigate(`/patients/${store.patientData.patientData.id}`)}
+                  onClick={() =>
+                    navigate(`/patients/${store.patientData.patientData.id}`)
+                  }
                 >
                   Cancelar
                 </button>

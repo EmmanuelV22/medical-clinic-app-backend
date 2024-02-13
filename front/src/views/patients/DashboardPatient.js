@@ -18,7 +18,9 @@ const DashboardPatient = () => {
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
-    actions.getPatientById(store.patient.id);
+    if (store.patient.id) {
+      actions.getPatientById(store.patient.id);
+    }
   }, [store.patient]);
 
   return (

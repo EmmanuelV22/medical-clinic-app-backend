@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,7 +7,7 @@ import { Context } from "../../store/appContext";
 import Navbar from "../../components/Navbar";
 
 const CreateTreatment = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { actions, store } = useContext(Context);
 
   const { patient_id } = useParams();
@@ -37,12 +38,10 @@ const CreateTreatment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
       const medicineData = medicines.map(({ name, quantity }) => ({
         medicine_name: name,
         quantity: parseInt(quantity, 10),
       }));
-
 
       await actions.createTreatment(
         patient_id,
@@ -57,7 +56,7 @@ const CreateTreatment = () => {
       );
       window.location.reload();
     } catch (error) {
-      return error
+      return error;
     }
   };
 
@@ -86,13 +85,12 @@ const CreateTreatment = () => {
     setPatologies("");
     setSurgey("SI");
     setFinishTreatment(0);
-    navigate(`/patients/${store.patientData.patientData.id}`)
-
+    navigate(`/patients/${store.patientData.patientData.id}`);
   };
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       {store.employee &&
       (store.employee.specialist !== "admin" ||
         store.employee.specialist !== "enfermera" ||
@@ -108,18 +106,25 @@ const CreateTreatment = () => {
           <div className="w-full max-w-xs">
             <form
               onSubmit={handleSubmit}
-              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 form-treatment"
             >
-              <div className="mb-4">
+              <div className="mb-4 d-flex flex-column justify-content-center">
                 <label
-                  className="block text-gray-700 text-sm font-bold mb-2"
+                  className="block  text-gray-700 text-sm font-bold mb-2"
                   htmlFor="resume"
                 >
                   Resumen:
                 </label>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                <textarea
+                  className="shadow area-resume appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="resume"
+                  rows="7"
+                  cols="80"
+                  style={{
+                    maxWidth: "100%",
+                    resize: "both",
+                    margin: "auto",
+                  }}
                   type="text"
                   placeholder="Resumen del tratamiento"
                   value={resume}
@@ -218,7 +223,7 @@ const CreateTreatment = () => {
                   Patologias:
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow select-treatment appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="patologies"
                   type="text"
                   placeholder="Patologias a tener en cuenta"
@@ -235,7 +240,7 @@ const CreateTreatment = () => {
                   Cirugia:
                 </label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow select-treatment appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="surgey"
                   value={surgey}
                   onChange={(e) => setSurgey(e.target.value)}

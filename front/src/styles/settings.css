@@ -63,13 +63,19 @@ footer{
 }
 
 body.dark-mode,
-body.dark-mode input
+body.dark-mode input,
+body.dark-mode .form-treatment,
+body.dark-mode .area-resume,
+body.dark-mode .select-treatment
 {
-  background-color: var(--color-dark);
+  background-color: var(--color-dark)!important;
   color: var(--color-1);
 }
 
-body.dark-mode .label-detail{
+
+
+body.dark-mode .label-detail,
+body.dark-mode .search-input{
   color: var(--color-dark)!important;
 }
 
