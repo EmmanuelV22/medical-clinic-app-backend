@@ -40,6 +40,10 @@ app.get("/api/private", private, (req, res) =>
   })
 );
 
+app.get("/", (req, res) =>
+  res.send("Successfull conected to api")
+);
+
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
