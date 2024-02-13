@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const bcrypt = require("bcryptjs");
 
 dotenv.config();
 
@@ -17,10 +16,11 @@ app.use(bodyParser.json());
 
 const pool = new Pool({
   user: process.env.DB_USER,
-  connectionString: process.env.DB_HOST_INTERNAL,
+  connectionString: process.env.DB_HOST_EXTERNAL,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+  ssl:true
 });
 
 connectToDB(pool);
