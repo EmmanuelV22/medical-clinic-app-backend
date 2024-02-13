@@ -3,7 +3,7 @@ import React from "react";
 const ConfirmUpdateEmployee = ({ employeeData, editEmployeeData }) => {
   return (
     <div
-      className="modal fade"
+      className="modal fade modal-dark"
       id={"updateEmployee-" + employeeData?.id}
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -13,13 +13,14 @@ const ConfirmUpdateEmployee = ({ employeeData, editEmployeeData }) => {
     >
       <div className="modal-dialog">
         <div className="modal-content">
-          <div className="modal-body">
-            ¿Está seguro de querer modificar los datos del empleado &nbsp;
+          <div className="modal-body modal-dark">
+            ¿Está seguro de querer modificar los datos del empleado{" "}
             {employeeData && employeeData.firstname}{" "}
-            {employeeData && employeeData.lastname} con el id personal{" "}
-            {employeeData && employeeData.personal_id}?
+            {employeeData && employeeData.lastname} con el dni{" "}
+            {employeeData && employeeData.dni}{" "}
+            ?
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer modal-dark">
             <button
               type="button"
               className=" button3 w-100"

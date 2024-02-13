@@ -80,7 +80,6 @@ const AdminAllPatients = () => {
   };
 
   const renderRow = (patient, index) => {
-    // console.log(patient);
     return (
       <React.Fragment key={patient.id}>
         <tr
@@ -90,7 +89,7 @@ const AdminAllPatients = () => {
         >
           <td className="table-name-sorting">{patient.firstname}</td>
           <td className="table-lastname-sorting">{patient.lastname}</td>
-          <td className="table-dni-sorting">{patient.dni}</td>
+          <td className="table-dni">{patient.dni}</td>
           <td className="table-address-sorting">{patient.address}</td>
           <td className="table-birthday-sorting">
             {actions.dateFormater(patient.birthday)}

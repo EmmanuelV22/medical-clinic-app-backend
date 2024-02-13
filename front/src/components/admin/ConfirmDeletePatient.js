@@ -3,7 +3,7 @@ import React from "react";
 const ConfirmDeletePatient = ({ patientData, handleDelete }) => {
   return (
     <div
-      className="modal fade"
+      className="modal fade modal-dark"
       id={"deletePatient-" + patientData?.id}
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -13,14 +13,15 @@ const ConfirmDeletePatient = ({ patientData, handleDelete }) => {
     >
       <div className="modal-dialog">
         <div className="modal-content">
-          <div className="modal-body">
+          <div className="modal-body modal-dark">
             {" "}
-            ¿Está seguro de querer eliminar el paciente &nbsp;
+            ¿Está seguro de querer eliminar el paciente {" "}
             {patientData && patientData.firstname}{" "}
             {patientData && patientData.lastname} con el DNI{" "}
-            {patientData && patientData.dni}?
+            {patientData && patientData.dni}{" "}
+            ?
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer modal-dark">
             <button
               type="button"
               className=" button3 w-100"

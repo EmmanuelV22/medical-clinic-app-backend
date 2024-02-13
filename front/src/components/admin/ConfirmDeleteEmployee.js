@@ -3,7 +3,7 @@ import React from "react";
 const ConfirmDeleteEmployee = ({ employeeData, handleDeleteEmployee }) => {
   return (
     <div
-      className="modal fade"
+      className="modal fade modal-dark"
       id={"deleteEmployee-" + employeeData?.id}
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -13,14 +13,14 @@ const ConfirmDeleteEmployee = ({ employeeData, handleDeleteEmployee }) => {
     >
       <div className="modal-dialog">
         <div className="modal-content">
-          <div className="modal-body">
+          <div className="modal-body modal-dark">
             {" "}
-            ¿Está seguro de querer eliminar el empleado &nbsp;
+            ¿Está seguro de querer eliminar el empleado{" "}
             {employeeData && employeeData.firstname}{" "}
-            {employeeData && employeeData.lastname} con el id personal{" "}
-            {employeeData && employeeData.personal_id}?
+            {employeeData && employeeData.lastname} con el dni{" "}
+            {employeeData && employeeData.dni}?
           </div>
-          <div className="modal-footer d-flex align-items-center">
+          <div className="modal-footer modal-dark d-flex align-items-center">
             <button
               type="button"
               className=" button3 w-100"

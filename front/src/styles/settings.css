@@ -70,7 +70,8 @@ body.dark-mode input
 }
 
 body.dark-mode .label-detail{
-  color: var(--color-dark)!important;
+  color: white!important;
+  margin: 5px;
 }
 
 body.dark-mode .homeHover{
@@ -89,7 +90,7 @@ body.dark-mode .btn-dark {
 }
 
 body.dark-mode .btn-dark:hover,
- body.dark-mode .ul {
+body.dark-mode .ul {
 background-color: #19484a;
 }
 
@@ -117,7 +118,7 @@ background-color: #19484a;
   text-align: center;
   background-color: var(--color-3)!important;
   border-top-left-radius: 0.8rem!important;
-  border-top-right-radius: 0.8rem!important;
+  /* border-top-right-radius: 0.8rem!important; */
   padding: 8px 0;
   position: relative;
   background-image: radial-gradient(at 30% 5%, rgb(138, 209, 223) 0px, transparent 50%),
@@ -177,3 +178,18 @@ background-color: #19484a;
 .dropdown-item{
   white-space: pre-wrap!important
 }
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item {
+  height: 30px;
+  padding: 5px 10px;
+  white-space: nowrap;
+  color: black;
+}
+.react-datepicker__header:not(.react-datepicker__header--has-time-select) {
+  border-top-left-radius: 0px!important;
+}
+
+body.dark-mode .modal-dark{
+background-color: var(--color-dark);
+}
+
