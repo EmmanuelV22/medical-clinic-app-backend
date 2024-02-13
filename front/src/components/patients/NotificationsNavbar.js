@@ -49,7 +49,7 @@ const NotificationsNavbar = () => {
               .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
               .slice(0, 10)
               .map((notification, index) => (
-                <>
+                <React.Fragment key={notification.id}>
                   {notification !== null && (
                     <li
                       key={notification.id}
@@ -81,7 +81,7 @@ const NotificationsNavbar = () => {
                       <NotificationsButtonsRead notification={notification} />
                     </li>
                   )}
-                </>
+                </React.Fragment>
               ))}
             <hr />
             <li className="text-center dropdown-item">

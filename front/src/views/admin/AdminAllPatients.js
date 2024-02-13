@@ -32,7 +32,7 @@ const AdminAllPatients = () => {
       sortable: true,
       className: "table-lastname-sorting",
     },
-    { field: "dni", label: "DNI", sortable: true, class: "table-dni" },
+    { field: "dni", label: "DNI", sortable: true, class: "" },
     {
       field: "address",
       label: "Dirección",
@@ -89,7 +89,9 @@ const AdminAllPatients = () => {
         >
           <td className="table-name-sorting">{patient.firstname}</td>
           <td className="table-lastname-sorting">{patient.lastname}</td>
+
           <td className="table-dni">{patient.dni}</td>
+
           <td className="table-address-sorting">{patient.address}</td>
           <td className="table-birthday-sorting">
             {actions.dateFormater(patient.birthday)}
