@@ -11,8 +11,8 @@ const host = process.env.DB_HOST_EXTERNAL;
 
 
 const getState = ({ getStore, getActions, setStore }) => {
-  const API_AUTH = `${host}@localhost:${port}/api/auth`;
-  const API = `${host}@localhost:${port}/api`;
+  const API_AUTH = `${host}:${port}/api/auth`;
+  const API = `${host}:${port}/api`;
 
   return {
     store: {
