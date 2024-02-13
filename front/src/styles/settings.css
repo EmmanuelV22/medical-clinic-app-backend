@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Kalam', cursive, serif;
+  font-family: 'Quicksand', cursive, serif;
   -webkit-overflow-scrolling: none;
 
 
@@ -78,7 +78,7 @@ body.dark-mode .select-treatment
 body.dark-mode .label-detail,
 body.dark-mode .search-input{
   color: var(--color-dark)!important;
-
+}
 body.dark-mode .label-detail{
   color: white!important;
   margin: 5px;
