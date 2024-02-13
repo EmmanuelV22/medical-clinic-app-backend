@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e6603c99.css",
+    "main.js": "/static/js/main.dbf4b8ef.js",
+    "static/media/image_processing20221014-5440-1ixmd18.gif": "/static/media/image_processing20221014-5440-1ixmd18.7d88a49151e5933ba315.gif",
+    "static/media/clinic-logo-removebg.png": "/static/media/clinic-logo-removebg.d82d04eb49c1b559a14b.png",
+    "index.html": "/index.html",
+    "main.e6603c99.css.map": "/static/css/main.e6603c99.css.map",
+    "main.dbf4b8ef.js.map": "/static/js/main.dbf4b8ef.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6603c99.css",
+    "static/js/main.dbf4b8ef.js"
+  ]
+}
