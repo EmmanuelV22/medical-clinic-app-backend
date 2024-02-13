@@ -154,7 +154,7 @@ const AppointmentScheduler = ({ doctorId, daysOff, startTime, endTime }) => {
       {selectedDate ? (
         <div>
           <button
-            className=" mt-3  mb-5 w-50 button1"
+            className=" mt-3  mb-5 w-50 button1 btn-dark"
             onClick={handleScheduleAppointment}
           >
             Planificar turno

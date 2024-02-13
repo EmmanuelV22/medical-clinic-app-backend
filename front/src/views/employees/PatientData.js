@@ -86,7 +86,7 @@ const PatientData = () => {
           </h2>
           <div>{createHistoric && <CreateHistoric id={id} />}</div>
           {!createHistoric ? (
-            <button className="btn button1 w-50 mb-3 text-black" onClick={isCreating}>
+            <button className="btn button1 btn-dark w-50 mb-3 text-black" onClick={isCreating}>
               Crear nueva historia
             </button>
           ) : (
@@ -95,13 +95,13 @@ const PatientData = () => {
             </button>
           )}
           <button
-            className="btn button1 w-50 mx-3 mb-3 text-black"
+            className="btn button1 btn-dark text-black w-50 mx-3 mb-3 "
             onClick={() => handlePatientTreatments(id)}
           >
             Ver tratamientos
           </button>
           <button
-            className="btn button1 w-50 mb-3 text-black"
+            className="btn button1 btn-dark w-50 mb-3 text-black"
             onClick={() => navigate(`/createTreatment/patient/${id}`)}
           >
             Crear tratamiento
@@ -136,7 +136,7 @@ const PatientData = () => {
           </p>
           <div className=" rounded mb-5">
             <h3>Historia Clinica: </h3>
-            <button onClick={handleShow} className="btn button1 w-50 mb-3 text-black">
+            <button onClick={handleShow} className="btn button1 btn-dark w-50 mb-3 text-black">
               {show ? "Ocultar" : "Ver"}
             </button>
             {show && <HistoryByPatient />}

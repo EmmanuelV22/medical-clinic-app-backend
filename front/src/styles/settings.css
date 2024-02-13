@@ -205,3 +205,11 @@ body.dark-mode .modal-dark{
 background-color: var(--color-dark);
 }
 
+body.dark-mode .button1,.button3{
+  color: 100%;
+}
+
+body.dark-mode select{
+  background: #102e2f;
+  color: #fff;
+}
