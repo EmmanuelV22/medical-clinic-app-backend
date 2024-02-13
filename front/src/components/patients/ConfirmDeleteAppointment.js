@@ -12,24 +12,24 @@ const ConfirmDeleteAppointment = ({ handleDelete, appointment }) => {
       aria-hidden="true"
     >
       <div className="modal-dialog">
-        <div className="modal-content">
+        <div className="modal-content modal-dark">
           <div className="modal-body">
             {" "}
-            ¿Está seguro de querer eliminar el turno siguiente: &nbsp;
-            {appointment.date}/{appointment.month}/{appointment.year} a las
+            ¿Está seguro de querer eliminar el siguiente turno : {" "}
+            {appointment.date}/{appointment.month}/{appointment.year} a las {" "}
             {appointment.time}?
           </div>
           <div className="modal-footer">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="button3 w-25 m-2"
               data-bs-dismiss="modal"
             >
               No
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="button1 w-25 m-2"
               onClick={() => handleDelete(appointment.id)}
             >
               Sí

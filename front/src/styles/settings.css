@@ -78,6 +78,7 @@ body.dark-mode .select-treatment
 body.dark-mode .label-detail,
 body.dark-mode .search-input{
   color: var(--color-dark)!important;
+}
 
 body.dark-mode .label-detail{
   color: white!important;
