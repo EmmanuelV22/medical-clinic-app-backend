@@ -15,8 +15,16 @@ const { private } = require("./middleware/auth");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+const url = require('url'); // Importa el módulo 'url'
+
+const internalDbUrl = new url.URL(process.env.DB_HOST_INTERNAL); // Analiza la URL interna de la base de datos
+
 const pool = new Pool({
-  connectionString: process.env.DB_HOST_INTERNAL,
+  user: process.env.DB_USER,
+  host: internalDbUrl.hostname, // Usa el hostname de la URL interna
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: internalDbUrl.port, // Usa el puerto de la URL interna
 });
 
 connectToDB(pool);
@@ -36,27 +44,10 @@ app.get("/api/private", private, (req, res) =>
   })
 );
 
-app.get("/", (req, res) =>
-  res.send("Successfull conected to api")
-);
+app.get("/", (req, res) => res.send("Successfull conected to api"));
 
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
 
 module.exports = pool;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
