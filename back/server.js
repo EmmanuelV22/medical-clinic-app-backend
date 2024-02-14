@@ -25,7 +25,7 @@ connectToDB(pool);
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: [process.env.DB_HOST_INTERNAL],
   })
 );
 app.use(cookieParser());

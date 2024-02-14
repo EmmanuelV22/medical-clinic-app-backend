@@ -7,7 +7,7 @@ const config = {
   },
 };
 
-const host = "https://medical-clinic-app.onrender.com" || "http://localhost:5000";
+const host = process.env.DB_HOST_INTERNAL || "http://localhost:5000";
 
 
 const getState = ({ getStore, getActions, setStore }) => {
@@ -268,7 +268,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             personal_id: personal_id,
             password: password,
           });
-          if (response.status && response.status === 201) {
+          if (response.status && (response.status === 201 || response.status === 200)) {
             const data = response.data;
 
             const store = getStore();
