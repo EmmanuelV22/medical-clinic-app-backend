@@ -17,7 +17,7 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl:true
+  ssl: true,
 });
 
 connectToDB(pool);
@@ -37,27 +37,10 @@ app.get("/api/private", private, (req, res) =>
   })
 );
 
-app.get("/", (req, res) =>
-  res.send("Successfull conected to api")
-);
+app.get("/", (req, res) => res.send("Successfull conected to api"));
 
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
 
 module.exports = pool;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
