@@ -7,7 +7,7 @@ const config = {
   },
 };
 
-const host = process.env.DB_HOST_INTERNAL || "http://localhost:5000";
+const host = process.env.DB_HOST_INTERNAL;
 
 
 const getState = ({ getStore, getActions, setStore }) => {
