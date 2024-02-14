@@ -1,8 +1,6 @@
 #!/bin/bash
 export PGPASSWORD=$DB_PASSWORD
-PGHOST=$DB_HOST
-PGUSER=$DB_USER
-PGDBNAME=$DB_NAME
-psql -h $PGHOST -U $PGUSER $PGDBNAME -c "CREATE SCHEMA IF NOT EXISTS clinic;"
-psql -h $PGHOST -U $PGUSER $PGDBNAME < scripts/tables.sql
+psql -U $DB_USER -d $DB_NAME -h $DB_HOST -p $DB_PORT \
+    -c "CREATE SCHEMA IF NOT EXISTS clinic;"
+psql -U $DB_USER -d $DB_NAME -h $DB_HOST -p $DB_PORT < scripts/tables.sql
 sh runServer.sh

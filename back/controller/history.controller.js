@@ -2,11 +2,10 @@ const { Pool } = require("pg");
 
 const pool = new Pool({
   user: process.env.DB_USER,
-  connectionString: process.env.DB_HOST_EXTERNAL,
+  host: process.env.DB_HOST_EXTERNAL,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl:true
+  port: process.env.DB_PORT
 });
 exports.createHistory = async (req, res, next) => {
   const { patient_id, medical_id, agenda_id, treatment_id, description } =

@@ -1,11 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
-
 dotenv.config();
-
 const { Pool } = require("pg");
 const { connectToDB } = require("./models");
-
 const app = express();
 const port = process.env.DB_API_PORT || 5000;
 const cors = require("cors");
@@ -16,11 +13,10 @@ app.use(bodyParser.json());
 
 const pool = new Pool({
   user: process.env.DB_USER,
-  connectionString: process.env.DB_HOST_EXTERNAL,
+  host: process.env.DB_HOST_EXTERNAL,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl:true
 });
 
 connectToDB(pool);
