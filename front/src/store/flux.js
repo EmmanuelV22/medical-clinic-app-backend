@@ -283,7 +283,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           } else {
             actions.showNotification(
               "No se pudo conectar al servidor",
-              "danger"
+              "danger",error
             );
           }
         }
