@@ -13,7 +13,7 @@ const pool = new Pool({
   ssl:true
 });
 
-const host = process.env.DB_HOST_INTERNAL || "http://localhost:5000";
+const host = process.env.DB_HOST_INTERNAL || "https://localhost:5000";
 
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************
