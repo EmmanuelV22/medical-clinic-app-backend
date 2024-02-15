@@ -7,7 +7,8 @@ const config = {
   },
 };
 
-const host = process.env.DB_HOST_INTERNAL;
+// const host = process.env.DB_HOST_INTERNAL;
+const host ="https://medical-clinic-app.onrender.com"
 
 
 const getState = ({ getStore, getActions, setStore }) => {
