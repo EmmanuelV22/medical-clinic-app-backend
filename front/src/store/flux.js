@@ -263,7 +263,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       login: async (personal_id, password) => {
-        console.log("console de api url",API_AUTH)
         try {
           const response = await axios.post(`${API_AUTH}/login`, {
             personal_id: personal_id,
@@ -275,6 +274,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             const store = getStore();
             Cookies.set("jwt", data.token);
             setStore({ ...store, isAuth: true, employee: data.employees });
+            console.log("console de api url",API_AUTH)
             return data;
           }
         } catch (error) {

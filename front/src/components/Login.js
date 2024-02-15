@@ -17,7 +17,7 @@ const Login = () => {
     //   return actions.showNotification("Datos incorrectos", "danger");
     // } else {
       const data = await actions.login(personal_id, password);
-console.log("console de data:",data)
+      console.log("c log de data: ",data)
       if (data?.status && (data?.status === 201 || data?.status === 200)) {
         actions.showNotification("Inicio de sesion exitoso", "success");
 

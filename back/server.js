@@ -20,7 +20,12 @@ const pool = new Pool({
   ssl: true,
 });
 
-// const FRONTEND_URL = process.env.DB_HOST_EXTERNAL
+app.use((req, res, next) => {
+  res.send(`Permitiendo solicitud desde: ${req.headers.origin}`);
+  next();
+});
+
+const FRONTEND_URL = process.env.DB_HOST_EXTERNAL
 
 connectToDB(pool);
 
@@ -28,7 +33,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*"
+    origin: FRONTEND_URL
   })
 );
 
