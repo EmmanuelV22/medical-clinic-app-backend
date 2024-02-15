@@ -13,11 +13,11 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // if (password === "") {
-    //   return actions.showNotification("Datos incorrectos", "danger");
-    // } else {
+    if (password === "") {
+      return actions.showNotification("Datos incorrectos", "danger");
+    } else {
       const data = await actions.login(personal_id, password);
-      console.log("c log de data: ",data)
+
       if (data?.status && (data?.status === 201 || data?.status === 200)) {
         actions.showNotification("Inicio de sesion exitoso", "success");
 
@@ -53,7 +53,7 @@ const Login = () => {
         } else {
           actions.showNotification("Datos incorrectos", "danger");
         }
-      // }
+      }
     }
   }
 

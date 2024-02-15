@@ -266,7 +266,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         try {
           const response = await axios.post(`${API_AUTH}/login`, {
             personal_id: personal_id,
-            password: password,
+            password: password
+          }, {
+            headers: {
+              origin: API_AUTH
+            }
           });
           if (response.status && (response.status === 201 || response.status === 200)) {
             const data = response.data;
