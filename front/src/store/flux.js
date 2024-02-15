@@ -263,6 +263,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       login: async (personal_id, password) => {
+        console.log(API_AUTH)
         try {
           const response = await axios.post(`${API_AUTH}/login`, {
             personal_id: personal_id,
