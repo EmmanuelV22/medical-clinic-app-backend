@@ -7,8 +7,7 @@ const config = {
   },
 };
 
-// const host = process.env.DB_HOST_INTERNAL;
-const host ="https://medical-clinic-app.onrender.com"
+const host = process.env.DB_HOST_INTERNAL;
 
 
 const getState = ({ getStore, getActions, setStore }) => {
@@ -265,15 +264,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       login: async (personal_id, password) => {
         try {
-          const response = await axios.post(`https://medical-clinic-app.onrender.com/api/auth/login`, {
+          const response = await axios.post(`${API_AUTH}/login`, {
             personal_id: personal_id,
             password: password,
           });
-          console.log("Resupesta: ",response)
-
           if (response.status && (response.status === 201 || response.status === 200)) {
             const data = response.data;
-            console.log("Data: ",data)
+
             const store = getStore();
             Cookies.set("jwt", data.token);
             setStore({ ...store, isAuth: true, employee: data.employees });
@@ -288,7 +285,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               "No se pudo conectar al servidor",
               "danger",error
             );
-            console.log("Error: ",error)
           }
         }
       },

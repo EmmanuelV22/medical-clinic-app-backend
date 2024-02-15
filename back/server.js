@@ -20,14 +20,17 @@ const pool = new Pool({
   ssl: true,
 });
 
+const FRONTEND_URL = process.env.DB_HOST_EXTERNAL
 connectToDB(pool);
 
 app.use(express.json());
+
 app.use(
   cors({
-    origin: [process.env.DB_HOST_EXTERNAL],
+    origin: FRONTEND_URL,
   })
 );
+
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
