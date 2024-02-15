@@ -21,6 +21,7 @@ const pool = new Pool({
 });
 
 const FRONTEND_URL = process.env.DB_HOST_EXTERNAL
+
 connectToDB(pool);
 
 app.use(express.json());

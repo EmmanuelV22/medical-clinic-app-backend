@@ -7,12 +7,12 @@ const config = {
   },
 };
 
-const host = process.env.DB_HOST_INTERNAL;
+// const host = process.env.DB_HOST_INTERNAL;
 
 
 const getState = ({ getStore, getActions, setStore }) => {
-  const API_AUTH = `${host}/api/auth`;
-  const API = `${host}/api`;
+  const API_AUTH = `https://medical-clinic-app.onrender.com/api/auth`;
+  const API = `https://medical-clinic-app.onrender.com/api`;
 
   return {
     store: {
