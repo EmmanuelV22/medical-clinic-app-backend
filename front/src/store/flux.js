@@ -269,7 +269,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             password: password
           }, {
             headers: {
-              origin: API_AUTH
+              "origin": API_AUTH
             }
           });
           if (response.status && (response.status === 201 || response.status === 200)) {
