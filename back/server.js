@@ -21,7 +21,7 @@ const pool = new Pool({
 });
 
 app.use((req, res, next) => {
-  res.send(`Permitiendo solicitud desde: ${req.headers.origin}`);
+  console.log(`Permitiendo solicitud desde: ${req.headers.origin}`);
   next();
 });
 
