@@ -18,7 +18,7 @@ const Login = () => {
     } else {
       const data = await actions.login(personal_id, password);
 
-      if (data?.status && data?.status === 201) {
+      if (data?.status && (data?.status === 201 || data?.status === 200)) {
         actions.showNotification("Inicio de sesion exitoso", "success");
 
         const loggedInEmployee = data.employees[0];

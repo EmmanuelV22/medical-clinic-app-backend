@@ -265,7 +265,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       login: async (personal_id, password) => {
         try {
-          const response = await axios.post(`${API_AUTH}/login`, {
+          const response = await axios.post(`https://medical-clinic-app.onrender.com/api/auth/login`, {
             personal_id: personal_id,
             password: password,
           });
