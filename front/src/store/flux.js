@@ -6,7 +6,7 @@ const config = {
     Authorization: `${token}`,
   },
 };
-const BACKEND_URL = process.env.BACKEND_URL || "https://medical-clinic-app.onrender.com";
+const BACKEND_URL = process.env.BACKEND_URL || "https://localhost:5000";
 
 
 const getState = ({ getStore, getActions, setStore }) => {
