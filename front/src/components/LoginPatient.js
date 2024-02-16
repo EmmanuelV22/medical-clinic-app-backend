@@ -26,7 +26,9 @@ const LoginPatient = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
+    if (password === "") {
+      return actions.showNotification("Contraseña incompleta", "danger");
+    } else {
     const response = await actions.loginPatient(dni, password);
     if (response?.status && response?.status === 201) {
       actions.showNotification(response.data.message, "success");
@@ -36,9 +38,10 @@ const LoginPatient = () => {
       if (response === undefined) {
         actions.showNotification("Fallo la conexion con el servidor", "danger");
       } else {
-        actions.showNotification(response, "danger");
+        actions.showNotification("Datos incorrectos", "danger");
       }
     }
+  }
   }
 
   return (

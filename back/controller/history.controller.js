@@ -1,13 +1,14 @@
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl:true
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "postgres",
+  password: process.env.DB_PASSWORD || "1a2b3c",
+  port: process.env.DB_PORT || 5432,
+  ssl: true,
 });
+
 
 exports.createHistory = async (req, res, next) => {
   const { patient_id, medical_id, agenda_id, treatment_id, description } =

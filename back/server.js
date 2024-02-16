@@ -4,28 +4,22 @@ dotenv.config();
 const { Pool } = require("pg");
 const { connectToDB } = require("./models");
 const app = express();
-const port = process.env.DB_API_PORT || 5000;
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { private } = require("./middleware/auth");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+const port = process.env.DB_API_PORT || 5000;
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "postgres",
+  password: process.env.DB_PASSWORD || "1a2b3c",
+  port: process.env.DB_PORT || 5432,
   ssl: true,
 });
-
-app.use((req, res, next) => {
-  console.log(`Permitiendo solicitud desde: ${req.headers.origin}`);
-  next();
-});
-
-const FRONTEND_URL = process.env.DB_HOST_EXTERNAL
 
 connectToDB(pool);
 
@@ -33,13 +27,14 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: FRONTEND_URL
+    origin: FRONTEND_URL,
   })
 );
 
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"));
+
 app.get("/api/private", private, (req, res) =>
   res.json({
     user: req.user,

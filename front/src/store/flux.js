@@ -6,13 +6,12 @@ const config = {
     Authorization: `${token}`,
   },
 };
-
-// const host = process.env.DB_HOST_INTERNAL;
+const BACKEND_URL = process.env.BACKEND_URL || "https://medical-clinic-app.onrender.com";
 
 
 const getState = ({ getStore, getActions, setStore }) => {
-  const API_AUTH = `https://medical-clinic-app.onrender.com/api/auth`;
-  const API = `https://medical-clinic-app.onrender.com/api`;
+  const API_AUTH = `${BACKEND_URL}/api/auth`;
+  const API = `${BACKEND_URL}/api`;
 
   return {
     store: {
@@ -46,9 +45,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           year: "numeric",
           month: "numeric",
           day: "numeric",
-          // hour: "numeric",
-          // minute: "numeric",
-          // second: "numeric",
         });
       },
       getAllPatients: async () => {
@@ -265,20 +261,15 @@ const getState = ({ getStore, getActions, setStore }) => {
       login: async (personal_id, password) => {
         try {
           const response = await axios.post(`${API_AUTH}/login`, {
+          }, {
             personal_id: personal_id,
             password: password
-          }, {
-            headers: {
-              "origin": API_AUTH
-            }
           });
           if (response.status && (response.status === 201 || response.status === 200)) {
             const data = response.data;
-
             const store = getStore();
             Cookies.set("jwt", data.token);
             setStore({ ...store, isAuth: true, employee: data.employees });
-            console.log("console de api url",API_AUTH)
             return data;
           }
         } catch (error) {
@@ -301,12 +292,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           if (response.status && response.status === 201) {
             const data = response.data;
-
             const store = getStore();
             Cookies.set("jwt", data.token);
-
             setStore({ ...store, isAuth: true, patient: data.patients });
-
             return response;
           }
         } catch (error) {

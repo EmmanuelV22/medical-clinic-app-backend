@@ -14,7 +14,7 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     if (password === "") {
-      return actions.showNotification("Datos incorrectos", "danger");
+      return actions.showNotification("Contraseña incompleta", "danger");
     } else {
       const data = await actions.login(personal_id, password);
 
