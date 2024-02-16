@@ -1,5 +1,4 @@
 import axios from "axios";
-require('dotenv').config();
 import Cookies from "js-cookie";
 const token = Cookies.get("jwt");
 const config = {
