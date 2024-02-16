@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { Pool } = require("pg");
+const ssl = process.env.DB_HOST ? true : false;
 
 const pool = new Pool({
   user: process.env.DB_USER || "postgres",
@@ -10,11 +11,11 @@ const pool = new Pool({
   database: process.env.DB_NAME || "postgres",
   password: process.env.DB_PASSWORD || "1a2b3c",
   port: process.env.DB_PORT || 5432,
-  ssl: true,
+  ssl: ssl,
 });
 
 
-const host = process.env.DB_HOST_INTERNAL || "https://localhost:5000";
+const host = process.env.FRONTEND_URL || "http://localhost:3000";
 
 /*************************************************************
  * ********** AUTH EMPLOYEES *************************************

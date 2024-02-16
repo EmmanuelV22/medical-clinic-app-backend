@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 const port = process.env.DB_API_PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const ssl = process.env.DB_HOST ? true : false;
 
 const pool = new Pool({
   user: process.env.DB_USER || "postgres",
@@ -18,7 +19,7 @@ const pool = new Pool({
   database: process.env.DB_NAME || "postgres",
   password: process.env.DB_PASSWORD || "1a2b3c",
   port: process.env.DB_PORT || 5432,
-  ssl: true,
+  ssl: ssl,
 });
 
 connectToDB(pool);

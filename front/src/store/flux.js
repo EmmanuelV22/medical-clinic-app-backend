@@ -6,7 +6,7 @@ const config = {
     Authorization: `${token}`,
   },
 };
-const BACKEND_URL = process.env.BACKEND_URL || "https://localhost:5000";
+const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
 
 
 const getState = ({ getStore, getActions, setStore }) => {
@@ -261,7 +261,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       login: async (personal_id, password) => {
         try {
           const response = await axios.post(`${API_AUTH}/login`, {
-          }, {
             personal_id: personal_id,
             password: password
           });

@@ -7,7 +7,7 @@ function connectToDB(pool) {
       return;
     }
 
-    console.log("Successfull connected to db: ", process.env.DB_NAME);
+    console.log("Successfull connected to db: ", process.env.DB_NAME || "postgres");
     checkAndCreateDefaultEmployee(pool);
   });
 }

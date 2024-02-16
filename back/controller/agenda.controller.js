@@ -1,13 +1,15 @@
 const { sendNotificationEmail } = require("../auth/auth");
 const { Pool } = require("pg");
 
+const ssl = process.env.DB_HOST ? true : false;
+
 const pool = new Pool({
   user: process.env.DB_USER || "postgres",
   host: process.env.DB_HOST || "localhost",
   database: process.env.DB_NAME || "postgres",
   password: process.env.DB_PASSWORD || "1a2b3c",
   port: process.env.DB_PORT || 5432,
-  ssl: true,
+  ssl: ssl,
 });
 
 
