@@ -6,7 +6,7 @@ const config = {
     Authorization: `${token}`,
   },
 };
-// const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
+// const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 // el front no esta leyendo las .env , local host y backend estan bien configurados y funciona
 const BACKEND_URL = "https://medical-clinic-app.onrender.com";
 
