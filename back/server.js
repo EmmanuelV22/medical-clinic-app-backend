@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const { private } = require("./middleware/auth");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-// const port = process.env.DB_API_PORT || 5000;
+const port = process.env.DB_API_PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 const ssl = process.env.DB_HOST ? true : false;
 
@@ -29,9 +29,6 @@ app.use(express.json());
 app.use(
   cors({
     origin: FRONTEND_URL,
-    // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    // preflightContinue: false,
-    // optionsSuccessStatus: 204
   })
 );
 
@@ -47,8 +44,8 @@ app.get("/api/private", private, (req, res) =>
 
 app.get("/", (req, res) => res.send("Successfull conected to api"));
 
-// app.listen(port, () => {
-//   console.log("Server OK on port: ", port);
-// });
+app.listen(port, () => {
+  console.log("Server OK on port: ", port);
+});
 
 module.exports = pool;
