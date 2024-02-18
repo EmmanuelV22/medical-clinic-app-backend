@@ -48,9 +48,8 @@ app.get("/api/private", private, (req, res) =>
 
 app.get("/", (req, res) => res.send("Successfull conected to api"));
 
-app.on('request', (req) => {
-  console.log("Nueva solicitud recibida para la URL:", req.url);
-});
+app.get("/", (req, res) => console.log(req.protocol + '://' + req.get('host') + req.originalUrl));
+
 
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
