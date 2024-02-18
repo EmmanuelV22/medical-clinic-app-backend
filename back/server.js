@@ -33,12 +33,10 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL);
-//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log("Solicitud recibida desde:", req.originalUrl);
+  next();
+});
 
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
