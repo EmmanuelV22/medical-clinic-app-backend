@@ -13,6 +13,7 @@ const port = process.env.DB_API_PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 const ssl = process.env.DB_HOST ? true : false;
 
+
 const pool = new Pool({
   user: process.env.DB_USER || "postgres",
   host: process.env.DB_HOST || "localhost",
@@ -33,10 +34,7 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  console.log("Solicitud recibida desde:", req.originalUrl);
-  next();
-});
+
 
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
@@ -52,6 +50,10 @@ app.get("/", (req, res) => res.send("Successfull conected to api"));
 
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
+});
+
+app.on('request', (req) => {
+  console.log("Nueva solicitud recibida para la URL:", req.url);
 });
 
 module.exports = pool;
