@@ -48,12 +48,14 @@ app.get("/api/private", private, (req, res) =>
 
 app.get("/", (req, res) => res.send("Successfull conected to api"));
 
+app.on('request', (req) => {
+  console.log("Nueva solicitud recibida para la URL:", req.url);
+});
+
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
 
-app.on('request', (req) => {
-  console.log("Nueva solicitud recibida para la URL:", req.url);
-});
+
 
 module.exports = pool;
