@@ -35,7 +35,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log("Solicitud recibida:", req.method, req.url);
+  console.log("Solicitud recibida:", req.method, req.headers.referer);
   next();
 });
 
