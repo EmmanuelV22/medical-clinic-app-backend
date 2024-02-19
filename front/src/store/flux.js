@@ -9,6 +9,7 @@ const config = {
 // const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 // el front no esta leyendo las .env , local host y backend estan bien configurados y funciona
 const BACKEND_URL = "https://medical-clinic-app.onrender.com";
+const FRONTEND_URL = "https://medical-clinic-0pqd.onrender.com"
 
 
 
@@ -266,6 +267,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           const response = await axios.post(`${API_AUTH}/login`, {
             personal_id: personal_id,
             password: password
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Origin': FRONTEND_URL
+            }
           });
           if (response.status && (response.status === 201 || response.status === 200)) {
             const data = response.data;
