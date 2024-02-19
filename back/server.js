@@ -34,6 +34,10 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  console.log("Solicitud recibida:", req.method, req.url);
+  next();
+});
 
 app.use(cookieParser());
 app.use("/", require("./auth/route"));
