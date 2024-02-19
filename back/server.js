@@ -36,6 +36,7 @@ app.use(
 
 
 app.use(cookieParser());
+app.use("/", require("./auth/route"));
 app.use("/api/auth", require("./auth/route"));
 app.use("/api", require("./routes/routes"))
 app.get("/api/private", private, (req, res) =>
