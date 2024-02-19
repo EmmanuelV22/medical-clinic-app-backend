@@ -270,8 +270,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             personal_id: personal_id,
             password: password
           });
-          console.log("url verificar: ", API_AUTH)
-          console.log("RESPONSE: ", response)
           if (response.status && (response.status === 201 || response.status === 200)) {
             const data = response.data;
             const store = getStore();
