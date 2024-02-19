@@ -35,26 +35,16 @@ app.use(
 );
 
 
-
 app.use(cookieParser());
 app.use("/api/auth", require("./auth/route"));
-app.use("/api", require("./routes/routes"));
-
+app.use("/api", require("./routes/routes"))
 app.get("/api/private", private, (req, res) =>
   res.json({
     user: req.user,
   })
 );
-
-app.get("/", (req, res) => res.send("Successfull conected to api"));
-
-app.get("/", (req, res) => console.log(req.protocol + '://' + req.get('host') + req.originalUrl));
-
-
 app.listen(port, () => {
   console.log("Server OK on port: ", port);
 });
-
-
 
 module.exports = pool;

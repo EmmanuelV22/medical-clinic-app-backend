@@ -28,6 +28,10 @@ const {
 } = require("../middleware/auth");
 const router = express.Router();
 
+///// FRIST CONNECTION //// 
+
+router.get("/", (req, res) => res.send("Successfull conected to api"));
+
 //////////////EMPLOYEES ROUTES///////////
 router.route("/register").post(privateAdmin, register);
 router.route("/login").post(login);
