@@ -56,7 +56,7 @@ const Layout = () => {
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
-  const basename = process.env.BASENAME || "";
+  const basename = process.env.BASENAME || "https://medical-clinic-front.onrender.com/";
   return (
     <div>
       <BrowserRouter basename={basename}>

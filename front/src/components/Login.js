@@ -26,7 +26,7 @@ const Login = () => {
         if (loggedInEmployee.specialist === "admin") {
           navigate("/dashboard-admin");
 
-          // window.location.reload();
+          window.location.reload();
         }
         if (
           loggedInEmployee.specialist === "enfermero" ||
