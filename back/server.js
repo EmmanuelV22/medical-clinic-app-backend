@@ -36,18 +36,11 @@ app.use(
   })
 );
 
+
 app.use((req, res, next) => {
   console.log("Solicitud recibida:", req.method, req.headers.referer);
   next();
 });
-
-app.use(express.static(path.join(__dirname, 'front/build')));
-
-// Middleware para redirigir todas las solicitudes que no coincidan con rutas del backend al 'index.html'
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'front/build', 'index.html'));
-});
-
 
 app.use(cookieParser());
 app.use("/", require("./auth/route"));
