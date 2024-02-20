@@ -1,12 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./styles/index.css";
 import Layout from "./Layout";
 
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <Layout />
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
