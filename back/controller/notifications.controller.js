@@ -1,33 +1,46 @@
-const connectDB = require("../server");
+const { Pool } = require("pg");
+
+const ssl = process.env.DB_HOST ? true : false;
+
+const pool = new Pool({
+  user: process.env.DB_USER || "postgres",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "postgres",
+  password: process.env.DB_PASSWORD || "1a2b3c",
+  port: process.env.DB_PORT || 5432,
+  ssl: ssl,
+});
+
 
 exports.getNotifications = async (req, res, next) => {
-  const query = "SELECT * FROM notifications";
+  const query = "SELECT * FROM clinic.notifications";
 
-  connectDB.query(query, (error, results, fields) => {
+  pool.query(query, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Notificaciones no encontradas",
         error: error.message,
       });
     }
+    const notifications = results.rows;
 
-    return res.status(200).json(results);
+    return res.status(200).json(notifications);
   });
 };
 
 exports.getNotificationsById = async (req, res, next) => {
   const patient_id = req.params.patient_id;
-  const query = "SELECT * FROM notifications WHERE patient_id = ?";
+  const query = "SELECT * FROM clinic.notifications WHERE patient_id = $1";
   const values = [patient_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Error cargando notificaciones",
         error: error.message,
       });
     }
-    const notifications = results;
+    const notifications = results.rows;
     return res
       .status(200)
       .json({ message: "Notificaciones obtenidas con exito", notifications });
@@ -36,17 +49,17 @@ exports.getNotificationsById = async (req, res, next) => {
 
 exports.getNotificationsByIdForEmployee = async (req, res, next) => {
   const medical_id = req.params.medical_id;
-  const query = "SELECT * FROM notifications WHERE medical_id = ?";
+  const query = "SELECT * FROM clinic.notifications WHERE medical_id = $1";
   const values = [medical_id];
 
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Notificaciones no encontradas",
         error: error.message,
       });
     }
-    const notifications = results;
+    const notifications = results.rows;
     return res
       .status(200)
       .json({ message: "Notificaciones obtenidas con exito", notifications });
@@ -57,10 +70,10 @@ exports.stateNotifications = async (req, res, next) => {
   const notificationsId = req.params.notificationsId;
   const newState = req.body.state;
 
-  const query = "UPDATE notifications SET state = ? WHERE id = ?";
+  const query = "UPDATE clinic.notifications SET state = $1 WHERE id = $2";
   const values = [newState, notificationsId];
 
-  connectDB.query(query, values, (error, results) => {
+  pool.query(query, values, (error, results) => {
     if (error) {
       return res.status(400).json({
         message: "Error actualizando estado de notificacion",
@@ -68,23 +81,26 @@ exports.stateNotifications = async (req, res, next) => {
       });
     }
 
-    return res
-      .status(200)
-      .json({ message: "Estado de notificacion actualizada con exito", results });
+    return res.status(200).json({
+      message: "Estado de notificacion actualizada con exito",
+      results: results.rows,
+    });
   });
 };
 
 exports.deleteNotifications = async (req, res, next) => {
   const id = req.params.id;
-  const query = "DELETE FROM notifications WHERE id=?";
+  const query = "DELETE FROM clinic.notifications WHERE id= $1";
   const values = [id];
-  connectDB.query(query, values, (error, results, fields) => {
+  pool.query(query, values, (error, results, fields) => {
     if (error) {
       return res.status(400).json({
         message: "Error eliminando notificacion",
         error: error.message,
       });
     }
-    return res.status(200).json({ message: "Notificacion eliminada con exito" });
+    return res
+      .status(200)
+      .json({ message: "Notificacion eliminada con exito" });
   });
 };
