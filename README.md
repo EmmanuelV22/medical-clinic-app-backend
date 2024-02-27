@@ -35,7 +35,8 @@ Su sistema se basa en lenguaje HTML + CSS + React combinando con una rest API ba
 - Lectura de historia clinica
 - Seguimiento de tratamientos
 - Ubicacion via google maps
-- Notificaciones y cambio de contraseña via mail
+- Notificaciones de agenda y tratamientos + envio por mail
+- Cambio de contraseña via mail (protegido con token unico)
 
 ### Del lado del profesional de la salud cuenta con:
 
@@ -43,6 +44,8 @@ Su sistema se basa en lenguaje HTML + CSS + React combinando con una rest API ba
 - Gestion de citas medicas propias
 - Creacion y modificacion de tratamientos
 - Registros en la historia clinica del paciente
+- Notificaciones de nueva cita agendada
+
 
 ### El administrador puede:
 
