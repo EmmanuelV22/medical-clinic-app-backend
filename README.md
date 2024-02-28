@@ -69,6 +69,11 @@ Su sistema se basa en lenguaje HTML + CSS + React combinando con una rest API ba
 - DNI: 0123
 - Password: paciente
 
+### Un usuario enfermero/a para controlar las historias clinicas:
+
+- PersonalID: ENF123
+- Password: enfermera
+
 ### Y un usuario medico con todas sus opciones:
 
 - PersonalID: DOC1234
